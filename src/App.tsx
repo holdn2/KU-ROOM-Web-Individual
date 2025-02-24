@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Community from "./pages/Community";
+import Notice from "./pages/Notice";
 
 function App() {
   const router = createBrowserRouter([
@@ -10,6 +11,10 @@ function App() {
         {
           index: true,
           element: <Home />,
+        },
+        {
+          path: "/notice",
+          element: <Notice />,
         },
         {
           path: "/community",
