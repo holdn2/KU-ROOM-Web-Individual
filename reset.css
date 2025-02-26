@@ -139,3 +139,8 @@ button {
   cursor: pointer;
   outline: none; /* 포커스 아웃라인 제거 (주의 필요) */
 }
+
+/* input태그 스타일 초기화 */
+input {
+  all: unset; /* 모든 기본 스타일 제거 */
+}
