@@ -3,6 +3,7 @@
   flex-direction: column;
   height: 100vh;
   align-items: center;
+  background: var(--gray-BG, #f8f9fc);
 }
 .MainArea {
   display: flex;
@@ -11,7 +12,9 @@
   margin-top: 10px;
 }
 h1,
-p {
+p,
+span,
+.WrongLogin {
   color: var(--gray-black, #1d2228);
   font-family: Pretendard;
   font-size: 30px;
@@ -22,6 +25,17 @@ p {
 p {
   font-size: 16px;
   line-height: 120%;
+}
+.JoinText {
+  color: #9eaab5;
+  font-size: 14px;
+  line-height: 120%;
+}
+.WrongLogin {
+  color: var(--error, #ff4a4a);
+  font-size: 12px;
+  line-height: 160%;
+  margin-top: 5px;
 }
 .InputContainer {
   display: flex;
