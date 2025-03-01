@@ -4,6 +4,7 @@ import visibilityOffIcon from "../../assets/icon/visibility_off.svg";
 import visibilityOnIcon from "../../assets/icon/visibility_on.svg";
 
 type Props = {
+  inputTitle: string;
   inputType: string;
   inputText: string;
   placeholder: string;
@@ -12,7 +13,7 @@ type Props = {
 
 // useCallback과 useMemo를 이용한 최적화
 const InputBar = React.memo(
-  ({ inputType, inputText, placeholder, setInputText }: Props) => {
+  ({ inputTitle, inputType, inputText, placeholder, setInputText }: Props) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     // 비밀번호 보기/숨기기 토글 최적화
@@ -29,30 +30,33 @@ const InputBar = React.memo(
     }, [inputType, isPasswordVisible]);
 
     return (
-      <div style={{ position: "relative" }}>
-        <input
-          type={computedInputType}
-          value={inputText}
-          className={styles.InputContainer}
-          placeholder={placeholder}
-          onChange={(e) => setInputText(e.target.value)}
-        />
-        {inputType === "password" && (
-          <img
-            src={isPasswordVisible ? visibilityOffIcon : visibilityOnIcon}
-            alt="비밀번호 보기"
-            onClick={onClickPwVisibility}
-            style={{
-              position: "absolute",
-              padding: "10px",
-              top: "6px",
-              right: "15px",
-              cursor: "pointer",
-              width: "24px",
-              height: "24px",
-            }}
+      <div>
+        <p>{inputTitle}</p>
+        <div style={{ position: "relative" }}>
+          <input
+            type={computedInputType}
+            value={inputText}
+            className={styles.InputContainer}
+            placeholder={placeholder}
+            onChange={(e) => setInputText(e.target.value)}
           />
-        )}
+          {inputType === "password" && (
+            <img
+              src={isPasswordVisible ? visibilityOffIcon : visibilityOnIcon}
+              alt="비밀번호 보기"
+              onClick={onClickPwVisibility}
+              style={{
+                position: "absolute",
+                padding: "10px",
+                top: "6px",
+                right: "15px",
+                cursor: "pointer",
+                width: "24px",
+                height: "24px",
+              }}
+            />
+          )}
+        </div>
       </div>
     );
   }

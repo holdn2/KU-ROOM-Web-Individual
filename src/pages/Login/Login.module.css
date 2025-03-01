@@ -14,6 +14,8 @@
 h1,
 p,
 span,
+.KUROOMTITLE,
+.LinkText,
 .WrongLogin {
   color: var(--gray-black, #1d2228);
   font-family: Pretendard;
@@ -22,20 +24,25 @@ span,
   font-weight: 700;
   line-height: 140%; /* 42px */
 }
+.KUROOMTITLE {
+  color: #009733;
+}
 p {
   font-size: 16px;
   line-height: 120%;
 }
-.JoinText {
+.LinkText {
   color: #9eaab5;
   font-size: 14px;
   line-height: 120%;
+  text-decoration: none;
 }
 .WrongLogin {
   color: var(--error, #ff4a4a);
   font-size: 12px;
   line-height: 160%;
   margin-top: 5px;
+  text-align: start;
 }
 .InputContainer {
   display: flex;

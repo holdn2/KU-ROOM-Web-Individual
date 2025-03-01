@@ -4,6 +4,7 @@ import Community from "./pages/Community";
 import Notice from "./pages/Notice";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login/Login";
+import FindIdPw from "./pages/FindIdPw/FindIdPw";
 
 function App() {
   const router = createBrowserRouter([
@@ -15,20 +16,24 @@ function App() {
           element: <Home />,
         },
         {
-          path: "/notice",
+          path: "notice",
           element: <Notice />,
         },
         {
-          path: "/community",
+          path: "community",
           element: <Community />,
         },
         {
-          path: "/signup",
+          path: "signup",
           element: <Signup />,
         },
         {
-          path: "/login",
+          path: "login",
           element: <Login />,
+        },
+        {
+          path: "findidpw",
+          element: <FindIdPw />,
         },
       ],
     },

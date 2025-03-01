@@ -9,6 +9,7 @@ type SizeType = {
 // 기본적인 사이즈 설정 (객체로 관리)
 const defaultSizeStyles = {
   sm: { width: "152px", height: "44px" },
+  md: { width: "300px", height: "51px" },
   lg: { width: "355px", height: "48px" },
 } as const;
 

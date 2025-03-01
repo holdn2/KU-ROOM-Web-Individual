@@ -7,6 +7,8 @@ import PrimaryButton from "../../components/Button/PrimaryButton";
 import kakaoIcon from "../../assets/socialLoginIcon/kakaoLogin.svg";
 import naverIcon from "../../assets/socialLoginIcon/naverLogin.svg";
 import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const dummyLoginInfo = [
   {
@@ -15,29 +17,31 @@ const dummyLoginInfo = [
   },
 ];
 
-type Props = {};
-
-const Login = (props: Props) => {
+const Login = () => {
+  const navigate = useNavigate();
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");
 
-  const [isLoginAttempted, setIsLoginAttempted] = useState(false); // 로그인 버튼을 눌렀는지 여부
+  // 로그인 버튼을 눌렀는지 여부
+  const [isLoginAttempted, setIsLoginAttempted] = useState(false);
 
-  // 아이디와 비밀번호가 입력되었을 때만 버튼 활성화
-  const isButtonEnabled = inputId.trim() !== "" && inputPw.trim() !== "";
-
-  const handleLogin = () => {
+  // 테스트용 로그인 로직. 더미 데이터와 맞으면 로그인 성공되게 함.
+  const handleLoginTest = () => {
     const isValidUser = dummyLoginInfo.some(
       (user) => user.userId === inputId && user.userPw === inputPw
     );
 
     if (isValidUser) {
       console.log("로그인 성공!");
+      navigate("/");
     } else {
       setIsLoginAttempted(true);
     }
   };
+
+  // 로그인 실패 시 2초 간 보여줌
   useEffect(() => {
+    if (!isLoginAttempted) return;
     const timer = setTimeout(() => setIsLoginAttempted(false), 2000);
     return () => {
       clearTimeout(timer);
@@ -55,7 +59,8 @@ const Login = (props: Props) => {
         <h1 style={{ marginTop: "36px" }}>
           반가워요
           <br />
-          <span style={{ color: "#009733" }}>쿠룸</span>입니다.
+          <span className={styles.KUROOMTITLE}>쿠룸</span>
+          입니다.
         </h1>
         <div
           style={{
@@ -66,8 +71,8 @@ const Login = (props: Props) => {
           }}
         >
           <div>
-            <p>아이디</p>
             <InputBar
+              inputTitle="아이디"
               inputType="text"
               inputText={inputId}
               placeholder="아이디를 입력해주세요."
@@ -75,8 +80,8 @@ const Login = (props: Props) => {
             />
           </div>
           <div>
-            <p>비밀번호</p>
             <InputBar
+              inputTitle="비밀번호"
               inputType="password"
               inputText={inputPw}
               placeholder="비밀번호를 입력해주세요."
@@ -84,27 +89,28 @@ const Login = (props: Props) => {
             />
           </div>
         </div>
-        {isLoginAttempted ? (
+        {isLoginAttempted && (
           <span className={styles.WrongLogin}>
             아이디 또는 비밀번호를 잘못 입력했습니다.
           </span>
-        ) : (
-          <div style={{ height: "24.5px" }} />
         )}
         <div style={{ marginTop: "67px", marginBottom: "12px" }}>
           <PrimaryButton
             size="lg"
             btnText="로그인하기"
-            onClick={handleLogin}
-            disabled={!isButtonEnabled}
+            onClick={handleLoginTest}
           />
         </div>
         <div style={{ display: "flex", gap: "14px", alignSelf: "center" }}>
-          <span className={styles.JoinText}>회원가입</span>
+          <Link to="/signup" className={styles.LinkText}>
+            회원가입
+          </Link>
           <div
             style={{ width: "4px", height: "17px", background: "#E6EBEF" }}
           />
-          <span className={styles.JoinText}>아이디/비밀번호 찾기</span>
+          <Link to="/findidpw" className={styles.LinkText}>
+            아이디/비밀번호 찾기
+          </Link>
         </div>
         <div
           style={{
