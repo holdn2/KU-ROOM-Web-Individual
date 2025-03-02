@@ -1,5 +1,5 @@
 // 회원가입 페이지
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./Signup.module.css";
 import classNames from "classnames"; // 조건부 스타일링을 위해서
 import TopIcon from "../../components/TopIcon";
@@ -13,10 +13,20 @@ const SignupInfo = () => {
   const navigate = useNavigate();
   const [signupStep, setSignupStep] = useState(0);
   const [signupId, setSignupId] = useState("");
+  const handleSignupIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSignupId(e.target.value);
+  };
+
   const [isAvailableId, setIsAvailableId] = useState<boolean | null>(null);
   const [isChecked, setIsChecked] = useState(false); // 중복확인 버튼 클릭 여부
   const [inputPw, setInputPw] = useState("");
+  const handleInputPwChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputPw(e.target.value);
+  };
   const [checkPw, setCheckPw] = useState("");
+  const handleCheckPwChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCheckPw(e.target.value);
+  };
   // 비밀번호 설정 관련
   const [allowedPw, setAllowedPw] = useState(false);
   const [isCheckedPw, setIsCheckedPw] = useState(false);
@@ -68,11 +78,11 @@ const SignupInfo = () => {
           <>
             <div style={{ position: "relative" }}>
               <InputBar
-                inputTitle="아이디"
-                inputType="text"
-                inputText={signupId}
+                label="아이디"
+                type="text"
+                value={signupId}
                 placeholder="아이디를 입력해주세요."
-                setInputText={setSignupId}
+                onChange={handleSignupIdChange}
               />
               {isAvailableId ? (
                 <button
@@ -124,39 +134,32 @@ const SignupInfo = () => {
       case 1:
         return (
           <>
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-            >
-              <div>
-                <InputBar
-                  inputTitle="새로운 비밀번호"
-                  inputType="password"
-                  inputText={inputPw}
-                  placeholder="영문, 숫자, 특수문자 포함 8자 이상"
-                  setInputText={setInputPw}
-                />
-                {!allowedPw && isAttemptReset && (
-                  <span className={styles.ErrorMsg}>
-                    영문, 숫자, 특수문자 포함 8자 이상이어야 합니다.
-                  </span>
-                )}
-              </div>
+            <InputBar
+              label="새로운 비밀번호"
+              type="password"
+              value={inputPw}
+              placeholder="영문, 숫자, 특수문자 포함 8자 이상"
+              onChange={handleInputPwChange}
+            />
+            {!allowedPw && isAttemptReset && (
+              <span className={styles.ErrorMsg}>
+                영문, 숫자, 특수문자 포함 8자 이상이어야 합니다.
+              </span>
+            )}
 
-              <div>
-                <InputBar
-                  inputTitle="비밀번호 확인"
-                  inputType="password"
-                  inputText={checkPw}
-                  placeholder="비밀번호를 다시 한 번 입력해주세요"
-                  setInputText={setCheckPw}
-                />
-                {!isCheckedPw && isAttemptReset && (
-                  <span className={styles.ErrorMsg}>
-                    비밀번호와 일치하지 않습니다.
-                  </span>
-                )}
-              </div>
-            </div>
+            <InputBar
+              label="비밀번호 확인"
+              type="password"
+              value={checkPw}
+              placeholder="비밀번호를 다시 한 번 입력해주세요"
+              onChange={handleCheckPwChange}
+            />
+            {!isCheckedPw && isAttemptReset && (
+              <span className={styles.ErrorMsg}>
+                비밀번호와 일치하지 않습니다.
+              </span>
+            )}
+
             <div className={styles.ButtonStyle}>
               <Button
                 onClick={handleSettingPassword}
@@ -174,7 +177,7 @@ const SignupInfo = () => {
     <div className={styles.PageWrapper}>
       <div className={styles.MainArea}>
         <TopIcon />
-        <h1 className={styles.PageTitle}>
+        <h1 className={styles.PageTitle} style={{ marginBottom: "29px" }}>
           <span style={{ color: "#009733" }}>회원가입</span>을 위한
           <br />
           정보를 입력해주세요.

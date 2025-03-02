@@ -2,11 +2,11 @@ import React, { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProfileSetting.css";
 
-import Input from "../../components/profilesetting/Input/Input";
 import Select from "../../components/profilesetting/Select/Select";
 import Button from "../../components/Button/Button";
 import BottomSheet from "../../components/profilesetting/BottomSheet/BottomSheet";
 import SelectItem from "../../components/profilesetting/SelectItem/SelectItem";
+import InputBar from "../../components/InputBar/InputBar";
 
 // 더미 데이터
 const colleges = [
@@ -216,8 +216,9 @@ const ProfileSetting: React.FC = () => {
       </div>
 
       <div className="profile-setting-form">
-        <Input
+        <InputBar
           label="닉네임"
+          type="text"
           value={nickname}
           onChange={handleNicknameChange}
           placeholder="닉네임을 입력해주세요 (10자 이하)"
@@ -252,8 +253,9 @@ const ProfileSetting: React.FC = () => {
 
         {/* 학과가 선택되었을 때만 학번 입력 표시 */}
         {isNicknameValid && college && department && (
-          <Input
+          <InputBar
             label="학번"
+            type="text"
             value={studentId}
             onChange={handleStudentIdChange}
             placeholder="학번을 입력해주세요"
