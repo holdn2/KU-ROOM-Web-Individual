@@ -1,33 +1,45 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./pages/Home";
+import Community from "./pages/Community";
+import Notice from "./pages/Notice";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login/Login";
+import FindIdPw from "./pages/FindIdPw/FindIdPw";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      children: [
+        {
+          index: true,
+          element: <Home />,
+        },
+        {
+          path: "notice",
+          element: <Notice />,
+        },
+        {
+          path: "community",
+          element: <Community />,
+        },
+        {
+          path: "signup",
+          element: <Signup />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "findidpw",
+          element: <FindIdPw />,
+        },
+      ],
+    },
+  ]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>KU:ROOM 화이팅!</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>건대생들이 진짜 썼으면 좋겠음 ㅋㅋ</p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

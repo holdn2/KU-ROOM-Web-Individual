@@ -1,0 +1,25 @@
+.InputContainer {
+  display: flex;
+  margin-top: 12px;
+  width: 335px;
+  height: 54px;
+  border-radius: 8px;
+  padding-left: 20px;
+  opacity: 0.8;
+  background: var(--gray-gray1, #edf0f3);
+
+  color: #1d2228;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 21.6px */
+}
+.InputContainer::placeholder {
+  color: #b0bac3;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 21.6px */
+}
