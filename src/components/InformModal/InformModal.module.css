@@ -1,0 +1,37 @@
+.Overlay {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.InformModalContainer {
+  display: flex;
+  width: 326px;
+  height: 200px;
+  padding: 23px 10px;
+  flex-direction: column;
+  align-items: center;
+  gap: 29px;
+  border-radius: 17.902px;
+  background: #fff;
+}
+span {
+  color: #000;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 24px */
+}
+.Graytext {
+  color: #a8a8a8;
+  font-size: 16px;
+  font-weight: 500;
+}
