@@ -1,14 +1,20 @@
 .PageWrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  align-items: center;
+  padding: 9px 28px 11px 28px;
+  min-height: 100vh;
+  max-width: 100%;
+  /* align-items: center; */
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow: hidden;
   background: var(--gray-BG, #f8f9fc);
 }
 .MainArea {
   display: flex;
   flex-direction: column;
-  width: 355px;
+  width: 100%;
+  /* max-width: 500px; */
   margin-top: 10px;
 }
 .PageTitle {
@@ -47,7 +53,8 @@ p {
   color: var(--error, #ff4a4a);
   font-size: 12px;
   line-height: 160%;
-  margin-top: 5px;
+  margin-top: -24px;
+  height: 40px;
   text-align: start;
 }
 .InputContainer {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import TopIcon from "../../components/TopIcon";
 import styles from "./IdentityVerify.module.css";
 import InputBar from "../../components/InputBar/InputBar";
@@ -6,6 +6,9 @@ import Button from "../../components/Button/Button";
 
 const IdentityVerify = () => {
   const [verifiedEmail, setVerifiedEmail] = useState("");
+  const handleVerifiedEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    setVerifiedEmail(e.target.value);
+  };
 
   return (
     <div className={styles.PageWrapper}>
@@ -13,11 +16,11 @@ const IdentityVerify = () => {
         <TopIcon />
         <h1 className={styles.PageTitle}>본인인증</h1>
         <InputBar
-          inputTitle="이메일"
-          inputType="text"
-          inputText={verifiedEmail}
+          label="이메일"
+          type="text"
+          value={verifiedEmail}
           placeholder="가입한 이메일 주소를 입력해주세요"
-          setInputText={setVerifiedEmail}
+          onChange={handleVerifiedEmail}
         />
         <div className={styles.ButtonStyle}>
           <Button onClick={() => console.log("코드발송")}>인증코드 발송</Button>

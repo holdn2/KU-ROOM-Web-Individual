@@ -1,15 +1,20 @@
 .PageWrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  align-items: center;
+  padding: 9px 28px 11px 28px;
+  min-height: 100vh;
+  max-width: 100%;
+  /* align-items: center; */
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow: hidden;
   background: var(--gray-BG, #f8f9fc);
 }
 .MainArea {
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 355px;
+  width: 100%;
   height: 692px;
   margin-top: 10px;
 }
