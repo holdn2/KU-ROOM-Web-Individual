@@ -1,0 +1,86 @@
+.welcome-page {
+    background-color: #F8F9FC;
+    padding: 9px 28px 11px 28px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  .welcome-page-header {
+    position: relative;
+    margin-bottom: 30px;
+  }
+  
+  .welcome-page-cloud {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    background-image: url('../../assets/icon/cloud.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  .welcome-page-title {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 42px;
+    margin-top: 66px;
+  }
+  
+  .text-primary {
+    color: #009733;
+  }
+  
+  .welcome-page-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .fanfare-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-message {
+    font-size: 16px;
+    line-height: 24px;
+    color: #555;
+    text-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .welcome-page-button {
+    margin-top: auto;
+    padding-top: 24px;
+    padding-bottom: 16px;
+    max-width: 100%;
+  }
+  
+  /* 애니메이션 효과 */
+  .welcome-page-content {
+    animation: fade-in 0.5s ease-out;
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

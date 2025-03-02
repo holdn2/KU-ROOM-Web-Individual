@@ -1,0 +1,24 @@
+.select-item {
+    padding: 13px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1D2228;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .select-item.selected {
+    color: #009733;
+  }
+  
+  .check-icon {
+    color: #009733;
+    display: none;
+  }
+  
+  .select-item.selected .check-icon {
+    display: block;
+  }
