@@ -8,7 +8,6 @@
   margin: 0 auto;
   box-sizing: border-box;
   overflow: hidden;
-  background: var(--gray-BG, #f8f9fc);
 }
 .MainArea {
   position: relative;
@@ -18,8 +17,7 @@
   height: 692px;
   margin-top: 10px;
 }
-.PageTitle,
-.ErrorMsg {
+.PageTitle {
   color: var(--Black, #1d2228);
   font-family: Pretendard;
   font-size: 30px;
@@ -27,20 +25,4 @@
   font-weight: 700;
   line-height: 140%;
   margin: 36px 0;
-}
-.ButtonStyle {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-.ErrorMsg {
-  color: var(--error, #ff4a4a);
-  font-size: 12px;
-  line-height: 160%;
-  margin-top: -24px;
-}
-.CheckIcon {
-  position: absolute;
-  top: 43px;
-  right: 15px;
 }
