@@ -1,0 +1,67 @@
+.bottom-sheet-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  
+  .bottom-sheet-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .bottom-sheet {
+    position: relative;
+    background-color: white;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    padding: 16px;
+    animation: slide-up 0.3s ease-out;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  .bottom-sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 16px;
+  }
+  
+  .bottom-sheet-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  
+  .bottom-sheet-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #495057;
+    padding: 0;
+  }
+  
+  .bottom-sheet-content {
+    padding-bottom: 16px;
+  }
+  
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }

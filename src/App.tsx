@@ -6,6 +6,7 @@ import Login from "./pages/Login/Login";
 import FindIdPw from "./pages/FindIdPw/FindIdPw";
 import SignupInfo from "./pages/Signup/SignupInfo";
 import IdentityVerify from "./pages/Signup/IdentityVerify";
+import ProfileSetting from "./pages/ProfileSetting/ProfileSetting";
 
 function App() {
   const router = createBrowserRouter([
@@ -39,6 +40,10 @@ function App() {
         {
           path: "findidpw",
           element: <FindIdPw />,
+        },
+        {
+          path: "profilesetting",
+          element: <ProfileSetting />,
         },
       ],
     },
