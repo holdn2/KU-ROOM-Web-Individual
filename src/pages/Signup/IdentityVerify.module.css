@@ -18,7 +18,8 @@
   height: 692px;
   margin-top: 10px;
 }
-.PageTitle {
+.PageTitle,
+.ErrorMsg {
   color: var(--Black, #1d2228);
   font-family: Pretendard;
   font-size: 30px;
@@ -31,4 +32,15 @@
   position: absolute;
   bottom: 0;
   width: 100%;
+}
+.ErrorMsg {
+  color: var(--error, #ff4a4a);
+  font-size: 12px;
+  line-height: 160%;
+  margin-top: -24px;
+}
+.CheckIcon {
+  position: absolute;
+  top: 43px;
+  right: 15px;
 }
