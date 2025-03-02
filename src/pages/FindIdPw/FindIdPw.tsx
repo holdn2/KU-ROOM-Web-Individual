@@ -34,6 +34,11 @@ const FindIdPw = () => {
   // 모달창 종류
   const [modalType, setModalType] = useState("");
 
+  // 이메일 형식 검증 정규식
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   // 서버에 인증할 메일 주소 보냄.
   const sendInformEmail = () => {
     // 서버에 인증할 메일 주소 보냄.
@@ -83,6 +88,14 @@ const FindIdPw = () => {
     }
   };
 
+  // 이메일 재전송 버튼 클릭 시 첫화면으로 이동 후 이전 모든 입력 초기화
+  const resetAll = () => {
+    setFindStep(0);
+    setInformEmail("");
+    setVerifyCode("");
+    setIsVerifyAttempted(false);
+  };
+
   const renderFindIdPw = () => {
     switch (findStep) {
       // 아이디/비밀번호 찾기 초기. 이메일 입력.
@@ -97,12 +110,15 @@ const FindIdPw = () => {
               placeholder="가입한 이메일 주소를 입력해주세요"
               setInputText={setInformEmail}
             />
+            {informEmail && !validateEmail(informEmail) && (
+              <span className={styles.ErrorMsg}>잘못된 이메일 형식입니다.</span>
+            )}
             <div style={{ marginTop: "67px" }}>
               <PrimaryButton
                 size="lg"
                 btnText="안내 메일 받기"
                 onClick={sendInformEmail}
-                disabled={!informEmail}
+                disabled={!informEmail || !validateEmail(informEmail)}
               />
             </div>
           </>
@@ -132,6 +148,9 @@ const FindIdPw = () => {
                 disabled={!verifyCode}
               />
             </div>
+            <button className={styles.Retransmit} onClick={resetAll}>
+              이메일 재전송
+            </button>
           </>
         );
       case 2:

@@ -45,15 +45,7 @@ const InputBar = React.memo(
               src={isPasswordVisible ? visibilityOffIcon : visibilityOnIcon}
               alt="비밀번호 보기"
               onClick={onClickPwVisibility}
-              style={{
-                position: "absolute",
-                padding: "10px",
-                top: "6px",
-                right: "15px",
-                cursor: "pointer",
-                width: "24px",
-                height: "24px",
-              }}
+              className={styles.VisiblePwBtn}
             />
           )}
         </div>

@@ -21,7 +21,8 @@
   font-weight: 700;
   line-height: 160%; /* 19.2px */
 }
-.FindStepTitle {
+.FindStepTitle,
+.Retransmit {
   color: var(--gray-black, #1d2228);
   font-family: Pretendard;
   font-size: 30px;
@@ -29,4 +30,15 @@
   font-weight: 700;
   line-height: 140%; /* 42px */
   margin: 36px 0;
+}
+.Retransmit {
+  color: var(--Gray-100, #9eaab5);
+  align-self: center;
+  padding: 5px;
+  width: 80px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 8px;
+  text-decoration-line: underline;
 }

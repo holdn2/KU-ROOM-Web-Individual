@@ -31,3 +31,12 @@
   font-weight: 700;
   line-height: 120%; /* 19.2px */
 }
+.VisiblePwBtn {
+  position: absolute;
+  padding: 10px;
+  top: 6px;
+  right: 15px;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
