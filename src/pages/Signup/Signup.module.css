@@ -14,7 +14,7 @@
   margin-top: 10px;
 }
 .PageTitle,
-.RedMsg,
+.ErrorMsg,
 .CheckDupBtn,
 .AvailableBtn,
 .CheckedId {
@@ -26,7 +26,7 @@
   line-height: 140%;
   margin: 36px 0;
 }
-.RedMsg {
+.ErrorMsg {
   color: var(--error, #ff4a4a);
   font-size: 12px;
   line-height: 160%; /* 19.2px */
