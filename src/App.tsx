@@ -9,6 +9,7 @@ import SignupInfo from "./pages/Signup/SignupInfo";
 import IdentityVerify from "./pages/Signup/IdentityVerify";
 import ProfileSetting from "./pages/ProfileSetting/ProfileSetting";
 import Welcome from "./pages/Welcome/Welcome";
+import Agreement from "./pages/Signup/Agreement";
 
 function App() {
   const router = createBrowserRouter([
@@ -34,6 +35,10 @@ function App() {
         {
           path: "identityverifictaion",
           element: <IdentityVerify />,
+        },
+        {
+          path: "agreement",
+          element: <Agreement />,
         },
         {
           path: "login",
