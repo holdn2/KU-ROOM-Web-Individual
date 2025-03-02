@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import './styles/global.css';
 import Home from "./pages/Home";
 import Community from "./pages/Community";
 import Notice from "./pages/Notice";
