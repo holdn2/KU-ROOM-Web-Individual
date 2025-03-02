@@ -1,8 +1,4 @@
-import React from "react";
-
-type Props = {};
-
-const BottomBar = (props: Props) => {
+const BottomBar = () => {
   return <div>BottomBar</div>;
 };
 

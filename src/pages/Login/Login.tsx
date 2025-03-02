@@ -1,7 +1,6 @@
 // 로그인 페이지
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Login.module.css";
-import cloudIcon from "../../assets/icon/cloud.svg";
 import InputBar from "../../components/InputBar/InputBar";
 import PrimaryButton from "../../components/Button/PrimaryButton";
 import kakaoIcon from "../../assets/socialLoginIcon/kakaoLogin.svg";
@@ -9,7 +8,9 @@ import naverIcon from "../../assets/socialLoginIcon/naverLogin.svg";
 import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import TopIcon from "../../components/TopIcon";
 
+// test용 로그인 정보
 const dummyLoginInfo = [
   {
     userId: "asdf",
@@ -51,12 +52,8 @@ const Login = () => {
   return (
     <div className={styles.PageWrapper}>
       <div className={styles.MainArea}>
-        <img
-          src={cloudIcon}
-          alt="구름 아이콘"
-          style={{ width: "30px", alignSelf: "flex-end" }}
-        />
-        <h1 style={{ marginTop: "36px" }}>
+        <TopIcon />
+        <h1 className={styles.PageTitle}>
           반가워요
           <br />
           <span className={styles.KUROOMTITLE}>쿠룸</span>
