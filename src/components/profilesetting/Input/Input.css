@@ -1,0 +1,49 @@
+.input-container {
+    margin-bottom: 29px;
+    width: 100%;
+  }
+  
+  .input-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1D2228;
+    margin-bottom: 12px;
+  }
+  
+  .input-field-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .input-field {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+    background-color: #EDF0F3;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1D2228;
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .input-field::placeholder {
+    color: #B0BAC3;
+  }
+  
+  .input-field:disabled {
+    background-color: #e9ecef;
+    color: #868e96;
+  }
+  
+  .input-warning {
+    margin-top: 8px;
+    color: #FF4A4A;
+    font-size: 12px;
+    font-weight: 700;
+  }
