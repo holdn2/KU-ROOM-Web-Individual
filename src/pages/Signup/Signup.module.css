@@ -29,13 +29,13 @@
   font-style: normal;
   font-weight: 700;
   line-height: 140%;
-  margin: 36px 0;
 }
 .ErrorMsg {
   color: var(--error, #ff4a4a);
+  margin-top: -24px;
+  height: 40px;
   font-size: 12px;
   line-height: 160%; /* 19.2px */
-  margin-top: 5px;
 }
 .ButtonStyle {
   position: absolute;
@@ -73,7 +73,7 @@
 .CheckedId {
   font-size: 12px;
   line-height: 160%;
-  margin-top: 5px;
+  margin-top: -24px;
 }
 .CheckedId.duplicated {
   color: var(--error, #ff4a4a);

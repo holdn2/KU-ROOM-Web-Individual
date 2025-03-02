@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./FinIdPw.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
@@ -13,18 +13,33 @@ const FindIdPw = () => {
   const [findStep, setFindStep] = useState(0);
   // 안내 메일을 보낼 이메일 주소
   const [informEmail, setInformEmail] = useState("");
+  const handleInformEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInformEmail(e.target.value);
+  };
   // 인증코드. string인지 number인지 중요.
   const [verifyCode, setVerifyCode] = useState("");
+  const handleVerifyCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setVerifyCode(e.target.value);
+  };
   // 인증코드 시도했는지 여부
   const [isVerifyAttempted, setIsVerifyAttempted] = useState(false);
   // 이메일에서 본 아이디
   const [inputId, setInputId] = useState("");
+  const handleInputIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputId(e.target.value);
+  };
   const [verifiedId, setVerifiedId] = useState(false);
   // 새로운 비밀번호
   const [newPw, setNewPw] = useState("");
+  const handleNewPwChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewPw(e.target.value);
+  };
   const [allowedPw, setAllowedPw] = useState(false);
   // 비밀번호 확인
   const [checkPw, setCheckPw] = useState("");
+  const handleCheckPwChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCheckPw(e.target.value);
+  };
   const [isCheckedPw, setIsCheckedPw] = useState(false);
   // 재설정 시도를 했는지
   const [isAttemptReset, setIsAttemptReset] = useState(false);
@@ -104,11 +119,11 @@ const FindIdPw = () => {
           <>
             <h1 className={styles.FindStepTitle}>아이디/비밀번호 찾기</h1>
             <InputBar
-              inputTitle="이메일"
-              inputType="text"
-              inputText={informEmail}
+              label="이메일"
+              type="text"
+              value={informEmail}
               placeholder="가입한 이메일 주소를 입력해주세요"
-              setInputText={setInformEmail}
+              onChange={handleInformEmailChange}
             />
             {informEmail && !validateEmail(informEmail) && (
               <span className={styles.ErrorMsg}>잘못된 이메일 형식입니다.</span>
@@ -129,11 +144,11 @@ const FindIdPw = () => {
           <>
             <h1 className={styles.FindStepTitle}>비밀번호 재설정</h1>
             <InputBar
-              inputTitle="인증코드"
-              inputType="text"
-              inputText={verifyCode}
+              label="인증코드"
+              type="text"
+              value={verifyCode}
               placeholder="인증코드를 입력해주세요"
-              setInputText={setVerifyCode}
+              onChange={handleVerifyCodeChange}
             />
             {isVerifyAttempted && (
               <span className={styles.ErrorMsg}>
@@ -154,53 +169,45 @@ const FindIdPw = () => {
         return (
           <>
             <h1 className={styles.FindStepTitle}>비밀번호 재설정</h1>
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-            >
-              <div>
-                <InputBar
-                  inputTitle="아이디"
-                  inputType="text"
-                  inputText={inputId}
-                  placeholder="안내 이메일에서 아이디를 확인하세요"
-                  setInputText={setInputId}
-                />
-                {!verifiedId && isAttemptReset && (
-                  <span className={styles.ErrorMsg}>
-                    알맞은 아이디를 입력해주세요.
-                  </span>
-                )}
-              </div>
-              <div>
-                <InputBar
-                  inputTitle="새로운 비밀번호"
-                  inputType="password"
-                  inputText={newPw}
-                  placeholder="영문, 숫자, 특수문자 포함 8자 이상"
-                  setInputText={setNewPw}
-                />
-                {!allowedPw && isAttemptReset && (
-                  <span className={styles.ErrorMsg}>
-                    영문, 숫자, 특수문자 포함 8자 이상이어야 합니다.
-                  </span>
-                )}
-              </div>
 
-              <div>
-                <InputBar
-                  inputTitle="비밀번호 확인"
-                  inputType="password"
-                  inputText={checkPw}
-                  placeholder="비밀번호를 다시 한 번 입력해주세요"
-                  setInputText={setCheckPw}
-                />
-                {!isCheckedPw && isAttemptReset && (
-                  <span className={styles.ErrorMsg}>
-                    비밀번호와 일치하지 않습니다.
-                  </span>
-                )}
-              </div>
-            </div>
+            <InputBar
+              label="아이디"
+              type="text"
+              value={inputId}
+              placeholder="안내 이메일에서 아이디를 확인하세요"
+              onChange={handleInputIdChange}
+            />
+            {!verifiedId && isAttemptReset && (
+              <span className={styles.ErrorMsg}>
+                알맞은 아이디를 입력해주세요.
+              </span>
+            )}
+
+            <InputBar
+              label="새로운 비밀번호"
+              type="password"
+              value={newPw}
+              placeholder="영문, 숫자, 특수문자 포함 8자 이상"
+              onChange={handleNewPwChange}
+            />
+            {!allowedPw && isAttemptReset && (
+              <span className={styles.ErrorMsg}>
+                영문, 숫자, 특수문자 포함 8자 이상이어야 합니다.
+              </span>
+            )}
+
+            <InputBar
+              label="비밀번호 확인"
+              type="password"
+              value={checkPw}
+              placeholder="비밀번호를 다시 한 번 입력해주세요"
+              onChange={handleCheckPwChange}
+            />
+            {!isCheckedPw && isAttemptReset && (
+              <span className={styles.ErrorMsg}>
+                비밀번호와 일치하지 않습니다.
+              </span>
+            )}
 
             <div style={{ marginTop: "67px" }}>
               <Button

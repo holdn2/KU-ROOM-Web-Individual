@@ -1,5 +1,5 @@
 // 로그인 페이지
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./Login.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
@@ -21,7 +21,13 @@ const dummyLoginInfo = [
 const Login = () => {
   const navigate = useNavigate();
   const [inputId, setInputId] = useState("");
+  const handleInputIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputId(e.target.value);
+  };
   const [inputPw, setInputPw] = useState("");
+  const handleInputPwChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputPw(e.target.value);
+  };
 
   // 로그인 버튼을 눌렀는지 여부
   const [isLoginAttempted, setIsLoginAttempted] = useState(false);
@@ -69,20 +75,19 @@ const Login = () => {
         >
           <div>
             <InputBar
-              inputTitle="아이디"
-              inputType="text"
-              inputText={inputId}
+              label="아이디"
+              type="text"
+              value={inputId}
               placeholder="아이디를 입력해주세요."
-              setInputText={setInputId}
+              onChange={handleInputIdChange}
             />
-          </div>
-          <div>
+
             <InputBar
-              inputTitle="비밀번호"
-              inputType="password"
-              inputText={inputPw}
+              label="비밀번호"
+              type="password"
+              value={inputPw}
               placeholder="비밀번호를 입력해주세요."
-              setInputText={setInputPw}
+              onChange={handleInputPwChange}
             />
           </div>
         </div>
@@ -91,7 +96,7 @@ const Login = () => {
             아이디 또는 비밀번호를 잘못 입력했습니다.
           </span>
         )}
-        <div style={{ marginTop: "67px", marginBottom: "12px" }}>
+        <div style={{ marginTop: "47px", marginBottom: "12px" }}>
           <Button onClick={handleLoginTest}>로그인하기</Button>
         </div>
         <div style={{ display: "flex", gap: "14px", alignSelf: "center" }}>

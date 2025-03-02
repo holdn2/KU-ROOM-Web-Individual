@@ -17,7 +17,8 @@
   margin-top: 10px;
 }
 .ErrorMsg {
-  margin-top: 5px;
+  margin-top: -24px;
+  height: 40px;
   color: var(--error, #ff4a4a);
   text-align: start;
   font-family: Pretendard;
