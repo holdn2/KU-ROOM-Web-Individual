@@ -20,8 +20,8 @@
   }
   
   .button.secondary {
-    background-color: #e9ecef;
-    color: #495057;
+    background-color: #CED5DB;
+    color: white;
   }
   
   .button.secondary:hover {
@@ -29,7 +29,7 @@
   }
   
   .button.disabled {
-    background-color: #e9ecef;
+    background-color: #CED5DB;
     color: #adb5bd;
     cursor: default;
   }

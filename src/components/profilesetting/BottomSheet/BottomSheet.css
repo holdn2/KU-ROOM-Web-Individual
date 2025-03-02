@@ -22,39 +22,65 @@
   .bottom-sheet {
     position: relative;
     background-color: white;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
     padding: 16px;
     animation: slide-up 0.3s ease-out;
-    max-height: 70vh;
-    overflow-y: auto;
+    height: 680px;
+    overflow-y: hidden;
+  }
+  
+  .bottom-sheet-indicator {
+    width: 45px;
+    height: 5px;
+    background-color: #E0E0E0;
+    border-radius: 5px;
+    margin: 0 auto 36px auto;
   }
   
   .bottom-sheet-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #e9ecef;
-    margin-bottom: 16px;
+    margin-bottom: 40px;
+    position: relative;
   }
   
   .bottom-sheet-title {
     margin: 0;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    color: black;
   }
   
   .bottom-sheet-close {
+    position: absolute;
+    right: 0;
+    top: 0;
     background: none;
     border: none;
     cursor: pointer;
     color: #495057;
     padding: 0;
+    display: none;
   }
   
-  .bottom-sheet-content {
-    padding-bottom: 16px;
+  .apply-button {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    background-color: #CED5DB;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    width: calc(100% - 32px);
+    cursor: pointer;
   }
   
   @keyframes slide-up {

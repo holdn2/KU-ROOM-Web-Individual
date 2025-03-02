@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ProfileSetting.css';
 
 import Input from '../../components/profilesetting/Input/Input';
@@ -54,6 +55,7 @@ const ProfileSetting: React.FC = () => {
   
   const [isCollegeSheetOpen, setIsCollegeSheetOpen] = useState(false);
   const [isDepartmentSheetOpen, setIsDepartmentSheetOpen] = useState(false);
+  const navigate = useNavigate();
   
   // 닉네임이 유효한지 확인하는 변수
   const isNicknameValid = nickname.length > 0 && nickname.length <= 10;
@@ -90,13 +92,15 @@ const ProfileSetting: React.FC = () => {
   };
   
   const handleSubmit = () => {
-    // 다음 단계로 이동하는 로직
+    // 사용자 정보 저장 로직 (API 호출 등)
     console.log({
       nickname,
       college,
       department,
       studentId
     });
+    
+    navigate('/welcome');
   };
   
   // 프로필 설정이 완료되었는지 확인
@@ -172,7 +176,7 @@ const ProfileSetting: React.FC = () => {
       <BottomSheet
         isOpen={isCollegeSheetOpen}
         onClose={() => setIsCollegeSheetOpen(false)}
-        title="단과대학 선택"
+        title="단과대학"
       >
         <div className="profile-setting-select-list">
           {colleges.map((item) => (
@@ -189,7 +193,7 @@ const ProfileSetting: React.FC = () => {
       <BottomSheet
         isOpen={isDepartmentSheetOpen}
         onClose={() => setIsDepartmentSheetOpen(false)}
-        title="학과 선택"
+        title="학과"
       >
         <div className="profile-setting-select-list">
           {college && departments[college as keyof typeof departments].map((item) => (

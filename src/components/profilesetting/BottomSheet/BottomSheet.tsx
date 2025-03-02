@@ -32,6 +32,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     <div className="bottom-sheet-container">
       <div className="bottom-sheet-overlay" onClick={onClose}></div>
       <div className="bottom-sheet">
+        <div className="bottom-sheet-indicator"></div>
         <div className="bottom-sheet-header">
           <h3 className="bottom-sheet-title">{title}</h3>
           <button className="bottom-sheet-close" onClick={onClose}>
@@ -55,6 +56,9 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         <div className="bottom-sheet-content">
           {children}
         </div>
+        <button className="apply-button" onClick={onClose}>
+          적용하기
+        </button>
       </div>
     </div>
   );

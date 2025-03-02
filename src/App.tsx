@@ -7,6 +7,7 @@ import FindIdPw from "./pages/FindIdPw/FindIdPw";
 import SignupInfo from "./pages/Signup/SignupInfo";
 import IdentityVerify from "./pages/Signup/IdentityVerify";
 import ProfileSetting from "./pages/ProfileSetting/ProfileSetting";
+import Welcome from "./pages/Welcome/Welcome";
 
 function App() {
   const router = createBrowserRouter([
@@ -44,6 +45,10 @@ function App() {
         {
           path: "profilesetting",
           element: <ProfileSetting />,
+        },
+        {
+          path: "welcome",
+          element: <Welcome />,
         },
       ],
     },
