@@ -53,6 +53,10 @@ const ProfileSetting: React.FC = () => {
   const [department, setDepartment] = useState('');
   const [studentId, setStudentId] = useState('');
   
+  // 임시 선택값 (바텀시트에서 선택한 값)
+  const [tempSelectedCollege, setTempSelectedCollege] = useState('');
+  const [tempSelectedDepartment, setTempSelectedDepartment] = useState('');
+  
   const [isCollegeSheetOpen, setIsCollegeSheetOpen] = useState(false);
   const [isDepartmentSheetOpen, setIsDepartmentSheetOpen] = useState(false);
   const navigate = useNavigate();
@@ -81,14 +85,20 @@ const ProfileSetting: React.FC = () => {
   };
   
   const handleCollegeSelect = (selectedCollege: string) => {
-    setCollege(selectedCollege);
-    setDepartment('');
-    setIsCollegeSheetOpen(false);
+    setTempSelectedCollege(selectedCollege);
   };
   
   const handleDepartmentSelect = (selectedDepartment: string) => {
-    setDepartment(selectedDepartment);
-    setIsDepartmentSheetOpen(false);
+    setTempSelectedDepartment(selectedDepartment);
+  };
+  
+  const handleApplyCollege = (selectedItem: string) => {
+    setCollege(selectedItem);
+    setDepartment(''); // 대학이 바뀌면 학과 초기화
+  };
+  
+  const handleApplyDepartment = (selectedItem: string) => {
+    setDepartment(selectedItem);
   };
   
   const handleSubmit = () => {
@@ -136,7 +146,10 @@ const ProfileSetting: React.FC = () => {
             label="단과대학"
             value={college}
             placeholder="단과대학을 선택해주세요"
-            onClick={() => setIsCollegeSheetOpen(true)}
+            onClick={() => {
+              setTempSelectedCollege(college); // 현재 선택값으로 초기화
+              setIsCollegeSheetOpen(true);
+            }}
           />
         )}
         
@@ -146,7 +159,10 @@ const ProfileSetting: React.FC = () => {
             label="학과"
             value={department}
             placeholder="학과를 선택해주세요"
-            onClick={() => setIsDepartmentSheetOpen(true)}
+            onClick={() => {
+              setTempSelectedDepartment(department); // 현재 선택값으로 초기화
+              setIsDepartmentSheetOpen(true);
+            }}
           />
         )}
         
@@ -176,13 +192,16 @@ const ProfileSetting: React.FC = () => {
       <BottomSheet
         isOpen={isCollegeSheetOpen}
         onClose={() => setIsCollegeSheetOpen(false)}
+        onApply={handleApplyCollege}
         title="단과대학"
+        selectedItem={tempSelectedCollege}
       >
         <div className="profile-setting-select-list">
           {colleges.map((item) => (
             <SelectItem
               key={item}
               text={item}
+              isSelected={tempSelectedCollege === item}
               onClick={() => handleCollegeSelect(item)}
             />
           ))}
@@ -193,13 +212,16 @@ const ProfileSetting: React.FC = () => {
       <BottomSheet
         isOpen={isDepartmentSheetOpen}
         onClose={() => setIsDepartmentSheetOpen(false)}
+        onApply={handleApplyDepartment}
         title="학과"
+        selectedItem={tempSelectedDepartment}
       >
         <div className="profile-setting-select-list">
           {college && departments[college as keyof typeof departments].map((item) => (
             <SelectItem
               key={item}
               text={item}
+              isSelected={tempSelectedDepartment === item}
               onClick={() => handleDepartmentSelect(item)}
             />
           ))}

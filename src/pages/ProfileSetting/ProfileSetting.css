@@ -53,7 +53,6 @@
   }
   
   .profile-setting-select-list {
-    max-height: 50vh;
     overflow-y: auto;
   }
   

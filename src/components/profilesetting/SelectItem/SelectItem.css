@@ -5,8 +5,20 @@
     font-size: 18px;
     font-weight: 600;
     color: #1D2228;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   
-  .select-item:hover {
-    background-color: #f1f3f5;
+  .select-item.selected {
+    color: #009733;
+  }
+  
+  .check-icon {
+    color: #009733;
+    display: none;
+  }
+  
+  .select-item.selected .check-icon {
+    display: block;
   }

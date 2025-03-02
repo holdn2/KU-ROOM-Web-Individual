@@ -28,6 +28,8 @@
     animation: slide-up 0.3s ease-out;
     height: 680px;
     overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
   }
   
   .bottom-sheet-indicator {
@@ -66,12 +68,25 @@
     display: none;
   }
   
+  .bottom-sheet-content {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    padding-bottom: 70px;
+  }
+  
+  .apply-button-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    background-color: white;
+    z-index: 10;
+  }
+  
   .apply-button {
-    position: fixed;
-    bottom: 16px;
-    left: 16px;
-    right: 16px;
-    background-color: #CED5DB;
+    width: 100%;
     color: white;
     border: none;
     border-radius: 8px;
@@ -79,8 +94,17 @@
     font-size: 16px;
     font-weight: 500;
     text-align: center;
-    width: calc(100% - 32px);
     cursor: pointer;
+  }
+  
+  .apply-button.active {
+    background-color: #009733;
+    cursor: pointer;
+  }
+  
+  .apply-button:disabled {
+    background-color: #CED5DB;
+    cursor: not-allowed;
   }
   
   @keyframes slide-up {

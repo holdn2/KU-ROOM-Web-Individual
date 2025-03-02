@@ -4,15 +4,19 @@ import './BottomSheet.css';
 interface BottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
+  onApply?: (selectedItem: string) => void;
   title: string;
   children: React.ReactNode;
+  selectedItem?: string;
 }
 
 const BottomSheet: React.FC<BottomSheetProps> = ({
   isOpen,
   onClose,
+  onApply,
   title,
-  children
+  children,
+  selectedItem
 }) => {
   useEffect(() => {
     if (isOpen) {
@@ -27,6 +31,13 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   }, [isOpen]);
 
   if (!isOpen) return null;
+
+  const handleApply = () => {
+    if (onApply && selectedItem) {
+      onApply(selectedItem);
+    }
+    onClose();
+  };
 
   return (
     <div className="bottom-sheet-container">
@@ -56,7 +67,11 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         <div className="bottom-sheet-content">
           {children}
         </div>
-        <button className="apply-button" onClick={onClose}>
+        <button 
+          className={`apply-button ${selectedItem ? 'active' : ''}`} 
+          onClick={handleApply}
+          disabled={!selectedItem}
+        >
           적용하기
         </button>
       </div>
