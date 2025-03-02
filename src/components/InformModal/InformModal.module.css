@@ -12,9 +12,9 @@
 
 .InformModalContainer {
   display: flex;
-  width: 326px;
+  width: 306px;
   height: 200px;
-  padding: 23px 10px;
+  padding: 23px 20px 10px 20px;
   flex-direction: column;
   align-items: center;
   gap: 29px;

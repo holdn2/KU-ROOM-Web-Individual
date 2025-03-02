@@ -3,7 +3,7 @@ import React from "react";
 import ReactModal from "react-modal";
 import styles from "./InformModal.module.css";
 import cloudIcon from "../../assets/icon/cloud.svg";
-import PrimaryButton from "../Button/PrimaryButton";
+import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
@@ -49,11 +49,7 @@ const InformModal = ({
                 메일이 안 왔다면, 스팸함을 확인해주세요.
               </span>
             </div>
-            <PrimaryButton
-              size="md"
-              btnText="확인"
-              onClick={handleVerifyCloseModal}
-            />
+            <Button onClick={handleVerifyCloseModal}>확인</Button>
           </ReactModal>
         );
       case "NewPassword":
@@ -73,11 +69,7 @@ const InformModal = ({
               </span>
               <span className={styles.Graytext}>다시 로그인해주세요.</span>
             </div>
-            <PrimaryButton
-              size="md"
-              btnText="확인"
-              onClick={handleReLoginCloseModal}
-            />
+            <Button onClick={handleReLoginCloseModal}>확인</Button>
           </ReactModal>
         );
       default:

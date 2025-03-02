@@ -2,7 +2,7 @@ import { useState } from "react";
 import TopIcon from "../../components/TopIcon";
 import styles from "./IdentityVerify.module.css";
 import InputBar from "../../components/InputBar/InputBar";
-import PrimaryButton from "../../components/Button/PrimaryButton";
+import Button from "../../components/Button/Button";
 
 const IdentityVerify = () => {
   const [verifiedEmail, setVerifiedEmail] = useState("");
@@ -20,11 +20,7 @@ const IdentityVerify = () => {
           setInputText={setVerifiedEmail}
         />
         <div className={styles.ButtonStyle}>
-          <PrimaryButton
-            size="lg"
-            btnText="인증코드 발송"
-            onClick={() => console.log("코드발송")}
-          />
+          <Button onClick={() => console.log("코드발송")}>인증코드 발송</Button>
         </div>
       </div>
     </div>

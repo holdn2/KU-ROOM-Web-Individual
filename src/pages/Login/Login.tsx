@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Login.module.css";
 import InputBar from "../../components/InputBar/InputBar";
-import PrimaryButton from "../../components/Button/PrimaryButton";
+import Button from "../../components/Button/Button";
 import kakaoIcon from "../../assets/socialLoginIcon/kakaoLogin.svg";
 import naverIcon from "../../assets/socialLoginIcon/naverLogin.svg";
 import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";
@@ -92,11 +92,7 @@ const Login = () => {
           </span>
         )}
         <div style={{ marginTop: "67px", marginBottom: "12px" }}>
-          <PrimaryButton
-            size="lg"
-            btnText="로그인하기"
-            onClick={handleLoginTest}
-          />
+          <Button onClick={handleLoginTest}>로그인하기</Button>
         </div>
         <div style={{ display: "flex", gap: "14px", alignSelf: "center" }}>
           <Link to="/signup" className={styles.LinkText}>

@@ -4,7 +4,7 @@ import styles from "./Signup.module.css";
 import classNames from "classnames"; // 조건부 스타일링을 위해서
 import TopIcon from "../../components/TopIcon";
 import InputBar from "../../components/InputBar/InputBar";
-import PrimaryButton from "../../components/Button/PrimaryButton";
+import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
 
 const dummyData = ["asdfqwer", "kuroom", "asdf1234"];
@@ -112,12 +112,12 @@ const SignupInfo = () => {
               </span>
             )}
             <div className={styles.ButtonStyle}>
-              <PrimaryButton
-                size="lg"
-                btnText="다음으로"
+              <Button
                 onClick={() => setSignupStep(1)}
                 disabled={!isAvailableId}
-              />
+              >
+                다음으로
+              </Button>
             </div>
           </>
         );
@@ -158,12 +158,12 @@ const SignupInfo = () => {
               </div>
             </div>
             <div className={styles.ButtonStyle}>
-              <PrimaryButton
-                size="lg"
-                btnText="다음으로"
+              <Button
                 onClick={handleSettingPassword}
-                disabled={!isAvailableId}
-              />
+                disabled={!Boolean(inputPw && checkPw)}
+              >
+                다음으로
+              </Button>
             </div>
           </>
         );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./FinIdPw.module.css";
 import InputBar from "../../components/InputBar/InputBar";
-import PrimaryButton from "../../components/Button/PrimaryButton";
+import Button from "../../components/Button/Button";
 import InformModal from "../../components/InformModal/InformModal";
 import TopIcon from "../../components/TopIcon";
 
@@ -114,12 +114,12 @@ const FindIdPw = () => {
               <span className={styles.ErrorMsg}>잘못된 이메일 형식입니다.</span>
             )}
             <div style={{ marginTop: "67px" }}>
-              <PrimaryButton
-                size="lg"
-                btnText="안내 메일 받기"
+              <Button
                 onClick={sendInformEmail}
                 disabled={!informEmail || !validateEmail(informEmail)}
-              />
+              >
+                안내 메일 받기
+              </Button>
             </div>
           </>
         );
@@ -141,12 +141,9 @@ const FindIdPw = () => {
               </span>
             )}
             <div style={{ marginTop: "67px" }}>
-              <PrimaryButton
-                size="lg"
-                btnText="인증하기"
-                onClick={handleVerifyCodeTest}
-                disabled={!verifyCode}
-              />
+              <Button onClick={handleVerifyCodeTest} disabled={!verifyCode}>
+                인증하기
+              </Button>
             </div>
             <button className={styles.Retransmit} onClick={resetAll}>
               이메일 재전송
@@ -206,12 +203,12 @@ const FindIdPw = () => {
             </div>
 
             <div style={{ marginTop: "67px" }}>
-              <PrimaryButton
-                size="lg"
-                btnText="비밀번호 재설정하기"
+              <Button
                 onClick={handleResetPassword}
                 disabled={!inputId || !newPw || !checkPw}
-              />
+              >
+                비밀번호 재설정하기
+              </Button>
             </div>
           </>
         );
