@@ -1,7 +1,4 @@
-import React from "react";
 import cloudIcon from ".././assets/icon/cloud.svg";
-
-type Props = {};
 
 const TopIcon = () => {
   return (

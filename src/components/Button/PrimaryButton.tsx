@@ -1,10 +1,4 @@
-import React from "react";
 import styled from "styled-components";
-
-type SizeType = {
-  width: string;
-  height: string;
-};
 
 // 기본적인 사이즈 설정 (객체로 관리)
 const defaultSizeStyles = {

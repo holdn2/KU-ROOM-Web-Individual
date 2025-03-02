@@ -1,9 +1,6 @@
-import React from "react";
-import styles from "./IdentityVerify.module.css";
+// import styles from "./IdentityVerify.module.css";
 
-type Props = {};
-
-const IdentityVerify = (props: Props) => {
+const IdentityVerify = () => {
   return <div>IdentityVerify</div>;
 };
 

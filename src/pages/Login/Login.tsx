@@ -1,5 +1,5 @@
 // 로그인 페이지
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Login.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import PrimaryButton from "../../components/Button/PrimaryButton";

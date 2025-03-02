@@ -1,5 +1,5 @@
 // 회원가입 페이지
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Signup.module.css";
 import classNames from "classnames"; // 조건부 스타일링을 위해서
 import TopIcon from "../../components/TopIcon";
