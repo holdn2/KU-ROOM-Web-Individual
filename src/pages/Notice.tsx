@@ -1,9 +1,6 @@
 // 공지사항 페이지
-import React from "react";
 
-type Props = {};
-
-const Notice = (props: Props) => {
+const Notice = () => {
   return <div>Notice</div>;
 };
 

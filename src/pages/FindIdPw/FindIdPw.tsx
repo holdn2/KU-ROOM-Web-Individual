@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./FinIdPw.module.css";
-import cloudIcon from "../../assets/icon/cloud.svg";
 import InputBar from "../../components/InputBar/InputBar";
 import PrimaryButton from "../../components/Button/PrimaryButton";
 import InformModal from "../../components/InformModal/InformModal";
+import TopIcon from "../../components/TopIcon";
 
 const dummyCode = "1234";
 const dummyId = "kurum"; // 테스트용 아이디
@@ -33,6 +33,11 @@ const FindIdPw = () => {
   const [modalState, setModalState] = useState(false);
   // 모달창 종류
   const [modalType, setModalType] = useState("");
+
+  // 이메일 형식 검증 정규식
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   // 서버에 인증할 메일 주소 보냄.
   const sendInformEmail = () => {
@@ -83,13 +88,21 @@ const FindIdPw = () => {
     }
   };
 
+  // 이메일 재전송 버튼 클릭 시 첫화면으로 이동 후 이전 모든 입력 초기화
+  const resetAll = () => {
+    setFindStep(0);
+    setInformEmail("");
+    setVerifyCode("");
+    setIsVerifyAttempted(false);
+  };
+
   const renderFindIdPw = () => {
     switch (findStep) {
       // 아이디/비밀번호 찾기 초기. 이메일 입력.
       case 0:
         return (
           <>
-            <h1 style={{ margin: "36px 0" }}>아이디/비밀번호 찾기</h1>
+            <h1 className={styles.FindStepTitle}>아이디/비밀번호 찾기</h1>
             <InputBar
               inputTitle="이메일"
               inputType="text"
@@ -97,12 +110,15 @@ const FindIdPw = () => {
               placeholder="가입한 이메일 주소를 입력해주세요"
               setInputText={setInformEmail}
             />
+            {informEmail && !validateEmail(informEmail) && (
+              <span className={styles.ErrorMsg}>잘못된 이메일 형식입니다.</span>
+            )}
             <div style={{ marginTop: "67px" }}>
               <PrimaryButton
                 size="lg"
                 btnText="안내 메일 받기"
                 onClick={sendInformEmail}
-                disabled={!informEmail}
+                disabled={!informEmail || !validateEmail(informEmail)}
               />
             </div>
           </>
@@ -111,7 +127,7 @@ const FindIdPw = () => {
       case 1:
         return (
           <>
-            <h1 style={{ margin: "36px 0" }}>비밀번호 재설정</h1>
+            <h1 className={styles.FindStepTitle}>비밀번호 재설정</h1>
             <InputBar
               inputTitle="인증코드"
               inputType="text"
@@ -132,12 +148,15 @@ const FindIdPw = () => {
                 disabled={!verifyCode}
               />
             </div>
+            <button className={styles.Retransmit} onClick={resetAll}>
+              이메일 재전송
+            </button>
           </>
         );
       case 2:
         return (
           <>
-            <h1 style={{ margin: "36px 0" }}>비밀번호 재설정</h1>
+            <h1 className={styles.FindStepTitle}>비밀번호 재설정</h1>
             <div
               style={{ display: "flex", flexDirection: "column", gap: "20px" }}
             >
@@ -201,11 +220,7 @@ const FindIdPw = () => {
   return (
     <div className={styles.PageWrapper}>
       <div className={styles.MainArea}>
-        <img
-          src={cloudIcon}
-          alt="구름 아이콘"
-          style={{ width: "30px", alignSelf: "flex-end" }}
-        />
+        <TopIcon />
         {renderFindIdPw()}
       </div>
       <InformModal

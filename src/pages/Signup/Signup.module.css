@@ -1,0 +1,74 @@
+.PageWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  background: var(--gray-BG, #f8f9fc);
+}
+.MainArea {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 355px;
+  height: 692px;
+  margin-top: 10px;
+}
+.PageTitle,
+.ErrorMsg,
+.CheckDupBtn,
+.AvailableBtn,
+.CheckedId {
+  color: var(--Black, #1d2228);
+  font-family: Pretendard;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+  margin: 36px 0;
+}
+.ErrorMsg {
+  color: var(--error, #ff4a4a);
+  font-size: 12px;
+  line-height: 160%; /* 19.2px */
+  margin-top: 5px;
+}
+.ButtonStyle {
+  position: absolute;
+  bottom: 0;
+}
+.CheckDupBtn,
+.AvailableBtn {
+  position: absolute;
+  top: 43px;
+  right: 15px;
+  margin: 0;
+  padding: 4px 12px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 40px;
+  border: 1px solid #009733;
+  pointer-events: auto;
+
+  color: #009733;
+  background: #fff;
+  font-size: 14px;
+}
+.CheckDupBtn.disabled {
+  border-color: #9eaab5;
+  color: #9eaab5;
+  pointer-events: none;
+}
+.AvailableBtn {
+  pointer-events: none;
+  border-color: #009733;
+  background: var(--Brand-Primary_1, #009733);
+  color: #fff;
+}
+.CheckedId {
+  font-size: 12px;
+  line-height: 160%;
+  margin-top: 5px;
+}
+.CheckedId.duplicated {
+  color: var(--error, #ff4a4a);
+}

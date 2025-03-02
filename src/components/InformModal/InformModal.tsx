@@ -42,7 +42,9 @@ const InformModal = ({
             <div
               style={{ display: "flex", flexDirection: "column", gap: "6px" }}
             >
-              <span>안내 이메일을 발송하였습니다.</span>
+              <span className={styles.InformText}>
+                안내 이메일을 발송하였습니다.
+              </span>
               <span className={styles.Graytext}>
                 메일이 안 왔다면, 스팸함을 확인해주세요.
               </span>
@@ -66,7 +68,9 @@ const InformModal = ({
             <div
               style={{ display: "flex", flexDirection: "column", gap: "6px" }}
             >
-              <span>비밀번호가 재설정되었습니다.</span>
+              <span className={styles.InformText}>
+                비밀번호가 재설정되었습니다.
+              </span>
               <span className={styles.Graytext}>다시 로그인해주세요.</span>
             </div>
             <PrimaryButton

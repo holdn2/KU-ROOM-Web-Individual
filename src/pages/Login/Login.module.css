@@ -11,9 +11,15 @@
   width: 355px;
   margin-top: 10px;
 }
-h1,
-p,
-span,
+.PageTitle {
+  margin-top: 36px;
+  color: var(--gray-black, #1d2228);
+  font-family: Pretendard;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%; /* 42px */
+}
 .KUROOMTITLE,
 .LinkText,
 .WrongLogin {
