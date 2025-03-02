@@ -1,0 +1,28 @@
+.PageWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  background: var(--gray-BG, #f8f9fc);
+}
+.MainArea {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 355px;
+  height: 692px;
+  margin-top: 10px;
+}
+.PageTitle {
+  color: var(--Black, #1d2228);
+  font-family: Pretendard;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%;
+  margin: 36px 0;
+}
+.ButtonStyle {
+  position: absolute;
+  bottom: 0;
+}
