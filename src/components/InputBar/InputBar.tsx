@@ -31,7 +31,7 @@ const InputBar = React.memo(
 
     return (
       <div>
-        <p>{inputTitle}</p>
+        <p className={styles.InputTitleStyle}>{inputTitle}</p>
         <div style={{ position: "relative" }}>
           <input
             type={computedInputType}

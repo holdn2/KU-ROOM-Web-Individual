@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "./FinIdPw.module.css";
-import cloudIcon from "../../assets/icon/cloud.svg";
 import InputBar from "../../components/InputBar/InputBar";
 import PrimaryButton from "../../components/Button/PrimaryButton";
 import InformModal from "../../components/InformModal/InformModal";
+import TopIcon from "../../components/TopIcon";
 
 const dummyCode = "1234";
 const dummyId = "kurum"; // 테스트용 아이디
@@ -89,7 +89,7 @@ const FindIdPw = () => {
       case 0:
         return (
           <>
-            <h1 style={{ margin: "36px 0" }}>아이디/비밀번호 찾기</h1>
+            <h1 className={styles.FindStepTitle}>아이디/비밀번호 찾기</h1>
             <InputBar
               inputTitle="이메일"
               inputType="text"
@@ -111,7 +111,7 @@ const FindIdPw = () => {
       case 1:
         return (
           <>
-            <h1 style={{ margin: "36px 0" }}>비밀번호 재설정</h1>
+            <h1 className={styles.FindStepTitle}>비밀번호 재설정</h1>
             <InputBar
               inputTitle="인증코드"
               inputType="text"
@@ -137,7 +137,7 @@ const FindIdPw = () => {
       case 2:
         return (
           <>
-            <h1 style={{ margin: "36px 0" }}>비밀번호 재설정</h1>
+            <h1 className={styles.FindStepTitle}>비밀번호 재설정</h1>
             <div
               style={{ display: "flex", flexDirection: "column", gap: "20px" }}
             >
@@ -201,11 +201,7 @@ const FindIdPw = () => {
   return (
     <div className={styles.PageWrapper}>
       <div className={styles.MainArea}>
-        <img
-          src={cloudIcon}
-          alt="구름 아이콘"
-          style={{ width: "30px", alignSelf: "flex-end" }}
-        />
+        <TopIcon />
         {renderFindIdPw()}
       </div>
       <InformModal

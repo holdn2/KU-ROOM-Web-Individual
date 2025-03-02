@@ -21,3 +21,12 @@
   font-weight: 700;
   line-height: 160%; /* 19.2px */
 }
+.FindStepTitle {
+  color: var(--gray-black, #1d2228);
+  font-family: Pretendard;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%; /* 42px */
+  margin: 36px 0;
+}

@@ -23,3 +23,11 @@
   font-weight: 600;
   line-height: 120%; /* 21.6px */
 }
+.InputTitleStyle {
+  color: var(--gray-black, #1d2228);
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%; /* 19.2px */
+}

@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Community from "./pages/Community";
 import Notice from "./pages/Notice";
-import Signup from "./pages/Signup";
+import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/Login";
 import FindIdPw from "./pages/FindIdPw/FindIdPw";
 

@@ -1,0 +1,13 @@
+.PageWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  background: var(--gray-BG, #f8f9fc);
+}
+.MainArea {
+  display: flex;
+  flex-direction: column;
+  width: 355px;
+  margin-top: 10px;
+}
