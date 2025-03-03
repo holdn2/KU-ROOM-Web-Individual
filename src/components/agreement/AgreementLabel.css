@@ -1,0 +1,27 @@
+.agree-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--Black, #1d2228);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 160%; /* 25.6px */
+  gap: 13px;
+}
+.green-check {
+  position: absolute;
+  top: 6.3px;
+  left: 4px;
+}
+.agree-container.bold {
+  font-size: 18px;
+  font-weight: 600;
+}
+.green-check.bold {
+  top: 7.5px;
+}
+.hidden-checkbox {
+  display: none;
+}
