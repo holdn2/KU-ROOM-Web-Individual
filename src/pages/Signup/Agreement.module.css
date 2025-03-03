@@ -26,3 +26,9 @@
   line-height: 140%;
   margin: 36px 0;
 }
+.Line {
+  width: 100%;
+  height: 1px;
+  background: var(--Gray-300, #ced5db);
+  margin: 36px 0;
+}

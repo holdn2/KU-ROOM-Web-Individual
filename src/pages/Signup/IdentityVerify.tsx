@@ -72,18 +72,23 @@ const IdentityVerify = () => {
         )}
         {isAttemptSend && (
           <div style={{ position: "relative" }}>
-            <InputBar
-              label="인증코드"
-              type="text"
-              value={verifyCode}
-              placeholder="인증코드를 입력해주세요"
-              onChange={handleVerifyCodeChange}
-            />
-            <img
-              src={successCode ? checkedIcon : uncheckedIcon}
-              alt="올바른 코드인지 체크"
-              className={styles.CheckIcon}
-            />
+            <div style={{ position: "relative" }}>
+              <InputBar
+                label="인증코드"
+                type="text"
+                value={verifyCode}
+                placeholder="인증코드를 입력해주세요"
+                onChange={handleVerifyCodeChange}
+              />
+              <img
+                src={successCode ? checkedIcon : uncheckedIcon}
+                alt="올바른 코드인지 체크"
+                className={styles.CheckIcon}
+              />
+            </div>
+            <button className={styles.Retransmit} onClick={sendVerifyCode}>
+              이메일 재전송
+            </button>
           </div>
         )}
 
