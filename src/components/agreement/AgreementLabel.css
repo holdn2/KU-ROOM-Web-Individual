@@ -12,16 +12,14 @@
 }
 .green-check {
   position: absolute;
-  top: 6.3px;
+  top: 4px;
   left: 4px;
 }
 .agree-container.bold {
   font-size: 18px;
   font-weight: 600;
 }
-.green-check.bold {
-  top: 7.5px;
-}
+
 .hidden-checkbox {
   display: none;
 }

@@ -20,14 +20,17 @@ const AgreementLabel: React.FC<LabelProps> = ({
 }) => {
   return (
     <label className={`agree-container ${bold ? "bold" : ""}`}>
-      <img src={NotAgreeIcon} alt="동의 여부" />
-      {checked && (
-        <img
-          src={CheckAgreeIcon}
-          alt="동의"
-          className={`green-check ${bold ? "bold" : ""}`}
-        />
-      )}
+      <div style={{ position: "relative" }}>
+        <img src={NotAgreeIcon} alt="동의 여부" />
+        {checked && (
+          <img
+            src={CheckAgreeIcon}
+            alt="동의"
+            className={`green-check ${bold ? "bold" : ""}`}
+          />
+        )}
+      </div>
+
       <input
         type="checkbox"
         disabled={disabled}
