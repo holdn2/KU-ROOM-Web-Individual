@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import './BottomSheet.css';
+import React, { useEffect } from "react";
+import "./BottomSheet.css";
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -16,17 +16,17 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   onApply,
   title,
   children,
-  selectedItem
+  selectedItem,
 }) => {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
 
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
@@ -47,28 +47,26 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         <div className="bottom-sheet-header">
           <h3 className="bottom-sheet-title">{title}</h3>
           <button className="bottom-sheet-close" onClick={onClose}>
-            <svg 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24" 
-              fill="none" 
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path 
-                d="M18 6L6 18M6 6L18 18" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
+              <path
+                d="M18 6L6 18M6 6L18 18"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
           </button>
         </div>
-        <div className="bottom-sheet-content">
-          {children}
-        </div>
-        <button 
-          className={`apply-button ${selectedItem ? 'active' : ''}`} 
+        <div className="bottom-sheet-content">{children}</div>
+        <button
+          className={`apply-button ${selectedItem ? "active" : ""}`}
           onClick={handleApply}
           disabled={!selectedItem}
         >

@@ -121,17 +121,20 @@ const Login = () => {
           <img
             src={kakaoIcon}
             alt="카카오로 로그인"
-            onClick={() => console.log("카카오로 로그인")}
+            // 소셜로그인 성공 시 약관 동의 페이지로 이동
+            onClick={() => navigate("/agreement")}
           />
           <img
             src={naverIcon}
             alt="네이버로 로그인"
-            onClick={() => console.log("네이버로 로그인")}
+            // 소셜로그인 성공 시 약관 동의 페이지로 이동
+            onClick={() => navigate("/agreement")}
           />
           <img
             src={googleIcon}
             alt="구글로 로그인"
-            onClick={() => console.log("구글로 로그인")}
+            // 소셜로그인 성공 시 약관 동의 페이지로 이동
+            onClick={() => navigate("/agreement")}
           />
         </div>
       </div>
