@@ -161,7 +161,7 @@ const FindIdPw = () => {
             <div style={{ marginTop: "67px" }}>
               <Button
                 onClick={handleVerifyCodeTest}
-                disabled={!verifyCode || verifyCode.length !== 6}
+                disabled={verifyCode.length !== 6}
               >
                 인증하기
               </Button>
