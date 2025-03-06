@@ -7,7 +7,7 @@ import checkedIcon from "../../assets/icon/roundcheck.svg";
 import uncheckedIcon from "../../assets/icon/roundUncheck.svg";
 import { useNavigate } from "react-router-dom";
 
-const dummyCode = "1234";
+const dummyCode = "123456";
 
 const IdentityVerify = () => {
   const navigate = useNavigate();
@@ -18,10 +18,15 @@ const IdentityVerify = () => {
   // 인증코드 전송을 했는지 여부
   const [isAttemptSend, setIsAttemptSend] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
+  // 인증코드를 확인한 적 있는지 여부
+  const [isAttemptVerify, setIsAttemptVerify] = useState(false);
   const handleVerifyCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setVerifyCode(e.target.value);
+    const newValue = e.target.value.replace(/\D/g, ""); // 숫자만 입력 가능하도록 제한
+    if (newValue.length <= 6) {
+      // 6자리까지만 입력 가능
+      setVerifyCode(newValue);
+    }
   };
-  const [successCode, setSuccessCode] = useState(false);
   // 이메일 형식 검증 정규식
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -36,16 +41,17 @@ const IdentityVerify = () => {
 
   useEffect(() => {
     setIsAttemptSend(false);
+    setIsAttemptVerify(false);
     setVerifyCode("");
   }, [verifiedEmail]);
 
-  // 인증코드 성공 확인
-  useEffect(() => {
-    setSuccessCode(verifyCode === dummyCode);
-  }, [verifyCode]);
-
-  const toAgreement = () => {
-    navigate("/agreement");
+  const handleVerifyCode = () => {
+    // 서버에 요청해서 같은지 확인
+    if (verifyCode === dummyCode) {
+      navigate("/agreement");
+    } else {
+      setIsAttemptVerify(true);
+    }
   };
 
   return (
@@ -80,11 +86,6 @@ const IdentityVerify = () => {
                 placeholder="인증코드를 입력해주세요"
                 onChange={handleVerifyCodeChange}
               />
-              <img
-                src={successCode ? checkedIcon : uncheckedIcon}
-                alt="올바른 코드인지 체크"
-                className={styles.CheckIcon}
-              />
             </div>
             <button className={styles.Retransmit} onClick={sendVerifyCode}>
               이메일 재전송
@@ -92,12 +93,15 @@ const IdentityVerify = () => {
           </div>
         )}
 
-        {verifyCode && !successCode && (
+        {isAttemptVerify && (
           <span className={styles.ErrorMsg}>잘못된 인증코드입니다.</span>
         )}
         <div className={styles.ButtonStyle}>
           {isAttemptSend ? (
-            <Button onClick={toAgreement} disabled={!successCode}>
+            <Button
+              onClick={handleVerifyCode}
+              disabled={verifyCode.length !== 6}
+            >
               인증하기
             </Button>
           ) : (
