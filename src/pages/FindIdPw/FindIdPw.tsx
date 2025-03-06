@@ -5,7 +5,7 @@ import Button from "../../components/Button/Button";
 import InformModal from "../../components/InformModal/InformModal";
 import TopIcon from "../../components/TopIcon";
 
-const dummyCode = "1234";
+const dummyCode = "123456";
 const dummyId = "kurum"; // 테스트용 아이디
 
 const FindIdPw = () => {
@@ -19,7 +19,10 @@ const FindIdPw = () => {
   // 인증코드. string인지 number인지 중요.
   const [verifyCode, setVerifyCode] = useState("");
   const handleVerifyCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setVerifyCode(e.target.value);
+    const newValue = e.target.value.replace(/\D/g, ""); // 숫자만 입력 가능하도록 제한
+    if (newValue.length <= 6) {
+      setVerifyCode(newValue);
+    }
   };
   // 인증코드 시도했는지 여부
   const [isVerifyAttempted, setIsVerifyAttempted] = useState(false);
@@ -156,7 +159,10 @@ const FindIdPw = () => {
               </span>
             )}
             <div style={{ marginTop: "67px" }}>
-              <Button onClick={handleVerifyCodeTest} disabled={!verifyCode}>
+              <Button
+                onClick={handleVerifyCodeTest}
+                disabled={!verifyCode || verifyCode.length !== 6}
+              >
                 인증하기
               </Button>
             </div>
