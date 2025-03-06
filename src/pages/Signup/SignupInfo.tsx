@@ -14,7 +14,8 @@ const SignupInfo = () => {
   const [signupStep, setSignupStep] = useState(0);
   const [signupId, setSignupId] = useState("");
   const handleSignupIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSignupId(e.target.value);
+    const newValue = e.target.value.replace(/[^a-zA-Z0-9]/g, ""); // ✅ 영어와 숫자만 허용
+    setSignupId(newValue);
   };
 
   const [isAvailableId, setIsAvailableId] = useState<boolean | null>(null);
