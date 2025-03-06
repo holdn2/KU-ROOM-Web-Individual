@@ -92,17 +92,13 @@ const IdentityVerify = () => {
           </div>
         )}
 
-        {verifyCode && !successCode ? (
+        {verifyCode && !successCode && (
           <span className={styles.ErrorMsg}>잘못된 인증코드입니다.</span>
-        ) : (
-          verifyCode && (
-            <span className={styles.ErrorMsg}>인증에 성공하였습니다.</span>
-          )
         )}
         <div className={styles.ButtonStyle}>
           {isAttemptSend ? (
             <Button onClick={toAgreement} disabled={!successCode}>
-              다음으로
+              인증하기
             </Button>
           ) : (
             <Button
