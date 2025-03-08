@@ -63,6 +63,14 @@
   font-style: normal;
 }
 
+/* 전체 화면 영역 스크롤 방지 */
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+  touch-action: none; /* 터치 이벤트 방지 */
+  overscroll-behavior: none; /* 스크롤 바운싱 방지 */
+}
 body {
   font-family: "Pretendard", sans-serif;
   font-weight: 400; /* 기본적으로 Regular 사용 */
