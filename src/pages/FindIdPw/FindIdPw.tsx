@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import styles from "./FinIdPw.module.css";
+import styles from "./FindIdPw.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
 import InformModal from "../../components/InformModal/InformModal";
