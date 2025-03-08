@@ -1,12 +1,11 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import styles from "./FinIdPw.module.css";
+import styles from "./FindIdPw.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
 import InformModal from "../../components/InformModal/InformModal";
 import TopIcon from "../../components/TopIcon";
-
-const dummyCode = "123456";
-const dummyId = "kurum"; // 테스트용 아이디
+import { isValidEmail, isValidPassword } from "../../utils/validations";
+import { dummyLoginInfo, dummyCode } from "../../constants/dummyData";
 
 const FindIdPw = () => {
   // 아이디/비밀번호 찾기 프로세스 스텝
@@ -52,11 +51,6 @@ const FindIdPw = () => {
   // 모달창 종류
   const [modalType, setModalType] = useState("");
 
-  // 이메일 형식 검증 정규식
-  const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
-
   // 서버에 인증할 메일 주소 보냄.
   const sendInformEmail = () => {
     // 서버에 인증할 메일 주소 보냄.
@@ -83,21 +77,18 @@ const FindIdPw = () => {
     };
   }, [isVerifyAttempted]);
 
-  // 비밀번호 검증 함수 (영문 + 숫자 + 특수문자 포함 8자 이상)
-  const isValidPassword = (password: string) => {
-    const regex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return regex.test(password);
-  };
-  // 비밀번호 재설정이 유효한지 확인
   const handleResetPassword = () => {
     setIsAttemptReset(true);
     // 조건에 맞는지 확인
-    setVerifiedId(inputId === dummyId);
+    setVerifiedId(inputId === dummyLoginInfo[0].userId);
     setAllowedPw(isValidPassword(newPw));
     setIsCheckedPw(checkPw === newPw);
     // 모든 조건이 충족되었을 때 재설정 성공
-    if (inputId === dummyId && isValidPassword(newPw) && checkPw === newPw) {
+    if (
+      inputId === dummyLoginInfo[0].userId &&
+      isValidPassword(newPw) &&
+      checkPw === newPw
+    ) {
       console.log("재설정 성공!");
       setModalType("NewPassword");
       setModalState(true);
@@ -128,13 +119,13 @@ const FindIdPw = () => {
               placeholder="가입한 이메일 주소를 입력해주세요"
               onChange={handleInformEmailChange}
             />
-            {informEmail && !validateEmail(informEmail) && (
+            {informEmail && !isValidEmail(informEmail) && (
               <span className={styles.ErrorMsg}>잘못된 이메일 형식입니다.</span>
             )}
             <div style={{ marginTop: "67px" }}>
               <Button
                 onClick={sendInformEmail}
-                disabled={!informEmail || !validateEmail(informEmail)}
+                disabled={!informEmail || !isValidEmail(informEmail)}
               >
                 안내 메일 받기
               </Button>

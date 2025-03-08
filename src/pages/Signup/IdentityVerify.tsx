@@ -6,8 +6,8 @@ import Button from "../../components/Button/Button";
 import checkedIcon from "../../assets/icon/roundcheck.svg";
 import uncheckedIcon from "../../assets/icon/roundUncheck.svg";
 import { useNavigate } from "react-router-dom";
-
-const dummyCode = "123456";
+import { isValidEmail } from "../../utils/validations";
+import { dummyCode } from "../../constants/dummyData";
 
 const IdentityVerify = () => {
   const navigate = useNavigate();
@@ -26,10 +26,6 @@ const IdentityVerify = () => {
       // 6자리까지만 입력 가능
       setVerifyCode(newValue);
     }
-  };
-  // 이메일 형식 검증 정규식
-  const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   // 인증코드 발송 로직
@@ -68,12 +64,12 @@ const IdentityVerify = () => {
             onChange={handleVerifiedEmailChange}
           />
           <img
-            src={validateEmail(verifiedEmail) ? checkedIcon : uncheckedIcon}
+            src={isValidEmail(verifiedEmail) ? checkedIcon : uncheckedIcon}
             alt="올바른 형식인지 체크"
             className={styles.CheckIcon}
           />
         </div>
-        {verifiedEmail && !validateEmail(verifiedEmail) && (
+        {verifiedEmail && !isValidEmail(verifiedEmail) && (
           <span className={styles.ErrorMsg}>잘못된 이메일 형식입니다.</span>
         )}
         {isAttemptSend && (
@@ -107,7 +103,7 @@ const IdentityVerify = () => {
           ) : (
             <Button
               onClick={sendVerifyCode}
-              disabled={!verifiedEmail || !validateEmail(verifiedEmail)}
+              disabled={!verifiedEmail || !isValidEmail(verifiedEmail)}
             >
               인증코드 발송
             </Button>

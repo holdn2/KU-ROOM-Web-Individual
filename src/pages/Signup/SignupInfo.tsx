@@ -6,15 +6,15 @@ import TopIcon from "../../components/TopIcon";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
-
-const dummyData = ["asdfqwer", "kuroom", "asdf1234"];
+import { isValidPassword } from "../../utils/validations";
+import { dummyNicknames } from "../../constants/dummyData";
 
 const SignupInfo = () => {
   const navigate = useNavigate();
   const [signupStep, setSignupStep] = useState(0);
   const [signupId, setSignupId] = useState("");
   const handleSignupIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value.replace(/[^a-zA-Z0-9]/g, ""); // ✅ 영어와 숫자만 허용
+    const newValue = e.target.value.replace(/[^a-zA-Z0-9]/g, ""); // 영어와 숫자만 허용
     setSignupId(newValue);
   };
 
@@ -39,7 +39,7 @@ const SignupInfo = () => {
     // 서버에 전송해야함.
     // test용 로직(아이디 중복여부)
     if (signupId.length >= 6) {
-      setIsAvailableId(!dummyData.includes(signupId));
+      setIsAvailableId(!dummyNicknames.includes(signupId));
       setIsChecked(true); // 중복 확인 버튼을 눌렀음을 표시
     }
   };
@@ -49,13 +49,6 @@ const SignupInfo = () => {
     setIsAvailableId(null);
     setIsChecked(false);
   }, [signupId]);
-
-  // 비밀번호 검증 함수 (영문 + 숫자 + 특수문자 포함 8자 이상)
-  const isValidPassword = (password: string) => {
-    const regex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return regex.test(password);
-  };
 
   // 비밀번호 재설정이 유효한지 확인
   const handleSettingPassword = () => {
