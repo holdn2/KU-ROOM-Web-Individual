@@ -6,8 +6,10 @@ import TopIcon from "../../components/TopIcon";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { isValidPassword } from "../../utils/validations";
-import { dummyNicknames } from "../../constants/dummyData";
+import {
+  checkAvailableId,
+  handleSettingPassword,
+} from "../../utils/validations";
 
 const SignupInfo = () => {
   const navigate = useNavigate();
@@ -34,36 +36,11 @@ const SignupInfo = () => {
   // 재설정 시도를 했는지
   const [isAttemptReset, setIsAttemptReset] = useState(false);
 
-  // 아이디 중복 여부 검사
-  const checkAvailableId = () => {
-    // 서버에 전송해야함.
-    // test용 로직(아이디 중복여부)
-    if (signupId.length >= 6) {
-      setIsAvailableId(!dummyNicknames.includes(signupId));
-      setIsChecked(true); // 중복 확인 버튼을 눌렀음을 표시
-    }
-  };
-
   // 사용가능 버튼을 눌러서 상태가 변경된 후 아이디를 변경했을 때 다시 상태 변경.
   useEffect(() => {
     setIsAvailableId(null);
     setIsChecked(false);
   }, [signupId]);
-
-  // 비밀번호 재설정이 유효한지 확인
-  const handleSettingPassword = () => {
-    setIsAttemptReset(true);
-    // 조건에 맞는지 확인
-    setAllowedPw(isValidPassword(inputPw));
-    setIsCheckedPw(checkPw === inputPw);
-    // 모든 조건이 충족되었을 때 재설정 성공
-    if (isValidPassword(inputPw) && checkPw === inputPw) {
-      console.log("재설정 성공!");
-      navigate("/identityverifictaion");
-    } else {
-      console.log("재설정 실패: 조건을 다시 확인하세요.");
-    }
-  };
 
   const renderSignup = () => {
     switch (signupStep) {
@@ -75,7 +52,7 @@ const SignupInfo = () => {
                 label="아이디"
                 type="text"
                 value={signupId}
-                placeholder="아이디를 입력해주세요."
+                placeholder="아이디를 입력해주세요 (영문 또는 숫자)"
                 onChange={handleSignupIdChange}
               />
               {isAvailableId ? (
@@ -87,11 +64,12 @@ const SignupInfo = () => {
                 </button>
               ) : (
                 <button
-                  // 조건부 스타일링
                   className={classNames(styles.CheckDupBtn, {
                     [styles.disabled]: signupId.length < 6,
                   })}
-                  onClick={checkAvailableId}
+                  onClick={() =>
+                    checkAvailableId(signupId, setIsAvailableId, setIsChecked)
+                  }
                 >
                   중복확인
                 </button>
@@ -156,7 +134,16 @@ const SignupInfo = () => {
 
             <div className={styles.ButtonStyle}>
               <Button
-                onClick={handleSettingPassword}
+                onClick={() =>
+                  handleSettingPassword(
+                    inputPw,
+                    checkPw,
+                    setIsAttemptReset,
+                    setAllowedPw,
+                    setIsCheckedPw,
+                    navigate
+                  )
+                }
                 disabled={!Boolean(inputPw && checkPw)}
               >
                 다음으로
