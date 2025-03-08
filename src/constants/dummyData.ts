@@ -10,7 +10,7 @@ const dummyLoginInfo = [
 
 // 인증코드 더미 데이터
 const dummyCode = "123456";
-// 유저들이 사용하고 있는 닉네임
+// 유저들이 사용하고 있는 아이디
 const dummyNicknames = ["asdfqwer", "kuroom", "asdf1234"];
 
 // 단과대 선택
