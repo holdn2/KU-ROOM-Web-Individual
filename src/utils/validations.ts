@@ -1,5 +1,9 @@
 // 형식에 맞는지 확인하는 함수들
 
+import React, { Dispatch, SetStateAction } from "react";
+import { dummyNicknames } from "../constants/dummyData";
+import { NavigateFunction } from "react-router-dom";
+
 // 이메일 형식이 맞는지
 export const isValidEmail = (email: string) => {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -20,4 +24,39 @@ export const isValidStudentId = (id: string) => {
     return yearPrefix <= currentYear && id.length < 10;
   }
   return true; // 아직 8자리가 안되면 유효하다고 처리 (경고 표시 안함)
+};
+
+// 아이디 중복 여부 검사
+export const checkAvailableId = (
+  signupId: string,
+  setIsAvailableId: Dispatch<SetStateAction<boolean | null>>,
+  setIsChecked: Dispatch<SetStateAction<boolean>>
+) => {
+  if (signupId.length >= 6) {
+    setIsAvailableId(!dummyNicknames.includes(signupId));
+    setIsChecked(true);
+  }
+};
+
+// 비밀번호 설정 검증
+export const handleSettingPassword = (
+  inputPw: string,
+  checkPw: string,
+  setIsAttemptReset: Dispatch<SetStateAction<boolean>>,
+  setAllowedPw: Dispatch<SetStateAction<boolean>>,
+  setIsCheckedPw: Dispatch<SetStateAction<boolean>>,
+  navigate: NavigateFunction
+) => {
+  setIsAttemptReset(true);
+  const isPwValid = isValidPassword(inputPw);
+  const isPwMatch = checkPw === inputPw;
+  setAllowedPw(isPwValid);
+  setIsCheckedPw(isPwMatch);
+
+  if (isPwValid && isPwMatch) {
+    console.log("설정 성공!");
+    navigate("/identityverifictaion");
+  } else {
+    console.log("설정 실패: 조건을 다시 확인하세요.");
+  }
 };
