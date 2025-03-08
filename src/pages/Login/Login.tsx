@@ -9,20 +9,14 @@ import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import TopIcon from "../../components/TopIcon";
-
-// test용 로그인 정보
-const dummyLoginInfo = [
-  {
-    userId: "asdf",
-    userPw: "1234",
-  },
-];
+import { dummyLoginInfo } from "../../constants/dummyData";
 
 const Login = () => {
   const navigate = useNavigate();
   const [inputId, setInputId] = useState("");
   const handleInputIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputId(e.target.value);
+    const newValue = e.target.value.replace(/[^a-zA-Z0-9]/g, ""); //영어와 숫자만 허용
+    setInputId(newValue);
   };
   const [inputPw, setInputPw] = useState("");
   const handleInputPwChange = (e: ChangeEvent<HTMLInputElement>) => {
