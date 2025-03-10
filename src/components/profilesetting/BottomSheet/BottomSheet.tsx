@@ -73,6 +73,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
           적용하기
         </button>
       </div>
+      <div className="bottom-sheet-shadow" />
     </div>
   );
 };
