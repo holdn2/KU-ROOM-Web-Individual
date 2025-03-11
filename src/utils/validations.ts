@@ -40,6 +40,7 @@ export const checkAvailableId = (
 
 // 비밀번호 설정 검증
 export const handleSettingPassword = (
+  signupId: string,
   inputPw: string,
   checkPw: string,
   setIsAttemptReset: Dispatch<SetStateAction<boolean>>,
@@ -55,7 +56,9 @@ export const handleSettingPassword = (
 
   if (isPwValid && isPwMatch) {
     console.log("설정 성공!");
-    navigate("/identityverifictaion");
+    navigate("/identityverifictaion", {
+      state: { signupId: signupId, signupPw: inputPw },
+    });
   } else {
     console.log("설정 실패: 조건을 다시 확인하세요.");
   }
