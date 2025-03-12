@@ -59,17 +59,6 @@ const ProfileSetting: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    // 사용자 정보 저장 로직 (API 호출 등)
-    console.log({
-      signupEmail,
-      signupId,
-      signupPw,
-      isMarketingOk,
-      college,
-      studentId,
-      department,
-      nickname,
-    });
     const userData = {
       email: signupEmail,
       loginId: signupId,
@@ -77,7 +66,9 @@ const ProfileSetting: React.FC = () => {
       studentId: studentId,
       department: department,
       nickname: nickname,
+      agreementStatus: isMarketingOk ? "AGREED" : "DISAGREED",
     };
+    console.log(userData);
     try {
       const response = signupApi(userData);
       console.log("회원가입 성공", response);

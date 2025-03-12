@@ -1,7 +1,8 @@
 // 회원가입 관련 api
 import axios from "axios";
 
-const API_BASE_URL = "http://43.202.65.121:8111/api/v1/users";
+const SIGNUP_API_BASE_URL = "https://kuroom.shop/api/v1/users";
+const VALIDATION_ID_API_URL = "https://kuroom.shop/api/v1/users/validations";
 
 export const signupApi = async (userData: {
   email: string;
@@ -10,9 +11,10 @@ export const signupApi = async (userData: {
   studentId: string;
   department: string;
   nickname: string;
+  agreementStatus: string;
 }) => {
   try {
-    const response = await axios.post(API_BASE_URL, userData, {
+    const response = await axios.post(SIGNUP_API_BASE_URL, userData, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -21,5 +23,22 @@ export const signupApi = async (userData: {
   } catch (error: any) {
     console.error("회원가입 실패:", error.response?.data || error.message);
     throw new Error(error.response?.data?.message || "회원가입 중 오류 발생");
+  }
+};
+
+// 아이디 중복확인
+export const checkValidationIdApi = async (newId: string) => {
+  try {
+    const response = await axios.post(VALIDATION_ID_API_URL, newId, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error("아이디 확인 실패:", error.response?.data || error.message);
+    throw new Error(
+      error.response?.data?.message || "아이디 확인 중 오류 발생"
+    );
   }
 };

@@ -3,6 +3,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { dummyNicknames } from "../constants/dummyData";
 import { NavigateFunction } from "react-router-dom";
+import { checkValidationIdApi } from "../apis/signup";
 
 // 이메일 형식이 맞는지
 export const isValidEmail = (email: string) => {
@@ -33,6 +34,8 @@ export const checkAvailableId = (
   setIsChecked: Dispatch<SetStateAction<boolean>>
 ) => {
   if (signupId.length >= 6) {
+    const response = checkValidationIdApi(signupId);
+    console.log(response);
     setIsAvailableId(!dummyNicknames.includes(signupId));
     setIsChecked(true);
   }
