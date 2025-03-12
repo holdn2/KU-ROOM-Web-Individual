@@ -9,7 +9,7 @@ import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import TopIcon from "../../components/TopIcon";
-import { dummyLoginInfo } from "../../constants/dummyData";
+import { loginApi } from "../../apis/login";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -26,16 +26,25 @@ const Login = () => {
   const handleInputPwChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputPw(e.target.value);
   };
-  // 테스트용 로그인 로직. 더미 데이터와 맞으면 로그인 성공되게 함.
-  const handleLoginTest = () => {
-    const isValidUser = dummyLoginInfo.some(
-      (user) => user.userId === inputId && user.userPw === inputPw
-    );
 
-    if (isValidUser) {
-      console.log("로그인 성공!");
+  const handleLoginTest = async () => {
+    const loginData = { loginId: inputId, password: inputPw };
+    try {
+      const response = await loginApi(loginData); // `await` 추가
+
+      if (response?.code === 1007) {
+        // 서버에서 '잘못된 아이디/비밀번호'일 때의 코드 (예: 1007)
+        console.log("로그인 실패: 잘못된 아이디/비밀번호");
+        setIsLoginAttempted(true);
+        return;
+      }
+      console.log("로그인 성공!", response);
+      // 토큰 저장 후 홈으로 이동
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
       navigate("/");
-    } else {
+    } catch (error: any) {
+      console.error("로그인 중 오류 발생:", error.message); // 서버 오류(500) 같은 경우
       setIsLoginAttempted(true);
     }
   };

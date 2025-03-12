@@ -3,10 +3,13 @@ import styles from "./Agreement.module.css";
 import TopIcon from "../../components/TopIcon";
 import AgreementLabel from "../../components/agreement/AgreementLabel";
 import Button from "../../components/Button/Button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Agreement: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { signupId, signupPw, signupEmail } = location.state || {};
+
   const [allAgree, setAllAgree] = useState(false);
   const [age14, setAge14] = useState(false);
   const [privacyInfo, setPrivacyInfo] = useState(false);
@@ -30,16 +33,14 @@ const Agreement: React.FC = () => {
 
   // 가입완료 로직
   const handleCompleteSignup = () => {
-    // 서버에 동의 정보 보내야함.
-    console.log(
-      "만 14세 : ",
-      age14,
-      " 개인정보 : ",
-      privacyInfo,
-      " 광고 : ",
-      marketing
-    );
-    navigate("/profilesetting");
+    navigate("/profilesetting", {
+      state: {
+        signupEmail: signupEmail,
+        signupId: signupId,
+        signupPw: signupPw,
+        isMarketingOk: marketing,
+      },
+    });
   };
 
   return (

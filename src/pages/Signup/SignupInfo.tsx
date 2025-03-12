@@ -134,6 +134,7 @@ const SignupInfo = () => {
               <Button
                 onClick={() =>
                   handleSettingPassword(
+                    signupId,
                     inputPw,
                     checkPw,
                     setIsAttemptReset,

@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ProfileSetting.css";
 
 import Select from "../../components/profilesetting/Select/Select";
@@ -9,8 +9,13 @@ import SelectItem from "../../components/profilesetting/SelectItem/SelectItem";
 import InputBar from "../../components/InputBar/InputBar";
 import { isValidStudentId } from "../../utils/validations";
 import { colleges, departments } from "../../constants/dummyData";
+import { signupApi } from "../../apis/signup";
 
 const ProfileSetting: React.FC = () => {
+  const location = useLocation();
+  const { signupEmail, signupId, signupPw, isMarketingOk } =
+    location.state || {};
+
   const [nickname, setNickname] = useState("");
   const [college, setCollege] = useState("");
   const [department, setDepartment] = useState("");
@@ -54,15 +59,24 @@ const ProfileSetting: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    // 사용자 정보 저장 로직 (API 호출 등)
-    console.log({
-      nickname,
-      college,
-      department,
-      studentId,
-    });
-
-    navigate("/welcome");
+    const userData = {
+      email: signupEmail,
+      loginId: signupId,
+      password: signupPw,
+      studentId: studentId,
+      department: department,
+      nickname: nickname,
+      agreementStatus: isMarketingOk ? "AGREED" : "DISAGREED",
+    };
+    console.log(userData);
+    try {
+      const response = signupApi(userData);
+      console.log("회원가입 성공", response);
+      navigate("/welcome");
+    } catch (error: any) {
+      console.log("오류 발생", error.message);
+      alert(error.message || "오류가 발생했습니다.");
+    }
   };
 
   // 프로필 설정이 완료되었는지 확인
