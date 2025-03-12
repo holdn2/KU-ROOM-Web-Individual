@@ -5,12 +5,16 @@ import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
 import checkedIcon from "../../assets/icon/roundcheck.svg";
 import uncheckedIcon from "../../assets/icon/roundUncheck.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../utils/validations";
 import { dummyCode } from "../../constants/dummyData";
 
 const IdentityVerify = () => {
   const navigate = useNavigate();
+  // 회원가입 로그인, 비밀번호 가져오기
+  const location = useLocation();
+  const { signupId, signupPw } = location.state || {};
+
   const [verifiedEmail, setVerifiedEmail] = useState("");
   const [isAttemptSend, setIsAttemptSend] = useState(false); // 인증코드 전송을 했는지 여부
   const [verifyCode, setVerifyCode] = useState("");
@@ -42,7 +46,13 @@ const IdentityVerify = () => {
   const handleVerifyCode = () => {
     // 서버에 요청해서 같은지 확인
     if (verifyCode === dummyCode) {
-      navigate("/agreement");
+      navigate("/agreement", {
+        state: {
+          signupId: signupId,
+          signupPw: signupPw,
+          signupEmail: verifiedEmail,
+        },
+      });
     } else {
       setIsAttemptVerify(true);
     }
