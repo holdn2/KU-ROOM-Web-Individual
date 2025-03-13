@@ -10,15 +10,19 @@ interface SignUpResponse {
   status: string;
   message: string;
 }
-export const signupApi = async (userData: {
-  email: string;
-  loginId: string;
-  password: string;
-  studentId: string;
-  department: string;
-  nickname: string;
-  agreementStatus: string;
-}) => {
+export const signupApi = async (
+  userData: {
+    email: string;
+    loginId: string;
+    password: string;
+    studentId: string;
+    department: string;
+    nickname: string;
+    agreementStatus: string;
+  },
+  setIsDupliactedNickname: (value: boolean) => void,
+  setIsDuplicatedStudentId: (value: boolean) => void
+) => {
   try {
     const response = await axios.post<SignUpResponse>(
       SIGNUP_API_BASE_URL,
@@ -33,6 +37,13 @@ export const signupApi = async (userData: {
     return response.data.message; // 성공 응답 반환
   } catch (error: any) {
     console.error("회원가입 실패:", error.response?.data || error.message);
+    if (error.response.data.message === "이미 존재하는 닉네임입니다.") {
+      setIsDupliactedNickname(true);
+      setIsDuplicatedStudentId(false);
+    } else if (error.response.data.message === "이미 존재하는 학번입니다.") {
+      setIsDuplicatedStudentId(true);
+      setIsDupliactedNickname(false);
+    }
     throw new Error(error.response?.data?.message || "회원가입 중 오류 발생");
   }
 };
@@ -72,7 +83,10 @@ interface CheckEmailResponse {
   data: string;
 }
 // 이메일 중복확인 -> 이부분 중복 검증 잘 되는지 추후 확인 필요
-export const checkValidationEmailApi = async (email: { email: string }) => {
+export const checkValidationEmailApi = async (
+  email: { email: string },
+  setIsDuplicatedEmail: (value: boolean) => void
+) => {
   try {
     const response = await axios.post<CheckEmailResponse>(
       VALIDATION_EMAIL_API_URL,
@@ -86,7 +100,9 @@ export const checkValidationEmailApi = async (email: { email: string }) => {
     return response.data.message; // 성공 응답 반환
   } catch (error: any) {
     console.error("이메일 확인 실패:", error.response?.data || error.message);
-    alert(error.response.data.message);
+    if (error.response.data.code === 305) {
+      setIsDuplicatedEmail(true);
+    }
     throw new Error(
       error.response?.data?.message || "이메일 확인 중 오류 발생"
     );

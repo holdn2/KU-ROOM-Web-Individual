@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./ProfileSetting.css";
 
@@ -17,9 +17,11 @@ const ProfileSetting: React.FC = () => {
     location.state || {};
 
   const [nickname, setNickname] = useState("");
+  const [isDuplicatedNickname, setIsDupliactedNickname] = useState(false);
   const [college, setCollege] = useState("");
   const [department, setDepartment] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [isDuplicatedStudentId, setIsDuplicatedStudentId] = useState(false);
 
   // 임시 선택값 (바텀시트에서 선택한 값)
   const [tempSelectedCollege, setTempSelectedCollege] = useState("");
@@ -70,12 +72,15 @@ const ProfileSetting: React.FC = () => {
     };
     console.log(userData);
     try {
-      const response = await signupApi(userData);
+      const response = await signupApi(
+        userData,
+        setIsDupliactedNickname,
+        setIsDuplicatedStudentId
+      );
       console.log("회원가입 성공", response);
       navigate("/welcome");
     } catch (error: any) {
-      console.log("오류 발생", error.message);
-      alert(error.message || "오류가 발생했습니다.");
+      // console.log("오류 발생", error.message);
     }
   };
 
@@ -86,6 +91,13 @@ const ProfileSetting: React.FC = () => {
     department &&
     studentId.length >= 9 &&
     isValidStudentId(studentId);
+
+  useEffect(() => {
+    setIsDupliactedNickname(false);
+  }, [nickname]);
+  useEffect(() => {
+    setIsDuplicatedStudentId(false);
+  }, [studentId]);
 
   return (
     <div className="profile-setting">
@@ -107,7 +119,9 @@ const ProfileSetting: React.FC = () => {
           placeholder="닉네임을 입력해주세요 (8자 이하)"
           maxLength={8}
         />
-
+        {isDuplicatedNickname && (
+          <span className="ErrorMsg">이미 존재하는 닉네임입니다.</span>
+        )}
         {/* 닉네임이 유효할 때만 단과대학 선택 표시 */}
         {isNicknameValid && (
           <Select
@@ -145,6 +159,9 @@ const ProfileSetting: React.FC = () => {
             isInvalid={studentId.length >= 9 && !isValidStudentId(studentId)}
             errorMessage="유효하지 않은 학번입니다."
           />
+        )}
+        {isDuplicatedStudentId && (
+          <span className="ErrorMsg">이미 존재하는 학번입니다.</span>
         )}
 
         <div className="profile-setting-button">
