@@ -1,7 +1,6 @@
 // 형식에 맞는지 확인하는 함수들
 
 import { Dispatch, SetStateAction } from "react";
-import { dummyNicknames } from "../constants/dummyData";
 import { NavigateFunction } from "react-router-dom";
 import { checkValidationIdApi } from "../apis/signup";
 
@@ -28,16 +27,18 @@ export const isValidStudentId = (id: string) => {
 };
 
 // 아이디 중복 여부 검사
-export const checkAvailableId = (
+export const checkAvailableId = async (
   signupId: string,
   setIsAvailableId: Dispatch<SetStateAction<boolean | null>>,
   setIsChecked: Dispatch<SetStateAction<boolean>>
 ) => {
-  if (signupId.length >= 6) {
-    const response = checkValidationIdApi(signupId);
-    console.log(response);
-    setIsAvailableId(!dummyNicknames.includes(signupId));
-    setIsChecked(true);
+  const response = await checkValidationIdApi(signupId);
+  setIsChecked(true);
+
+  if (!response) {
+    setIsAvailableId(true);
+  } else {
+    setIsAvailableId(false);
   }
 };
 

@@ -8,6 +8,7 @@ import uncheckedIcon from "../../assets/icon/roundUncheck.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../utils/validations";
 import { dummyCode } from "../../constants/dummyData";
+import { checkValidationEmailApi } from "../../apis/signup";
 
 const IdentityVerify = () => {
   const navigate = useNavigate();
@@ -31,10 +32,15 @@ const IdentityVerify = () => {
   };
 
   // 인증코드 발송 로직
-  const sendVerifyCode = () => {
-    console.log("인증코드 발송");
-    // 서버에 요청하는 로직 필요
-    setIsAttemptSend(true);
+  const sendVerifyCode = async () => {
+    const checkingEmail = { email: verifiedEmail };
+    const response = await checkValidationEmailApi(checkingEmail);
+    console.log(response);
+    if (response === "OK") {
+      console.log("인증코드 발송");
+      // 서버에 요청하는 로직 필요
+      setIsAttemptSend(true);
+    }
   };
 
   useEffect(() => {

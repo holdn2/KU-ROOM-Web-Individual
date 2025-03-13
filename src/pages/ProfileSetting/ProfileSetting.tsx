@@ -30,7 +30,7 @@ const ProfileSetting: React.FC = () => {
   const navigate = useNavigate();
 
   // 닉네임이 유효한지 확인하는 변수
-  const isNicknameValid = nickname.length > 0 && nickname.length <= 10;
+  const isNicknameValid = nickname.length > 0 && nickname.length <= 8;
 
   const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -58,7 +58,7 @@ const ProfileSetting: React.FC = () => {
     setDepartment(selectedItem);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const userData = {
       email: signupEmail,
       loginId: signupId,
@@ -70,7 +70,7 @@ const ProfileSetting: React.FC = () => {
     };
     console.log(userData);
     try {
-      const response = signupApi(userData);
+      const response = await signupApi(userData);
       console.log("회원가입 성공", response);
       navigate("/welcome");
     } catch (error: any) {
@@ -104,8 +104,8 @@ const ProfileSetting: React.FC = () => {
           type="text"
           value={nickname}
           onChange={handleNicknameChange}
-          placeholder="닉네임을 입력해주세요 (10자 이하)"
-          maxLength={10}
+          placeholder="닉네임을 입력해주세요 (8자 이하)"
+          maxLength={8}
         />
 
         {/* 닉네임이 유효할 때만 단과대학 선택 표시 */}
