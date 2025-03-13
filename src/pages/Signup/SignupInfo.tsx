@@ -25,13 +25,21 @@ const SignupInfo = () => {
 
   const handleSignupIdChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/[^a-zA-Z0-9]/g, ""); // 영어와 숫자만 허용
-    setSignupId(newValue);
+    if (newValue.length <= 12) {
+      setSignupId(newValue);
+    }
   };
   const handleInputPwChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputPw(e.target.value);
+    const newValue = e.target.value;
+    if (newValue.length <= 20) {
+      setInputPw(newValue);
+    }
   };
   const handleCheckPwChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCheckPw(e.target.value);
+    const newValue = e.target.value;
+    if (newValue.length <= 20) {
+      setCheckPw(newValue);
+    }
   };
 
   // 사용가능 버튼을 눌러서 상태가 변경된 후 아이디를 변경했을 때 다시 상태 변경.
@@ -76,7 +84,7 @@ const SignupInfo = () => {
 
             {signupId.length < 6 && signupId && (
               <span className={styles.ErrorMsg}>
-                아이디는 6자 이상으로 설정해주세요.
+                아이디는 6자 이상 12자 이내로 설정해주세요.
               </span>
             )}
             {/* 체크를 이미 한 상태에서만 표시되게함. */}
@@ -113,7 +121,7 @@ const SignupInfo = () => {
             />
             {!allowedPw && isAttemptReset && (
               <span className={styles.ErrorMsg}>
-                영문, 숫자, 특수문자 포함 8자 이상이어야 합니다.
+                영문, 숫자, 특수문자 포함 8자 이상 20자 이내
               </span>
             )}
 

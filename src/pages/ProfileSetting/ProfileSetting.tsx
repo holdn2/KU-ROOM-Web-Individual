@@ -120,7 +120,7 @@ const ProfileSetting: React.FC = () => {
           maxLength={8}
         />
         {isDuplicatedNickname && (
-          <span className="ErrorMsg">이미 존재하는 닉네임입니다.</span>
+          <span className="ErrorMsg">이미 있는 닉네임입니다.</span>
         )}
         {/* 닉네임이 유효할 때만 단과대학 선택 표시 */}
         {isNicknameValid && (
@@ -161,7 +161,7 @@ const ProfileSetting: React.FC = () => {
           />
         )}
         {isDuplicatedStudentId && (
-          <span className="ErrorMsg">이미 존재하는 학번입니다.</span>
+          <span className="ErrorMsg">이미 있는 계정입니다.</span>
         )}
 
         <div className="profile-setting-button">
