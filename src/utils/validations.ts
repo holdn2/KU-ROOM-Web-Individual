@@ -1,7 +1,6 @@
 // 형식에 맞는지 확인하는 함수들
 
 import { Dispatch, SetStateAction } from "react";
-import { dummyNicknames } from "../constants/dummyData";
 import { NavigateFunction } from "react-router-dom";
 import { checkValidationIdApi } from "../apis/signup";
 
