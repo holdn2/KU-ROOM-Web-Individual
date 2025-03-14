@@ -1,7 +1,7 @@
 // 홈 페이지
-
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import BottomBar from "../components/BottomBar/BottomBar";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ const Home = () => {
     <div>
       Home
       <button onClick={handleLogout}>로그아웃</button>
+      <BottomBar />
     </div>
   );
 };
