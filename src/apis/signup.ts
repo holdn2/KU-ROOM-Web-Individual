@@ -85,7 +85,9 @@ interface CheckEmailResponse {
 // 이메일 중복확인 -> 이부분 중복 검증 잘 되는지 추후 확인 필요
 export const checkValidationEmailApi = async (
   email: { email: string },
-  setIsDuplicatedEmail: (value: boolean) => void
+  setIsDuplicatedEmail: (value: boolean) => void,
+  setModalType: (value: string) => void,
+  setModalState: (value: boolean) => void
 ) => {
   try {
     const response = await axios.post<CheckEmailResponse>(
@@ -102,6 +104,8 @@ export const checkValidationEmailApi = async (
     console.error("이메일 확인 실패:", error.response?.data || error.message);
     if (error.response.data.code === 305) {
       setIsDuplicatedEmail(true);
+    } else if (error.response.data.code === 900) {
+      setModalType("EmailFailed"), setModalState(true);
     }
     throw new Error(
       error.response?.data?.message || "이메일 확인 중 오류 발생"

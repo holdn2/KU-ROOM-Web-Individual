@@ -7,14 +7,18 @@ import checkedIcon from "../../assets/icon/roundcheck.svg";
 import uncheckedIcon from "../../assets/icon/roundUncheck.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../utils/validations";
-import { dummyCode } from "../../constants/dummyData";
 import { checkValidationEmailApi } from "../../apis/signup";
+import { sendEmailApi, verifyCodeApi } from "../../apis/mails";
+import InformModal from "../../components/InformModal/InformModal";
 
 const IdentityVerify = () => {
   const navigate = useNavigate();
   // 회원가입 로그인, 비밀번호 가져오기
   const location = useLocation();
   const { signupId, signupPw } = location.state || {};
+
+  const [modalType, setModalType] = useState("informEmail");
+  const [modalState, setModalState] = useState(false);
 
   const [verifiedEmail, setVerifiedEmail] = useState("");
   const [isAttemptSend, setIsAttemptSend] = useState(false); // 인증코드 전송을 했는지 여부
@@ -26,8 +30,8 @@ const IdentityVerify = () => {
   };
   const handleVerifyCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/\D/g, ""); // 숫자만 입력 가능하도록 제한
-    if (newValue.length <= 6) {
-      // 6자리까지만 입력 가능
+    if (newValue.length <= 4) {
+      // 4자리까지만 입력 가능
       setVerifyCode(newValue);
     }
   };
@@ -37,13 +41,18 @@ const IdentityVerify = () => {
     const checkingEmail = { email: verifiedEmail };
     const response = await checkValidationEmailApi(
       checkingEmail,
-      setIsDuplicatedEmail
+      setIsDuplicatedEmail,
+      setModalType,
+      setModalState
     );
     console.log(response);
     if (response === "OK") {
       console.log("인증코드 발송");
-      // 서버에 요청하는 로직 필요
+      // 서버에 전송 요청
+      const sendResponse = sendEmailApi(checkingEmail);
+      console.log(sendResponse);
       setIsAttemptSend(true);
+      setModalState(true);
     }
   };
 
@@ -54,9 +63,14 @@ const IdentityVerify = () => {
     setIsDuplicatedEmail(false);
   }, [verifiedEmail]);
 
-  const handleVerifyCode = () => {
+  const handleVerifyCode = async () => {
+    const verifyData = {
+      email: verifiedEmail,
+      code: verifyCode,
+    };
     // 서버에 요청해서 같은지 확인
-    if (verifyCode === dummyCode) {
+    const response = await verifyCodeApi(verifyData);
+    if (response) {
       navigate("/agreement", {
         state: {
           signupId: signupId,
@@ -101,7 +115,7 @@ const IdentityVerify = () => {
                 label="인증코드"
                 type="text"
                 value={verifyCode}
-                placeholder="인증코드를 입력해주세요"
+                placeholder="인증코드 4자리를 입력해주세요"
                 onChange={handleVerifyCodeChange}
               />
             </div>
@@ -118,7 +132,7 @@ const IdentityVerify = () => {
           {isAttemptSend ? (
             <Button
               onClick={handleVerifyCode}
-              disabled={verifyCode.length !== 6}
+              disabled={verifyCode.length !== 4}
             >
               인증하기
             </Button>
@@ -132,6 +146,12 @@ const IdentityVerify = () => {
           )}
         </div>
       </div>
+      <InformModal
+        modalType={modalType}
+        modalState={modalState}
+        setModalState={setModalState}
+        setModalType={setModalType}
+      />
     </div>
   );
 };
