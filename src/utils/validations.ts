@@ -6,7 +6,7 @@ import { checkValidationIdApi } from "../apis/signup";
 
 // 이메일 형식이 맞는지
 export const isValidEmail = (email: string) => {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 };
 
 // 비밀번호 형식이 맞는지
