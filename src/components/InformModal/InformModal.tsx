@@ -10,18 +10,28 @@ type Props = {
   modalType: string;
   modalState: boolean;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
-  setFindStep: React.Dispatch<React.SetStateAction<number>>;
+  setModalType?: React.Dispatch<React.SetStateAction<string>>;
+  setFindStep?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const InformModal = ({
   modalType,
   modalState,
   setModalState,
+  setModalType,
   setFindStep,
 }: Props) => {
   const navigate = useNavigate();
   const handleVerifyCloseModal = () => {
-    setFindStep(1);
+    if (setFindStep) {
+      setFindStep(1);
+    }
+    setModalState(false);
+  };
+  const handleFailedCloseModal = () => {
+    if (setModalType) {
+      setModalType("informEmail");
+    }
     setModalState(false);
   };
   const handleReLoginCloseModal = () => {
@@ -50,6 +60,28 @@ const InformModal = ({
               </span>
             </div>
             <Button onClick={handleVerifyCloseModal}>확인</Button>
+          </ReactModal>
+        );
+      case "EmailFailed":
+        return (
+          <ReactModal
+            isOpen={modalState}
+            className={styles.InformModalContainer}
+            overlayClassName={styles.Overlay}
+            ariaHideApp={false}
+          >
+            <img src={cloudIcon} alt="쿠룸아이콘" style={{ width: "30px" }} />
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+            >
+              <span className={styles.InformText}>
+                이메일 전송에 실패했습니다.
+              </span>
+              <span className={styles.Graytext}>
+                입력하신 이메일이 맞는지 확인해주세요.
+              </span>
+            </div>
+            <Button onClick={handleFailedCloseModal}>확인</Button>
           </ReactModal>
         );
       case "NewPassword":
