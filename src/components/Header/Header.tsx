@@ -28,9 +28,6 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
         <span className="header-title">{children}</span>
         {renderHeaderContent(children)}
       </div>
-      {children === "공지사항" && (
-        <div className="notice-category-container">카테고리 부분</div>
-      )}
     </>
   );
 };

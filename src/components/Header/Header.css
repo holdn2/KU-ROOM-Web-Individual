@@ -23,8 +23,3 @@
   flex-direction: row;
   gap: 10px;
 }
-.notice-category-container {
-  margin-top: 56px;
-  position: absolute;
-  top: 0;
-}
