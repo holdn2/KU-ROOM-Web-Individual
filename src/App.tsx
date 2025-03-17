@@ -11,7 +11,8 @@ import ProfileSetting from "./pages/ProfileSetting/ProfileSetting";
 import Welcome from "./pages/Welcome/Welcome";
 import Agreement from "./pages/Signup/Agreement";
 import Map from "./pages/Map";
-import MyPage from "./pages/MyPage";
+import MyPage from "./pages/MyPage/MyPage";
+import ProfileChange from "./pages/ProfileChange/ProfileChange";
 
 function App() {
   const router = createBrowserRouter([
@@ -65,6 +66,10 @@ function App() {
         {
           path: "myinfo",
           element: <MyPage />,
+        },
+        {
+          path: "profilechange",
+          element: <ProfileChange />,
         },
       ],
     },

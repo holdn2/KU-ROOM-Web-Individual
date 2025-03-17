@@ -1,0 +1,11 @@
+.MyPageContentWrapper {
+  margin-top: 56px;
+}
+.DivideSectionThick {
+  height: 10px;
+  background: var(--Gray-500, rgba(227, 231, 235, 0.3));
+}
+.ScrollableSection {
+  max-height: calc(100vh - 360px);
+  overflow-y: auto;
+}
