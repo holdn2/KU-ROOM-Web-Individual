@@ -11,7 +11,8 @@
   line-height: 120%; /* 16.8px */
   padding: 11.5px 0;
 }
-.SectionContentText {
+.SectionContentButton {
+  position: relative;
   color: #000;
   font-size: 16px;
   font-style: normal;
@@ -24,4 +25,13 @@
   height: 1px;
   background: var(--Gray-400, #e3e7eb);
   margin: 0 14px;
+}
+.ExtraInfoText {
+  position: absolute;
+  right: 0;
+  color: var(--Gray-100, #9eaab5);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 19.2px */
 }

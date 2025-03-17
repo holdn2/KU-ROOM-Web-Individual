@@ -1,0 +1,35 @@
+.ChangePwPageWrapper {
+  background-color: #f8f9fc;
+  padding: 9px 28px 11px 28px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.MainArea {
+  display: flex;
+  flex-direction: column;
+}
+.ResetPwTitle {
+  margin-top: 36px;
+  margin-bottom: 29px;
+  color: var(--gray-black, #1d2228);
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%; /* 42px */
+}
+.LinkText {
+  color: var(--Gray-100, #9eaab5);
+  align-self: center;
+  padding: 5px;
+  width: 80px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 8px;
+  text-decoration-line: underline;
+}

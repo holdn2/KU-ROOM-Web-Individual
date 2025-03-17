@@ -10,6 +10,18 @@
   gap: 28px;
   align-items: center;
 }
+.ImgWrapper {
+  position: relative;
+}
+.ProfileImg {
+  border-radius: 65px;
+  border: 2px solid var(--Brand-Primary_1, #009733);
+}
+.EditIcon {
+  position: absolute;
+  bottom: 4px;
+  right: -2px;
+}
 .InfoWrapper {
   display: flex;
   flex-direction: column;

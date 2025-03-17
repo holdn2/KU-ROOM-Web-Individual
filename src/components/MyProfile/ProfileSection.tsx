@@ -1,15 +1,19 @@
 import React from "react";
 import styles from "./ProfileSection.module.css";
-import arrowRight from "../../assets/nav/arrowRight.svg";
+import { useNavigate } from "react-router-dom";
+
+const userEmail = "kurum12@gmail.com";
+const studentId = "202012356";
 
 interface ProfileSectionProps {
   sectionData: {
     title: string;
     contents: string[];
   };
+  isLastSection: boolean;
 }
 
-const buttonActions: { [key: string]: () => void } = {
+const buttonActions: { [key: string]: (() => void) | null } = {
   "친구 추가": () => console.log("친구 추가 실행"),
   "친구 목록": () => console.log("친구 목록 실행"),
   "약관 및 정책": () => console.log("약관 및 정책 실행"),
@@ -19,18 +23,30 @@ const buttonActions: { [key: string]: () => void } = {
   로그아웃: () => console.log("로그아웃 실행"),
   탈퇴하기: () => console.log("탈퇴하기 실행"),
   이메일: () => console.log("이메일"),
+  "비밀번호 변경하기": null,
+  "닉네임 변경하기": null,
 };
 
-const handleButtonClick = (item: string) => {
-  const action = buttonActions[item];
-  if (action) {
-    action(); // 해당하는 함수 실행
-  } else {
-    console.log(`${item} 버튼이 클릭됨`);
-  }
-};
+const ProfileSection: React.FC<ProfileSectionProps> = ({
+  sectionData,
+  isLastSection,
+}) => {
+  const navigate = useNavigate();
 
-const ProfileSection: React.FC<ProfileSectionProps> = ({ sectionData }) => {
+  const handleButtonClick = (item: string) => {
+    if (item === "비밀번호 변경하기") {
+      navigate("/changepw");
+    }
+    if (item === "닉네임 변경하기") {
+      navigate("/changenickname");
+    }
+    const action = buttonActions[item];
+    if (action) {
+      action(); // 해당하는 함수 실행
+    } else {
+      console.log(`${item} 버튼이 클릭됨`);
+    }
+  };
   return (
     <>
       <div className={styles.SectionContainer}>
@@ -38,14 +54,20 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ sectionData }) => {
         {sectionData.contents.map((item, index) => (
           <button
             key={index}
-            className={styles.SectionContentText}
+            className={styles.SectionContentButton}
             onClick={() => handleButtonClick(item)}
           >
             {item}
+            {item === "이메일" && (
+              <span className={styles.ExtraInfoText}>{userEmail}</span>
+            )}
+            {item === "학번" && (
+              <span className={styles.ExtraInfoText}>{studentId}</span>
+            )}
           </button>
         ))}
       </div>
-      <div className={styles.DivideSectionThin} />
+      {!isLastSection && <div className={styles.DivideSectionThin} />}
     </>
   );
 };

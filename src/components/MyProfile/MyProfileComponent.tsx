@@ -1,9 +1,17 @@
+import React from "react";
 import styles from "./MyProfileComponent.module.css";
 import Button from "../Button/Button";
 import defaultProfileImg from "../../assets/defaultProfileImg.svg";
 import { useNavigate } from "react-router-dom";
+import editIcon from "../../assets/icon/editpencil.svg";
 
-const MyProfileComponent = () => {
+interface MyProfileComponentProps {
+  isChangeProfile: boolean;
+}
+
+const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
+  isChangeProfile,
+}) => {
   const navigate = useNavigate();
   const goToProfileSetting = () => {
     navigate("/profilechange");
@@ -18,15 +26,33 @@ const MyProfileComponent = () => {
       }}
     >
       <div className={styles.MyProfileInfoWrapper}>
-        <img src={defaultProfileImg} alt="프로필 사진" />
+        <div className={styles.ImgWrapper}>
+          <img
+            src={defaultProfileImg}
+            alt="프로필 사진"
+            style={
+              isChangeProfile
+                ? { borderRadius: "65px", border: "2px solid #009733" }
+                : {}
+            }
+          />
+          {isChangeProfile && (
+            <img src={editIcon} alt="수정하기" className={styles.EditIcon} />
+          )}
+        </div>
+
         <div className={styles.InfoWrapper}>
           <span className={styles.MyName}>김쿠룸</span>
-          <span className={styles.MyDepartment}>융합생명공학과</span>
+          {!isChangeProfile && (
+            <span className={styles.MyDepartment}>융합생명공학과</span>
+          )}
         </div>
       </div>
-      <Button onClick={goToProfileSetting} variant="secondary">
-        프로필 설정
-      </Button>
+      {!isChangeProfile && (
+        <Button onClick={goToProfileSetting} variant="secondary">
+          프로필 설정
+        </Button>
+      )}
     </div>
   );
 };
