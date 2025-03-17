@@ -33,3 +33,14 @@
   margin-top: 8px;
   text-decoration-line: underline;
 }
+.ErrorMsg {
+  margin-top: -24px;
+  height: 40px;
+  color: var(--error, #ff4a4a);
+  text-align: start;
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 160%; /* 19.2px */
+}

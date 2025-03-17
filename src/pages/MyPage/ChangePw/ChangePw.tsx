@@ -11,8 +11,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 const ChangePw = () => {
   const navigate = useNavigate();
-  const [inputId, setInputId] = useState("");
-  const [verifiedId, setVerifiedId] = useState(false);
+  const [originalPw, setOriginalPw] = useState("");
+  const [originalPwChecked, setOriginalPwChecked] = useState(false);
   const [isAttemptReset, setIsAttemptReset] = useState(false);
   const [newPw, setNewPw] = useState("");
   const [allowedPw, setAllowedPw] = useState(false);
@@ -22,8 +22,8 @@ const ChangePw = () => {
   const [modalType, setModalType] = useState("");
   const [modalState, setModalState] = useState(false);
 
-  const handleInputIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputId(e.target.value);
+  const handleOriginalPwChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setOriginalPw(e.target.value);
   };
   const handleNewPwChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewPw(e.target.value);
@@ -34,12 +34,12 @@ const ChangePw = () => {
   const handleResetPassword = () => {
     setIsAttemptReset(true);
     // 조건에 맞는지 확인
-    setVerifiedId(inputId === dummyLoginInfo[0].userId);
+    setOriginalPwChecked(originalPw === dummyLoginInfo[0].userPw);
     setAllowedPw(isValidPassword(newPw));
     setIsCheckedPw(checkPw === newPw);
     // 모든 조건이 충족되었을 때 재설정 성공
     if (
-      inputId === dummyLoginInfo[0].userId &&
+      originalPw === dummyLoginInfo[0].userPw &&
       isValidPassword(newPw) &&
       checkPw === newPw
     ) {
@@ -65,12 +65,14 @@ const ChangePw = () => {
         <InputBar
           label="기존 비밀번호"
           type="password"
-          value={inputId}
+          value={originalPw}
           placeholder="기존 비밀번호를 입력해주세요"
-          onChange={handleInputIdChange}
+          onChange={handleOriginalPwChange}
         />
-        {!verifiedId && isAttemptReset && (
-          <span className={styles.ErrorMsg}>알맞은 아이디를 입력해주세요.</span>
+        {!originalPwChecked && isAttemptReset && (
+          <span className={styles.ErrorMsg}>
+            기존 비밀번호를 알맞게 입력해주세요.
+          </span>
         )}
         <InputBar
           label="새로운 비밀번호"
@@ -97,7 +99,7 @@ const ChangePw = () => {
         <div style={{ marginTop: "67px" }}>
           <Button
             onClick={handleResetPassword}
-            disabled={!inputId || !newPw || !checkPw}
+            disabled={!originalPw || !newPw || !checkPw}
           >
             비밀번호 재설정하기
           </Button>
