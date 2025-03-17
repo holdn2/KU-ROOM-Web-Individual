@@ -11,7 +11,7 @@ const renderHeaderContent = (children: React.ReactNode) => {
   switch (children) {
     case "공지사항":
       return (
-        <div className="header-content-wrapper">
+        <div className="notice-header-content-wrapper">
           <img src={bookmarkIcon} alt="북마크" />
           <img src={searchIcon} alt="검색" />
         </div>
