@@ -27,15 +27,13 @@ const MyPage = () => {
       <div className={styles.MyPageContentWrapper}>
         <MyProfileComponent isChangeProfile={false} />
         <div className={styles.DivideSectionThick} />
-        <div className={styles.ScrollableSection}>
-          {sectionDatas.map((data, index) => (
-            <ProfileSection
-              key={index}
-              sectionData={data}
-              isLastSection={index === sectionDatas.length - 1}
-            />
-          ))}
-        </div>
+        {sectionDatas.map((data, index) => (
+          <ProfileSection
+            key={index}
+            sectionData={data}
+            isLastSection={index === sectionDatas.length - 1}
+          />
+        ))}
       </div>
       <BottomBar />
     </div>

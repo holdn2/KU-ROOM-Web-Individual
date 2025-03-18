@@ -1,8 +1,10 @@
 import React from "react";
 import styles from "./ProfileSection.module.css";
 import { useNavigate } from "react-router-dom";
+import arrowRight from "../../assets/nav/arrowRight.svg";
 
 const userEmail = "kurum12@gmail.com";
+const userId = "kurum12";
 const studentId = "202012356";
 
 interface ProfileSectionProps {
@@ -22,7 +24,6 @@ const buttonActions: { [key: string]: (() => void) | null } = {
   "알림 설정": () => console.log("알림 설정 실행"),
   로그아웃: () => console.log("로그아웃 실행"),
   탈퇴하기: () => console.log("탈퇴하기 실행"),
-  이메일: () => console.log("이메일"),
   "비밀번호 변경하기": null,
   "닉네임 변경하기": null,
 };
@@ -56,13 +57,20 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             key={index}
             className={styles.SectionContentButton}
             onClick={() => handleButtonClick(item)}
+            disabled={item === "이메일" || item === "학번"}
           >
             {item}
             {item === "이메일" && (
               <span className={styles.ExtraInfoText}>{userEmail}</span>
             )}
+            {item === "아이디" && (
+              <span className={styles.ExtraInfoText}>{userId}</span>
+            )}
             {item === "학번" && (
               <span className={styles.ExtraInfoText}>{studentId}</span>
+            )}
+            {item === "학과" && (
+              <img className={styles.ArrowIcon} src={arrowRight} alt="학과" />
             )}
           </button>
         ))}

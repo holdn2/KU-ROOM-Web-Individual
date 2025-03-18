@@ -35,3 +35,8 @@
   font-weight: 600;
   line-height: 120%; /* 19.2px */
 }
+.ArrowIcon {
+  position: absolute;
+  top: 15px;
+  right: 0;
+}

@@ -10,12 +10,25 @@
   box-sizing: border-box;
   overflow: hidden;
 }
+.HeaderIconWrapper {
+  position: relative;
+  width: 100%;
+}
+.arrowBack {
+  position: absolute;
+  top: 7px;
+  left: 6px;
+}
+.KuroomIcon {
+  position: absolute;
+  right: 0;
+}
 .MainArea {
   display: flex;
   flex-direction: column;
 }
 .ChangeNicknameTitle {
-  margin-top: 36px;
+  margin-top: 66px;
   margin-bottom: 29px;
   color: var(--gray-black, #1d2228);
   font-size: 30px;

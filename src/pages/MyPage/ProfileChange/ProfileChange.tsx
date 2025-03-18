@@ -6,7 +6,7 @@ import styles from "./ProfileChange.module.css";
 const sectionDatas: { title: string; contents: string[] }[] = [
   {
     title: "프로필",
-    contents: ["이메일", "비밀번호 변경하기", "닉네임 변경하기"],
+    contents: ["이메일", "아이디", "비밀번호 변경하기", "닉네임 변경하기"],
   },
   {
     title: "개인정보",
