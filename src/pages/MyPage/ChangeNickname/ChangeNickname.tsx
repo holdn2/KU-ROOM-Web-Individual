@@ -9,9 +9,16 @@ import { ChangeEvent, useState } from "react";
 const ChangeNickname = () => {
   const navigate = useNavigate();
   const [newNickname, setNewNickname] = useState("");
+  // 닉네임이 유효한지 확인하는 변수
+  const isNicknameValid =
+    newNickname.length > 1 &&
+    newNickname.length <= 10 &&
+    (/[a-zA-Z]/.test(newNickname) || /^[가-힣ㄱ-ㅎ]+$/.test(newNickname));
   const handleInputIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // 10자 이내로만 나오게 닉네임관련된거.
-    setNewNickname(e.target.value);
+    const inputNickname = e.target.value;
+    if (inputNickname.length <= 10) {
+      setNewNickname(inputNickname);
+    }
   };
 
   const handleChangeNickname = () => {
@@ -36,14 +43,15 @@ const ChangeNickname = () => {
           value={newNickname}
           placeholder="변경할 닉네임을 입력해주세요"
           onChange={handleInputIdChange}
-          maxLength={10}
         />
+        {!isNicknameValid && newNickname && (
+          <span className="ErrorMsg">
+            한글 또는 영어 포함 2자 이상 10자 이내로 입력해주세요.
+          </span>
+        )}
       </div>
       <div className={styles.ButtonWrapper}>
-        <Button
-          onClick={handleChangeNickname}
-          disabled={newNickname.length > 10}
-        >
+        <Button onClick={handleChangeNickname} disabled={!isNicknameValid}>
           닉네임 변경하기
         </Button>
       </div>

@@ -32,3 +32,8 @@
   background: var(--Gray-300, #ced5db);
   margin: 36px 0;
 }
+.ButtonStyle {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}

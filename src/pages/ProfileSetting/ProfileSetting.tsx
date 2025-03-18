@@ -32,10 +32,16 @@ const ProfileSetting: React.FC = () => {
   const navigate = useNavigate();
 
   // 닉네임이 유효한지 확인하는 변수
-  const isNicknameValid = nickname.length > 0 && nickname.length <= 8;
+  const isNicknameValid =
+    nickname.length > 1 &&
+    nickname.length <= 10 &&
+    (/[a-zA-Z]/.test(nickname) || /^[가-힣ㄱ-ㅎ]+$/.test(nickname));
 
   const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
+    const inputNickname = e.target.value;
+    if (inputNickname.length <= 10) {
+      setNickname(inputNickname);
+    }
   };
 
   const handleStudentIdChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -116,9 +122,13 @@ const ProfileSetting: React.FC = () => {
           type="text"
           value={nickname}
           onChange={handleNicknameChange}
-          placeholder="닉네임을 입력해주세요 (8자 이하)"
-          maxLength={8}
+          placeholder="닉네임을 입력해주세요 (10자 이하)"
         />
+        {!isNicknameValid && nickname && (
+          <span className="ErrorMsg">
+            한글 또는 영어 포함 2자 이상 10자 이내로 입력해주세요.
+          </span>
+        )}
         {isDuplicatedNickname && (
           <span className="ErrorMsg">이미 있는 닉네임입니다.</span>
         )}

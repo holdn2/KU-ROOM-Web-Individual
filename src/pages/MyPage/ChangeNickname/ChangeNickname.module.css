@@ -41,3 +41,10 @@
   width: calc(100vw - 56px);
   bottom: 128px;
 }
+.ErrorMsg {
+  margin-top: -20px;
+  margin-bottom: 15px;
+  color: #ff4a4a;
+  font-size: 12px;
+  font-weight: 700;
+}

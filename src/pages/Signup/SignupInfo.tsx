@@ -69,6 +69,7 @@ const SignupInfo = () => {
                   사용가능
                 </button>
               ) : (
+                // 아이디는 영어 포함 6자 이상 15자 이내로 입력해야만 버튼 활성화됨.
                 <button
                   className={classNames(styles.CheckDupBtn, {
                     [styles.disabled]:
