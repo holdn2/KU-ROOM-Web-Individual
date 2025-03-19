@@ -17,7 +17,7 @@ const ProfileSetting: React.FC = () => {
     location.state || {};
 
   const [nickname, setNickname] = useState("");
-  const [isDuplicatedNickname, setIsDupliactedNickname] = useState(false);
+  const [isDuplicatedNickname, setIsDuplicatedNickname] = useState(false);
   const [college, setCollege] = useState("");
   const [department, setDepartment] = useState("");
   const [studentId, setStudentId] = useState("");
@@ -80,7 +80,7 @@ const ProfileSetting: React.FC = () => {
     try {
       const response = await signupApi(
         userData,
-        setIsDupliactedNickname,
+        setIsDuplicatedNickname,
         setIsDuplicatedStudentId
       );
       console.log("회원가입 성공", response);
@@ -99,7 +99,7 @@ const ProfileSetting: React.FC = () => {
     isValidStudentId(studentId);
 
   useEffect(() => {
-    setIsDupliactedNickname(false);
+    setIsDuplicatedNickname(false);
   }, [nickname]);
   useEffect(() => {
     setIsDuplicatedStudentId(false);

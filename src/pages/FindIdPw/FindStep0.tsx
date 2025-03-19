@@ -7,7 +7,7 @@ import Button from "../../components/Button/Button";
 interface Step0Props {
   informEmail: string;
   handleInformEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  sendInformEmail: () => void;
+  sendInformEmail: (value: string) => void;
 }
 
 const FindStep0: React.FC<Step0Props> = ({
@@ -30,7 +30,7 @@ const FindStep0: React.FC<Step0Props> = ({
       )}
       <div style={{ marginTop: "67px" }}>
         <Button
-          onClick={sendInformEmail}
+          onClick={() => sendInformEmail(informEmail)}
           disabled={!informEmail || !isValidEmail(informEmail)}
         >
           안내 메일 받기
