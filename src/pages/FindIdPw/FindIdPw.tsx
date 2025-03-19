@@ -108,10 +108,10 @@ const FindIdPw = () => {
   };
 
   // 추후 서버에 인증할 메일 주소 보냄야 함. api 연동 필요
-  const sendInformEmail = (informEmail: string) => {
+  const sendInformEmail = async (informEmail: string) => {
     const sendEmail = { email: informEmail };
     console.log(informEmail);
-    const sendResponse = sendEmailApi(sendEmail);
+    const sendResponse = await sendEmailApi(sendEmail);
     console.log(sendResponse);
     setModalType("informEmail");
     setModalState(true);

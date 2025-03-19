@@ -49,7 +49,7 @@ const IdentityVerify = () => {
     if (response === "OK") {
       console.log("인증코드 발송");
       // 서버에 전송 요청
-      const sendResponse = sendEmailApi(checkingEmail);
+      const sendResponse = await sendEmailApi(checkingEmail);
       console.log(sendResponse);
       setIsAttemptSend(true);
       setModalState(true);
