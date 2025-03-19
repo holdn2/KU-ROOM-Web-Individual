@@ -11,7 +11,10 @@ import ProfileSetting from "./pages/ProfileSetting/ProfileSetting";
 import Welcome from "./pages/Welcome/Welcome";
 import Agreement from "./pages/Signup/Agreement";
 import Map from "./pages/Map";
-import MyPage from "./pages/MyPage";
+import MyPage from "./pages/MyPage/MyPage";
+import ProfileChange from "./pages/MyPage/ProfileChange/ProfileChange";
+import ChangePw from "./pages/MyPage/ChangePw/ChangePw";
+import ChangeNickname from "./pages/MyPage/ChangeNickname/ChangeNickname";
 
 function App() {
   const router = createBrowserRouter([
@@ -65,6 +68,18 @@ function App() {
         {
           path: "myinfo",
           element: <MyPage />,
+        },
+        {
+          path: "profilechange",
+          element: <ProfileChange />,
+        },
+        {
+          path: "changepw",
+          element: <ChangePw />,
+        },
+        {
+          path: "changenickname",
+          element: <ChangeNickname />,
         },
       ],
     },

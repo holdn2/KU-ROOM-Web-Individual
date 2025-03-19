@@ -49,7 +49,7 @@ const IdentityVerify = () => {
     if (response === "OK") {
       console.log("인증코드 발송");
       // 서버에 전송 요청
-      const sendResponse = sendEmailApi(checkingEmail);
+      const sendResponse = await sendEmailApi(checkingEmail);
       console.log(sendResponse);
       setIsAttemptSend(true);
       setModalState(true);
@@ -106,7 +106,7 @@ const IdentityVerify = () => {
           <span className={styles.ErrorMsg}>잘못된 이메일 형식입니다.</span>
         )}
         {isDuplicatedEmail && (
-          <span className={styles.ErrorMsg}>이미 존재하는 이메일입니다.</span>
+          <span className={styles.ErrorMsg}>이미 있는 계정입니다.</span>
         )}
         {isAttemptSend && (
           <div style={{ position: "relative" }}>

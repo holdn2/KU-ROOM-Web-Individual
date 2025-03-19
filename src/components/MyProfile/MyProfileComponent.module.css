@@ -1,0 +1,43 @@
+.MyProfileContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 28.5px;
+  gap: 29px;
+}
+.MyProfileInfoWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 28px;
+  align-items: center;
+}
+.ImgWrapper {
+  position: relative;
+}
+.ProfileImg {
+  border-radius: 65px;
+  border: 2px solid var(--Brand-Primary_1, #009733);
+}
+.EditIcon {
+  position: absolute;
+  bottom: 4px;
+  right: -2px;
+}
+.InfoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.MyName {
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%;
+}
+.MyDepartment {
+  color: var(--Gray-100, #9eaab5);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+}

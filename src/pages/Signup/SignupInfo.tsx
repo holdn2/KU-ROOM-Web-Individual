@@ -25,7 +25,7 @@ const SignupInfo = () => {
 
   const handleSignupIdChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/[^a-zA-Z0-9]/g, ""); // 영어와 숫자만 허용
-    if (newValue.length <= 12) {
+    if (newValue.length <= 15) {
       setSignupId(newValue);
     }
   };
@@ -58,7 +58,7 @@ const SignupInfo = () => {
                 label="아이디"
                 type="text"
                 value={signupId}
-                placeholder="아이디를 입력해주세요 (영문 또는 숫자)"
+                placeholder="아이디를 입력해주세요"
                 onChange={handleSignupIdChange}
               />
               {isAvailableId ? (
@@ -69,24 +69,27 @@ const SignupInfo = () => {
                   사용가능
                 </button>
               ) : (
+                // 아이디는 영어 포함 6자 이상 15자 이내로 입력해야만 버튼 활성화됨.
                 <button
                   className={classNames(styles.CheckDupBtn, {
-                    [styles.disabled]: signupId.length < 6,
+                    [styles.disabled]:
+                      signupId.length < 6 || !/[a-zA-Z]/.test(signupId),
                   })}
-                  onClick={() =>
-                    checkAvailableId(signupId, setIsAvailableId, setIsChecked)
-                  }
+                  onClick={() => {
+                    checkAvailableId(signupId, setIsAvailableId, setIsChecked);
+                  }}
                 >
                   중복확인
                 </button>
               )}
             </div>
 
-            {signupId.length < 6 && signupId && (
-              <span className={styles.ErrorMsg}>
-                아이디는 6자 이상 12자 이내로 설정해주세요.
-              </span>
-            )}
+            {(signupId.length < 6 || !/[a-zA-Z]/.test(signupId)) &&
+              signupId && (
+                <span className={styles.ErrorMsg}>
+                  영어 포함 6자 이상 15자 이내로 입력해주세요.
+                </span>
+              )}
             {/* 체크를 이미 한 상태에서만 표시되게함. */}
             {signupId.length >= 6 && isChecked && (
               <span
