@@ -74,10 +74,15 @@ const Agreement: React.FC = () => {
             [선택] 광고 및 마케팅 수신에 동의합니다.
           </AgreementLabel>
         </div>
+        <div className={styles.ButtonStyle}>
+          <Button
+            onClick={handleCompleteSignup}
+            disabled={!age14 || !privacyInfo}
+          >
+            가입하기
+          </Button>
+        </div>
       </div>
-      <Button onClick={handleCompleteSignup} disabled={!age14 || !privacyInfo}>
-        가입하기
-      </Button>
     </div>
   );
 };

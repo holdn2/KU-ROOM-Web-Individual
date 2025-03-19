@@ -7,6 +7,7 @@ import { dummyLoginInfo, dummyCode } from "../../constants/dummyData";
 import FindStep0 from "./FindStep0";
 import FindStep1 from "./FindStep1";
 import FindStep2 from "./FindStep2";
+import { sendEmailApi } from "../../apis/mails";
 
 // 상태 정의
 type State = {
@@ -107,7 +108,11 @@ const FindIdPw = () => {
   };
 
   // 추후 서버에 인증할 메일 주소 보냄야 함. api 연동 필요
-  const sendInformEmail = () => {
+  const sendInformEmail = (informEmail: string) => {
+    const sendEmail = { email: informEmail };
+    console.log(informEmail);
+    const sendResponse = sendEmailApi(sendEmail);
+    console.log(sendResponse);
     setModalType("informEmail");
     setModalState(true);
   };
