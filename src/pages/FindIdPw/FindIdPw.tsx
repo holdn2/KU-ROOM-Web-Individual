@@ -3,11 +3,11 @@ import styles from "./FindIdPw.module.css";
 import InformModal from "../../components/InformModal/InformModal";
 import TopIcon from "../../components/TopIcon";
 import { isValidPassword } from "../../utils/validations";
-import { dummyLoginInfo, dummyCode } from "../../constants/dummyData";
+import { dummyLoginInfo } from "../../constants/dummyData";
 import FindStep0 from "./FindStep0";
 import FindStep1 from "./FindStep1";
 import FindStep2 from "./FindStep2";
-import { sendEmailApi } from "../../apis/mails";
+import { sendEmailApi, verifyCodeApi } from "../../apis/mails";
 
 // 상태 정의
 type State = {
@@ -117,9 +117,14 @@ const FindIdPw = () => {
     setModalState(true);
   };
   // 인증코드 유효한지 확인. 테스트용 인증코드 로직. api 연동 필요. 이부분은 서버와 얘기 필요할듯? boolean으로 넘겨줄 수도 있음.
-  const handleVerifyCodeTest = () => {
-    const isValidCode = state.verifyCode === dummyCode;
-    if (isValidCode) {
+  const handleVerifyCodeTest = async () => {
+    const verifyData = {
+      email: state.informEmail,
+      code: state.verifyCode,
+    };
+    // 서버에 요청해서 같은지 확인
+    const response = await verifyCodeApi(verifyData);
+    if (response) {
       console.log("비밀번호 재설정으로 넘어가기");
       setFindStep(2);
     } else {

@@ -2,7 +2,10 @@ import styles from "./ChangeNickname.module.css";
 import InputBar from "../../../components/InputBar/InputBar";
 import Button from "../../../components/Button/Button";
 import { ChangeEvent, useEffect, useState } from "react";
-import { checkDuplictedNickname } from "../../../apis/nickname";
+import {
+  changeNicknameApi,
+  checkDuplictedNickname,
+} from "../../../apis/nickname";
 import InformModal from "../../../components/InformModal/InformModal";
 import Header from "../../../components/Header/Header";
 
@@ -24,10 +27,15 @@ const ChangeNickname = () => {
   };
   const handleChangeNickname = async () => {
     // 서버에 닉네임 중복 여부 검증
-    const response = await checkDuplictedNickname(newNickname, setErrorMsg);
-    console.log(response);
+    const checkResponse = await checkDuplictedNickname(
+      newNickname,
+      setErrorMsg
+    );
+    console.log(checkResponse);
     // 서버에 닉네임 변경 요청
-
+    const changeNickname = { nickname: newNickname };
+    const changeResponse = await changeNicknameApi(changeNickname);
+    console.log(changeResponse);
     // 닉네임 변경 모달 생성
     setModalType("NicknameChange");
     setModalState(true);

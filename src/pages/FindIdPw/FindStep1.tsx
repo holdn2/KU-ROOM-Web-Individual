@@ -34,7 +34,7 @@ const FindStep1: React.FC<Step1Props> = ({
       <div style={{ marginTop: "67px" }}>
         <Button
           onClick={handleVerifyCodeTest}
-          disabled={verifyCode.length !== 6}
+          disabled={verifyCode.length !== 4}
         >
           인증하기
         </Button>
