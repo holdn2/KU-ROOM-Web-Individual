@@ -1,16 +1,14 @@
 import { ChangeEvent, useState } from "react";
 import styles from "./ChangePw.module.css";
-import arrowBackIcon from "../../../assets/nav/arrowback.svg";
-import cloudIcon from "../../../assets/icon/cloud.svg";
 import InputBar from "../../../components/InputBar/InputBar";
 import Button from "../../../components/Button/Button";
 import { dummyLoginInfo } from "../../../constants/dummyData";
 import { isValidPassword } from "../../../utils/validations";
 import InformModal from "../../../components/InformModal/InformModal";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Header from "../../../components/Header/Header";
 
 const ChangePw = () => {
-  const navigate = useNavigate();
   const [originalPw, setOriginalPw] = useState("");
   const [originalPwChecked, setOriginalPwChecked] = useState(false);
   const [isAttemptReset, setIsAttemptReset] = useState(false);
@@ -53,15 +51,7 @@ const ChangePw = () => {
 
   return (
     <div className={styles.ChangePwPageWrapper}>
-      <div className={styles.HeaderIconWrapper}>
-        <img
-          className={styles.arrowBack}
-          src={arrowBackIcon}
-          alt="뒤로가기"
-          onClick={() => navigate(-1)}
-        />
-        <img className={styles.KuroomIcon} src={cloudIcon} alt="쿠룸 아이콘" />
-      </div>
+      <Header />
       <div className={styles.MainArea}>
         <h1 className={styles.ResetPwTitle}>비밀번호 재설정</h1>
         <InputBar

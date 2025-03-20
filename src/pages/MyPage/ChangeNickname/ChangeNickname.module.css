@@ -1,7 +1,6 @@
 .ChangeNicknamePageWrapper {
   position: relative;
   background-color: #f8f9fc;
-  padding: 9px 28px 11px 28px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -10,25 +9,13 @@
   box-sizing: border-box;
   overflow: hidden;
 }
-.HeaderIconWrapper {
-  position: relative;
-  width: 100%;
-}
-.arrowBack {
-  position: absolute;
-  top: 7px;
-  left: 6px;
-}
-.KuroomIcon {
-  position: absolute;
-  right: 0;
-}
 .MainArea {
   display: flex;
   flex-direction: column;
+  padding: 0 28px;
 }
 .ChangeNicknameTitle {
-  margin-top: 66px;
+  margin-top: 86px;
   margin-bottom: 29px;
   color: var(--gray-black, #1d2228);
   font-size: 30px;

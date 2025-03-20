@@ -123,10 +123,13 @@ const InformModal = ({
               style={{ display: "flex", flexDirection: "column", gap: "6px" }}
             >
               <span className={styles.InformText}>
-                {changedNickname} (으)로
+                <span style={{ color: "#009733", fontWeight: "700" }}>
+                  {changedNickname}
+                </span>{" "}
+                님
               </span>
-              <span className={styles.Graytext}>
-                닉네임 변경이 완료되었습니다.
+              <span className={styles.InformText}>
+                닉네임을 변경하였습니다.
               </span>
             </div>
             <Button onClick={handleNicknameChangeCloseModal}>확인</Button>
