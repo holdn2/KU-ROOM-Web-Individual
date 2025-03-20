@@ -1,15 +1,12 @@
 import styles from "./ChangeNickname.module.css";
-import arrowBackIcon from "../../../assets/nav/arrowback.svg";
-import cloudIcon from "../../../assets/icon/cloud.svg";
 import InputBar from "../../../components/InputBar/InputBar";
 import Button from "../../../components/Button/Button";
-import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
 import { checkDuplictedNickname } from "../../../apis/nickname";
 import InformModal from "../../../components/InformModal/InformModal";
+import Header from "../../../components/Header/Header";
 
 const ChangeNickname = () => {
-  const navigate = useNavigate();
   const [newNickname, setNewNickname] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [modalState, setModalState] = useState(false);
@@ -42,15 +39,7 @@ const ChangeNickname = () => {
 
   return (
     <div className={styles.ChangeNicknamePageWrapper}>
-      <div className={styles.HeaderIconWrapper}>
-        <img
-          className={styles.arrowBack}
-          src={arrowBackIcon}
-          alt="뒤로가기"
-          onClick={() => navigate(-1)}
-        />
-        <img className={styles.KuroomIcon} src={cloudIcon} alt="쿠룸 아이콘" />
-      </div>
+      <Header />
       <div className={styles.MainArea}>
         <h1 className={styles.ChangeNicknameTitle}>닉네임 변경하기</h1>
         <InputBar
@@ -66,12 +55,13 @@ const ChangeNickname = () => {
           </span>
         )}
         {errorMsg && <span className="ErrorMsg">{errorMsg}</span>}
+        <div className={styles.ButtonWrapper}>
+          <Button onClick={handleChangeNickname} disabled={!isNicknameValid}>
+            닉네임 변경하기
+          </Button>
+        </div>
       </div>
-      <div className={styles.ButtonWrapper}>
-        <Button onClick={handleChangeNickname} disabled={!isNicknameValid}>
-          닉네임 변경하기
-        </Button>
-      </div>
+
       <InformModal
         modalType={modalType}
         modalState={modalState}

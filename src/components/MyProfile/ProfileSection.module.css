@@ -1,5 +1,5 @@
 .SectionContainer {
-  padding: 18.5px 28.5px;
+  padding: 25px 30px;
   display: flex;
   flex-direction: column;
 }
@@ -9,7 +9,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: 120%; /* 16.8px */
-  padding: 11.5px 0;
+  padding: 15px 0;
 }
 .SectionContentButton {
   position: relative;
@@ -18,7 +18,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: 120%; /* 19.2px */
-  padding: 11.5px 0;
+  padding: 15px 0;
 }
 
 .DivideSectionThin {

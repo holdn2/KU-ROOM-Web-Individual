@@ -3,6 +3,7 @@ import "./Header.css";
 import bookmarkIcon from "../../assets/headericon/bookmark.svg";
 import searchIcon from "../../assets/headericon/search.svg";
 import arrowBackIcon from "../../assets/nav/arrowback.svg";
+import kuroomIcon from "../../assets/icon/cloud.svg";
 import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
@@ -27,6 +28,22 @@ const renderHeaderContent = (children: React.ReactNode) => {
           alt="뒤로가기"
           onClick={() => navigate(-1)}
         />
+      );
+    case "":
+      return (
+        <>
+          <img
+            className="profilechange-header-content"
+            src={arrowBackIcon}
+            alt="뒤로가기"
+            onClick={() => navigate(-1)}
+          />
+          <img
+            className="header-kuroom-icon"
+            src={kuroomIcon}
+            alt="쿠룸 아이콘"
+          />
+        </>
       );
     default:
       return;
