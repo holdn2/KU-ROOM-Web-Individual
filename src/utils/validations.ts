@@ -35,7 +35,7 @@ export const checkAvailableId = async (
   const response = await checkValidationIdApi(signupId);
   setIsChecked(true);
 
-  if (!response) {
+  if (response) {
     setIsAvailableId(true);
   } else {
     setIsAvailableId(false);

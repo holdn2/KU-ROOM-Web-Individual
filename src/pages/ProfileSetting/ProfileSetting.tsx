@@ -35,7 +35,7 @@ const ProfileSetting: React.FC = () => {
   const isNicknameValid =
     nickname.length > 1 &&
     nickname.length <= 10 &&
-    (/[a-zA-Z]/.test(nickname) || /^[가-힣ㄱ-ㅎ]+$/.test(nickname));
+    /[a-zA-Z가-힣ㄱ-ㅎ]/.test(nickname); // 영어 또는 한글이 반드시 포함되어야 함
 
   const handleNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputNickname = e.target.value;
