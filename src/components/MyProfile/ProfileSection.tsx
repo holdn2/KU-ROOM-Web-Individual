@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./ProfileSection.module.css";
 import { useNavigate } from "react-router-dom";
 import arrowRight from "../../assets/nav/arrowRight.svg";
+import ToggleButton from "../ToggleButton";
 
 const userEmail = "kurum12@gmail.com";
 const userId = "kurum12";
@@ -13,6 +14,9 @@ interface ProfileSectionProps {
     contents: string[];
   };
   isLastSection: boolean;
+  isToggle?: boolean;
+  toggleStates: Record<string, boolean>;
+  onToggle: (item: string) => void;
 }
 
 const buttonActions: { [key: string]: (() => void) | null } = {
@@ -21,7 +25,7 @@ const buttonActions: { [key: string]: (() => void) | null } = {
   "약관 및 정책": () => console.log("약관 및 정책 실행"),
   "앱 배포": () => console.log("앱 배포 실행"),
   "고객 센터": () => console.log("고객 센터 실행"),
-  "알림 설정": () => console.log("알림 설정 실행"),
+  "알림 설정": null,
   로그아웃: () => console.log("로그아웃 실행"),
   탈퇴하기: () => console.log("탈퇴하기 실행"),
   "비밀번호 변경하기": null,
@@ -31,6 +35,9 @@ const buttonActions: { [key: string]: (() => void) | null } = {
 const ProfileSection: React.FC<ProfileSectionProps> = ({
   sectionData,
   isLastSection,
+  isToggle,
+  toggleStates,
+  onToggle,
 }) => {
   const navigate = useNavigate();
 
@@ -40,6 +47,9 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
     }
     if (item === "닉네임 변경하기") {
       navigate("/changenickname");
+    }
+    if (item === "알림 설정") {
+      navigate("/alarmsetting");
     }
     const action = buttonActions[item];
     if (action) {
@@ -55,8 +65,10 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
         {sectionData.contents.map((item, index) => (
           <button
             key={index}
-            className={styles.SectionContentButton}
-            onClick={() => handleButtonClick(item)}
+            className={`${styles.SectionContentButton} ${
+              isToggle && styles.ToggleButtonStyle
+            }`}
+            onClick={() => !isToggle && handleButtonClick(item)}
             disabled={item === "이메일" || item === "학번"}
           >
             {item}
@@ -71,6 +83,12 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             )}
             {item === "학과" && (
               <img className={styles.ArrowIcon} src={arrowRight} alt="학과" />
+            )}
+            {isToggle && (
+              <ToggleButton
+                isOn={toggleStates[item]}
+                onToggle={() => onToggle(item)}
+              />
             )}
           </button>
         ))}

@@ -40,3 +40,13 @@
   top: 15px;
   right: 0;
 }
+
+.ToggleButtonStyle {
+  position: relative;
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%; /* 19.2px */
+  padding: 23px 0;
+}
