@@ -33,13 +33,9 @@
   box-sizing: border-box;
 }
 
-.input-field::placeholder {
-  color: #b0bac3;
-}
-
+.input-field::placeholder,
 .input-field:disabled {
-  background-color: #e9ecef;
-  color: #868e96;
+  color: #b0bac3;
 }
 
 .input-warning {

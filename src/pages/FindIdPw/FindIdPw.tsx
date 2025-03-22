@@ -3,7 +3,6 @@ import styles from "./FindIdPw.module.css";
 import InformModal from "../../components/InformModal/InformModal";
 import TopIcon from "../../components/TopIcon";
 import { isValidPassword } from "../../utils/validations";
-import { dummyLoginInfo } from "../../constants/dummyData";
 import FindStep0 from "./FindStep0";
 import FindStep1 from "./FindStep1";
 import FindStep2 from "./FindStep2";
@@ -14,8 +13,7 @@ type State = {
   informEmail: string; // 안내 메일을 보낼 이메일 주소
   verifyCode: string; // 인증코드
   isVerifyAttempted: boolean; // 인증을 시도했는지 여부
-  inputId: string; // 입력한 아이디
-  verifiedId: boolean; // 입력한 아이디가 알맞은지 여부
+  userId: string; // 입력한 아이디
   newPw: string; // 새 비밀번호 입력
   allowedPw: boolean; // 입력한 새 비밀번호가 조건에 맞는지 여부
   checkPw: string; // 비밀번호 확인 위해 한 번 더 입력
@@ -28,8 +26,7 @@ type Action =
   | { type: "SET_INFORM_EMAIL"; payload: string }
   | { type: "SET_VERIFY_CODE"; payload: string }
   | { type: "SET_VERIFY_ATTEMPTED"; payload: boolean }
-  | { type: "SET_INPUT_ID"; payload: string }
-  | { type: "SET_VERIFIED_ID"; payload: boolean }
+  | { type: "SET_USER_ID"; payload: string }
   | { type: "SET_NEW_PW"; payload: string }
   | { type: "SET_ALLOWED_PW"; payload: boolean }
   | { type: "SET_CHECK_PW"; payload: string }
@@ -42,8 +39,7 @@ const initialState: State = {
   informEmail: "",
   verifyCode: "",
   isVerifyAttempted: false,
-  inputId: "",
-  verifiedId: false,
+  userId: "",
   newPw: "",
   allowedPw: false,
   checkPw: "",
@@ -59,10 +55,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, verifyCode: action.payload };
     case "SET_VERIFY_ATTEMPTED":
       return { ...state, isVerifyAttempted: action.payload };
-    case "SET_INPUT_ID":
-      return { ...state, inputId: action.payload };
-    case "SET_VERIFIED_ID":
-      return { ...state, verifiedId: action.payload };
+    case "SET_USER_ID":
+      return { ...state, userId: action.payload };
     case "SET_NEW_PW":
       return { ...state, newPw: action.payload };
     case "SET_ALLOWED_PW":
@@ -97,8 +91,8 @@ const FindIdPw = () => {
       dispatch({ type: "SET_VERIFY_CODE", payload: newValue });
     }
   };
-  const handleInputIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "SET_INPUT_ID", payload: e.target.value });
+  const handleuserIdChange = (userId: string) => {
+    dispatch({ type: "SET_USER_ID", payload: userId });
   };
   const handleNewPwChange = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: "SET_NEW_PW", payload: e.target.value });
@@ -145,22 +139,15 @@ const FindIdPw = () => {
   const handleResetPassword = () => {
     dispatch({ type: "SET_ATTEMPT_RESET", payload: true });
     // 조건에 맞는지 확인
-    dispatch({
-      type: "SET_VERIFIED_ID",
-      payload: state.inputId === dummyLoginInfo[0].userId,
-    });
     dispatch({ type: "SET_ALLOWED_PW", payload: isValidPassword(state.newPw) });
     dispatch({
       type: "SET_CHECKED_PW",
       payload: state.checkPw === state.newPw,
     });
     // 모든 조건이 충족되었을 때 재설정 성공
-    if (
-      state.inputId === dummyLoginInfo[0].userId &&
-      isValidPassword(state.newPw) &&
-      state.checkPw === state.newPw
-    ) {
+    if (isValidPassword(state.newPw) && state.checkPw === state.newPw) {
       console.log("재설정 성공!");
+      // 서버 전송 로직 필요함.
       setModalType("NewPassword");
       setModalState(true);
     } else {
@@ -199,14 +186,14 @@ const FindIdPw = () => {
       case 2:
         return (
           <FindStep2
-            inputId={state.inputId}
-            verifiedId={state.verifiedId}
+            userId={state.userId}
+            informEmail={state.informEmail}
             newPw={state.newPw}
             allowedPw={state.allowedPw}
             checkPw={state.checkPw}
             isCheckedPw={state.isCheckedPw}
             isAttemptReset={state.isAttemptReset}
-            handleInputIdChange={handleInputIdChange}
+            handleuserIdChange={handleuserIdChange}
             handleNewPwChange={handleNewPwChange}
             handleCheckPwChange={handleCheckPwChange}
             handleResetPassword={handleResetPassword}
