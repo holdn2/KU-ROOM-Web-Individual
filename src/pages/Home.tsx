@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomBar from "../components/BottomBar/BottomBar";
+import { logoutApi } from "../apis/login";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const Home = () => {
   }, [navigate]);
 
   const handleLogout = () => {
+    const response = logoutApi();
+    console.log(response);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     navigate("/login");
