@@ -1,0 +1,37 @@
+.ChangeNicknamePageWrapper {
+  position: relative;
+  background-color: #f8f9fc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.MainArea {
+  display: flex;
+  flex-direction: column;
+  padding: 0 28px;
+}
+.ChangeNicknameTitle {
+  margin-top: 86px;
+  margin-bottom: 29px;
+  color: var(--gray-black, #1d2228);
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%; /* 42px */
+}
+.ButtonWrapper {
+  position: absolute;
+  width: calc(100vw - 56px);
+  bottom: 128px;
+}
+.ErrorMsg {
+  margin-top: -20px;
+  margin-bottom: 15px;
+  color: #ff4a4a;
+  font-size: 12px;
+  font-weight: 700;
+}

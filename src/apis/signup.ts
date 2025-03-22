@@ -9,6 +9,9 @@ interface SignUpResponse {
   code: number;
   status: string;
   message: string;
+  data?: {
+    id: number;
+  };
 }
 export const signupApi = async (
   userData: {
@@ -20,7 +23,7 @@ export const signupApi = async (
     nickname: string;
     agreementStatus: string;
   },
-  setIsDupliactedNickname: (value: boolean) => void,
+  setIsDuplicatedNickname: (value: boolean) => void,
   setIsDuplicatedStudentId: (value: boolean) => void
 ) => {
   try {
@@ -33,18 +36,22 @@ export const signupApi = async (
         },
       }
     );
-    console.log("회원가입 관련 message :", response.data.message);
+    console.log("회원가입 관련 message :", response.data);
     return response.data.message; // 성공 응답 반환
   } catch (error: any) {
     console.error("회원가입 실패:", error.response?.data || error.message);
-    if (error.response.data.message === "이미 존재하는 닉네임입니다.") {
-      setIsDupliactedNickname(true);
+
+    const errorMessage =
+      error.response?.data?.message || "회원가입 중 오류 발생";
+
+    if (errorMessage === "이미 존재하는 닉네임입니다.") {
+      setIsDuplicatedNickname(true);
       setIsDuplicatedStudentId(false);
-    } else if (error.response.data.message === "이미 존재하는 학번입니다.") {
+    } else if (errorMessage === "이미 존재하는 학번입니다.") {
       setIsDuplicatedStudentId(true);
-      setIsDupliactedNickname(false);
+      setIsDuplicatedNickname(false);
     }
-    throw new Error(error.response?.data?.message || "회원가입 중 오류 발생");
+    throw new Error(errorMessage);
   }
 };
 

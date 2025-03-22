@@ -1,48 +1,54 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import styles from "./FindIdPw.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
+import { findIdFromEmail } from "../../apis/mails";
 
 interface Step2Props {
-  inputId: string;
-  verifiedId: boolean;
+  userId: string;
+  informEmail: string;
   newPw: string;
   allowedPw: boolean;
   checkPw: string;
   isCheckedPw: boolean;
   isAttemptReset: boolean;
-  handleInputIdChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleuserIdChange: (value: string) => void;
   handleNewPwChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleCheckPwChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleResetPassword: () => void;
 }
 
 const FindStep2: React.FC<Step2Props> = ({
-  inputId,
-  verifiedId,
+  userId,
+  informEmail,
   newPw,
   allowedPw,
   checkPw,
   isCheckedPw,
   isAttemptReset,
-  handleInputIdChange,
+  handleuserIdChange,
   handleNewPwChange,
   handleCheckPwChange,
   handleResetPassword,
 }) => {
+  const getIdfromEmail = async () => {
+    const response = await findIdFromEmail(informEmail);
+    console.log(response);
+    handleuserIdChange(response);
+  };
+  useEffect(() => {
+    getIdfromEmail();
+  }, []);
   return (
     <>
       <h1 className={styles.FindStepTitle}>비밀번호 재설정</h1>
       <InputBar
         label="아이디"
         type="text"
-        value={inputId}
+        value={userId}
         placeholder="안내 이메일에서 아이디를 확인하세요"
-        onChange={handleInputIdChange}
+        disabled={true}
       />
-      {!verifiedId && isAttemptReset && (
-        <span className={styles.ErrorMsg}>알맞은 아이디를 입력해주세요.</span>
-      )}
       <InputBar
         label="새로운 비밀번호"
         type="password"
@@ -66,10 +72,7 @@ const FindStep2: React.FC<Step2Props> = ({
         <span className={styles.ErrorMsg}>비밀번호와 일치하지 않습니다.</span>
       )}
       <div style={{ marginTop: "67px" }}>
-        <Button
-          onClick={handleResetPassword}
-          disabled={!inputId || !newPw || !checkPw}
-        >
+        <Button onClick={handleResetPassword} disabled={!newPw || !checkPw}>
           비밀번호 재설정하기
         </Button>
       </div>

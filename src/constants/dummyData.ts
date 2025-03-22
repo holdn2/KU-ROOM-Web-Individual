@@ -4,7 +4,7 @@
 const dummyLoginInfo = [
   {
     userId: "kurum",
-    userPw: "1234",
+    userPw: "qwer1234!",
   },
 ];
 

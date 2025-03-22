@@ -30,8 +30,8 @@ const IdentityVerify = () => {
   };
   const handleVerifyCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/\D/g, ""); // 숫자만 입력 가능하도록 제한
-    if (newValue.length <= 4) {
-      // 4자리까지만 입력 가능
+    if (newValue.length <= 6) {
+      // 6자리까지만 입력 가능
       setVerifyCode(newValue);
     }
   };
@@ -49,7 +49,7 @@ const IdentityVerify = () => {
     if (response === "OK") {
       console.log("인증코드 발송");
       // 서버에 전송 요청
-      const sendResponse = sendEmailApi(checkingEmail);
+      const sendResponse = await sendEmailApi(checkingEmail);
       console.log(sendResponse);
       setIsAttemptSend(true);
       setModalState(true);
@@ -106,7 +106,7 @@ const IdentityVerify = () => {
           <span className={styles.ErrorMsg}>잘못된 이메일 형식입니다.</span>
         )}
         {isDuplicatedEmail && (
-          <span className={styles.ErrorMsg}>이미 존재하는 이메일입니다.</span>
+          <span className={styles.ErrorMsg}>이미 있는 계정입니다.</span>
         )}
         {isAttemptSend && (
           <div style={{ position: "relative" }}>
@@ -115,7 +115,7 @@ const IdentityVerify = () => {
                 label="인증코드"
                 type="text"
                 value={verifyCode}
-                placeholder="인증코드 4자리를 입력해주세요"
+                placeholder="인증코드 6자리를 입력해주세요"
                 onChange={handleVerifyCodeChange}
               />
             </div>
@@ -132,7 +132,7 @@ const IdentityVerify = () => {
           {isAttemptSend ? (
             <Button
               onClick={handleVerifyCode}
-              disabled={verifyCode.length !== 4}
+              disabled={verifyCode.length !== 6}
             >
               인증하기
             </Button>

@@ -20,8 +20,10 @@
 }
 
 .button.secondary {
-  background-color: #ced5db;
-  color: white;
+  background-color: #fff;
+  color: #9eaab5;
+  padding-block: 18px;
+  border: 1.5px solid var(--Gray-100, #9eaab5);
 }
 
 .button.secondary:hover {

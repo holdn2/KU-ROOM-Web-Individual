@@ -4,6 +4,7 @@ import axios from "axios";
 const VERIFY_MAIL_API_URL = "https://kuroom.shop/api/v1/mails/auth-codes";
 const VERIFY_CODE_API_URL =
   "https://kuroom.shop/api/v1/mails/verification_codes";
+const FIND_ID_API_URL = "https://kuroom.shop/api/v1/users/loginId?email";
 
 // 이메일 전송 요청
 export const sendEmailApi = async (email: { email: string }) => {
@@ -51,6 +52,35 @@ export const verifyCodeApi = async (verifyData: {
     console.error("인증코드 검증 실패:", error.response?.data || error.message);
     throw new Error(
       error.response?.data?.message || "인증코드 검증 중 오류 발생"
+    );
+  }
+};
+
+interface FindIdResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    loginId: string;
+  };
+}
+
+export const findIdFromEmail = async (email: string) => {
+  try {
+    const response = await axios.get<FindIdResponse>(
+      `${FIND_ID_API_URL}=${email}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(response.data.data.loginId);
+    return response.data.data.loginId;
+  } catch (error: any) {
+    console.error("아이디 조회 실패:", error.response?.data || error.message);
+    throw new Error(
+      error.response?.data?.message || "아이디 조회 중 오류 발생"
     );
   }
 };

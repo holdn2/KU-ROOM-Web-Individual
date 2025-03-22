@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 type Props = {
   modalType: string;
   modalState: boolean;
+  changedNickname?: string;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
   setModalType?: React.Dispatch<React.SetStateAction<string>>;
   setFindStep?: React.Dispatch<React.SetStateAction<number>>;
@@ -17,6 +18,7 @@ type Props = {
 const InformModal = ({
   modalType,
   modalState,
+  changedNickname,
   setModalState,
   setModalType,
   setFindStep,
@@ -37,6 +39,10 @@ const InformModal = ({
   const handleReLoginCloseModal = () => {
     setModalState(false);
     navigate("/login");
+  };
+  const handleNicknameChangeCloseModal = () => {
+    setModalState(false);
+    navigate(-1);
   };
   const renderInformModal = () => {
     switch (modalType) {
@@ -102,6 +108,31 @@ const InformModal = ({
               <span className={styles.Graytext}>다시 로그인해주세요.</span>
             </div>
             <Button onClick={handleReLoginCloseModal}>확인</Button>
+          </ReactModal>
+        );
+      case "NicknameChange":
+        return (
+          <ReactModal
+            isOpen={modalState}
+            className={styles.InformModalContainer}
+            overlayClassName={styles.Overlay}
+            ariaHideApp={false}
+          >
+            <img src={cloudIcon} alt="쿠룸아이콘" style={{ width: "30px" }} />
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+            >
+              <span className={styles.InformText}>
+                <span style={{ color: "#009733", fontWeight: "700" }}>
+                  {changedNickname}
+                </span>{" "}
+                님
+              </span>
+              <span className={styles.InformText}>
+                닉네임을 변경하였습니다.
+              </span>
+            </div>
+            <Button onClick={handleNicknameChangeCloseModal}>확인</Button>
           </ReactModal>
         );
       default:
