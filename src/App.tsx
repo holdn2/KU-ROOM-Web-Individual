@@ -15,6 +15,7 @@ import MyPage from "./pages/MyPage/MyPage";
 import ProfileChange from "./pages/MyPage/ProfileChange/ProfileChange";
 import ChangePw from "./pages/MyPage/ChangePw/ChangePw";
 import ChangeNickname from "./pages/MyPage/ChangeNickname/ChangeNickname";
+import Alarm from "./pages/MyPage/Alarm/Alarm";
 
 function App() {
   const router = createBrowserRouter([
@@ -80,6 +81,10 @@ function App() {
         {
           path: "changenickname",
           element: <ChangeNickname />,
+        },
+        {
+          path: "alarmsetting",
+          element: <Alarm />,
         },
       ],
     },
