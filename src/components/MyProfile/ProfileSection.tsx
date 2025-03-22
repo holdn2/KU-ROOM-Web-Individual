@@ -15,8 +15,8 @@ interface ProfileSectionProps {
   };
   isLastSection: boolean;
   isToggle?: boolean;
-  toggleStates: Record<string, boolean>;
-  onToggle: (item: string) => void;
+  toggleStates?: Record<string, boolean>;
+  onToggle?: (item: string) => void;
 }
 
 const buttonActions: { [key: string]: (() => void) | null } = {
@@ -86,8 +86,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             )}
             {isToggle && (
               <ToggleButton
-                isOn={toggleStates[item]}
-                onToggle={() => onToggle(item)}
+                isOn={toggleStates?.[item] ?? false} // undefined면 false로 처리
+                onToggle={() => onToggle?.(item)} // onToggle이 있을 때만 실행
               />
             )}
           </button>
