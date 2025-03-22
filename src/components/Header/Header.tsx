@@ -21,6 +21,7 @@ const renderHeaderContent = (children: React.ReactNode) => {
         </div>
       );
     case "프로필 설정":
+    case "알림 설정":
       return (
         <img
           className="profilechange-header-content"
