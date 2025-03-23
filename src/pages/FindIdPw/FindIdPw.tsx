@@ -7,6 +7,7 @@ import FindStep0 from "./FindStep0";
 import FindStep1 from "./FindStep1";
 import FindStep2 from "./FindStep2";
 import { sendEmailApi, verifyCodeApi } from "../../apis/mails";
+import { changePwBeforeLogin } from "../../apis/changePw";
 
 // 상태 정의
 type State = {
@@ -136,7 +137,7 @@ const FindIdPw = () => {
     };
   }, [state.isVerifyAttempted]);
 
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     dispatch({ type: "SET_ATTEMPT_RESET", payload: true });
     // 조건에 맞는지 확인
     dispatch({ type: "SET_ALLOWED_PW", payload: isValidPassword(state.newPw) });
@@ -145,7 +146,10 @@ const FindIdPw = () => {
       payload: state.checkPw === state.newPw,
     });
     // 모든 조건이 충족되었을 때 재설정 성공
-    if (isValidPassword(state.newPw) && state.checkPw === state.newPw) {
+    if (state.checkPw === state.newPw) {
+      const userInfo = { loginId: state.userId, newPassword: state.newPw };
+      const response = await changePwBeforeLogin(userInfo);
+      console.log(response);
       console.log("재설정 성공!");
       // 서버 전송 로직 필요함.
       setModalType("NewPassword");
