@@ -96,10 +96,16 @@ const FindIdPw = () => {
     dispatch({ type: "SET_USER_ID", payload: userId });
   };
   const handleNewPwChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "SET_NEW_PW", payload: e.target.value });
+    const newValue = e.target.value;
+    if (newValue.length <= 20) {
+      dispatch({ type: "SET_NEW_PW", payload: newValue });
+    }
   };
   const handleCheckPwChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "SET_CHECK_PW", payload: e.target.value });
+    const newValue = e.target.value;
+    if (newValue.length <= 20) {
+      dispatch({ type: "SET_CHECK_PW", payload: newValue });
+    }
   };
 
   // 추후 서버에 인증할 메일 주소 보냄야 함. api 연동 필요
@@ -146,7 +152,7 @@ const FindIdPw = () => {
       payload: state.checkPw === state.newPw,
     });
     // 모든 조건이 충족되었을 때 재설정 성공
-    if (state.checkPw === state.newPw) {
+    if (state.checkPw === state.newPw && isValidPassword(state.newPw)) {
       const userInfo = { loginId: state.userId, newPassword: state.newPw };
       const response = await changePwBeforeLogin(userInfo);
       console.log(response);

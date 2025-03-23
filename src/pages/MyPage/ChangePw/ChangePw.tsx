@@ -2,11 +2,11 @@ import { ChangeEvent, useState } from "react";
 import styles from "./ChangePw.module.css";
 import InputBar from "../../../components/InputBar/InputBar";
 import Button from "../../../components/Button/Button";
-import { dummyLoginInfo } from "../../../constants/dummyData";
 import { isValidPassword } from "../../../utils/validations";
 import InformModal from "../../../components/InformModal/InformModal";
 import { Link } from "react-router-dom";
 import Header from "../../../components/Header/Header";
+import { changePwAfterLogin } from "../../../apis/changePw";
 
 const ChangePw = () => {
   const [originalPw, setOriginalPw] = useState("");
@@ -21,29 +21,51 @@ const ChangePw = () => {
   const [modalState, setModalState] = useState(false);
 
   const handleOriginalPwChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setOriginalPw(e.target.value);
+    const newValue = e.target.value;
+    if (newValue.length <= 20) {
+      setOriginalPw(newValue);
+    }
   };
   const handleNewPwChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewPw(e.target.value);
+    const newValue = e.target.value;
+    if (newValue.length <= 20) {
+      setNewPw(e.target.value);
+    }
   };
   const handleCheckPwChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCheckPw(e.target.value);
+    const newValue = e.target.value;
+    if (newValue.length <= 20) {
+      setCheckPw(e.target.value);
+    }
   };
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     setIsAttemptReset(true);
     // 조건에 맞는지 확인
-    setOriginalPwChecked(originalPw === dummyLoginInfo[0].userPw);
-    setAllowedPw(isValidPassword(newPw));
-    setIsCheckedPw(checkPw === newPw);
+    const isAllowedPw = isValidPassword(newPw);
+    const isPwMatched = checkPw === newPw;
+
+    setAllowedPw(isAllowedPw);
+    setIsCheckedPw(isPwMatched);
+    const userInfo = {
+      prevPassword: originalPw,
+      newPassword: newPw,
+    };
+
     // 모든 조건이 충족되었을 때 재설정 성공
-    if (
-      originalPw === dummyLoginInfo[0].userPw &&
-      isValidPassword(newPw) &&
-      checkPw === newPw
-    ) {
-      console.log("재설정 성공!");
-      setModalType("NewPassword");
-      setModalState(true);
+    if (isAllowedPw && isPwMatched) {
+      try {
+        const response = await changePwAfterLogin(
+          userInfo,
+          setOriginalPwChecked
+        );
+        console.log(response);
+        console.log("재설정 성공!");
+        setModalType("NewPassword");
+        setModalState(true);
+      } catch (error: any) {
+        console.error("서버 에러:", error.message);
+        // 사용자에게 알림 메시지 보여주기 등
+      }
     } else {
       console.log("재설정 실패: 조건을 다시 확인하세요.");
     }
