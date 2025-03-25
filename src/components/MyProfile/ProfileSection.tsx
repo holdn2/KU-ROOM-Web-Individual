@@ -3,6 +3,7 @@ import styles from "./ProfileSection.module.css";
 import { useNavigate } from "react-router-dom";
 import arrowRight from "../../assets/nav/arrowRight.svg";
 import ToggleAlarmButton from "../ToggleAlarmButton";
+import KeywordButton from "../KeywordButton/KeywordButton";
 
 const userEmail = "kurum12@gmail.com";
 const userId = "kurum12";
@@ -17,6 +18,8 @@ interface ProfileSectionProps {
   isToggle?: boolean;
   toggleStates?: Record<string, boolean>;
   onToggle?: (item: string) => void;
+  keywordData?: { keyword: string }[];
+  onDeleteKeyword?: (keyword: string) => void;
 }
 
 const buttonActions: { [key: string]: (() => void) | null } = {
@@ -38,6 +41,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   isToggle,
   toggleStates,
   onToggle,
+  keywordData,
+  onDeleteKeyword,
 }) => {
   const navigate = useNavigate();
 
@@ -58,39 +63,56 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
       console.log(`${item} 버튼이 클릭됨`);
     }
   };
+
   return (
     <>
       <div className={styles.SectionContainer}>
         <span className={styles.SectionTitle}>{sectionData.title}</span>
         {sectionData.contents.map((item, index) => (
-          <button
-            key={index}
-            className={`${styles.SectionContentButton} ${
-              isToggle && styles.ToggleButtonStyle
-            }`}
-            onClick={() => !isToggle && handleButtonClick(item)}
-            disabled={item === "이메일" || item === "학번"}
-          >
-            {item}
-            {item === "이메일" && (
-              <span className={styles.ExtraInfoText}>{userEmail}</span>
-            )}
-            {item === "아이디" && (
-              <span className={styles.ExtraInfoText}>{userId}</span>
-            )}
-            {item === "학번" && (
-              <span className={styles.ExtraInfoText}>{studentId}</span>
-            )}
-            {item === "학과" && (
-              <img className={styles.ArrowIcon} src={arrowRight} alt="학과" />
-            )}
-            {isToggle && (
-              <ToggleAlarmButton
-                isOn={toggleStates?.[item] ?? false} // undefined면 false로 처리
-                onToggle={() => onToggle?.(item)} // onToggle이 있을 때만 실행
-              />
-            )}
-          </button>
+          <React.Fragment key={item + index}>
+            <button
+              key={index}
+              className={`${styles.SectionContentButton} ${
+                isToggle && styles.ToggleButtonStyle
+              }`}
+              onClick={() => !isToggle && handleButtonClick(item)}
+              disabled={item === "이메일" || item === "학번"}
+            >
+              {item}
+              {item === "이메일" && (
+                <span className={styles.ExtraInfoText}>{userEmail}</span>
+              )}
+              {item === "아이디" && (
+                <span className={styles.ExtraInfoText}>{userId}</span>
+              )}
+              {item === "학번" && (
+                <span className={styles.ExtraInfoText}>{studentId}</span>
+              )}
+              {item === "학과" && (
+                <img className={styles.ArrowIcon} src={arrowRight} alt="학과" />
+              )}
+
+              {isToggle && (
+                <ToggleAlarmButton
+                  isOn={toggleStates?.[item] ?? false} // undefined면 false로 처리
+                  onToggle={() => onToggle?.(item)} // onToggle이 있을 때만 실행
+                />
+              )}
+            </button>
+            {item === "공지 키워드 알림" &&
+              toggleStates?.[item] &&
+              keywordData && (
+                <div className={styles.KeywordButtonWrapper} style={{}}>
+                  {keywordData.map((item, index) => (
+                    <KeywordButton
+                      key={index}
+                      keyword={item.keyword}
+                      handleDelete={() => onDeleteKeyword?.(item.keyword)}
+                    />
+                  ))}
+                </div>
+              )}
+          </React.Fragment>
         ))}
       </div>
       {!isLastSection && <div className={styles.DivideSectionThin} />}
