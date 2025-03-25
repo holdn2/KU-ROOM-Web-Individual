@@ -135,16 +135,16 @@ const FindIdPw = () => {
 
   // 인증코드 유효한지 확인. 테스트용 인증코드 로직. api 연동 필요. 이부분은 서버와 얘기 필요할듯? boolean으로 넘겨줄 수도 있음.
   const handleVerifyCodeTest = async () => {
-    const verifyData = {
-      email: state.informEmail,
-      code: state.verifyCode,
-    };
-    // 서버에 요청해서 같은지 확인
-    const response = await verifyCodeApi(verifyData);
-    if (response) {
+    try {
+      const verifyData = {
+        email: state.informEmail,
+        code: state.verifyCode,
+      };
+      // 서버에 요청해서 같은지 확인
+      await verifyCodeApi(verifyData);
       console.log("비밀번호 재설정으로 넘어가기");
       setFindStep(2);
-    } else {
+    } catch (error) {
       dispatch({ type: "SET_VERIFY_ATTEMPTED", payload: true });
     }
   };
