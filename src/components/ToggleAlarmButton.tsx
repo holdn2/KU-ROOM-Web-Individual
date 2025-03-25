@@ -1,11 +1,14 @@
 import React from "react";
 
-interface ToggleButtonProps {
+interface ToggleAlarmButtonProps {
   isOn: boolean;
   onToggle: () => void;
 }
 
-const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn, onToggle }) => {
+const ToggleAlarmButton: React.FC<ToggleAlarmButtonProps> = ({
+  isOn,
+  onToggle,
+}) => {
   return (
     <svg
       width="66"
@@ -28,20 +31,20 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn, onToggle }) => {
           width="66"
           height="39"
           rx="19.5"
-          fill="#E3E7EB"
-          fillOpacity="0.3"
+          fill={isOn ? "#009733" : "#E3E7EB"}
+          fillOpacity={isOn ? 1 : 0.3}
         />
       </g>
 
       {/* 이동하는 원 */}
       <g filter="url(#filter1_dii)">
         <circle
-          cx={isOn ? 46.5 : 19.5} // 위치 변화
+          cx={isOn ? 46.5 : 19.5}
           cy="19.5"
           r="15.5"
-          fill={isOn ? "#4CAF50" : "#9EAAB5"}
+          fill="white"
           style={{
-            transition: "cx 0.3s ease-in-out, fill 0.3s ease-in-out",
+            transition: "cx 0.3s ease-in-out",
           }}
         />
       </g>
@@ -73,12 +76,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn, onToggle }) => {
             values="0 0 0 0 0.619608 0 0 0 0 0.666667 0 0 0 0 0.709804 0 0 0 0.5 0"
           />
           <feBlend in2="shape" result="effect1_innerShadow" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
           <feOffset dx="-1" dy="-1" />
           <feGaussianBlur stdDeviation="0.5" />
           <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
@@ -89,7 +86,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn, onToggle }) => {
           <feBlend in2="effect1_innerShadow" result="effect2_innerShadow" />
         </filter>
 
-        {/* 🎯 필터 영역 넓힘: x, width, height 조정 */}
         <filter
           id="filter1_dii"
           x="0"
@@ -137,4 +133,4 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn, onToggle }) => {
   );
 };
 
-export default ToggleButton;
+export default ToggleAlarmButton;
