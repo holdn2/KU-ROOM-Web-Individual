@@ -1,9 +1,7 @@
-import React, { ChangeEvent, useEffect } from "react";
+import React, { ChangeEvent } from "react";
 import styles from "./FindIdPw.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
-import { findIdFromEmail } from "../../apis/mails";
-
 interface Step2Props {
   userId: string;
   informEmail: string;
@@ -20,25 +18,15 @@ interface Step2Props {
 
 const FindStep2: React.FC<Step2Props> = ({
   userId,
-  informEmail,
   newPw,
   allowedPw,
   checkPw,
   isCheckedPw,
   isAttemptReset,
-  handleuserIdChange,
   handleNewPwChange,
   handleCheckPwChange,
   handleResetPassword,
 }) => {
-  const getIdfromEmail = async () => {
-    const response = await findIdFromEmail(informEmail);
-    console.log(response);
-    handleuserIdChange(response);
-  };
-  useEffect(() => {
-    getIdfromEmail();
-  }, []);
   return (
     <>
       <h1 className={styles.FindStepTitle}>비밀번호 재설정</h1>
