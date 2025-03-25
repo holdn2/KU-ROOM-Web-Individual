@@ -11,9 +11,9 @@ const ToggleAlarmButton: React.FC<ToggleAlarmButtonProps> = ({
 }) => {
   return (
     <svg
-      width="66"
-      height="42"
-      viewBox="0 0 66 42"
+      width="48"
+      height="30"
+      viewBox="0 0 48 30"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       onClick={onToggle}
@@ -22,15 +22,15 @@ const ToggleAlarmButton: React.FC<ToggleAlarmButtonProps> = ({
         overflow: "visible",
         position: "absolute",
         right: 0,
-        top: "13px",
+        top: "17px", // 위치 조정
       }}
     >
       {/* 배경 */}
       <g filter="url(#filter0_ii)">
         <rect
-          width="66"
-          height="39"
-          rx="19.5"
+          width="48"
+          height="30"
+          rx="15"
           fill={isOn ? "#009733" : "#E3E7EB"}
           fillOpacity={isOn ? 1 : 0.3}
         />
@@ -39,12 +39,12 @@ const ToggleAlarmButton: React.FC<ToggleAlarmButtonProps> = ({
       {/* 이동하는 원 */}
       <g filter="url(#filter1_dii)">
         <circle
-          cx={isOn ? 46.5 : 19.5}
-          cy="19.5"
-          r="15.5"
+          cx={isOn ? 34.5 : 13.5}
+          cy="15"
+          r="10.5"
           fill="white"
           style={{
-            transition: "cx 0.3s ease-in-out",
+            transition: "cx 0.3s ease-in-out, fill 0.3s ease-in-out",
           }}
         />
       </g>
@@ -55,8 +55,8 @@ const ToggleAlarmButton: React.FC<ToggleAlarmButtonProps> = ({
           id="filter0_ii"
           x="-1"
           y="-1"
-          width="68"
-          height="41"
+          width="50"
+          height="32"
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
@@ -90,8 +90,8 @@ const ToggleAlarmButton: React.FC<ToggleAlarmButtonProps> = ({
           id="filter1_dii"
           x="0"
           y="0"
-          width="70"
-          height="42"
+          width="48"
+          height="30"
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
@@ -103,7 +103,7 @@ const ToggleAlarmButton: React.FC<ToggleAlarmButtonProps> = ({
             result="hardAlpha"
           />
           <feOffset dx="2" dy="2" />
-          <feGaussianBlur stdDeviation="2.5" />
+          <feGaussianBlur stdDeviation="2" />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix
             type="matrix"
@@ -112,7 +112,7 @@ const ToggleAlarmButton: React.FC<ToggleAlarmButtonProps> = ({
           <feBlend in2="BackgroundImageFix" result="effect1_dropShadow" />
           <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
           <feOffset dx="1" dy="1" />
-          <feGaussianBlur stdDeviation="2" />
+          <feGaussianBlur stdDeviation="1.5" />
           <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
           <feColorMatrix
             type="matrix"
