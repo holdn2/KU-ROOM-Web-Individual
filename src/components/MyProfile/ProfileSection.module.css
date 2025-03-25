@@ -50,3 +50,10 @@
   line-height: 120%; /* 19.2px */
   padding: 23px 0;
 }
+
+.KeywordButtonWrapper {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}

@@ -1,0 +1,19 @@
+.KeywordWrapper {
+  display: flex;
+  flex-direction: row;
+  border-radius: 30px;
+  border: 1px solid #ced5db;
+  background: #f8f9fc;
+  padding: 9px 18px 9px 19px;
+  gap: 12px;
+  align-items: center;
+}
+.KeywordText {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
+}
+.DeleteIcon {
+  width: 10px;
+  height: 10px;
+}

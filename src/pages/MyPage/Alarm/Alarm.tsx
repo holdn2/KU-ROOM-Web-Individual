@@ -18,6 +18,18 @@ const sectionDatas: { title: string; contents: string[] }[] = [
 ];
 
 const Alarm = () => {
+  // 키워드 더미 데이터
+  const [keywords, setKeywords] = useState<{ keyword: string }[]>([
+    { keyword: "입학식" },
+    { keyword: "성적 삭제" },
+    { keyword: "복학" },
+    { keyword: "휴학" },
+  ]);
+  // 추후 서버와 연동 시에 수정 필요
+  const handleDeleteKeyword = (target: string) => {
+    setKeywords((prev) => prev.filter((k) => k.keyword !== target));
+  };
+
   // 각 알림 상태
   const [toggleStates, setToggleStates] = useState(() => {
     const initialState: Record<string, boolean> = {};
@@ -51,6 +63,8 @@ const Alarm = () => {
             isToggle={true}
             toggleStates={toggleStates}
             onToggle={handleToggle}
+            keywordData={keywords}
+            onDeleteKeyword={handleDeleteKeyword}
           />
         ))}
       </div>
