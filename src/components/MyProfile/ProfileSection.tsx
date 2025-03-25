@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./ProfileSection.module.css";
 import { useNavigate } from "react-router-dom";
 import arrowRight from "../../assets/nav/arrowRight.svg";
-import ToggleButton from "../ToggleButton";
+import ToggleAlarmButton from "../ToggleAlarmButton";
 
 const userEmail = "kurum12@gmail.com";
 const userId = "kurum12";
@@ -85,7 +85,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               <img className={styles.ArrowIcon} src={arrowRight} alt="학과" />
             )}
             {isToggle && (
-              <ToggleButton
+              <ToggleAlarmButton
                 isOn={toggleStates?.[item] ?? false} // undefined면 false로 처리
                 onToggle={() => onToggle?.(item)} // onToggle이 있을 때만 실행
               />

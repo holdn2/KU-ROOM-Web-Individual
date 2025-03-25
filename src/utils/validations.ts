@@ -32,13 +32,14 @@ export const checkAvailableId = async (
   setIsAvailableId: Dispatch<SetStateAction<boolean | null>>,
   setIsChecked: Dispatch<SetStateAction<boolean>>
 ) => {
-  const response = await checkValidationIdApi(signupId);
-  setIsChecked(true);
-
-  if (response) {
+  try {
+    await checkValidationIdApi(signupId);
     setIsAvailableId(true);
-  } else {
+  } catch (error) {
     setIsAvailableId(false);
+    console.error(error);
+  } finally {
+    setIsChecked(true); // 무조건 실행되도록!
   }
 };
 
