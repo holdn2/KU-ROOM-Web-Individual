@@ -44,6 +44,9 @@ const InformModal = ({
     setModalState(false);
     navigate(-1);
   };
+  const handleNonExistentEmail = () => {
+    setModalState(false);
+  };
   const renderInformModal = () => {
     switch (modalType) {
       case "informEmail":
@@ -133,6 +136,28 @@ const InformModal = ({
               </span>
             </div>
             <Button onClick={handleNicknameChangeCloseModal}>확인</Button>
+          </ReactModal>
+        );
+      case "NonExistentEmail":
+        return (
+          <ReactModal
+            isOpen={modalState}
+            className={styles.InformModalContainer}
+            overlayClassName={styles.Overlay}
+            ariaHideApp={false}
+          >
+            <img src={cloudIcon} alt="쿠룸아이콘" style={{ width: "30px" }} />
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+            >
+              <span className={styles.InformText}>
+                존재하지 않는 사용자입니다.
+              </span>
+              <span className={styles.Graytext}>
+                이메일을 다시 입력해주세요.
+              </span>
+            </div>
+            <Button onClick={handleNonExistentEmail}>확인</Button>
           </ReactModal>
         );
       default:
