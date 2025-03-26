@@ -22,7 +22,7 @@ const ToggleAlarmButton: React.FC<ToggleAlarmButtonProps> = ({
         overflow: "visible",
         position: "absolute",
         right: 0,
-        top: "17px", // 위치 조정
+        top: "10px", // 위치 조정
       }}
     >
       {/* 배경 */}

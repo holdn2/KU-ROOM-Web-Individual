@@ -76,7 +76,9 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
                 isToggle && styles.ToggleButtonStyle
               }`}
               onClick={() => !isToggle && handleButtonClick(item)}
-              disabled={item === "이메일" || item === "학번"}
+              disabled={
+                item === "이메일" || item === "아이디" || item === "학번"
+              }
             >
               {item}
               {item === "이메일" && (

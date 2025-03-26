@@ -1,23 +1,9 @@
 import { useEffect, useState } from "react";
 import Header from "../../../components/Header/Header";
 import ProfileSection from "../../../components/MyProfile/ProfileSection";
+import { AlarmSectionData } from "../../../constants/sectionDatas";
 
-const sectionDatas: { title: string; contents: string[] }[] = [
-  {
-    title: "친구",
-    contents: ["친구 신청", "친구 위치 공유"],
-  },
-  {
-    title: "공지사항",
-    contents: ["새로운 공지 업로드", "공지 키워드 알림"],
-  },
-  {
-    title: "내 장소 랭킹",
-    contents: ["순위 변동 알림"],
-  },
-];
-
-const Alarm = () => {
+const AlarmSetting = () => {
   // 키워드 더미 데이터
   const [keywords, setKeywords] = useState<{ keyword: string }[]>([
     { keyword: "입학식" },
@@ -27,13 +13,14 @@ const Alarm = () => {
   ]);
   // 추후 서버와 연동 시에 수정 필요
   const handleDeleteKeyword = (target: string) => {
+    // 삭제 시 서버에 알려야 함.
     setKeywords((prev) => prev.filter((k) => k.keyword !== target));
   };
 
   // 각 알림 상태
   const [toggleStates, setToggleStates] = useState(() => {
     const initialState: Record<string, boolean> = {};
-    sectionDatas.forEach((section) =>
+    AlarmSectionData.forEach((section) =>
       section.contents.forEach((item) => {
         initialState[item] = false;
       })
@@ -55,11 +42,11 @@ const Alarm = () => {
     <div>
       <Header>알림 설정</Header>
       <div style={{ marginTop: "56px" }}>
-        {sectionDatas.map((data, index) => (
+        {AlarmSectionData.map((data, index) => (
           <ProfileSection
             key={index}
             sectionData={data}
-            isLastSection={index === sectionDatas.length - 1}
+            isLastSection={index === AlarmSectionData.length - 1}
             isToggle={true}
             toggleStates={toggleStates}
             onToggle={handleToggle}
@@ -72,4 +59,4 @@ const Alarm = () => {
   );
 };
 
-export default Alarm;
+export default AlarmSetting;
