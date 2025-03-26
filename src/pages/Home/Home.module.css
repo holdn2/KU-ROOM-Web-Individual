@@ -1,0 +1,5 @@
+.HomeContentWrapper {
+  margin-top: 56px;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+}
