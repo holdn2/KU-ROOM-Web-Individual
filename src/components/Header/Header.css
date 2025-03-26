@@ -34,3 +34,18 @@
   top: 12px;
   right: 29px;
 }
+.home-header-wrapper {
+  width: 100%;
+  padding: 0 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.home-header-title {
+  color: #009733;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 120%; /* 24px */
+}
