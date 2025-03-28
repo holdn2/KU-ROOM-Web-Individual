@@ -36,7 +36,7 @@
   height: 9px;
   border-radius: 50%;
   background-color: #e3e7eb;
-  transition: all 0.5s ease; /* 모든 속성 부드럽게 */
+  transition: all 0.3s ease; /* 모든 속성 부드럽게 */
 }
 
 .ActiveDot {

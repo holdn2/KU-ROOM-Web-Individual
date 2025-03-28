@@ -1,8 +1,8 @@
 import styles from "./HomeMenu.module.css";
-import searchLocationIcon from "../../../assets/homemenuicon/homeicon_search_location.svg";
-import plusFriendIcon from "../../../assets/homemenuicon/homeicon_plus_friend.svg";
-import kcubeIcon from "../../../assets/homemenuicon/homeicon_kcube_reserve.svg";
-import readingRoomIcon from "../../../assets/homemenuicon/homeicon_readingroom.svg";
+import searchLocationIcon from "../../../assets/homemenuicon/homeicon_search_location.png";
+import plusFriendIcon from "../../../assets/homemenuicon/homeicon_plus_friend.png";
+import kcubeIcon from "../../../assets/homemenuicon/homeicon_kcube_reserve.png";
+import readingRoomIcon from "../../../assets/homemenuicon/homeicon_readingroom.png";
 
 const HomeMenu = () => {
   const navToSearchLocation = () => {
