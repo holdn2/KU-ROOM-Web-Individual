@@ -31,8 +31,9 @@
 }
 .header-kuroom-icon {
   position: absolute;
-  top: 12px;
-  right: 29px;
+  top: 18px;
+  right: 34px;
+  width: 30px;
 }
 .home-header-wrapper {
   width: 100%;
