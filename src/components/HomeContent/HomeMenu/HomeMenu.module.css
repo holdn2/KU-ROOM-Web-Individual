@@ -5,6 +5,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  max-width: 800px;
   /* 넓이가 넘치지 않게 */
   box-sizing: border-box;
 }
