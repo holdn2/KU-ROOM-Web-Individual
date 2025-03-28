@@ -1,10 +1,24 @@
 import Button from "../../Button/Button";
 import styles from "./HomeMiniMap.module.css";
 import mapExampleImg from "../../../assets/ExampleImg/exMap.png";
+import React from "react";
 
-const HomeMiniMap = () => {
+interface HomeMiniMapProps {
+  isSharedLocation: boolean;
+  setIsSharedLocation: (value: boolean) => void;
+}
+
+const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
+  isSharedLocation,
+  setIsSharedLocation,
+}) => {
   const handleShareLocation = () => {
     console.log("내 위치 공유하기");
+    setIsSharedLocation(true);
+  };
+  const handleUnshareLocation = () => {
+    console.log("위치 공유 해제하기");
+    setIsSharedLocation(false);
   };
   return (
     <div className={styles.HomeMiniMapBackground}>
@@ -24,7 +38,11 @@ const HomeMiniMap = () => {
             alt="지도 예시 이미지"
           />
         </div>
-        <Button onClick={handleShareLocation}>내 위치 공유하기</Button>
+        {isSharedLocation ? (
+          <Button onClick={handleUnshareLocation}>위치 공유 해제하기</Button>
+        ) : (
+          <Button onClick={handleShareLocation}>내 위치 공유하기</Button>
+        )}
       </div>
     </div>
   );

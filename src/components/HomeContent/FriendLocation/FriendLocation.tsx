@@ -5,7 +5,7 @@ import defaulProfileImg from "../../../assets/defaultProfileImg.svg";
 import exampleProfileImg1 from "../../../assets/exampleProfileImg1.png";
 import exampleProfileImg2 from "../../../assets/exampleProfileImg2.png";
 import exampleProfileImg3 from "../../../assets/exampleProfileImg3.png";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const dummyFriendLocationData = [
   {
@@ -61,7 +61,13 @@ const dummyFriendLocationData = [
   },
 ];
 
-const FriendLocation = () => {
+interface FriendLocationProps {
+  isSharedLocation: boolean;
+}
+
+const FriendLocation: React.FC<FriendLocationProps> = ({
+  isSharedLocation,
+}) => {
   // 화면 너비에 따라 개수 다르게 보이기. 크기에 따라 최대 3 혹은 4개
   const [maxVisibleFriends, setMaxVisibleFriends] = useState(4);
 
@@ -97,7 +103,14 @@ const FriendLocation = () => {
         const visibleFriends = item.friends.slice(0, maxVisibleFriends);
 
         return (
-          <div key={index} className={styles.EachLocationWrapper}>
+          <div
+            key={index}
+            className={`${styles.EachLocationWrapper} ${
+              isSharedLocation && item.location === "상허기념도서관"
+                ? styles.HighlightBorder
+                : ""
+            }`}
+          >
             <div className={styles.EachLocationTitleWrapper}>
               <img
                 className={styles.LocationIcon}
