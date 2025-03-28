@@ -9,19 +9,22 @@
   box-sizing: border-box;
 }
 .EachMenuContainer {
+  /* 터치 영역 보장 */
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.InnerContent {
   width: 65px;
   height: 82px;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-
-  /* 터치 영역 보장 */
-  touch-action: manipulation;
 }
 .MenuIcon {
   width: 65px;
   height: 65px;
+  min-width: 48px;
+  min-height: 48px;
   display: block;
   pointer-events: auto;
 }
