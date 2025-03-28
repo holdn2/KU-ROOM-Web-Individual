@@ -11,6 +11,7 @@ import Splash from "../../components/Splash";
 const Home = () => {
   const [showSplash, setShowSplash] = useState(true);
 
+  // api 기다리는 상태 관리도 추후 추가 예정.
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowSplash(false);

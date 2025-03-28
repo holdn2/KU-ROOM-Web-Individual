@@ -7,3 +7,10 @@
   height: 10px;
   background: var(--Gray-500, rgba(227, 231, 235, 0.3));
 }
+
+.MyPageLoadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
