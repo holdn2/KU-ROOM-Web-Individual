@@ -15,7 +15,7 @@ const Home = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowSplash(false);
-    }, 1500); // 1.5초 후에 splash 화면 종료
+    }, 2000); // 1.5초 후에 splash 화면 종료
 
     return () => clearTimeout(timeout);
   }, []);
