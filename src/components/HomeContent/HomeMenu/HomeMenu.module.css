@@ -15,10 +15,15 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
+
+  /* 터치 영역 보장 */
+  touch-action: manipulation;
 }
 .MenuIcon {
   width: 65px;
   height: 65px;
+  display: block;
+  pointer-events: auto;
 }
 .EachMenuText {
   color: #5c6369;
