@@ -1,9 +1,16 @@
+.HomeMiniMapBackground {
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .HomeMiniMapWrapper {
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   padding: 40px 19px;
   gap: 18px;
-  background-color: #fff;
 }
 .MiniMapTextContainer {
   display: flex;
