@@ -84,7 +84,12 @@ const FriendLocation = () => {
             친구들이 어디에 있는지 알려드릴게요 :)
           </span>
         </div>
-        <img src={arrowRight} alt="자세히 보기" />
+        <img
+          className={styles.ArrowButton}
+          src={arrowRight}
+          alt="자세히 보기"
+          onClick={() => console.log("자세히 보기 클릭")}
+        />
       </div>
 
       {dummyFriendLocationData.map((item, index) => {
@@ -115,13 +120,16 @@ const FriendLocation = () => {
               ))}
 
               {shouldShowMore && (
-                <div className={styles.EachFriendProfile}>
+                <button
+                  className={styles.EachFriendProfile}
+                  onClick={() => console.log("더보기 클릭")}
+                >
                   <div className={styles.LearnMoreWrapper}>
                     <div className={styles.Dotstyle} />
                     <div className={styles.Dotstyle} />
                     <div className={styles.Dotstyle} />
                   </div>
-                </div>
+                </button>
               )}
             </div>
           </div>

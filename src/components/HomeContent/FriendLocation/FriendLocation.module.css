@@ -46,7 +46,9 @@
   font-weight: 600;
   line-height: 120%;
 }
-
+.ArrowButton {
+  padding: 10px 0 10px 15px;
+}
 .EachLocationWrapper {
   padding: 20px 26px;
   border-radius: 10px;
@@ -83,6 +85,7 @@
   align-items: center;
   justify-content: center;
   width: 49px;
+  padding: 20px 0;
   position: absolute;
   right: 0;
 }
