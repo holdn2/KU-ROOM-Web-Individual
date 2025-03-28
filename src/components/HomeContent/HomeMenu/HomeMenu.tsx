@@ -23,28 +23,49 @@ const HomeMenu = () => {
         className={styles.EachMenuContainer}
         onClick={navToSearchLocation}
       >
-        <img
-          className={styles.MenuIcon}
-          src={searchLocationIcon}
-          alt="장소 검색"
-        />
-        <span className={styles.EachMenuText}>장소 검색</span>
+        <div className={styles.InnerContent}>
+          <img
+            className={styles.MenuIcon}
+            src={searchLocationIcon}
+            alt="장소 검색"
+            draggable="false"
+          />
+          <span className={styles.EachMenuText}>장소 검색</span>
+        </div>
       </button>
       <button className={styles.EachMenuContainer} onClick={navToPlusFriend}>
-        <img className={styles.MenuIcon} src={plusFriendIcon} alt="친구 추가" />
-        <span className={styles.EachMenuText}>친구 추가</span>
+        <div className={styles.InnerContent}>
+          <img
+            className={styles.MenuIcon}
+            src={plusFriendIcon}
+            alt="친구 추가"
+            draggable="false"
+          />
+
+          <span className={styles.EachMenuText}>친구 추가</span>
+        </div>
       </button>
       <button className={styles.EachMenuContainer} onClick={navToKcubeReserve}>
-        <img className={styles.MenuIcon} src={kcubeIcon} alt="케이큐브 예약" />
-        <span className={styles.EachMenuText}>케이큐브 예약</span>
+        <div className={styles.InnerContent}>
+          <img
+            className={styles.MenuIcon}
+            src={kcubeIcon}
+            alt="케이큐브 예약"
+            draggable="false"
+          />
+          <span className={styles.EachMenuText}>케이큐브 예약</span>
+        </div>
       </button>
       <button className={styles.EachMenuContainer} onClick={navToReadingRoom}>
-        <img
-          className={styles.MenuIcon}
-          src={readingRoomIcon}
-          alt="열람실 좌석현황"
-        />
-        <span className={styles.EachMenuText}>열람실 좌석현황</span>
+        <div className={styles.InnerContent}>
+          <img
+            className={styles.MenuIcon}
+            src={readingRoomIcon}
+            alt="열람실 좌석현황"
+            draggable="false"
+          />
+          <span className={styles.EachMenuText}>열람실 좌석현황</span>
+        </div>
       </button>
     </div>
   );
