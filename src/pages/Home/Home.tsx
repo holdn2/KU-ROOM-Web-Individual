@@ -9,9 +9,13 @@ import { useEffect, useState } from "react";
 import Splash from "../../components/Splash";
 import FriendLocation from "../../components/HomeContent/FriendLocation/FriendLocation";
 import MyLocationRanking from "../../components/HomeContent/MyLocationRanking/MyLocationRanking";
+import HomeNotice from "../../components/HomeContent/HomeNotice/HomeNotice";
+
+const isInSchool = true; // 학교 내부인지 외부인지
 
 const Home = () => {
   const [showSplash, setShowSplash] = useState(true);
+  const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
 
   // api 기다리는 상태 관리도 추후 추가 예정.
   useEffect(() => {
@@ -24,15 +28,22 @@ const Home = () => {
   if (showSplash) {
     return <Splash />;
   }
+
   return (
     <div>
       <Header>홈</Header>
       <div className={styles.HomeContentWrapper}>
         <HomeSildeBanner />
         <HomeMenu />
-        <HomeMiniMap />
-        <FriendLocation />
+        {isInSchool && (
+          <HomeMiniMap
+            isSharedLocation={isSharedLocation}
+            setIsSharedLocation={setIsSharedLocation}
+          />
+        )}
+        <FriendLocation isSharedLocation={isSharedLocation} />
         <MyLocationRanking />
+        <HomeNotice />
       </div>
       <BottomBar />
     </div>

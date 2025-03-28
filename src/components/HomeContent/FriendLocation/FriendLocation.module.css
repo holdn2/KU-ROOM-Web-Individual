@@ -57,6 +57,10 @@
   flex-direction: column;
   gap: 30px;
 }
+.HighlightBorder {
+  border: 1px solid var(--Brand-Primary_1, #009733);
+  border-radius: 10px;
+}
 .EachLocationTitleWrapper {
   display: flex;
   align-items: center;
