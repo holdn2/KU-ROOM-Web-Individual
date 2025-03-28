@@ -7,6 +7,8 @@ import HomeMiniMap from "../../components/HomeContent/HomeMiniMap/HomeMiniMap";
 import HomeSildeBanner from "../../components/HomeContent/HomeSlideBanner/HomeSildeBanner";
 import { useEffect, useState } from "react";
 import Splash from "../../components/Splash";
+import FriendLocation from "../../components/HomeContent/FriendLocation/FriendLocation";
+import MyLocationRanking from "../../components/HomeContent/MyLocationRanking/MyLocationRanking";
 
 const Home = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -29,6 +31,8 @@ const Home = () => {
         <HomeSildeBanner />
         <HomeMenu />
         <HomeMiniMap />
+        <FriendLocation />
+        <MyLocationRanking />
       </div>
       <BottomBar />
     </div>

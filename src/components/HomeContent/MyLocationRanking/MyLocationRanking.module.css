@@ -1,0 +1,103 @@
+.MyLocationRankingBackground {
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.MyLocationRankingWrapper {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 19px;
+  gap: 18px;
+  box-sizing: border-box;
+}
+.MyLocationRankingSectionTitle {
+  padding: 0 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.TitleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.SectionTitleBold {
+  color: #1d2228;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%; /* 28px */
+}
+
+.NormalText {
+  color: #9eaab5;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 22.4px */
+}
+.ArrowButton {
+  padding: 10px 0 10px 15px;
+}
+.RankingContentWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  overflow-x: auto;
+}
+.RankingContentWrapper::-webkit-scrollbar {
+  display: none;
+}
+.EachRankingContentContainer {
+  padding: 20px 15px;
+  min-width: 133px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background: rgba(244, 200, 91, 0.1);
+}
+.RankIcon {
+  width: 43px;
+  height: 43px;
+}
+.RankingTextWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.RankingLocationText {
+  color: #1d2228;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%; /* 22.4px */
+}
+.RankingCountText {
+  color: #9eaab5;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 19.6px */
+}
+
+.RankBg1 {
+  background: rgba(244, 200, 91, 0.1);
+}
+
+.RankBg2 {
+  background: rgba(171, 180, 187, 0.1);
+}
+
+.RankBg3 {
+  background: rgba(199, 118, 71, 0.1);
+}
+.RankBgDefault {
+  background-color: #ced5db;
+}
