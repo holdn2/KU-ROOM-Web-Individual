@@ -1,0 +1,51 @@
+.AlarmContentWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+.AlarmContainer {
+  padding: 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.AlarmContainer:last-child {
+  margin-bottom: 40px;
+}
+.UnreadAlarm {
+  background-color: #f2faf5;
+}
+.AlarmStateWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.AlarmCategoryWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+}
+.AlarmStateIcon {
+  width: 25px;
+  height: 25px;
+}
+.AlarmStateText,
+.AlarmContent {
+  color: #9eaab5;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 19.6px */
+}
+.AlarmContent {
+  color: #1d2228;
+  text-align: start;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 140%; /* 22.4px */
+}

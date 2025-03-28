@@ -17,7 +17,11 @@ const renderHeaderContent = (children: React.ReactNode) => {
       return (
         <div className="home-header-wrapper">
           <h1 className="home-header-title">KURUM</h1>
-          <img src={homeAlarmIcon} alt="알림" />
+          <img
+            src={homeAlarmIcon}
+            alt="알림"
+            onClick={() => navigate("/alarm")}
+          />
         </div>
       );
     case "공지사항":
@@ -29,6 +33,7 @@ const renderHeaderContent = (children: React.ReactNode) => {
       );
     case "프로필 설정":
     case "알림 설정":
+    case "알림":
       return (
         <img
           className="profilechange-header-content"
