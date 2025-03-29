@@ -18,7 +18,7 @@
 
 .category-section {
   position: fixed;
-  top: 60px;
+  top: 56px;
   left: 0;
   right: 0;
   z-index: 99;
@@ -73,7 +73,7 @@
 .scrollable-content {
   flex: 1;
   overflow-y: auto;
-  padding-top: 110px;
+  padding-top: 106px; /* 헤더(56px) + 탭 높이(50px)에 맞게 조정 */
   padding-bottom: 80px;
 }
 
