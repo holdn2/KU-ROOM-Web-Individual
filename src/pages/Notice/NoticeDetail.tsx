@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import styles from './NoticeDetail.module.css';
 import bookmarkIcon from '../../assets/headericon/bookmark.svg';
+import bookmarkFillIcon from '../../assets/headericon/bookmark-fill.svg';
 import arrowBackIcon from '../../assets/nav/arrowback.svg';
 
 const NoticeDetail: React.FC = () => {
-  const { category } = useParams();
+  const { category, id } = useParams();
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
   
+  // 컴포넌트 마운트 시 로컬 스토리지에서 북마크 상태 불러오기
+  useEffect(() => {
+    if (id) {
+      const bookmarks = JSON.parse(localStorage.getItem('noticeBookmarks') || '{}');
+      setIsBookmarked(!!bookmarks[id]);
+    }
+  }, [id]);
+
   // 실제 구현에서는 이 부분에서 API로 공지사항 데이터를 가져오게 됩니다
   const noticeData = {
     title: '2025학년도 1학기 수강정정 및 초과과목 신청 기간, 방법 안내(수정)',
@@ -35,7 +44,33 @@ const NoticeDetail: React.FC = () => {
   };
 
   const toggleBookmark = () => {
-    setIsBookmarked(!isBookmarked);
+    // 북마크 상태 토글
+    const newBookmarkState = !isBookmarked;
+    setIsBookmarked(newBookmarkState);
+    
+    // 로컬 스토리지에 북마크 상태 저장
+    if (id) {
+      const bookmarks = JSON.parse(localStorage.getItem('noticeBookmarks') || '{}');
+      
+      if (newBookmarkState) {
+        // 북마크 추가
+        bookmarks[id] = {
+          id,
+          category,
+          title: noticeData.title,
+          date: noticeData.date,
+          timestamp: new Date().toISOString()
+        };
+      } else {
+        // 북마크 제거
+        delete bookmarks[id];
+      }
+      
+      localStorage.setItem('noticeBookmarks', JSON.stringify(bookmarks));
+      
+      // 저장 성공 메시지/애니메이션 등을 추가할 수 있습니다
+      console.log(`공지사항 ${newBookmarkState ? '북마크 추가' : '북마크 제거'} 완료`);
+    }
   };
 
   const handleGoBack = () => {
@@ -54,7 +89,7 @@ const NoticeDetail: React.FC = () => {
         </div>
         <div className={styles['bookmark-button']} onClick={toggleBookmark}>
           <img 
-            src={bookmarkIcon} 
+            src={isBookmarked ? bookmarkFillIcon : bookmarkIcon} 
             alt="북마크" 
           />
         </div>
