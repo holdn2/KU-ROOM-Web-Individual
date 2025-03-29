@@ -56,7 +56,9 @@
   }
   
   .notice-header {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #E3E7EB;
   }
   
   .notice-title {
