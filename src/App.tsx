@@ -17,6 +17,7 @@ import ChangePw from "./pages/MyPage/ChangePw/ChangePw";
 import ChangeNickname from "./pages/MyPage/ChangeNickname/ChangeNickname";
 import AlarmSetting from "./pages/MyPage/AlarmSetting/AlarmSetting";
 import Alarm from "./pages/Alarm/Alarm";
+import MyLocationRanking from "./pages/MyLocationRanking/MyLocationRanking";
 
 function App() {
   const router = createBrowserRouter([
@@ -90,6 +91,10 @@ function App() {
         {
           path: "alarmsetting",
           element: <AlarmSetting />,
+        },
+        {
+          path: "mylocationranking",
+          element: <MyLocationRanking />,
         },
       ],
     },

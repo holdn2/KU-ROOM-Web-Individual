@@ -3,6 +3,7 @@ import arrowRight from "../../../assets/nav/arrowRight.svg";
 import rank1Icon from "../../../assets/icon/ranking/rank1.png";
 import rank2Icon from "../../../assets/icon/ranking/rank2.png";
 import rank3Icon from "../../../assets/icon/ranking/rank3.png";
+import { useNavigate } from "react-router-dom";
 
 const dummyRankData = [
   {
@@ -26,6 +27,10 @@ const dummyRankData = [
 ];
 
 const MyLocationRanking = () => {
+  const navigate = useNavigate();
+  const goToMyLocationRankingPage = () => {
+    navigate("/mylocationranking");
+  };
   return (
     <div className={styles.MyLocationRankingBackground}>
       <div className={styles.MyLocationRankingWrapper}>
@@ -40,7 +45,7 @@ const MyLocationRanking = () => {
             className={styles.ArrowButton}
             src={arrowRight}
             alt="자세히 보기"
-            onClick={() => console.log("자세히 보기 클릭")}
+            onClick={goToMyLocationRankingPage}
           />
         </div>
         <div className={styles.RankingContentWrapper}>
