@@ -4,6 +4,8 @@ import Button from "../../components/Button/Button";
 import rank1Icon from "../../assets/icon/ranking/rank1.png";
 import rank2Icon from "../../assets/icon/ranking/rank2.png";
 import rank3Icon from "../../assets/icon/ranking/rank3.png";
+import { useState } from "react";
+import ShareBottomSheet from "../../components/ShareBottomSheet/ShareBottomSheet";
 
 const dummyMyRankingData = [
   {
@@ -36,8 +38,13 @@ const dummyFriendRanking = [
 ];
 
 const MyLocationRanking = () => {
-  const handleToShare = () => {
+  const [isSharedSheetOpen, setIsSharedSheetOpen] = useState(false);
+  const openBottomSheet = () => {
     console.log("공유하기");
+    setIsSharedSheetOpen(true);
+  };
+  const closeBottomSheet = () => {
+    setIsSharedSheetOpen(false);
   };
   return (
     <div>
@@ -69,9 +76,16 @@ const MyLocationRanking = () => {
           </div>
         </div>
         <div className={styles.ButtonWrapper}>
-          <Button onClick={handleToShare}>공유하기</Button>
+          <Button onClick={openBottomSheet}>공유하기</Button>
         </div>
       </div>
+      {isSharedSheetOpen && (
+        <div className={styles.BottomSheetOverlay} onClick={closeBottomSheet}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <ShareBottomSheet />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

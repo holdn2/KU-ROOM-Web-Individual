@@ -1,0 +1,79 @@
+.ShareBottomSheetContainer {
+  height: 270px;
+  width: 100%;
+  max-width: 700px;
+  border-top-left-radius: 20.967px;
+  border-top-right-radius: 20.967px;
+  background: #fff;
+  box-shadow: 5.242px 0px 15.725px 0px rgba(0, 0, 0, 0.13);
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.SheetIndicator {
+  width: 45px;
+  height: 2.5px;
+  border-radius: 5.242px;
+  background: #e0e0e0;
+  margin-top: 5px;
+}
+.SheetTitle,
+.MethodText {
+  color: #000;
+  text-align: center;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px; /* 81.818% */
+  margin-top: 45px;
+}
+.MethodText {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 0;
+}
+.ShareMethodWrapper {
+  margin-top: 35px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.EachMethodContainer {
+  width: 70px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+.MethodIcon,
+.MethodIconGray,
+.MethodIconLightgray {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+.MethodIconGray {
+  background-color: #9eaab5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.MethodIconLightgray {
+  background-color: #e3e7eb;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.moredots {
+  width: 6px;
+  height: 6px;
+  background-color: #9eaab5;
+  border-radius: 50%;
+}
