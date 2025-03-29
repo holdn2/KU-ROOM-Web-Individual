@@ -37,6 +37,24 @@
 }
 .ArrowIcon {
   position: absolute;
-  top: 15px;
+  top: 17px;
+  width: 8px;
   right: 0;
+}
+
+.ToggleButtonStyle {
+  position: relative;
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%; /* 19.2px */
+  padding: 15px 0;
+}
+
+.KeywordButtonWrapper {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }

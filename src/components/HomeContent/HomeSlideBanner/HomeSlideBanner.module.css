@@ -1,0 +1,46 @@
+.HomeSlideBannerWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  gap: 15px;
+}
+.BannerImgWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 11px;
+  overflow-x: auto;
+  padding: 0 calc((100% - 349px) / 2);
+
+  scroll-snap-type: x mandatory; /* 스크롤 스냅 작동 */
+  -webkit-overflow-scrolling: touch; /* iOS에서 부드럽게 */
+}
+.BannerImgWrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.BannerImg {
+  border-radius: 10px;
+  width: 349px;
+  height: auto;
+
+  scroll-snap-align: center; /* 각 이미지를 스냅 포인트로 설정 */
+  flex-shrink: 0; /* 이미지가 줄어들지 않게 */
+}
+.DotsWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  justify-content: center;
+}
+.DotIndicator {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #e3e7eb;
+  transition: all 0.3s ease; /* 모든 속성 부드럽게 */
+}
+
+.ActiveDot {
+  width: 22px;
+  border-radius: 5px;
+  background-color: #009733;
+}

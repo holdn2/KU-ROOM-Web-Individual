@@ -6,7 +6,8 @@ import { isValidPassword } from "../../utils/validations";
 import FindStep0 from "./FindStep0";
 import FindStep1 from "./FindStep1";
 import FindStep2 from "./FindStep2";
-import { sendEmailApi, verifyCodeApi } from "../../apis/mails";
+import { findIdFromEmail, sendEmailApi, verifyCodeApi } from "../../apis/mails";
+import { changePwBeforeLogin } from "../../apis/changePw";
 
 // 상태 정의
 type State = {
@@ -95,33 +96,55 @@ const FindIdPw = () => {
     dispatch({ type: "SET_USER_ID", payload: userId });
   };
   const handleNewPwChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "SET_NEW_PW", payload: e.target.value });
+    const newValue = e.target.value;
+    if (newValue.length <= 20) {
+      dispatch({ type: "SET_NEW_PW", payload: newValue });
+    }
   };
   const handleCheckPwChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "SET_CHECK_PW", payload: e.target.value });
+    const newValue = e.target.value;
+    if (newValue.length <= 20) {
+      dispatch({ type: "SET_CHECK_PW", payload: newValue });
+    }
   };
 
-  // 추후 서버에 인증할 메일 주소 보냄야 함. api 연동 필요
+  // 이메일에 인증코드 전송
   const sendInformEmail = async (informEmail: string) => {
-    const sendEmail = { email: informEmail };
-    console.log(informEmail);
-    const sendResponse = await sendEmailApi(sendEmail);
-    console.log(sendResponse);
-    setModalType("informEmail");
-    setModalState(true);
+    try {
+      const sendEmail = { email: informEmail };
+      console.log(informEmail);
+      await getIdfromEmail();
+      const sendResponse = await sendEmailApi(sendEmail);
+      console.log(sendResponse);
+      setModalType("informEmail");
+      setModalState(true);
+    } catch (error) {
+      console.error("이메일 안내 실패:", error);
+      // 필요하다면 사용자에게 에러 메시지 보여주는 상태 처리도 추가 가능
+      setModalType("NonExistentEmail");
+      setModalState(true);
+    }
   };
+
+  // 이메일로 아이디 가져오기.
+  const getIdfromEmail = async () => {
+    const response = await findIdFromEmail(state.informEmail);
+    console.log(response);
+    handleuserIdChange(response);
+  };
+
   // 인증코드 유효한지 확인. 테스트용 인증코드 로직. api 연동 필요. 이부분은 서버와 얘기 필요할듯? boolean으로 넘겨줄 수도 있음.
   const handleVerifyCodeTest = async () => {
-    const verifyData = {
-      email: state.informEmail,
-      code: state.verifyCode,
-    };
-    // 서버에 요청해서 같은지 확인
-    const response = await verifyCodeApi(verifyData);
-    if (response) {
+    try {
+      const verifyData = {
+        email: state.informEmail,
+        code: state.verifyCode,
+      };
+      // 서버에 요청해서 같은지 확인
+      await verifyCodeApi(verifyData);
       console.log("비밀번호 재설정으로 넘어가기");
       setFindStep(2);
-    } else {
+    } catch (error) {
       dispatch({ type: "SET_VERIFY_ATTEMPTED", payload: true });
     }
   };
@@ -136,7 +159,7 @@ const FindIdPw = () => {
     };
   }, [state.isVerifyAttempted]);
 
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
     dispatch({ type: "SET_ATTEMPT_RESET", payload: true });
     // 조건에 맞는지 확인
     dispatch({ type: "SET_ALLOWED_PW", payload: isValidPassword(state.newPw) });
@@ -145,7 +168,10 @@ const FindIdPw = () => {
       payload: state.checkPw === state.newPw,
     });
     // 모든 조건이 충족되었을 때 재설정 성공
-    if (isValidPassword(state.newPw) && state.checkPw === state.newPw) {
+    if (state.checkPw === state.newPw && isValidPassword(state.newPw)) {
+      const userInfo = { loginId: state.userId, newPassword: state.newPw };
+      const response = await changePwBeforeLogin(userInfo);
+      console.log(response);
       console.log("재설정 성공!");
       // 서버 전송 로직 필요함.
       setModalType("NewPassword");

@@ -1,0 +1,101 @@
+.FriendLocationContentWrapper {
+  width: 100%;
+  max-width: 500px;
+  padding: 25px 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-sizing: border-box;
+}
+.FriendLocationSectionTitle {
+  padding: 0 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.TitleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.SectionTitleBold,
+.EachLocationTitle {
+  color: #1d2228;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%; /* 28px */
+}
+.EachLocationTitle {
+  font-size: 18px;
+  line-height: 120%;
+}
+.NormalText {
+  color: #9eaab5;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 22.4px */
+}
+.Nickname {
+  color: #1d2228;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%;
+}
+.ArrowButton {
+  padding: 10px 0 10px 15px;
+}
+.EachLocationWrapper {
+  padding: 20px 26px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.HighlightBorder {
+  border: 1px solid var(--Brand-Primary_1, #009733);
+  border-radius: 10px;
+}
+.EachLocationTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.LocationIcon {
+  width: 30px;
+}
+.LocationFriendWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  position: relative;
+}
+.EachFriendProfile {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  justify-content: center;
+  align-items: center;
+}
+.LearnMoreWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  width: 49px;
+  padding: 20px 0;
+  position: absolute;
+  right: 0;
+}
+.Dotstyle {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #ced5db;
+}

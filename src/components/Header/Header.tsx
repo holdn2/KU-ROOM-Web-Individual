@@ -1,11 +1,11 @@
 import React from "react";
 import "./Header.css";
+import { useNavigate } from "react-router-dom";
 import bookmarkIcon from "../../assets/headericon/bookmark.svg";
 import searchIcon from "../../assets/headericon/search.svg";
 import arrowBackIcon from "../../assets/nav/arrowback.svg";
 import kuroomIcon from "../../assets/icon/cloud.svg";
-import { useNavigate } from "react-router-dom";
-
+import homeAlarmIcon from "../../assets/icon/homealarm.svg";
 interface HeaderProps {
   children?: React.ReactNode;
 }
@@ -13,6 +13,17 @@ interface HeaderProps {
 const renderHeaderContent = (children: React.ReactNode) => {
   const navigate = useNavigate();
   switch (children) {
+    case "홈":
+      return (
+        <div className="home-header-wrapper">
+          <h1 className="home-header-title">KURUM</h1>
+          <img
+            src={homeAlarmIcon}
+            alt="알림"
+            onClick={() => navigate("/alarm")}
+          />
+        </div>
+      );
     case "공지사항":
       return (
         <div className="notice-header-content-wrapper">
@@ -21,6 +32,8 @@ const renderHeaderContent = (children: React.ReactNode) => {
         </div>
       );
     case "프로필 설정":
+    case "알림 설정":
+    case "알림":
       return (
         <img
           className="profilechange-header-content"
@@ -54,7 +67,11 @@ const Header: React.FC<HeaderProps> = ({ children = "" }) => {
   return (
     <>
       <div className="header-container">
-        <span className="header-title">{children}</span>
+        {children === "홈" ? (
+          <></>
+        ) : (
+          <span className="header-title">{children}</span>
+        )}
         {renderHeaderContent(children)}
       </div>
     </>

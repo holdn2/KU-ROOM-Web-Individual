@@ -1,0 +1,44 @@
+.HomeMenuWrapper {
+  display: flex;
+  flex-direction: row;
+  padding: 21px 34px 40px 34px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  /* 넓이가 넘치지 않게 */
+  box-sizing: border-box;
+}
+.EachMenuContainer {
+  /* 터치 영역 보장 */
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.InnerContent {
+  width: 65px;
+  height: 82px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.MenuIcon {
+  width: 65px;
+  height: 65px;
+  min-width: 48px;
+  min-height: 48px;
+  display: block;
+  pointer-events: auto;
+}
+.EachMenuText {
+  color: #5c6369;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+  width: 100%;
+}

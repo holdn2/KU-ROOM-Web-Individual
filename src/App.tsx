@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./styles/global.css";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Community from "./pages/Community";
 import Notice from "./pages/Notice/Notice";
 import Login from "./pages/Login/Login";
@@ -15,6 +15,8 @@ import MyPage from "./pages/MyPage/MyPage";
 import ProfileChange from "./pages/MyPage/ProfileChange/ProfileChange";
 import ChangePw from "./pages/MyPage/ChangePw/ChangePw";
 import ChangeNickname from "./pages/MyPage/ChangeNickname/ChangeNickname";
+import AlarmSetting from "./pages/MyPage/AlarmSetting/AlarmSetting";
+import Alarm from "./pages/Alarm/Alarm";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,6 +26,10 @@ function App() {
         {
           index: true,
           element: <Home />,
+        },
+        {
+          path: "alarm",
+          element: <Alarm />,
         },
         {
           path: "notice",
@@ -80,6 +86,10 @@ function App() {
         {
           path: "changenickname",
           element: <ChangeNickname />,
+        },
+        {
+          path: "alarmsetting",
+          element: <AlarmSetting />,
         },
       ],
     },
