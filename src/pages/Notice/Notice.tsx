@@ -17,6 +17,11 @@ const Notice: React.FC = () => {
   const [selectedDepartment, setSelectedDepartment] = useState<string>('국어국문학과');
   const [isDepartmentBottomSheetOpen, setIsDepartmentBottomSheetOpen] = useState<boolean>(false);
   
+  // 외부 탭을 위한 카테고리 상태
+  const externalCategories = useMemo(() => ['사람인', '원티드'], []);
+  const [selectedExternalCategory, setSelectedExternalCategory] = useState<string>(externalCategories[0]);
+  const [isExternalCategoryBottomSheetOpen, setIsExternalCategoryBottomSheetOpen] = useState<boolean>(false);
+  
   const typedDepartments = departments as DepartmentsType;
   
   const allDepartments = useMemo(() => {
@@ -80,6 +85,14 @@ const Notice: React.FC = () => {
   const handleOpenDepartmentBottomSheet = () => {
     setIsDepartmentBottomSheetOpen(true);
   };
+  
+  const handleExternalCategorySelect = (category: string) => {
+    setSelectedExternalCategory(category);
+  };
+  
+  const handleOpenExternalCategoryBottomSheet = () => {
+    setIsExternalCategoryBottomSheetOpen(true);
+  };
 
   useEffect(() => {
     tabsRef.current = Array(tabs.length).fill(null);
@@ -125,6 +138,19 @@ const Notice: React.FC = () => {
             </div>
           </div>
         )}
+        
+        {activeTab === '외부' && (
+          <div className={styles['department-selector']}>
+            <div className={styles['select-wrapper']} onClick={handleOpenExternalCategoryBottomSheet}>
+              <Select
+                label=""
+                value={selectedExternalCategory}
+                placeholder="카테고리 선택"
+                onClick={handleOpenExternalCategoryBottomSheet}
+              />
+            </div>
+          </div>
+        )}
 
         <div className={styles['notice-list']}>
           {notices.map((notice, index) => (
@@ -164,6 +190,26 @@ const Notice: React.FC = () => {
               onClick={() => setSelectedDepartment(department)}
             >
               {department}
+            </div>
+          ))}
+        </div>
+      </BottomSheet>
+      
+      <BottomSheet
+        isOpen={isExternalCategoryBottomSheetOpen}
+        onClose={() => setIsExternalCategoryBottomSheetOpen(false)}
+        onApply={handleExternalCategorySelect}
+        title="카테고리 선택"
+        selectedItem={selectedExternalCategory}
+      >
+        <div className={styles['bottom-sheet-list']}>
+          {externalCategories.map((category) => (
+            <div
+              key={category}
+              className={`${styles['bottom-sheet-item']} ${selectedExternalCategory === category ? styles['selected'] : ''}`}
+              onClick={() => setSelectedExternalCategory(category)}
+            >
+              {category}
             </div>
           ))}
         </div>
