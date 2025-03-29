@@ -66,9 +66,8 @@
   position: absolute;
   bottom: 0;
   height: 3px;
-  width: 64.66px;
   background-color: #009733;
-  transition: left 0.3s ease;
+  transition: left 0.3s ease, width 0.3s ease;
 }
 
 .scrollable-content {

@@ -31,7 +31,8 @@ const Notice: React.FC = () => {
   
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
   const [indicatorStyle, setIndicatorStyle] = useState({
-    left: '0px'
+    left: '0px',
+    width: '0px'
   });
 
   useEffect(() => {
@@ -40,8 +41,10 @@ const Notice: React.FC = () => {
     
     if (activeTabElement) {
       const left = activeTabElement.offsetLeft;
+      const width = activeTabElement.offsetWidth;
       setIndicatorStyle({
-        left: `${left}px`
+        left: `${left}px`,
+        width: `${width}px`
       });
     }
   }, [activeTab, tabs]);
