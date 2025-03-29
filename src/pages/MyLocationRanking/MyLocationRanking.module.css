@@ -1,0 +1,71 @@
+.PageContentWrapper {
+  margin-top: 56px;
+  padding: 0 14px;
+}
+.MyRankingContainer {
+  padding: 40px 21px;
+  width: calc(100vw - 70px);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  border-bottom: 1px solid #e3e7eb;
+}
+.EachRankingContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 13px;
+}
+.RankIcon {
+  width: 43px;
+  height: 43px;
+}
+.EachRankingContentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.EachRankLocation,
+.EachRankCount,
+.FriendRankingTitle,
+.FriendNickname {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%; /* 25.2px */
+}
+.EachRankCount {
+  color: #9eaab5;
+  font-size: 16px;
+  font-weight: 500;
+}
+.FriendRankingTitle {
+  color: #9eaab5;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 120%; /* 19.2px */
+}
+.FriendNickname {
+  font-weight: 700;
+  line-height: 120%; /* 21.6px */
+  padding: 15px 0;
+}
+.FriendRankingContainer {
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.FriendWrapper {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 560px);
+  overflow-y: auto;
+}
+.ButtonWrapper {
+  position: absolute;
+  width: calc(100vw - 60px);
+  bottom: 49px;
+  padding: 0 16px;
+}
