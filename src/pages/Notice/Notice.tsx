@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Notice.module.css';
 import Select from '../../components/profilesetting/Select/Select';
 import BottomSheet from '../../components/profilesetting/BottomSheet/BottomSheet';
@@ -12,6 +13,7 @@ type DepartmentsType = {
 };
 
 const Notice: React.FC = () => {
+  const navigate = useNavigate();
   const tabs = useMemo(() => ['학사', '장학', '취창업', '국제', '학생', '일반', '신학', '도서관', '학과', '외부'], []);
   const [activeTab, setActiveTab] = useState<string>('학사');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('국어국문학과');
@@ -57,22 +59,27 @@ const Notice: React.FC = () => {
   // 더미 공지사항 데이터
   const notices = [
     {
+      id: 1,
       title: '2025학년도 1학기 수강정정 및 초과과목 신청 기간, 방법 안내(수정)',
       date: '2025.03.05'
     },
     {
+      id: 2,
       title: '2025학년도 1학기 수강정정 및 초과과목 신청 기간, 방법 안내(수정)',
       date: '2025.03.05'
     },
     {
+      id: 3,
       title: '2025학년도 1학기 수강정정 및 초과과목 신청 기간, 방법 안내(수정)',
       date: '2025.03.05'
     },
     {
+      id: 4,
       title: '2025학년도 1학기 수강정정 및 초과과목 신청 기간, 방법 안내(수정)',
       date: '2025.03.05'
     },
     {
+      id: 5,
       title: '2025학년도 1학기 수강정정 및 초과과목 신청 기간, 방법 안내(수정)',
       date: '2025.03.05'
     }
@@ -92,6 +99,10 @@ const Notice: React.FC = () => {
   
   const handleOpenExternalCategoryBottomSheet = () => {
     setIsExternalCategoryBottomSheetOpen(true);
+  };
+  
+  const navigateToNoticeDetail = (noticeId: number) => {
+    navigate(`/notice/${activeTab}/${noticeId}`);
   };
 
   useEffect(() => {
@@ -153,8 +164,12 @@ const Notice: React.FC = () => {
         )}
 
         <div className={styles['notice-list']}>
-          {notices.map((notice, index) => (
-            <div key={index} className={styles['notice-item']}>
+          {notices.map((notice) => (
+            <div 
+              key={notice.id} 
+              className={styles['notice-item']}
+              onClick={() => navigateToNoticeDetail(notice.id)}
+            >
               <div className={styles['notice-content']}>
                 <h3 className={styles['notice-item-title']}>{notice.title}</h3>
                 <p className={styles['notice-item-date']}>{notice.date}</p>
