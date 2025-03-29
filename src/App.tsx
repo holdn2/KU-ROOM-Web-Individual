@@ -2,7 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./styles/global.css";
 import Home from "./pages/Home/Home";
 import Community from "./pages/Community";
-import Notice from "./pages/Notice";
+import Notice from "./pages/Notice/Notice";
+import NoticeDetail from "./pages/Notice/NoticeDetail";
 import Login from "./pages/Login/Login";
 import FindIdPw from "./pages/FindIdPw/FindIdPw";
 import SignupInfo from "./pages/Signup/SignupInfo";
@@ -35,6 +36,10 @@ function App() {
         {
           path: "notice",
           element: <Notice />,
+        },
+        {
+          path: "notice/:category/:id",
+          element: <NoticeDetail />,
         },
         {
           path: "community",
