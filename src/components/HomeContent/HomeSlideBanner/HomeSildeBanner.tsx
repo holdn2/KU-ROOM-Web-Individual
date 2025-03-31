@@ -27,7 +27,7 @@ const HomeSildeBanner = () => {
     setCurrentIndex(index);
   };
 
-  const handleTouchToMove = (index: number) => {
+  const handleBannerMove = (index: number) => {
     if (!wrapperRef.current) return;
 
     wrapperRef.current.scrollTo({
@@ -42,7 +42,7 @@ const HomeSildeBanner = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const next = (currentIndex + 1) % exampleImg.length;
-      handleTouchToMove(next);
+      handleBannerMove(next);
     }, 3000);
 
     return () => clearInterval(interval);
@@ -81,7 +81,7 @@ const HomeSildeBanner = () => {
             className={`${styles.DotIndicator} ${
               currentIndex === index ? styles.ActiveDot : ""
             }`}
-            onClick={() => handleTouchToMove(index)}
+            onClick={() => handleBannerMove(index)}
           />
         ))}
       </div>

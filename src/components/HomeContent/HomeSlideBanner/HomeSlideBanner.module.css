@@ -13,6 +13,7 @@
 
   scroll-snap-type: x mandatory; /* 스크롤 스냅 작동 */
   -webkit-overflow-scrolling: touch; /* iOS에서 부드럽게 */
+  scroll-behavior: smooth;
 }
 .BannerImgWrapper::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
@@ -23,6 +24,7 @@
   height: auto;
 
   scroll-snap-align: center; /* 각 이미지를 스냅 포인트로 설정 */
+  scroll-snap-stop: always;
   flex-shrink: 0; /* 이미지가 줄어들지 않게 */
 }
 .DotsWrapper {
