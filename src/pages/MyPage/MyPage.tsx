@@ -15,7 +15,7 @@ const MyPage = () => {
     // ✅ 여기에 실제 API 로딩 or 이미지 로딩 조건으로 변경 가능
     const timeout = setTimeout(() => {
       setIsLoading(false);
-    }, 1500); // 1초 로딩 시뮬레이션
+    }, 1000); // 1초 로딩 시뮬레이션
 
     return () => clearTimeout(timeout);
   }, []);

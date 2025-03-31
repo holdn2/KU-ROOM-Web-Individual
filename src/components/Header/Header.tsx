@@ -35,6 +35,7 @@ const renderHeaderContent = (children: React.ReactNode) => {
     case "알림 설정":
     case "알림":
     case "내 장소 랭킹":
+    case "친구 목록":
       return (
         <img
           className="profilechange-header-content"

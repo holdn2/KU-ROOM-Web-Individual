@@ -1,0 +1,23 @@
+.SearchBarContainer {
+  border-radius: 10px;
+  background: #f2f4f7;
+  padding: 12px 11px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+.SearchIcon {
+  padding: 5px;
+}
+.SearchBar,
+.SearchBar::placeholder {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.SearchBar::placeholder {
+  color: #9eaab5;
+}
