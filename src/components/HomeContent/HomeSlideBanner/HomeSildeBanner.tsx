@@ -22,7 +22,9 @@ const HomeSildeBanner = () => {
   const handleScroll = () => {
     if (!wrapperRef.current) return;
 
-    const scrollLeft = wrapperRef.current.scrollLeft;
+    const scrollLeft =
+      wrapperRef.current.scrollLeft + (window.innerWidth - 349) / 2;
+    console.log(scrollLeft);
     const index = Math.round(scrollLeft / bannerWidth);
     setCurrentIndex(index);
   };
@@ -48,7 +50,7 @@ const HomeSildeBanner = () => {
     return () => clearInterval(interval);
   }, [currentIndex]);
 
-  // 처음 마운트 시 0번째로 정확하게 정렬
+  // 처음 마운트 시 0번째로 정렬
   useEffect(() => {
     if (wrapperRef.current) {
       wrapperRef.current.scrollTo({
