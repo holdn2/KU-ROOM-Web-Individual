@@ -22,7 +22,6 @@
   border-radius: 10px;
   width: 349px;
   height: auto;
-
   scroll-snap-align: center; /* 각 이미지를 스냅 포인트로 설정 */
   scroll-snap-stop: always;
   flex-shrink: 0; /* 이미지가 줄어들지 않게 */

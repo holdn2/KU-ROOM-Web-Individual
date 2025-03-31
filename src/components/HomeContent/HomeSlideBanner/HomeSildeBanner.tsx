@@ -23,8 +23,8 @@ const HomeSildeBanner = () => {
     if (!wrapperRef.current) return;
 
     const scrollLeft =
-      wrapperRef.current.scrollLeft + (window.innerWidth - 349) / 2;
-    // console.log(scrollLeft);
+      wrapperRef.current.scrollLeft - (window.innerWidth - 349) / 2;
+    console.log(scrollLeft);
     const index = Math.round(scrollLeft / bannerWidth);
     setCurrentIndex(index);
   };
