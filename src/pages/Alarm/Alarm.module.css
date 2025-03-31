@@ -6,7 +6,7 @@
   overflow-y: auto;
 }
 .AlarmContainer {
-  padding: 20px 40px;
+  padding: 15px 40px 25px 40px;
   display: flex;
   flex-direction: column;
   gap: 14px;
