@@ -19,14 +19,32 @@ const HomeSildeBanner = () => {
     return index * bannerWidth - sidePadding;
   };
 
+  // 스크롤이 끝났을 때 가장 가까운 배너로 강제 고정되도록 수정.
+  let scrollTimeout: ReturnType<typeof setTimeout>;
+
   const handleScroll = () => {
     if (!wrapperRef.current) return;
 
     const scrollLeft = wrapperRef.current.scrollLeft;
-    console.log(scrollLeft);
-    const index = Math.round(scrollLeft / bannerWidth);
-    setCurrentIndex(index);
+    const sidePadding = (window.innerWidth - bannerWidth) / 2;
+    const adjustedScrollLeft = scrollLeft + sidePadding;
+    const index = Math.round(adjustedScrollLeft / bannerWidth);
+
+    // 스크롤 도중 계속 호출되지 않도록 delay 보정
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      handleBannerMove(index); // 스크롤 위치 정확히 맞춰줌
+    }, 100); // 스크롤 멈춘 뒤 보정
   };
+
+  // const handleScroll = () => {
+  //   if (!wrapperRef.current) return;
+
+  //   const scrollLeft = wrapperRef.current.scrollLeft;
+  //   console.log(scrollLeft);
+  //   const index = Math.round(scrollLeft / bannerWidth);
+  //   setCurrentIndex(index);
+  // };
 
   const handleBannerMove = (index: number) => {
     if (!wrapperRef.current) return;
