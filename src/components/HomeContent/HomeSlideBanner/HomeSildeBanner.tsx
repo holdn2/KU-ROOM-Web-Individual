@@ -19,6 +19,7 @@ const HomeSildeBanner = () => {
     return index * bannerWidth - sidePadding;
   };
 
+  // 스크롤이 끝났을 때 가장 가까운 배너로 강제 고정되도록 수정.
   let scrollTimeout: ReturnType<typeof setTimeout>;
 
   const handleScroll = () => {
