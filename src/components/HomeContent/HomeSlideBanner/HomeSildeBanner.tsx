@@ -13,19 +13,17 @@ const HomeSildeBanner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const bannerWidth = window.innerWidth;
+  const bannerWidth = 349 + 11;
   const getScrollLeft = (index: number) => {
-    // const sidePadding = (window.innerWidth - 349) / 2;
-    // return index * bannerWidth - sidePadding;
-    return index * bannerWidth;
+    const sidePadding = (window.innerWidth - 349) / 2;
+    return index * bannerWidth - sidePadding;
   };
 
   const handleScroll = () => {
     if (!wrapperRef.current) return;
 
-    // const scrollLeft =
-    //   wrapperRef.current.scrollLeft + (window.innerWidth - 349) / 2;
-    const scrollLeft = wrapperRef.current.scrollLeft;
+    const scrollLeft =
+      wrapperRef.current.scrollLeft + (window.innerWidth - 349) / 2;
     // console.log(scrollLeft);
     const index = Math.round(scrollLeft / bannerWidth);
     setCurrentIndex(index);
