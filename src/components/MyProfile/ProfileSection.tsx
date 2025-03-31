@@ -24,7 +24,7 @@ interface ProfileSectionProps {
 
 const buttonActions: { [key: string]: (() => void) | null } = {
   "친구 추가": () => console.log("친구 추가 실행"),
-  "친구 목록": () => console.log("친구 목록 실행"),
+  "친구 목록": null,
   "약관 및 정책": () => console.log("약관 및 정책 실행"),
   "앱 배포": () => console.log("앱 배포 실행"),
   "고객 센터": () => console.log("고객 센터 실행"),
@@ -55,6 +55,9 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
     }
     if (item === "알림 설정") {
       navigate("/alarmsetting");
+    }
+    if (item === "친구 목록") {
+      navigate("/friendlist");
     }
     const action = buttonActions[item];
     if (action) {

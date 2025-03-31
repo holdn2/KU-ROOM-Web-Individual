@@ -1,0 +1,28 @@
+.FriendEditPopupContainer {
+  width: 223px;
+  border-radius: 10px;
+  background: #fff;
+  padding: 2px 4px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: absolute;
+}
+.FriendEditButton {
+  padding: 16px 23px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(227, 231, 235, 0.3);
+}
+.FriendEditButton:last-child {
+  border-bottom: none;
+}
+.EditText {
+  color: #1d2228;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 21.6px */
+}
