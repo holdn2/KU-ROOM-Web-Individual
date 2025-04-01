@@ -86,8 +86,8 @@ const FriendList = () => {
       <div className={styles.FriendListPageWrapper}>
         <div className={styles.SearchBarContainer}>
           <FriendSearch
-            searchNickname={searchNickname}
-            setSearchNickname={setSearchNickname}
+            searchTarget={searchNickname}
+            setSearchTarget={setSearchNickname}
             searchState="list"
           />
         </div>

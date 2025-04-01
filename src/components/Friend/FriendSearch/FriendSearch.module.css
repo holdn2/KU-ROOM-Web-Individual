@@ -4,6 +4,12 @@
   padding: 12px 11px;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.SearchWrapper {
+  display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 12px;
 }
@@ -20,4 +26,7 @@
 }
 .SearchBar::placeholder {
   color: #9eaab5;
+}
+.DeleteIcon {
+  padding: 5px;
 }
