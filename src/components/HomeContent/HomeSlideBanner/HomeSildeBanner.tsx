@@ -34,17 +34,8 @@ const HomeSildeBanner = () => {
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
       handleBannerMove(index); // 스크롤 위치 정확히 맞춰줌
-    }, 100); // 스크롤 멈춘 뒤 보정
+    }, 50); // 스크롤 멈춘 뒤 보정
   };
-
-  // const handleScroll = () => {
-  //   if (!wrapperRef.current) return;
-
-  //   const scrollLeft = wrapperRef.current.scrollLeft;
-  //   console.log(scrollLeft);
-  //   const index = Math.round(scrollLeft / bannerWidth);
-  //   setCurrentIndex(index);
-  // };
 
   const handleBannerMove = (index: number) => {
     if (!wrapperRef.current) return;
