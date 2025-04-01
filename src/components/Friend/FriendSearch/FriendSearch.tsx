@@ -18,16 +18,39 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
     setSearchNickname(searchName);
   };
   return (
-    <div className={styles.SearchBarContainer}>
-      <img className={styles.SearchIcon} src={searchIcon} alt="검색 아이콘" />
-      <input
-        className={styles.SearchBar}
-        type="text"
-        value={searchNickname}
-        onChange={handleChange}
-        placeholder="닉네임을 입력해주세요"
-      />
-    </div>
+    <>
+      {searchState ? (
+        <div className={styles.SearchBarContainer}>
+          <img
+            className={styles.SearchIcon}
+            src={searchIcon}
+            alt="검색 아이콘"
+          />
+          <input
+            className={styles.SearchBar}
+            type="text"
+            value={searchNickname}
+            onChange={handleChange}
+            placeholder="닉네임을 입력해주세요"
+          />
+        </div>
+      ) : (
+        <div className={styles.SearchBarContainer}>
+          <img
+            className={styles.SearchIcon}
+            src={searchIcon}
+            alt="검색 아이콘"
+          />
+          <input
+            className={styles.SearchBar}
+            type="text"
+            value={searchNickname}
+            onChange={handleChange}
+            placeholder="닉네임 또는 학번을 입력해주세요"
+          />
+        </div>
+      )}
+    </>
   );
 };
 

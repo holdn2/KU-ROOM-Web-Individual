@@ -15,26 +15,52 @@ const dummyFriendList = [
     nickname: "쿠루미",
     profileImg: defaultImg,
   },
+  {
+    nickname: "건국대",
+    profileImg: defaultImg,
+  },
+  {
+    nickname: "휴학생",
+    profileImg: defaultImg,
+  },
 ];
 
+interface Friend {
+  nickname: string;
+  profileImg: string;
+}
+
 const FriendList = () => {
+  const [friendList, setFriendList] = useState<Friend[]>([]);
   const [editFriend, setEditFriend] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [searchNickname, setSearchNickname] = useState("");
+  // 검색어가 포함된 친구 목록 필터링
+  const filteredFriends = friendList.filter((friend) =>
+    friend.nickname.includes(searchNickname)
+  );
 
+  // 친구 삭제, 차단, 신고하기 팝업 관련 상태
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const popupRef = useRef<HTMLDivElement | null>(null);
 
+  // 케밥 버튼을 눌렀을 때 팝업이 뜨도록 하는 로직
   const handleFriendEdit = (nickname: string, event: React.MouseEvent) => {
-    const rect = (event.target as HTMLElement).getBoundingClientRect();
-    setPopupPosition({ top: rect.bottom + window.scrollY, left: rect.left });
+    const friendContainer = (
+      event.target as HTMLElement
+    ).getBoundingClientRect();
+    setPopupPosition({
+      top: friendContainer.bottom + window.scrollY,
+      left: friendContainer.left,
+    });
     setEditFriend(nickname);
     setIsPopupOpen(true);
   };
 
+  // 서버에서 친구 목록 가져오기
   useEffect(() => {
-    console.log("찾을 닉네임 : ", searchNickname);
-  }, [searchNickname]);
+    setFriendList(dummyFriendList);
+  }, []);
 
   // 팝업 외부 클릭 시 닫기
   useEffect(() => {
@@ -66,23 +92,25 @@ const FriendList = () => {
           />
         </div>
         <div className={styles.FriendListWrapper}>
-          {dummyFriendList.map((friend, index) => (
-            <div key={index} className={styles.EachFriendContainer}>
-              <div className={styles.FriendProfileWrapper}>
+          {(searchNickname ? filteredFriends : friendList).map(
+            (friend, index) => (
+              <div key={index} className={styles.EachFriendContainer}>
+                <div className={styles.FriendProfileWrapper}>
+                  <img
+                    className={styles.ProfileImg}
+                    src={friend.profileImg}
+                    alt="프로필 사진"
+                  />
+                  <span className={styles.Nickname}>{friend.nickname}</span>
+                </div>
                 <img
-                  className={styles.ProfileImg}
-                  src={friend.profileImg}
-                  alt="프로필 사진"
+                  src={kebabIcon}
+                  alt="설정"
+                  onClick={(e) => handleFriendEdit(friend.nickname, e)}
                 />
-                <span className={styles.Nickname}>{friend.nickname}</span>
               </div>
-              <img
-                src={kebabIcon}
-                alt="설정"
-                onClick={(e) => handleFriendEdit(friend.nickname, e)}
-              />
-            </div>
-          ))}
+            )
+          )}
         </div>
       </div>
 
