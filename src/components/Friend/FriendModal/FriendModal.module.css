@@ -1,0 +1,57 @@
+.Overlay {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.FriendModalContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 23px 20px;
+  width: 326px;
+  gap: 21px;
+  border-radius: 18px;
+  background: #fff;
+  align-items: center;
+}
+.CautionIcon {
+  width: 41px;
+  height: 41px;
+}
+.TextWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.InformText,
+.Nickname {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+  max-width: 250px;
+  text-align: center;
+}
+.Nickname {
+  font-weight: 700;
+}
+.AdditionalInform {
+  color: #a8a8a8;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 16.8px */
+}
+.ButtonWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
