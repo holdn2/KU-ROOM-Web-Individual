@@ -25,6 +25,10 @@
   padding-block: 18px;
   border: 1.5px solid var(--Gray-100, #9eaab5);
 }
+.button.tertiary {
+  background-color: #ebebeb;
+  color: #000;
+}
 
 .button.secondary:hover {
   background-color: #dee2e6;
@@ -39,4 +43,8 @@
 .button.primary.disabled {
   background: var(--Gray-300, #ced5db);
   color: #fff;
+}
+
+.button.sm {
+  padding-block: 20px;
 }

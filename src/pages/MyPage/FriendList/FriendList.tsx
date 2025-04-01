@@ -5,6 +5,7 @@ import kebabIcon from "../../../assets/icon/kebabBtn.svg";
 import { useEffect, useRef, useState } from "react";
 import FriendEdit from "../../../components/Friend/FriendEdit/FriendEdit";
 import FriendSearch from "../../../components/Friend/FriendSearch/FriendSearch";
+import FriendModal from "../../../components/Friend/FriendModal/FriendModal";
 
 const dummyFriendList = [
   {
@@ -43,6 +44,10 @@ const FriendList = () => {
   // 친구 삭제, 차단, 신고하기 팝업 관련 상태
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const popupRef = useRef<HTMLDivElement | null>(null);
+
+  // 친구 관련 수정 모달 상태
+  const [modalState, setModalState] = useState(false);
+  const [modalType, setModalType] = useState("");
 
   // 케밥 버튼을 눌렀을 때 팝업이 뜨도록 하는 로직
   const handleFriendEdit = (nickname: string, event: React.MouseEvent) => {
@@ -127,9 +132,17 @@ const FriendList = () => {
           <FriendEdit
             editFriend={editFriend}
             onClose={() => setIsPopupOpen(false)}
+            setModalType={setModalType}
+            setModalState={setModalState}
           />
         </div>
       )}
+      <FriendModal
+        editFriend={editFriend}
+        modalState={modalState}
+        modalType={modalType}
+        setModalState={setModalState}
+      />
     </div>
   );
 };
