@@ -5,7 +5,7 @@ import cautionIcon from "../../../assets/icon/editFriend/cautionIcon.svg";
 import Button from "../../Button/Button";
 
 interface FriendModalProps {
-  editFriend: string;
+  editFriend?: string;
   modalState: boolean;
   modalType: string;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,6 +30,12 @@ const FriendModal: React.FC<FriendModalProps> = ({
         break;
       case "report":
         console.log(editFriend, "신고");
+        break;
+      case "accept":
+        console.log(editFriend, "의 친구요청 수락");
+        break;
+      case "refuse":
+        console.log(editFriend, "의 친구요청 거절");
         break;
     }
     setModalState(false);
@@ -63,6 +69,14 @@ const FriendModal: React.FC<FriendModalProps> = ({
           <span className={styles.InformText}>
             {nicknameSpan} 님을 신고하시겠습니까?
           </span>
+        );
+      case "accept":
+        return (
+          <span className={styles.BoldText}>친구요청을 수락하시겠습니까?</span>
+        );
+      case "refuse":
+        return (
+          <span className={styles.BoldText}>친구요청을 거절하시겠습니까?</span>
         );
       default:
         return null;

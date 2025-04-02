@@ -53,4 +53,9 @@
   padding: 5px 0 5px 5px;
 }
 .AcceptRefuseBtnWrapper {
+  width: 150px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
