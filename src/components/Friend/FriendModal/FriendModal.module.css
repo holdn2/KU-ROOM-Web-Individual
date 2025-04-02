@@ -29,7 +29,8 @@
   gap: 5px;
 }
 .InformText,
-.Nickname {
+.Nickname,
+.BoldText {
   color: #000;
   font-size: 18px;
   font-style: normal;
@@ -38,7 +39,8 @@
   max-width: 250px;
   text-align: center;
 }
-.Nickname {
+.Nickname,
+.BoldText {
   font-weight: 700;
 }
 .AdditionalInform {

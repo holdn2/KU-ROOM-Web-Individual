@@ -29,7 +29,11 @@
   background-color: #ebebeb;
   color: #000;
 }
-
+.button.quaternary {
+  border: 1px solid #009733;
+  background: #f2faf5;
+  color: #009733;
+}
 .button.secondary:hover {
   background-color: #dee2e6;
 }
@@ -47,4 +51,9 @@
 
 .button.sm {
   padding-block: 20px;
+}
+
+.button.xs {
+  border-radius: 10px;
+  padding-block: 12px;
 }

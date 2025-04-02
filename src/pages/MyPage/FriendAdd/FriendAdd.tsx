@@ -4,6 +4,8 @@ import Header from "../../../components/Header/Header";
 import FriendSearch from "../../../components/Friend/FriendSearch/FriendSearch";
 import defaultImg from "../../../assets/defaultProfileImg.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
+import Button from "../../../components/Button/Button";
+import FriendModal from "../../../components/Friend/FriendModal/FriendModal";
 
 const dummyRequestAdd = [
   {
@@ -34,7 +36,10 @@ interface Friend {
 const FriendAdd = () => {
   const [requestAddFriend, setRequestAddFriend] = useState<Friend[]>([]);
   const [receiveAddFriend, setReceiveAddFriend] = useState<Friend[]>([]);
+  const [editFriend, setEditFriend] = useState("");
   const [searchTarget, setSearchTarget] = useState("");
+  const [modalState, setModalState] = useState(false);
+  const [modalType, setModalType] = useState("");
 
   // 서버에서 친구 추가 관련 목록 가져오기
   useEffect(() => {
@@ -44,6 +49,17 @@ const FriendAdd = () => {
 
   const deleteRequest = (nickname: string) => {
     console.log(nickname, "에게 보낸 요청 삭제");
+  };
+
+  const acceptRequest = (nickname: string) => {
+    setModalType("accept");
+    setEditFriend(nickname);
+    setModalState(true);
+  };
+  const refuseRequest = (nickname: string) => {
+    setModalType("refuse");
+    setEditFriend(nickname);
+    setModalState(true);
   };
 
   return (
@@ -90,13 +106,33 @@ const FriendAdd = () => {
                     alt="프로필 사진"
                   />
                   <span className={styles.Nickname}>{friend.nickname}</span>
-                  <div className={styles.AcceptRefuseBtnWrapper}></div>
+                </div>
+                <div className={styles.AcceptRefuseBtnWrapper}>
+                  <Button
+                    onClick={() => acceptRequest(friend.nickname)}
+                    size="xs"
+                  >
+                    수락
+                  </Button>
+                  <Button
+                    onClick={() => refuseRequest(friend.nickname)}
+                    size="xs"
+                    variant="quaternary"
+                  >
+                    거절
+                  </Button>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
+      <FriendModal
+        editFriend={editFriend}
+        modalState={modalState}
+        modalType={modalType}
+        setModalState={setModalState}
+      />
     </div>
   );
 };

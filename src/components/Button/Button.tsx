@@ -3,9 +3,9 @@ import "./Button.css";
 interface ButtonProps {
   children: React.ReactNode;
   onClick: () => void;
-  size?: "sm";
+  size?: "sm" | "xs";
   disabled?: boolean;
-  variant?: "primary" | "secondary" | "tertiary";
+  variant?: "primary" | "secondary" | "tertiary" | "quaternary";
 }
 
 const Button: React.FC<ButtonProps> = ({
