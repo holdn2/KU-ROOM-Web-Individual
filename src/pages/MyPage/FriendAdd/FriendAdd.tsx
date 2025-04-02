@@ -90,6 +90,7 @@ const FriendAdd = () => {
                     alt="프로필 사진"
                   />
                   <span className={styles.Nickname}>{friend.nickname}</span>
+                  <div className={styles.AcceptRefuseBtnWrapper}></div>
                 </div>
               </div>
             ))}
