@@ -1,53 +1,78 @@
 import styles from "./FriendSearch.module.css";
 import searchIcon from "../../../assets/icon/search.svg";
 import React from "react";
+import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 
 interface FriendSearchProps {
-  searchNickname: string;
+  searchTarget: string;
   searchState: string;
-  setSearchNickname: (value: string) => void;
+  setSearchTarget: (value: string) => void;
 }
 
 const FriendSearch: React.FC<FriendSearchProps> = ({
-  searchNickname,
+  searchTarget,
   searchState,
-  setSearchNickname,
+  setSearchTarget,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchName = e.target.value;
-    setSearchNickname(searchName);
+    setSearchTarget(searchName);
+  };
+  const deleteText = () => {
+    setSearchTarget("");
   };
   return (
     <>
-      {searchState ? (
+      {searchState === "list" && (
         <div className={styles.SearchBarContainer}>
-          <img
-            className={styles.SearchIcon}
-            src={searchIcon}
-            alt="검색 아이콘"
-          />
-          <input
-            className={styles.SearchBar}
-            type="text"
-            value={searchNickname}
-            onChange={handleChange}
-            placeholder="닉네임을 입력해주세요"
-          />
+          <div className={styles.SearchWrapper}>
+            <img
+              className={styles.SearchIcon}
+              src={searchIcon}
+              alt="검색 아이콘"
+            />
+            <input
+              className={styles.SearchBar}
+              type="text"
+              value={searchTarget}
+              onChange={handleChange}
+              placeholder="닉네임을 입력해주세요"
+            />
+          </div>
+          {searchTarget && (
+            <img
+              className={styles.DeleteIcon}
+              src={deleteIcon}
+              alt="검색 삭제"
+              onClick={deleteText}
+            />
+          )}
         </div>
-      ) : (
+      )}
+      {searchState === "add" && (
         <div className={styles.SearchBarContainer}>
-          <img
-            className={styles.SearchIcon}
-            src={searchIcon}
-            alt="검색 아이콘"
-          />
-          <input
-            className={styles.SearchBar}
-            type="text"
-            value={searchNickname}
-            onChange={handleChange}
-            placeholder="닉네임 또는 학번을 입력해주세요"
-          />
+          <div className={styles.SearchWrapper}>
+            <img
+              className={styles.SearchIcon}
+              src={searchIcon}
+              alt="검색 아이콘"
+            />
+            <input
+              className={styles.SearchBar}
+              type="text"
+              value={searchTarget}
+              onChange={handleChange}
+              placeholder="닉네임 또는 학번을 입력해주세요"
+            />
+          </div>
+          {searchTarget && (
+            <img
+              className={styles.DeleteIcon}
+              src={deleteIcon}
+              alt="검색 삭제"
+              onClick={deleteText}
+            />
+          )}
         </div>
       )}
     </>
