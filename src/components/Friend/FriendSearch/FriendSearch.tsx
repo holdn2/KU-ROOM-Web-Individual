@@ -7,12 +7,16 @@ interface FriendSearchProps {
   searchTarget: string;
   searchState: string;
   setSearchTarget: (value: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 const FriendSearch: React.FC<FriendSearchProps> = ({
   searchTarget,
   searchState,
   setSearchTarget,
+  onFocus,
+  onBlur,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchName = e.target.value;
@@ -63,6 +67,8 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
               value={searchTarget}
               onChange={handleChange}
               placeholder="닉네임 또는 학번을 입력해주세요"
+              onFocus={onFocus}
+              onBlur={onBlur}
             />
           </div>
           {searchTarget && (
@@ -71,6 +77,7 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
               src={deleteIcon}
               alt="검색 삭제"
               onClick={deleteText}
+              onMouseDown={(e) => e.preventDefault()}
             />
           )}
         </div>
