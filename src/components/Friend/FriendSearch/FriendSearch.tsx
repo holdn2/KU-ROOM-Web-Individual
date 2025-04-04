@@ -1,25 +1,32 @@
 import styles from "./FriendSearch.module.css";
 import searchIcon from "../../../assets/icon/search.svg";
-import React from "react";
+import React, { useRef } from "react";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 
 interface FriendSearchProps {
   searchTarget: string;
   searchState: string;
   setSearchTarget: (value: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 const FriendSearch: React.FC<FriendSearchProps> = ({
   searchTarget,
   searchState,
   setSearchTarget,
+  onFocus,
+  onBlur,
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchName = e.target.value;
     setSearchTarget(searchName);
   };
   const deleteText = () => {
     setSearchTarget("");
+    inputRef.current?.focus(); // 삭제 버튼 시 강제로 input에 포커스 되도록
   };
   return (
     <>
@@ -58,11 +65,14 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
               alt="검색 아이콘"
             />
             <input
+              ref={inputRef}
               className={styles.SearchBar}
               type="text"
               value={searchTarget}
               onChange={handleChange}
               placeholder="닉네임 또는 학번을 입력해주세요"
+              onFocus={onFocus}
+              onBlur={onBlur}
             />
           </div>
           {searchTarget && (
@@ -71,6 +81,7 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
               src={deleteIcon}
               alt="검색 삭제"
               onClick={deleteText}
+              onMouseDown={(e) => e.preventDefault()}
             />
           )}
         </div>

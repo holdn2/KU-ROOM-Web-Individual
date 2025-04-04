@@ -59,3 +59,12 @@
   align-items: center;
   gap: 10px;
 }
+.SearchResultContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 30px;
+  gap: 30px;
+}
+.SendRequestBtnWrapper {
+  width: 100px;
+}
