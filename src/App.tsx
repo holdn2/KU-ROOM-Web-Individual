@@ -21,6 +21,7 @@ import Alarm from "./pages/Alarm/Alarm";
 import MyLocationRanking from "./pages/MyLocationRanking/MyLocationRanking";
 import FriendList from "./pages/MyPage/FriendList/FriendList";
 import FriendAdd from "./pages/MyPage/FriendAdd/FriendAdd";
+import FriendLocationRanking from "./pages/MyLocationRanking/FriendLocationRanking/FriendLocationRanking";
 
 function App() {
   const router = createBrowserRouter([
@@ -109,7 +110,16 @@ function App() {
         },
         {
           path: "mylocationranking",
-          element: <MyLocationRanking />,
+          children: [
+            {
+              index: true,
+              element: <MyLocationRanking />,
+            },
+            {
+              path: "friendlocationranking",
+              element: <FriendLocationRanking />,
+            },
+          ],
         },
       ],
     },
