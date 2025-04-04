@@ -12,6 +12,8 @@
   flex-direction: row;
   align-items: center;
   gap: 12px;
+  flex: 1;
+  min-width: 0;
 }
 .SearchIcon {
   padding: 5px;
@@ -23,6 +25,10 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+}
+.SearchBar {
+  flex: 1;
+  min-width: 0;
 }
 .SearchBar::placeholder {
   color: #9eaab5;

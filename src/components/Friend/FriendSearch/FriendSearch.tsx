@@ -1,6 +1,6 @@
 import styles from "./FriendSearch.module.css";
 import searchIcon from "../../../assets/icon/search.svg";
-import React from "react";
+import React, { useRef } from "react";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 
 interface FriendSearchProps {
@@ -18,12 +18,15 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
   onFocus,
   onBlur,
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchName = e.target.value;
     setSearchTarget(searchName);
   };
   const deleteText = () => {
     setSearchTarget("");
+    inputRef.current?.focus(); // 삭제 버튼 시 강제로 input에 포커스 되도록
   };
   return (
     <>
@@ -62,6 +65,7 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
               alt="검색 아이콘"
             />
             <input
+              ref={inputRef}
               className={styles.SearchBar}
               type="text"
               value={searchTarget}
