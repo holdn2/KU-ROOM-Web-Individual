@@ -48,6 +48,8 @@ interface Friend {
 const FriendAdd = () => {
   const [requestAddFriend, setRequestAddFriend] = useState<Friend[]>([]);
   const [receiveAddFriend, setReceiveAddFriend] = useState<Friend[]>([]);
+  // 닉네임을 기준으로 친구 신청한 친구들 저장하는 배열
+  const [searchSentRequests, setSearchSentRequests] = useState<string[]>([]);
 
   const [searchTarget, setSearchTarget] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -83,8 +85,17 @@ const FriendAdd = () => {
     setModalState(true);
   };
 
+  // 서버에 요청해야함.
   const sendRequest = (nickname: string) => {
-    console.log(nickname, "에게 친구 신청");
+    if (searchSentRequests.includes(nickname)) {
+      // 신청 취소
+      setSearchSentRequests((prev) => prev.filter((name) => name !== nickname));
+      console.log(`${nickname}에게 친구 신청 취소`);
+    } else {
+      // 친구 신청
+      setSearchSentRequests((prev) => [...prev, nickname]);
+      console.log(`${nickname}에게 친구 신청`);
+    }
   };
 
   return (
@@ -177,8 +188,15 @@ const FriendAdd = () => {
                     <Button
                       onClick={() => sendRequest(user.nickname)}
                       size="xs"
+                      variant={
+                        searchSentRequests.includes(user.nickname)
+                          ? "quaternary"
+                          : "primary"
+                      }
                     >
-                      친구신청
+                      {searchSentRequests.includes(user.nickname)
+                        ? "신청취소"
+                        : "친구신청"}
                     </Button>
                   </div>
                 </div>
