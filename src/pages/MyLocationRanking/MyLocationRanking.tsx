@@ -6,6 +6,7 @@ import rank2Icon from "../../assets/icon/ranking/rank2.png";
 import rank3Icon from "../../assets/icon/ranking/rank3.png";
 import { useState } from "react";
 import ShareBottomSheet from "../../components/ShareBottomSheet/ShareBottomSheet";
+import { useNavigate } from "react-router-dom";
 
 const dummyMyRankingData = [
   {
@@ -38,7 +39,14 @@ const dummyFriendRanking = [
 ];
 
 const MyLocationRanking = () => {
+  const navigate = useNavigate();
+
   const [isSharedSheetOpen, setIsSharedSheetOpen] = useState(false);
+
+  const handleNavToFriendRanking = (nickname: string) => {
+    navigate("friendlocationranking", { state: { nickname: nickname } });
+  };
+
   const openBottomSheet = () => {
     console.log("공유하기");
     setIsSharedSheetOpen(true);
@@ -69,7 +77,11 @@ const MyLocationRanking = () => {
           <span className={styles.FriendRankingTitle}>친구 랭킹</span>
           <div className={styles.FriendWrapper}>
             {dummyFriendRanking.map((item, index) => (
-              <button key={index} className={styles.FriendNickname}>
+              <button
+                key={index}
+                className={styles.FriendNickname}
+                onClick={() => handleNavToFriendRanking(item.nickname)}
+              >
                 {item.nickname}
               </button>
             ))}

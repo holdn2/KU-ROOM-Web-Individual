@@ -31,20 +31,6 @@ const renderHeaderContent = (children: React.ReactNode) => {
           <img src={searchIcon} alt="검색" />
         </div>
       );
-    case "프로필 설정":
-    case "알림 설정":
-    case "알림":
-    case "내 장소 랭킹":
-    case "친구 목록":
-    case "친구 추가":
-      return (
-        <img
-          className="profilechange-header-content"
-          src={arrowBackIcon}
-          alt="뒤로가기"
-          onClick={() => navigate(-1)}
-        />
-      );
     case "":
       return (
         <>
@@ -62,7 +48,14 @@ const renderHeaderContent = (children: React.ReactNode) => {
         </>
       );
     default:
-      return;
+      return (
+        <img
+          className="profilechange-header-content"
+          src={arrowBackIcon}
+          alt="뒤로가기"
+          onClick={() => navigate(-1)}
+        />
+      );
   }
 };
 

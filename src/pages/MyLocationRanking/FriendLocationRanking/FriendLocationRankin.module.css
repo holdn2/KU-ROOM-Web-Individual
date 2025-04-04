@@ -1,0 +1,36 @@
+.FriendRankingContainer {
+  margin-top: 56px;
+  padding: 40px 35px;
+  width: calc(100vw - 70px);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.EachRankingContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 13px;
+}
+.RankIcon {
+  width: 43px;
+  height: 43px;
+}
+.EachRankingContentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.EachRankLocation,
+.EachRankCount {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%; /* 25.2px */
+}
+.EachRankCount {
+  color: #9eaab5;
+  font-size: 16px;
+  font-weight: 500;
+}
