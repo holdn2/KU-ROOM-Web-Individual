@@ -20,7 +20,7 @@ const FindStep0: React.FC<Step0Props> = ({
       <h1 className={styles.FindStepTitle}>아이디/비밀번호 찾기</h1>
       <InputBar
         label="이메일"
-        type="text"
+        type="email"
         value={informEmail}
         placeholder="가입한 이메일 주소를 입력해주세요"
         onChange={handleInformEmailChange}
