@@ -43,7 +43,8 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
         <input
           ref={isAddMode ? inputRef : undefined}
           className={styles.SearchBar}
-          type="text"
+          type="search"
+          enterKeyHint="search"
           value={searchTarget}
           onChange={handleChange}
           placeholder={placeholder}

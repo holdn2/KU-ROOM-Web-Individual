@@ -91,7 +91,7 @@ const IdentityVerify = () => {
         <div style={{ position: "relative" }}>
           <InputBar
             label="이메일"
-            type="text"
+            type="email"
             value={verifiedEmail}
             placeholder="가입한 이메일 주소를 입력해주세요"
             onChange={handleVerifiedEmailChange}
