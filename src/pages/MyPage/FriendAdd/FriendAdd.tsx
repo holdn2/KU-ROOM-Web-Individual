@@ -29,9 +29,15 @@ interface Friend {
 const FriendAdd = () => {
   const [requestList, setRequestList] = useState<Friend[]>([]);
   const [receivedList, setReceivedList] = useState<Friend[]>([]);
-  const [searchSentRequests, setSearchSentRequests] = useState<string[]>([]); // 검색 결과에서 보낸 요청 추적
   const [searchTarget, setSearchTarget] = useState("");
+
+  const [filteredUsers, setFilteredUsers] = useState<typeof dummySearchData>(
+    []
+  );
+  const [trySearch, setTrySearch] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  const [searchSentRequests, setSearchSentRequests] = useState<string[]>([]); // 검색 결과에서 보낸 요청 추적
 
   const [editFriend, setEditFriend] = useState("");
   const [modalState, setModalState] = useState(false);
@@ -43,12 +49,41 @@ const FriendAdd = () => {
     setReceivedList(dummyReceivedAdd);
   }, []);
 
-  // 검색 필터링
-  const filteredUsers = dummySearchData.filter(
-    (user) =>
-      user.nickname.includes(searchTarget) ||
-      user.studentId.includes(searchTarget)
-  );
+  useEffect(() => {
+    setTrySearch(false);
+    setFilteredUsers([]);
+  }, [searchTarget]);
+
+  // 검색 시 필터링 로직
+  const filteringSearch = () => {
+    const result = dummySearchData.filter(
+      (user) =>
+        user.nickname.includes(searchTarget.trim()) ||
+        user.studentId.includes(searchTarget.trim())
+    );
+    setFilteredUsers(result);
+  };
+
+  // 엔터 시 검색 로직
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setTrySearch(true);
+      filteringSearch();
+    }
+  };
+
+  // 검색창에 입력 후 다른 곳 클릭했을 때(포커스 잃을 때) 검색되도록
+  const handleBlurSearch = () => {
+    setTrySearch(true);
+    if (searchTarget.trim() === "") {
+      setSearchTarget("");
+      setIsSearchFocused(false);
+      setFilteredUsers([]);
+    } else {
+      // 포커스를 잃었지만 검색 결과가 아직 없으면 자동 필터링
+      filteringSearch();
+    }
+  };
 
   // 친구 요청 취소
   const handleDeleteRequest = (nickname: string) => {
@@ -69,7 +104,7 @@ const FriendAdd = () => {
     setModalState(true);
   };
 
-  // 검색 결과에서 친구 신청/취소. 서버에 데이터 요청 필요함.
+  // 검색 결과에서 친구 신청/취소. 서버에 데이터 요청 필요함. 서버와 연계 시 로직 변경 예정.
   const handleSendRequest = (nickname: string) => {
     if (searchSentRequests.includes(nickname)) {
       setSearchSentRequests((prev) => prev.filter((name) => name !== nickname));
@@ -144,30 +179,35 @@ const FriendAdd = () => {
   const renderSearchResults = () => (
     <div className={styles.SearchResultContainer}>
       {searchTarget &&
-        filteredUsers.map((user, index) => {
-          const isSent = searchSentRequests.includes(user.nickname);
-          return (
-            <div key={index} className={styles.EachFriendContainer}>
-              <div className={styles.FriendProfileWrapper}>
-                <img
-                  className={styles.ProfileImg}
-                  src={user.profileImg}
-                  alt="프로필 사진"
-                />
-                <span className={styles.Nickname}>{user.nickname}</span>
+        trySearch &&
+        (filteredUsers.length > 0 ? (
+          filteredUsers.map((user, index) => {
+            const isSent = searchSentRequests.includes(user.nickname);
+            return (
+              <div key={index} className={styles.EachFriendContainer}>
+                <div className={styles.FriendProfileWrapper}>
+                  <img
+                    className={styles.ProfileImg}
+                    src={user.profileImg}
+                    alt="프로필 사진"
+                  />
+                  <span className={styles.Nickname}>{user.nickname}</span>
+                </div>
+                <div className={styles.SendRequestBtnWrapper}>
+                  <Button
+                    onClick={() => handleSendRequest(user.nickname)}
+                    size="xs"
+                    variant={isSent ? "quaternary" : "primary"}
+                  >
+                    {isSent ? "신청취소" : "친구신청"}
+                  </Button>
+                </div>
               </div>
-              <div className={styles.SendRequestBtnWrapper}>
-                <Button
-                  onClick={() => handleSendRequest(user.nickname)}
-                  size="xs"
-                  variant={isSent ? "quaternary" : "primary"}
-                >
-                  {isSent ? "신청취소" : "친구신청"}
-                </Button>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <div>검색 결과가 없습니다.</div>
+        ))}
     </div>
   );
 
@@ -178,12 +218,14 @@ const FriendAdd = () => {
         <div className={styles.SearchBarContainer}>
           <FriendSearch
             searchTarget={searchTarget}
-            setSearchTarget={setSearchTarget}
+            setSearchTarget={(value) => {
+              setSearchTarget(value);
+              setFilteredUsers([]);
+            }}
             searchState="add"
             onFocus={() => setIsSearchFocused(true)}
-            onBlur={() => {
-              if (searchTarget === "") setIsSearchFocused(false);
-            }}
+            onBlur={handleBlurSearch}
+            onKeyDown={handleSearchKeyDown}
           />
         </div>
         {isSearchFocused ? (
