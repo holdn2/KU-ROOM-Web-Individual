@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import styles from "./NoticeDetail.module.css";
 import bookmarkIcon from "../../assets/headericon/bookmark.svg";
 import bookmarkFillIcon from "../../assets/headericon/bookmark-fill.svg";
-import arrowBackIcon from "../../assets/nav/arrowback.svg";
 
 const NoticeDetail: React.FC = () => {
   const { category, id } = useParams();
-  const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
 
   // 컴포넌트 마운트 시 로컬 스토리지에서 북마크 상태 불러오기
@@ -77,10 +75,6 @@ const NoticeDetail: React.FC = () => {
         `공지사항 ${newBookmarkState ? "북마크 추가" : "북마크 제거"} 완료`
       );
     }
-  };
-
-  const handleGoBack = () => {
-    navigate(-1);
   };
 
   return (
