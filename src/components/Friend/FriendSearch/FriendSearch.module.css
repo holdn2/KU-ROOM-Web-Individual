@@ -38,9 +38,6 @@
 }
 
 /* 기본 검색 input의 x 버튼 제거 (크롬, 사파리 등) */
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
+input[type="search"]::-webkit-search-cancel-button {
   display: none;
 }
