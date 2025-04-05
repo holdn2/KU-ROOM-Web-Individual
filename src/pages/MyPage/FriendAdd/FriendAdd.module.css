@@ -49,8 +49,20 @@
   font-size: 18px;
   font-weight: 600;
 }
+.NoSearchResultText {
+  color: #b0bac3;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.35px;
+}
 .DeleteIcon {
   padding: 5px 0 5px 5px;
+}
+.NoSearchResultIcon {
+  width: 64px;
+  height: 64px;
 }
 .AcceptRefuseBtnWrapper {
   width: 150px;
@@ -67,4 +79,12 @@
 }
 .SendRequestBtnWrapper {
   width: 100px;
+}
+.NoSearchResultWrapper {
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }

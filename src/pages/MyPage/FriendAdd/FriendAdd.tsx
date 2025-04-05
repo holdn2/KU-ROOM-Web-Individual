@@ -6,6 +6,7 @@ import defaultImg from "../../../assets/defaultProfileImg.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 import Button from "../../../components/Button/Button";
 import FriendModal from "../../../components/Friend/FriendModal/FriendModal";
+import noResultIcon from "../../../assets/icon/noResultSearch.svg";
 
 // 더미 데이터
 const dummyRequestAdd = [
@@ -206,7 +207,16 @@ const FriendAdd = () => {
             );
           })
         ) : (
-          <div>검색 결과가 없습니다.</div>
+          <div className={styles.NoSearchResultWrapper}>
+            <img
+              className={styles.NoSearchResultIcon}
+              src={noResultIcon}
+              alt="검색 결과 없음"
+            />
+            <span className={styles.NoSearchResultText}>
+              검색 결과가 없어요!
+            </span>
+          </div>
         ))}
     </div>
   );
