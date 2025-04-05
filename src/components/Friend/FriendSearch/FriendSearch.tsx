@@ -41,7 +41,7 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
       <div className={styles.SearchWrapper}>
         <img className={styles.SearchIcon} src={searchIcon} alt="검색 아이콘" />
         <input
-          ref={isAddMode ? inputRef : undefined}
+          ref={inputRef}
           className={styles.SearchBar}
           type="search"
           enterKeyHint="search"
