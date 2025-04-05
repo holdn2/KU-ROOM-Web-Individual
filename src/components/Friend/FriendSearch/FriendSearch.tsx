@@ -51,6 +51,9 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
           onFocus={onFocus}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
+          onTouchStart={() => {
+            inputRef.current?.focus();
+          }}
         />
       </div>
       {searchTarget && (
