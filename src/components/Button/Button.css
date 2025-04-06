@@ -23,16 +23,19 @@
   background-color: #fff;
   color: #9eaab5;
   padding-block: 18px;
-  border: 1.5px solid var(--Gray-100, #9eaab5);
+  /* border: 1.5px solid var(--Gray-100, #9eaab5); */
+  box-shadow: 0 0 0 1px #9eaab5;
 }
 .button.tertiary {
   background-color: #ebebeb;
   color: #000;
 }
 .button.quaternary {
-  border: 1px solid #009733;
+  box-shadow: 0 0 0 1px #009733;
+  /* border: 1px solid #009733; */
   background: #f2faf5;
   color: #009733;
+  box-sizing: border-box;
 }
 .button.secondary:hover {
   background-color: #dee2e6;
