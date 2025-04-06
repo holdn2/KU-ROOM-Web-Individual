@@ -20,7 +20,7 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
   onBlur,
   onKeyDown,
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputFocus = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTarget(e.target.value);
@@ -28,7 +28,7 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
 
   const deleteText = () => {
     setSearchTarget("");
-    inputRef.current?.focus(); // 삭제 후 포커스 유지
+    inputFocus.current?.focus(); // 삭제 후 포커스 유지
   };
 
   const isAddMode = searchState === "add";
@@ -41,7 +41,7 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
       <div className={styles.SearchWrapper}>
         <img className={styles.SearchIcon} src={searchIcon} alt="검색 아이콘" />
         <input
-          ref={inputRef}
+          ref={inputFocus}
           className={styles.SearchBar}
           type="search"
           enterKeyHint="search"
@@ -52,7 +52,7 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
           onBlur={onBlur}
           onKeyDown={onKeyDown}
           onTouchStart={() => {
-            inputRef.current?.focus();
+            inputFocus.current?.focus();
           }}
         />
       </div>
