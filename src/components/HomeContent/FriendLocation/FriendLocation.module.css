@@ -58,7 +58,8 @@
   gap: 30px;
 }
 .HighlightBorder {
-  border: 1px solid var(--Brand-Primary_1, #009733);
+  box-shadow: 0 0 0 1px #009733;
+  /* border: 1px solid var(--Brand-Primary_1, #009733); */
   border-radius: 10px;
 }
 .EachLocationTitleWrapper {

@@ -15,8 +15,11 @@
 .ReceivedList {
   display: flex;
   flex-direction: column;
-  padding: 40px 30px;
+  padding: 40px 16px;
   gap: 30px;
+}
+.RequestList {
+  border-bottom: 1px solid #e3e7eb;
 }
 .EachFriendContainer {
   display: flex;
