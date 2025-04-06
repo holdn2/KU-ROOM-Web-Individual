@@ -1,6 +1,7 @@
 // 지도 페이지
 import { useEffect, useRef } from "react";
-import BottomBar from "../components/BottomBar/BottomBar";
+import BottomBar from "../../components/BottomBar/BottomBar";
+import styles from "./Map.module.css";
 
 const Map = () => {
   const mapRef = useRef(null);
@@ -45,13 +46,7 @@ const Map = () => {
   }, []);
   return (
     <div>
-      <div
-        ref={mapRef}
-        style={{
-          width: "100%",
-          height: "100vh",
-        }}
-      />
+      <div ref={mapRef} className={styles.MapContainer} />
       <BottomBar />
     </div>
   );
