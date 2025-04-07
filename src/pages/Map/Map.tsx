@@ -6,6 +6,8 @@ import styles from "./Map.module.css";
 const Map = () => {
   const mapRef = useRef(null);
   const markerRef = useRef<any>(null);
+  const mapInstance = useRef<any>(null); // 지도 객체를 저장할 ref
+  const [currentLatLng, setCurrentLatLng] = useState<any>(null); // 현재 위치를 기억
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
 
   useEffect(() => {
@@ -20,6 +22,7 @@ const Map = () => {
     };
 
     const map = new window.naver.maps.Map(mapRef.current, mapOptions);
+    mapInstance.current = map; // 지도 인스턴스를 ref에 저장
 
     // 제1학생회관 마커 추가
     const firstStudentCenterMarker = new window.naver.maps.Marker({
@@ -51,6 +54,8 @@ const Map = () => {
             latitude,
             longitude
           );
+
+          setCurrentLatLng(currentLocation); // 현재 위치 상태 업데이트
 
           if (markerRef.current) {
             // 기존 마커 위치 업데이트
@@ -87,6 +92,14 @@ const Map = () => {
       alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
     }
   }, []);
+
+  // 추적 모드 활성화 시 현재 위치 중심으로 지도 이동
+  useEffect(() => {
+    if (isTracking && currentLatLng && mapInstance.current) {
+      mapInstance.current.setCenter(currentLatLng);
+    }
+  }, [isTracking]);
+
   return (
     <div>
       {/* 위치 추적 버튼 예시 */}
