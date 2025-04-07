@@ -9,6 +9,7 @@ const Map = () => {
   const mapInstance = useRef<any>(null); // 지도 객체를 저장할 ref
   const [currentLatLng, setCurrentLatLng] = useState<any>(null); // 현재 위치를 기억
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
+  const isTrackingRef = useRef(true); // 추적 상태 최신값을 유지할 ref
 
   useEffect(() => {
     if (!window.naver) return;
@@ -69,7 +70,7 @@ const Map = () => {
             });
           }
 
-          if (isTracking) {
+          if (isTrackingRef.current) {
             // 지도 중심을 내 위치를 기준으로 이동
             map.setCenter(currentLocation);
           }
@@ -98,6 +99,11 @@ const Map = () => {
     if (isTracking && currentLatLng && mapInstance.current) {
       mapInstance.current.setCenter(currentLatLng);
     }
+  }, [isTracking]);
+
+  // 추적 상태 변경 시 ref도 업데이트 (분리)
+  useEffect(() => {
+    isTrackingRef.current = isTracking;
   }, [isTracking]);
 
   return (
