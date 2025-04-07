@@ -1,24 +1,48 @@
 // 지도 페이지
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import styles from "./Map.module.css";
 
 const Map = () => {
   const mapRef = useRef(null);
   const markerRef = useRef<any>(null);
+  const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
 
   useEffect(() => {
     if (!window.naver) return;
 
+    const firstStudentCenter = new window.naver.maps.LatLng(37.5419, 127.078);
+
     const mapOptions = {
-      // 건국대 청심대 기준 좌표
-      center: new window.naver.maps.LatLng(37.5416, 127.077),
+      // 건국대 제1학생회관 기준 좌표
+      center: new window.naver.maps.LatLng(firstStudentCenter),
       zoom: 16,
     };
 
     const map = new window.naver.maps.Map(mapRef.current, mapOptions);
 
-    // 브라우저 위치 정보 가져오기
+    // 제1학생회관 마커 추가
+    const firstStudentCenterMarker = new window.naver.maps.Marker({
+      position: firstStudentCenter,
+      map,
+      title: "제1학생회관",
+    });
+
+    // 마커 클릭 이벤트. 학생회관 눌렀을 때 로직 수행
+    window.naver.maps.Event.addListener(
+      firstStudentCenterMarker,
+      "click",
+      () => {
+        console.log("제1학생회관 정보");
+      }
+    );
+
+    // 지도 드래그 시 추적 끄기
+    window.naver.maps.Event.addListener(map, "dragstart", () => {
+      setIsTracking(false);
+    });
+
+    // 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가기
     if (navigator.geolocation) {
       const watchId = navigator.geolocation.watchPosition(
         (position) => {
@@ -40,8 +64,10 @@ const Map = () => {
             });
           }
 
-          // 지도 중심도 같이 이동
-          map.setCenter(currentLocation);
+          if (isTracking) {
+            // 지도 중심을 내 위치를 기준으로 이동
+            map.setCenter(currentLocation);
+          }
         },
         (error) => {
           console.error("위치 정보를 가져올 수 없습니다:", error);
@@ -63,6 +89,24 @@ const Map = () => {
   }, []);
   return (
     <div>
+      {/* 위치 추적 버튼 예시 */}
+      <button
+        onClick={() => setIsTracking(true)}
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          zIndex: 1000,
+          padding: "8px 12px",
+          backgroundColor: "#2e8b57",
+          color: "white",
+          border: "none",
+          borderRadius: "6px",
+        }}
+      >
+        현재 위치 따라가기
+      </button>
+
       <div ref={mapRef} className={styles.MapContainer} />
       <BottomBar />
     </div>
