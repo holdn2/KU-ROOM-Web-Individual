@@ -41,7 +41,7 @@ const Map = () => {
     );
 
     // 지도 드래그 시 추적 끄기
-    window.naver.maps.Event.addListener(map, "dragstart", () => {
+    window.naver.maps.Event.addListener(map, "drag", () => {
       setIsTracking(false);
     });
 
@@ -111,10 +111,11 @@ const Map = () => {
           right: "10px",
           zIndex: 1000,
           padding: "8px 12px",
-          backgroundColor: "#2e8b57",
+          backgroundColor: isTracking ? "#2e8b57" : "#ccc", // 상태에 따라 색상 변경
           color: "white",
           border: "none",
           borderRadius: "6px",
+          cursor: isTracking ? "default" : "pointer", // 선택적: 비활성화 느낌 표현
         }}
       >
         현재 위치 따라가기
