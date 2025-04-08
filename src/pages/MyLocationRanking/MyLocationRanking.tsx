@@ -42,6 +42,7 @@ const MyLocationRanking = () => {
   const navigate = useNavigate();
 
   const [isSharedSheetOpen, setIsSharedSheetOpen] = useState(false);
+  const [isSheetVisible, setIsSheetVisible] = useState(false);
 
   const handleNavToFriendRanking = (nickname: string) => {
     navigate("friendlocationranking", { state: { nickname: nickname } });
@@ -49,10 +50,12 @@ const MyLocationRanking = () => {
 
   const openBottomSheet = () => {
     console.log("공유하기");
-    setIsSharedSheetOpen(true);
+    setIsSheetVisible(true); // 먼저 보여주기
+    setTimeout(() => setIsSharedSheetOpen(true), 0); // 열리는 애니메이션 트리거
   };
   const closeBottomSheet = () => {
-    setIsSharedSheetOpen(false);
+    setIsSharedSheetOpen(false); // 닫히는 애니메이션 시작
+    setTimeout(() => setIsSheetVisible(false), 300); // 0.3초 후 제거
   };
   return (
     <div>
@@ -91,10 +94,13 @@ const MyLocationRanking = () => {
           <Button onClick={openBottomSheet}>공유하기</Button>
         </div>
       </div>
-      {isSharedSheetOpen && (
+      {isSheetVisible && (
         <div className={styles.BottomSheetOverlay} onClick={closeBottomSheet}>
-          <div onClick={(e) => e.stopPropagation()}>
-            <ShareBottomSheet />
+          <div
+            className={styles.ShareBottomSheet}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ShareBottomSheet isSharedSheetOpen={isSharedSheetOpen} />
           </div>
         </div>
       )}

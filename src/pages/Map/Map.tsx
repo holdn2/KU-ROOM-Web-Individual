@@ -124,7 +124,7 @@ const Map = () => {
     }
   }, [isTracking]);
 
-  // 추적 상태 변경 시 ref도 업데이트 (분리)
+  // 추적 상태 변경 시 ref도 업데이트
   useEffect(() => {
     isTrackingRef.current = isTracking;
   }, [isTracking]);
