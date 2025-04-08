@@ -14,7 +14,10 @@ const Map = () => {
   useEffect(() => {
     if (!window.naver) return;
 
+    // 제1학생회관 좌표
     const firstStudentCenter = new window.naver.maps.LatLng(37.5419, 127.078);
+    // 건국대학교 도서관 좌표
+    const libraryLocation = new window.naver.maps.LatLng(37.5421, 127.0739);
 
     const mapOptions = {
       // 건국대 제1학생회관 기준 좌표
@@ -32,6 +35,13 @@ const Map = () => {
       title: "제1학생회관",
     });
 
+    // 건국대학교 도서관 마커 추가
+    const libraryMarker = new window.naver.maps.Marker({
+      position: libraryLocation,
+      map,
+      title: "건국대학교 도서관",
+    });
+
     // 마커 클릭 이벤트. 학생회관 눌렀을 때 로직 수행
     window.naver.maps.Event.addListener(
       firstStudentCenterMarker,
@@ -40,6 +50,11 @@ const Map = () => {
         console.log("제1학생회관 정보");
       }
     );
+
+    // 마커 클릭 이벤트. 도서관 마커 눌렀을 때 로직 수행
+    window.naver.maps.Event.addListener(libraryMarker, "click", () => {
+      console.log("건국대학교 도서관 정보");
+    });
 
     // 지도 드래그 시 추적 끄기
     window.naver.maps.Event.addListener(map, "drag", () => {
@@ -77,6 +92,14 @@ const Map = () => {
         },
         (error) => {
           console.error("위치 정보를 가져올 수 없습니다:", error);
+
+          if (error.code === 1) {
+            alert("위치 권한이 거부되었습니다.");
+          } else if (error.code === 2) {
+            alert("위치 정보를 사용할 수 없습니다.");
+          } else if (error.code === 3) {
+            alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
+          }
         },
         {
           enableHighAccuracy: true, // 정확도 향상
