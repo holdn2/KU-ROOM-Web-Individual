@@ -2,8 +2,15 @@ import styles from "./ShareBottomSheet.module.css";
 import kakaoIcon from "../../assets/ShareIcon/Kakaotalk.png";
 import facebookIcon from "../../assets/ShareIcon/Facebook.png";
 import linkIcon from "../../assets/ShareIcon/linkIcon.svg";
+import React from "react";
 
-const ShareBottomSheet = () => {
+interface ShareBottomSheetProps {
+  isSharedSheetOpen: boolean;
+}
+
+const ShareBottomSheet: React.FC<ShareBottomSheetProps> = ({
+  isSharedSheetOpen,
+}) => {
   const kakaoShare = () => {
     console.log("카카오로 공유하기");
   };
@@ -17,7 +24,11 @@ const ShareBottomSheet = () => {
     console.log("더보기");
   };
   return (
-    <div className={styles.ShareBottomSheetContainer}>
+    <div
+      className={`${styles.ShareBottomSheetContainer} ${
+        isSharedSheetOpen ? styles.open : ""
+      }`}
+    >
       <div className={styles.SheetIndicator} />
       <span className={styles.SheetTitle}>공유하기</span>
       <div className={styles.ShareMethodWrapper}>
