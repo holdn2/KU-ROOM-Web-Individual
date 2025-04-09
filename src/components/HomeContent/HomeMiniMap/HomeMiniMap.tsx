@@ -37,7 +37,12 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
           </span>
         </div>
         <div className={styles.HomeMiniMap} onClick={handleSeeMap}>
-          <Map height="180px" draggable={false} zoomable={false} />
+          <Map
+            height="180px"
+            isTracking={true}
+            draggable={false}
+            zoomable={false}
+          />
         </div>
         {isSharedLocation ? (
           <Button onClick={handleUnshareLocation}>위치 공유 해제하기</Button>
