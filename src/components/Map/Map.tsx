@@ -1,65 +1,87 @@
-// 지도 페이지
 import { useEffect, useRef, useState } from "react";
-import BottomBar from "../../components/BottomBar/BottomBar";
-import styles from "./Map.module.css";
 
-const Map = () => {
+interface MarkerData {
+  lat: number;
+  lng: number;
+  title: string;
+  onClick?: () => void;
+}
+
+interface MapProps {
+  width?: string;
+  height?: string;
+  isTracking?: boolean;
+  setIsTracking?: (value: boolean) => void;
+  draggable?: boolean;
+  zoomable?: boolean;
+}
+
+// React Strict Mode로 인해 두번 마운트 되어서 하단 왼쪽 로고 두개로 보이는데
+// 배포 시에는 안 그러니 걱정 안해도됨
+
+const Map = ({
+  width = "100%",
+  height = "100%",
+  isTracking,
+  setIsTracking,
+  draggable = true,
+  zoomable = true,
+}: MapProps) => {
   const mapRef = useRef(null);
   const markerRef = useRef<any>(null);
   const mapInstance = useRef<any>(null); // 지도 객체를 저장할 ref
   const [currentLatLng, setCurrentLatLng] = useState<any>(null); // 현재 위치를 기억
-  const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
   const isTrackingRef = useRef(true); // 추적 상태 최신값을 유지할 ref
+
+  const [markers] = useState<MarkerData[]>([
+    {
+      lat: 37.5419,
+      lng: 127.078,
+      title: "제1학생회관",
+      onClick: () => console.log("제1학생회관 정보"),
+    },
+    {
+      lat: 37.5421,
+      lng: 127.0739,
+      title: "건국대학교 도서관",
+      onClick: () => console.log("건국대학교 도서관 정보"),
+    },
+  ]);
 
   useEffect(() => {
     if (!window.naver) return;
 
-    // 제1학생회관 좌표
-    const firstStudentCenter = new window.naver.maps.LatLng(37.5419, 127.078);
-    // 건국대학교 도서관 좌표
-    const libraryLocation = new window.naver.maps.LatLng(37.5421, 127.0739);
-
     const mapOptions = {
-      // 건국대 제1학생회관 기준 좌표
-      center: new window.naver.maps.LatLng(firstStudentCenter),
       zoom: 16,
+      draggable: draggable,
+      scrollWheel: zoomable,
+      pinchZoom: zoomable,
+      disableDoubleTapZoom: !zoomable,
+      disableDoubleClickZoom: !zoomable,
     };
 
     const map = new window.naver.maps.Map(mapRef.current, mapOptions);
     mapInstance.current = map; // 지도 인스턴스를 ref에 저장
 
-    // 제1학생회관 마커 추가
-    const firstStudentCenterMarker = new window.naver.maps.Marker({
-      position: firstStudentCenter,
-      map,
-      title: "제1학생회관",
-    });
+    // 마커 렌더링
+    markers.forEach(({ lat, lng, title, onClick }) => {
+      const marker = new window.naver.maps.Marker({
+        position: new window.naver.maps.LatLng(lat, lng),
+        map,
+        title,
+      });
 
-    // 건국대학교 도서관 마커 추가
-    const libraryMarker = new window.naver.maps.Marker({
-      position: libraryLocation,
-      map,
-      title: "건국대학교 도서관",
-    });
-
-    // 마커 클릭 이벤트. 학생회관 눌렀을 때 로직 수행
-    window.naver.maps.Event.addListener(
-      firstStudentCenterMarker,
-      "click",
-      () => {
-        console.log("제1학생회관 정보");
+      if (onClick) {
+        window.naver.maps.Event.addListener(marker, "click", onClick);
       }
-    );
-
-    // 마커 클릭 이벤트. 도서관 마커 눌렀을 때 로직 수행
-    window.naver.maps.Event.addListener(libraryMarker, "click", () => {
-      console.log("건국대학교 도서관 정보");
     });
 
     // 지도 드래그 시 추적 끄기
-    window.naver.maps.Event.addListener(map, "drag", () => {
-      setIsTracking(false);
-    });
+    if (setIsTracking) {
+      window.naver.maps.Event.addListener(map, "drag", () => {
+        setIsTracking(false);
+      });
+    }
 
     // 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가기
     if (navigator.geolocation) {
@@ -126,34 +148,12 @@ const Map = () => {
 
   // 추적 상태 변경 시 ref도 업데이트
   useEffect(() => {
-    isTrackingRef.current = isTracking;
+    if (isTracking) {
+      isTrackingRef.current = isTracking;
+    }
   }, [isTracking]);
 
-  return (
-    <div>
-      {/* 위치 추적 버튼 예시 */}
-      <button
-        onClick={() => setIsTracking(true)}
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          zIndex: 1000,
-          padding: "8px 12px",
-          backgroundColor: isTracking ? "#2e8b57" : "#ccc", // 상태에 따라 색상 변경
-          color: "white",
-          border: "none",
-          borderRadius: "6px",
-          cursor: isTracking ? "default" : "pointer", // 선택적: 비활성화 느낌 표현
-        }}
-      >
-        현재 위치 따라가기
-      </button>
-
-      <div ref={mapRef} className={styles.MapContainer} />
-      <BottomBar />
-    </div>
-  );
+  return <div ref={mapRef} style={{ width, height, overflow: "hidden" }} />;
 };
 
 export default Map;

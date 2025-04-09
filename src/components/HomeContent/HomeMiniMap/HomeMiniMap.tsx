@@ -1,7 +1,8 @@
 import Button from "../../Button/Button";
 import styles from "./HomeMiniMap.module.css";
-import mapExampleImg from "../../../assets/ExampleImg/exMap.png";
 import React from "react";
+import Map from "../../Map/Map";
+import { useNavigate } from "react-router-dom";
 
 interface HomeMiniMapProps {
   isSharedLocation: boolean;
@@ -12,6 +13,10 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
   isSharedLocation,
   setIsSharedLocation,
 }) => {
+  const navigate = useNavigate();
+  const handleSeeMap = () => {
+    navigate("/map");
+  };
   const handleShareLocation = () => {
     console.log("내 위치 공유하기");
     setIsSharedLocation(true);
@@ -31,12 +36,8 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
             내 위치를 친구들에게 공유해보세요!
           </span>
         </div>
-        <div className={styles.HomeMiniMap}>
-          <img
-            style={{ width: "100%" }}
-            src={mapExampleImg}
-            alt="지도 예시 이미지"
-          />
+        <div className={styles.HomeMiniMap} onClick={handleSeeMap}>
+          <Map height="180px" draggable={false} zoomable={false} />
         </div>
         {isSharedLocation ? (
           <Button onClick={handleUnshareLocation}>위치 공유 해제하기</Button>
