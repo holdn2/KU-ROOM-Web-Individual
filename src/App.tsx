@@ -11,7 +11,6 @@ import IdentityVerify from "./pages/Signup/IdentityVerify";
 import ProfileSetting from "./pages/ProfileSetting/ProfileSetting";
 import Welcome from "./pages/Welcome/Welcome";
 import Agreement from "./pages/Signup/Agreement";
-import Map from "./pages/Map/Map";
 import MyPage from "./pages/MyPage/MyPage";
 import ProfileChange from "./pages/MyPage/ProfileChange/ProfileChange";
 import ChangePw from "./pages/MyPage/ChangePw/ChangePw";
@@ -22,6 +21,7 @@ import MyLocationRanking from "./pages/MyLocationRanking/MyLocationRanking";
 import FriendList from "./pages/MyPage/FriendList/FriendList";
 import FriendAdd from "./pages/MyPage/FriendAdd/FriendAdd";
 import FriendLocationRanking from "./pages/MyLocationRanking/FriendLocationRanking/FriendLocationRanking";
+import MapPage from "./pages/Map/MapPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -78,7 +78,7 @@ function App() {
         },
         {
           path: "map",
-          element: <Map />,
+          element: <MapPage />,
         },
         {
           path: "myinfo",
