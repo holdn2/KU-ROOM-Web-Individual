@@ -3,13 +3,18 @@ import searchLocationIcon from "../../../assets/homemenuicon/homeicon_search_loc
 import plusFriendIcon from "../../../assets/homemenuicon/homeicon_plus_friend.png";
 import kcubeIcon from "../../../assets/homemenuicon/homeicon_kcube_reserve.png";
 import readingRoomIcon from "../../../assets/homemenuicon/homeicon_readingroom.png";
+import { useNavigate } from "react-router-dom";
 
 const HomeMenu = () => {
+  const navigate = useNavigate();
+
   const navToSearchLocation = () => {
     console.log("장소 검색으로");
+    navigate("/map");
   };
   const navToPlusFriend = () => {
     console.log("친구 추가로");
+    navigate("/friendadd");
   };
   const navToKcubeReserve = () => {
     console.log("케이큐브 예약으로");
