@@ -52,7 +52,7 @@ const Map = ({
     if (!window.naver) return;
 
     const mapOptions = {
-      zoom: 16,
+      zoom: 17,
       draggable: draggable,
       scrollWheel: zoomable,
       pinchZoom: zoomable,
@@ -80,6 +80,7 @@ const Map = ({
     if (setIsTracking) {
       window.naver.maps.Event.addListener(map, "drag", () => {
         setIsTracking(false);
+        isTrackingRef.current = false;
       });
     }
 
@@ -143,13 +144,6 @@ const Map = ({
   useEffect(() => {
     if (isTracking && currentLatLng && mapInstance.current) {
       mapInstance.current.setCenter(currentLatLng);
-    }
-  }, [isTracking]);
-
-  // 추적 상태 변경 시 ref도 업데이트
-  useEffect(() => {
-    if (isTracking) {
-      isTrackingRef.current = isTracking;
     }
   }, [isTracking]);
 
