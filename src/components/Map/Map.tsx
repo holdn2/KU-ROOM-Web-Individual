@@ -22,7 +22,7 @@ interface MapProps {
 const Map = ({
   width = "100%",
   height = "100%",
-  isTracking,
+  isTracking = true,
   setIsTracking,
   draggable = true,
   zoomable = true,
@@ -76,12 +76,23 @@ const Map = ({
       }
     });
 
-    // 지도 드래그 시 추적 끄기
     if (setIsTracking) {
-      window.naver.maps.Event.addListener(map, "drag", () => {
+      const disableTracking = () => {
         setIsTracking(false);
         isTrackingRef.current = false;
-      });
+      };
+
+      // 드래그
+      window.naver.maps.Event.addListener(map, "drag", disableTracking);
+
+      // 줌 변경 (줌 버튼, 휠, 핀치 줌 포함)
+      window.naver.maps.Event.addListener(map, "zoom_changed", disableTracking);
+
+      // 더블 클릭 줌
+      window.naver.maps.Event.addListener(map, "dblclick", disableTracking);
+
+      // 마우스 휠
+      window.naver.maps.Event.addListener(map, "wheel", disableTracking);
     }
 
     // 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가기
@@ -145,6 +156,10 @@ const Map = ({
     if (isTracking && currentLatLng && mapInstance.current) {
       mapInstance.current.setCenter(currentLatLng);
     }
+  }, [isTracking]);
+
+  useEffect(() => {
+    isTrackingRef.current = isTracking;
   }, [isTracking]);
 
   return <div ref={mapRef} style={{ width, height, overflow: "hidden" }} />;
