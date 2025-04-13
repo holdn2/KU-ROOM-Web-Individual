@@ -1,0 +1,41 @@
+.EachFriendContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.RequestList {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 16px;
+  gap: 30px;
+  border-bottom: 1px solid #e3e7eb;
+}
+.FriendProfileWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+}
+.ProfileImg {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+.RequestTitle,
+.Nickname {
+  color: #9eaab5;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%; /* 19.2px */
+}
+.Nickname {
+  color: #000;
+  font-size: 18px;
+  font-weight: 600;
+}
+.DeleteIcon {
+  padding: 5px 0 5px 5px;
+}
