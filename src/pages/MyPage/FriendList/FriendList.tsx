@@ -51,6 +51,8 @@ const FriendList = () => {
 
   // 케밥 버튼을 눌렀을 때 팝업이 뜨도록 하는 로직
   const handleFriendEdit = (nickname: string, event: React.MouseEvent) => {
+    // getBoundingClientRect는 요소의 크기와 뷰포트에 상대적인 위치 정보를 제공하는 DOMRect 객체 반환
+    // 픽셀단위로 나타낸다.
     const friendContainer = (
       event.target as HTMLElement
     ).getBoundingClientRect();
