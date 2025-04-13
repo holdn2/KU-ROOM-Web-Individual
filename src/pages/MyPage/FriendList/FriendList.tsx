@@ -1,11 +1,12 @@
 import Header from "../../../components/Header/Header";
 import styles from "./FriendList.module.css";
 import defaultImg from "../../../assets/defaultProfileImg.svg";
-import kebabIcon from "../../../assets/icon/kebabBtn.svg";
 import { useEffect, useRef, useState } from "react";
 import FriendEdit from "../../../components/Friend/FriendEdit/FriendEdit";
 import FriendSearch from "../../../components/Friend/FriendSearch/FriendSearch";
 import FriendModal from "../../../components/Friend/FriendModal/FriendModal";
+import { useOutsideClick } from "../../../utils/friendUtils";
+import FriendContainer from "../../../components/Friend/FriendContainer/FriendContainer";
 
 const dummyFriendList = [
   {
@@ -33,36 +34,30 @@ interface Friend {
 
 const FriendList = () => {
   const [friendList, setFriendList] = useState<Friend[]>([]);
-  const [editFriend, setEditFriend] = useState("");
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [searchNickname, setSearchNickname] = useState("");
-  // 검색어가 포함된 친구 목록 필터링
+
+  // 검색어가 포함되어 필터링된 친구 목록
   const filteredFriends = friendList.filter((friend) =>
     friend.nickname.includes(searchNickname)
   );
 
+  // 친구 수정 관련 상태
+  const [editPopupState, setEditPopupState] = useState<{
+    isPopupOpen: boolean;
+    popupPosition: { top: number; left: number };
+    editFriend: string;
+  }>({
+    isPopupOpen: false,
+    popupPosition: { top: 0, left: 0 },
+    editFriend: "",
+  });
+
   // 친구 삭제, 차단, 신고하기 팝업 관련 상태
-  const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const popupRef = useRef<HTMLDivElement | null>(null);
 
   // 친구 관련 수정 모달 상태
   const [modalState, setModalState] = useState(false);
   const [modalType, setModalType] = useState("");
-
-  // 케밥 버튼을 눌렀을 때 팝업이 뜨도록 하는 로직
-  const handleFriendEdit = (nickname: string, event: React.MouseEvent) => {
-    // getBoundingClientRect는 요소의 크기와 뷰포트에 상대적인 위치 정보를 제공하는 DOMRect 객체 반환
-    // 픽셀단위로 나타낸다.
-    const friendContainer = (
-      event.target as HTMLElement
-    ).getBoundingClientRect();
-    setPopupPosition({
-      top: friendContainer.bottom + window.scrollY,
-      left: friendContainer.left,
-    });
-    setEditFriend(nickname);
-    setIsPopupOpen(true);
-  };
 
   // 서버에서 친구 목록 가져오기
   useEffect(() => {
@@ -71,21 +66,13 @@ const FriendList = () => {
 
   // 팝업 외부 클릭 시 닫기
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target as Node)
-      ) {
-        setIsPopupOpen(false);
-      }
-    };
-    if (isPopupOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isPopupOpen]);
+    useOutsideClick(popupRef, editPopupState.isPopupOpen, () => {
+      setEditPopupState((prev) => ({
+        ...prev,
+        isPopupOpen: false,
+      }));
+    });
+  }, [editPopupState.isPopupOpen]);
 
   return (
     <div>
@@ -101,19 +88,10 @@ const FriendList = () => {
         <div className={styles.FriendListWrapper}>
           {(searchNickname ? filteredFriends : friendList).map(
             (friend, index) => (
-              <div key={index} className={styles.EachFriendContainer}>
-                <div className={styles.FriendProfileWrapper}>
-                  <img
-                    className={styles.ProfileImg}
-                    src={friend.profileImg}
-                    alt="프로필 사진"
-                  />
-                  <span className={styles.Nickname}>{friend.nickname}</span>
-                </div>
-                <img
-                  src={kebabIcon}
-                  alt="설정"
-                  onClick={(e) => handleFriendEdit(friend.nickname, e)}
+              <div key={index}>
+                <FriendContainer
+                  friend={friend}
+                  setEditPopupState={setEditPopupState}
                 />
               </div>
             )
@@ -121,26 +99,31 @@ const FriendList = () => {
         </div>
       </div>
 
-      {isPopupOpen && (
+      {editPopupState.isPopupOpen && (
         <div
           ref={popupRef}
           style={{
             position: "absolute",
-            top: popupPosition.top + 15,
-            left: popupPosition.left - 200,
-            zIndex: 1000,
+            top: editPopupState.popupPosition.top,
+            left: editPopupState.popupPosition.left,
+            zIndex: 100,
           }}
         >
           <FriendEdit
-            editFriend={editFriend}
-            onClose={() => setIsPopupOpen(false)}
+            editFriend={editPopupState.editFriend}
+            onClose={() =>
+              setEditPopupState((prev) => ({
+                ...prev,
+                isPopupOpen: false,
+              }))
+            }
             setModalType={setModalType}
             setModalState={setModalState}
           />
         </div>
       )}
       <FriendModal
-        editFriend={editFriend}
+        editFriend={editPopupState.editFriend}
         modalState={modalState}
         modalType={modalType}
         setModalState={setModalState}

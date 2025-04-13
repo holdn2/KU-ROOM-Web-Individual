@@ -1,0 +1,54 @@
+.SearchResultContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 30px;
+  gap: 30px;
+}
+.EachFriendContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.FriendProfileWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+}
+.ProfileImg {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+.Nickname {
+  font-style: normal;
+  line-height: 120%; /* 19.2px */
+  color: #000;
+  font-size: 18px;
+  font-weight: 600;
+}
+.NoSearchResultText {
+  color: #b0bac3;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.35px;
+}
+.NoSearchResultIcon {
+  width: 64px;
+  height: 64px;
+}
+.SendRequestBtnWrapper {
+  width: 100px;
+}
+.NoSearchResultWrapper {
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
