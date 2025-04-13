@@ -20,30 +20,6 @@ interface MapProps {
 // React Strict Mode로 인해 두번 마운트 되어서 하단 왼쪽 로고 두개로 보이는데
 // 배포 시에는 안 그러니 걱정 안해도됨
 
-const rotateImage = (url: string, angle: number): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const image = new Image();
-    image.src = url;
-    image.onload = () => {
-      const canvas = document.createElement("canvas");
-      const size = Math.max(image.width, image.height);
-      canvas.width = size;
-      canvas.height = size;
-
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return reject("Canvas not supported");
-
-      ctx.clearRect(0, 0, size, size);
-      ctx.translate(size / 2, size / 2);
-      ctx.rotate((angle * Math.PI) / 180);
-      ctx.drawImage(image, -image.width / 2, -image.height / 2);
-
-      resolve(canvas.toDataURL());
-    };
-    image.onerror = () => reject("Image load error");
-  });
-};
-
 const Map = ({
   width = "100%",
   height = "100%",
@@ -57,7 +33,6 @@ const Map = ({
   const mapInstance = useRef<any>(null); // 지도 객체를 저장할 ref
   const [currentLatLng, setCurrentLatLng] = useState<any>(null); // 현재 위치를 기억
   const isTrackingRef = useRef(true); // 추적 상태 최신값을 유지할 ref
-  const [deviceRotation, setDeviceRotation] = useState<number | null>(null);
 
   const [markers] = useState<MarkerData[]>([
     {
@@ -133,32 +108,21 @@ const Map = ({
 
           setCurrentLatLng(currentLocation); // 현재 위치 상태 업데이트
 
-          // 내 위치 마커
-          rotateImage(myMarkerIcon, deviceRotation ?? 0).then(
-            (rotatedIconUrl) => {
-              if (markerRef.current) {
-                markerRef.current.setPosition(currentLocation);
-                markerRef.current.setIcon({
-                  url: rotatedIconUrl,
-                  anchor: new window.naver.maps.Point(16, 16),
-                  size: new window.naver.maps.Size(32, 32),
-                  scaledSize: new window.naver.maps.Size(32, 32),
-                });
-              } else {
-                markerRef.current = new window.naver.maps.Marker({
-                  position: currentLocation,
-                  map,
-                  title: "내 위치",
-                  icon: {
-                    url: rotatedIconUrl,
-                    anchor: new window.naver.maps.Point(16, 16),
-                    size: new window.naver.maps.Size(32, 32),
-                    scaledSize: new window.naver.maps.Size(32, 32),
-                  },
-                });
-              }
-            }
-          );
+          if (markerRef.current) {
+            // 기존 마커 위치 업데이트
+            markerRef.current.setPosition(currentLocation);
+          } else {
+            // 최초 마커 생성
+            markerRef.current = new window.naver.maps.Marker({
+              position: currentLocation,
+              map,
+              title: "내 위치",
+              icon: {
+                // 마커 아이콘 추가
+                url: myMarkerIcon,
+              },
+            });
+          }
 
           if (isTrackingRef.current) {
             // 지도 중심을 내 위치를 기준으로 이동
@@ -183,30 +147,14 @@ const Map = ({
         }
       );
 
-      // 디바이스 방향 감지
-      let rotateTimeout: ReturnType<typeof setTimeout> | null = null;
-
-      const handleOrientation = (event: DeviceOrientationEvent) => {
-        // 성능 이슈를 방지하기 위해 0.3초 딜레이를 부여
-        if (event.alpha !== null) {
-          if (rotateTimeout) return;
-          rotateTimeout = setTimeout(() => {
-            setDeviceRotation(event.alpha!);
-            rotateTimeout = null;
-          }, 300);
-        }
-      };
-      window.addEventListener("deviceorientation", handleOrientation, true);
-
       // 언마운트 시 추적 종료
       return () => {
         navigator.geolocation.clearWatch(watchId);
-        window.removeEventListener("deviceorientation", handleOrientation);
       };
     } else {
       alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
     }
-  }, [deviceRotation]);
+  }, []);
 
   // 추적 모드 활성화 시 현재 위치 중심으로 지도 이동
   useEffect(() => {
