@@ -3,7 +3,7 @@ import { useState } from "react";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import styles from "./MapPage.module.css";
 import Map from "../../components/Map/Map";
-import myTrackingIcon from "../../assets/map/mylocation.svg";
+import myTrackingIcon from "../../assets/map/tomylocation.svg";
 import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
 
 const locationCategory = [
