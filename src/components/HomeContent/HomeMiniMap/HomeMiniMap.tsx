@@ -1,8 +1,8 @@
 import Button from "../../Button/Button";
 import styles from "./HomeMiniMap.module.css";
 import React, { useEffect, useState } from "react";
-import Map from "../../Map/Map";
 import { useNavigate } from "react-router-dom";
+import KuroomMap from "../../Map/KuroomMap";
 
 interface HomeMiniMapProps {
   isSharedLocation: boolean;
@@ -111,7 +111,7 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
               </span>
             </div>
             <div className={styles.HomeMiniMap} onClick={handleSeeMap}>
-              <Map
+              <KuroomMap
                 height="180px"
                 isTracking={true}
                 draggable={false}

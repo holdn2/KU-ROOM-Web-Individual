@@ -20,7 +20,7 @@ interface MapProps {
 // React Strict Mode로 인해 두번 마운트 되어서 하단 왼쪽 로고 두개로 보이는데
 // 배포 시에는 안 그러니 걱정 안해도됨
 
-const Map = ({
+const KuroomMap = ({
   width = "100%",
   height = "100%",
   isTracking = true,
@@ -170,4 +170,4 @@ const Map = ({
   return <div ref={mapRef} style={{ width, height, overflow: "hidden" }} />;
 };
 
-export default Map;
+export default KuroomMap;
