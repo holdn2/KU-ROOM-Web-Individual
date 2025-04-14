@@ -62,15 +62,15 @@ const MapPage = () => {
         </div>
       ) : (
         <>
-          <div className={styles.RotationCategoryWrapper}>
+          <div className={styles.CategoryChipsWrapper}>
             {locationCategory.map((category, index) => (
               <button
-                className={styles.LocationCategory}
+                className={styles.CategoryChip}
                 key={index}
                 onClick={() => console.log(category.title, " 정보")}
               >
-                <div className={styles.LocationCategoryIcon} />
-                <span className={styles.LocationCategoryTitle}>
+                <div className={styles.CategoryChipIcon} />
+                <span className={styles.CategoryChipTitle}>
                   {category.title}
                 </span>
               </button>
