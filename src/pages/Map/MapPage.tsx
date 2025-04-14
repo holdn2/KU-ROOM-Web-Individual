@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import styles from "./MapPage.module.css";
-import Map from "../../components/Map/Map";
 import myTrackingIcon from "../../assets/map/tomylocation.svg";
 import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
 import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChip";
+import KuroomMap from "../../components/Map/KuroomMap";
 
 const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
@@ -19,8 +19,7 @@ const MapPage = () => {
   }, [selectedChip]);
 
   const handleBlurSearch = () => {
-    setSearchLocation("");
-    setIsSearchFocused(false);
+    if (searchLocation === "") setIsSearchFocused(false);
   };
 
   return (
@@ -43,7 +42,7 @@ const MapPage = () => {
       ) : (
         <>
           <MapCategoryChip setSelectedChip={setSelectedChip} />
-          <Map
+          <KuroomMap
             height="calc(100vh - 92px)"
             isTracking={isTracking}
             setIsTracking={setIsTracking}
