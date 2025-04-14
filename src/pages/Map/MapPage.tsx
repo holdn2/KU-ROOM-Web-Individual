@@ -1,42 +1,22 @@
 // 지도 페이지
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import styles from "./MapPage.module.css";
 import Map from "../../components/Map/Map";
 import myTrackingIcon from "../../assets/map/tomylocation.svg";
 import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
-
-const locationCategory = [
-  {
-    title: "단과대",
-    icon: "",
-  },
-  {
-    title: "도서관",
-    icon: "",
-  },
-  {
-    title: "제1학생회관",
-    icon: "",
-  },
-  {
-    title: "K-Cube",
-    icon: "",
-  },
-  {
-    title: "K-Hub",
-    icon: "",
-  },
-  {
-    title: "편의점",
-    icon: "",
-  },
-];
+import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChip";
 
 const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
   const [searchLocation, setSearchLocation] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  const [selectedChip, setSelectedChip] = useState("");
+
+  useEffect(() => {
+    if (selectedChip) console.log(selectedChip, " 선택");
+  }, [selectedChip]);
 
   const handleBlurSearch = () => {
     setSearchLocation("");
@@ -62,20 +42,7 @@ const MapPage = () => {
         </div>
       ) : (
         <>
-          <div className={styles.CategoryChipsWrapper}>
-            {locationCategory.map((category, index) => (
-              <button
-                className={styles.CategoryChip}
-                key={index}
-                onClick={() => console.log(category.title, " 정보")}
-              >
-                <div className={styles.CategoryChipIcon} />
-                <span className={styles.CategoryChipTitle}>
-                  {category.title}
-                </span>
-              </button>
-            ))}
-          </div>
+          <MapCategoryChip setSelectedChip={setSelectedChip} />
           <Map
             height="calc(100vh - 92px)"
             isTracking={isTracking}
