@@ -1,0 +1,43 @@
+.CategoryChipsWrapper {
+  position: absolute;
+  top: 84px;
+  width: calc(100% - 50px);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 100;
+  overflow-x: auto; /* 가로 스크롤만 */
+  overflow-y: visible;
+  padding: 0 25px;
+  white-space: nowrap;
+}
+.CategoryChipsWrapper::-webkit-scrollbar {
+  display: none;
+}
+.CategoryChip {
+  height: 36px;
+  box-sizing: border-box;
+  display: flex;
+  padding: 7px 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  margin-bottom: 8px;
+}
+.CategoryChipIcon {
+  width: 16px;
+  height: 16px;
+  background: #d9d9d9;
+  border-radius: 50%;
+}
+.CategoryChipTitle {
+  color: #000;
+  text-align: center;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 21px */
+}
