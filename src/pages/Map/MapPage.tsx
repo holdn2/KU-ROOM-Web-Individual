@@ -12,14 +12,27 @@ const MapPage = () => {
   const navigate = useNavigate();
   const loc = useLocation();
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
-  const [selectedChip, setSelectedChip] = useState("");
+  const [searchTargetLocation, setSearchTargetLocation] = useState("");
+
+  const handleSelectLocation = (location: string) => {
+    if (searchTargetLocation === location) {
+      // 강제로 한 번 초기화 후 다시 설정
+      setSearchTargetLocation(""); // 다른 값으로 초기화
+      setTimeout(() => {
+        setSearchTargetLocation(location); // 다시 설정
+      }, 0);
+    } else {
+      setSearchTargetLocation(location);
+    }
+  };
 
   useEffect(() => {
-    if (selectedChip) console.log(selectedChip, " 선택");
-  }, [selectedChip]);
+    if (searchTargetLocation) console.log(searchTargetLocation, " 선택");
+  }, [searchTargetLocation]);
 
   useEffect(() => {
     if (loc.state?.searchLocation) {
+      setSearchTargetLocation(loc.state.searchLocation);
       console.log(loc.state.searchLocation, " 으로 이동하기");
     }
   }, []);
@@ -32,11 +45,12 @@ const MapPage = () => {
         {/* 이부분은 그냥 누르면 검색 화면으로 이동하도록 버튼형식 */}
         <MapSearchBar />
       </button>
-      <MapCategoryChip setSelectedChip={setSelectedChip} />
+      <MapCategoryChip setSelectedChip={handleSelectLocation} />
       <KuroomMap
         height="calc(100vh - 92px)"
         isTracking={isTracking}
         setIsTracking={setIsTracking}
+        searchLocation={searchTargetLocation}
       />
       <button
         className={styles.TrackingIcon}
