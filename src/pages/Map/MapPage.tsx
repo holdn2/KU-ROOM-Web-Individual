@@ -31,13 +31,22 @@ const MapPage = () => {
 
   return (
     <div>
+      {/* KuroomMap은 항상 렌더링되고 */}
+      <KuroomMap
+        height="calc(100vh - 92px)"
+        isTracking={isTracking}
+        setIsTracking={setIsTracking}
+        searchLocation={searchTargetLocation}
+      />
+
+      {/* 검색 모드일 때 MapSearch만 덮어씌우기 */}
       {searchMode ? (
-        <>
+        <div className={styles.FullScreenOverlay}>
           <MapSearch
             setSearchMode={setSearchMode}
             setSelectLocation={handleSelectLocation}
           />
-        </>
+        </div>
       ) : (
         <>
           <button
@@ -47,16 +56,9 @@ const MapPage = () => {
               setSearchMode(true);
             }}
           >
-            {/* 이부분은 그냥 누르면 검색 화면으로 이동하도록 버튼형식 */}
             <MapSearchBar />
           </button>
           <MapCategoryChip setSelectedChip={handleSelectLocation} />
-          <KuroomMap
-            height="calc(100vh - 92px)"
-            isTracking={isTracking}
-            setIsTracking={setIsTracking}
-            searchLocation={searchTargetLocation}
-          />
           <button
             className={styles.TrackingIcon}
             onClick={() => setIsTracking(true)}
@@ -69,7 +71,6 @@ const MapPage = () => {
           </button>
         </>
       )}
-
       <BottomBar />
     </div>
   );

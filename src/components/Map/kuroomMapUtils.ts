@@ -126,16 +126,13 @@ export function moveToLocation(
   if (target) {
     const targetLatLng = new window.naver.maps.LatLng(target.lat, target.lng);
 
-    // 100ms 정도 딜레이 후 중심 이동
-    setTimeout(() => {
-      mapInstance.current?.setCenter(targetLatLng);
+    mapInstance.current?.setCenter(targetLatLng);
 
-      if (setIsTracking && isTrackingRef) {
-        setIsTracking(false);
-        isTrackingRef.current = false;
-      }
+    if (setIsTracking && isTrackingRef) {
+      setIsTracking(false);
+      isTrackingRef.current = false;
+    }
 
-      console.log(`[검색] ${searchLocation} 위치로 지도 이동`);
-    }, 100);
+    console.log(`[검색] ${searchLocation} 위치로 지도 이동`);
   }
 }
