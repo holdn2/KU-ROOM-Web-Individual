@@ -26,7 +26,7 @@ const BottomBar = () => {
         <span className="bottom-bar-text">공지사항</span>
       </button>
       <button
-        className={`nav-button-wrap ${location.pathname === "/map" ? "active" : ""}`}
+        className={`nav-button-wrap ${location.pathname.startsWith("/map") ? "active" : ""}`}
         onClick={() => navigate("/map")}
       >
         <img src={mapnav} alt="지도" />

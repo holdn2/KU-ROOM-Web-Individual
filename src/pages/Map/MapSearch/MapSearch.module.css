@@ -1,0 +1,92 @@
+.SearchBarContainer {
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.LeftContentWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.RecentSearchTitleWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+  padding: 25px;
+}
+.RecentSearchDataWrapper {
+  margin: 0 16px;
+}
+.RecentSearchContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px 19px;
+  border-bottom: 1px solid #e3e7eb;
+}
+.RecentSearchContainer:last-child {
+  border: none;
+}
+.ResultWrapper {
+  margin: 0 16px;
+}
+.ResultContainer {
+  padding: 17px 19px;
+  border-bottom: 1px solid #e3e7eb;
+}
+.ResultContainer:last-child {
+  border: none;
+}
+.NoResultContainer {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.SearchText,
+.SearchText::placeholder,
+.RecentSearchTitle,
+.RecentSearchDelete,
+.LocationTitle,
+.NoResultText {
+  color: var(--Black, #1d2228);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.SearchText::placeholder {
+  color: var(--Gray-100, #9eaab5);
+  font-size: 16px;
+  font-weight: 500;
+}
+.RecentSearchDelete {
+  color: var(--Gray-100, #9eaab5);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 120%; /* 16.8px */
+}
+.LocationTitle {
+  color: var(--Black, #1d2228);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 19.2px */
+}
+.NoResultText {
+  color: var(--Gray-200, #b0bac3);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.35px;
+}
+.ArrowIcon {
+  padding: 8px 12px;
+}
+.DeleteIcon {
+  padding: 9px;
+}
