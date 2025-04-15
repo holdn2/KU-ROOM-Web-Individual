@@ -17,10 +17,12 @@ export function renderMarkers(
       map,
       title,
     });
+    window.naver.maps.Event.addListener(marker, "click", () => {
+      const position = marker.getPosition();
+      map.setCenter(position); // 마커 클릭 시 지도 중심으로 이동
 
-    if (onClick) {
-      window.naver.maps.Event.addListener(marker, "click", onClick);
-    }
+      if (onClick) onClick(); // 기존 이벤트도 실행
+    });
   });
 }
 
