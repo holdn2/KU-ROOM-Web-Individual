@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  moveToLocation,
   myLocationTracking,
   noTracking,
   renderMarkers,
@@ -19,6 +20,7 @@ interface MapProps {
   setIsTracking?: (value: boolean) => void;
   draggable?: boolean;
   zoomable?: boolean;
+  searchLocation?: string;
 }
 
 // React Strict Mode로 인해 두번 마운트 되어서 하단 왼쪽 로고 두개로 보이는데
@@ -31,6 +33,7 @@ const KuroomMap = ({
   setIsTracking,
   draggable = true,
   zoomable = true,
+  searchLocation,
 }: MapProps) => {
   const mapRef = useRef(null);
   const markerRef = useRef<naver.maps.Marker | null>(null);
@@ -91,6 +94,18 @@ const KuroomMap = ({
       renderMarkers(mapInstance.current, markers);
     }
   }, [markers]);
+
+  useEffect(() => {
+    if (searchLocation) {
+      moveToLocation(
+        searchLocation,
+        mapInstance,
+        markers,
+        setIsTracking,
+        isTrackingRef
+      );
+    }
+  }, [searchLocation]);
 
   // 추적 모드 활성화 시 현재 위치 중심으로 지도 이동
   useEffect(() => {

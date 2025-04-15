@@ -107,3 +107,27 @@ export function noTracking(
   // 마우스 휠
   window.naver.maps.Event.addListener(map, "wheel", disableTracking);
 }
+
+// 검색 혹은 칩 선택 시 해당 위치로 이동하는 로직
+export function moveToLocation(
+  searchLocation: string,
+  mapInstance: React.MutableRefObject<naver.maps.Map | null>,
+  markers: MarkerData[],
+  setIsTracking?: (value: boolean) => void,
+  isTrackingRef?: React.MutableRefObject<boolean>
+) {
+  if (!searchLocation || !mapInstance.current) return;
+
+  const target = markers.find((m) => m.title === searchLocation);
+  if (target) {
+    const targetLatLng = new window.naver.maps.LatLng(target.lat, target.lng);
+    mapInstance.current.setCenter(targetLatLng);
+
+    if (setIsTracking && isTrackingRef) {
+      setIsTracking(false);
+      isTrackingRef.current = false;
+    }
+
+    console.log(`[검색] ${searchLocation} 위치로 지도 이동`);
+  }
+}
