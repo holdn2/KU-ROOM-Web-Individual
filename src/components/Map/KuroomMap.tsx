@@ -89,7 +89,7 @@ const KuroomMap = ({
         (err) => console.warn("초기 위치 가져오기 실패", err),
         {
           enableHighAccuracy: true,
-          timeout: 5000,
+          timeout: 10000,
         }
       );
 
