@@ -54,8 +54,8 @@ export function isMyLocationInSchool(setIsInSchool: (value: boolean) => void) {
     },
     {
       enableHighAccuracy: true,
-      maximumAge: 5000,
-      timeout: 5000,
+      maximumAge: 10000,
+      timeout: 10000,
     }
   );
 
