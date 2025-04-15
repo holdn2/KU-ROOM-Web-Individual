@@ -121,13 +121,17 @@ export function moveToLocation(
   const target = markers.find((m) => m.title === searchLocation);
   if (target) {
     const targetLatLng = new window.naver.maps.LatLng(target.lat, target.lng);
-    mapInstance.current.setCenter(targetLatLng);
 
-    if (setIsTracking && isTrackingRef) {
-      setIsTracking(false);
-      isTrackingRef.current = false;
-    }
+    // 10ms 정도 딜레이 후 중심 이동
+    setTimeout(() => {
+      mapInstance.current?.setCenter(targetLatLng);
 
-    console.log(`[검색] ${searchLocation} 위치로 지도 이동`);
+      if (setIsTracking && isTrackingRef) {
+        setIsTracking(false);
+        isTrackingRef.current = false;
+      }
+
+      console.log(`[검색] ${searchLocation} 위치로 지도 이동 (with delay)`);
+    }, 10);
   }
 }

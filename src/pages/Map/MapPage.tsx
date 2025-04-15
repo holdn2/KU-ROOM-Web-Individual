@@ -6,11 +6,9 @@ import myTrackingIcon from "../../assets/map/tomylocation.svg";
 import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
 import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChip";
 import KuroomMap from "../../components/Map/KuroomMap";
-import { useLocation } from "react-router-dom";
 import MapSearch from "../../components/Map/MapSearch/MapSearch";
 
 const MapPage = () => {
-  const loc = useLocation();
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
   const [searchTargetLocation, setSearchTargetLocation] = useState("");
   const [searchMode, setSearchMode] = useState(false);
@@ -31,13 +29,6 @@ const MapPage = () => {
     if (searchTargetLocation) console.log(searchTargetLocation, " 선택");
   }, [searchTargetLocation]);
 
-  useEffect(() => {
-    if (loc.state?.searchLocation) {
-      setIsTracking(false);
-      setSearchTargetLocation(loc.state.searchLocation);
-      console.log(loc.state.searchLocation, " 으로 이동하기");
-    }
-  }, []);
   return (
     <div>
       {searchMode ? (
@@ -51,7 +42,10 @@ const MapPage = () => {
         <>
           <button
             className={styles.SearchBarContainer}
-            onClick={() => setSearchMode(true)}
+            onClick={() => {
+              setIsTracking(false);
+              setSearchMode(true);
+            }}
           >
             {/* 이부분은 그냥 누르면 검색 화면으로 이동하도록 버튼형식 */}
             <MapSearchBar />
