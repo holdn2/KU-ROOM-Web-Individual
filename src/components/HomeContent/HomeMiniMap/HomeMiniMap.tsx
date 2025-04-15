@@ -34,6 +34,7 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
     setIsSharedLocation(false);
   };
   return (
+    // 내 위치 불러오기 전에 렌더링 안되게. 로딩 표시라도 추가
     <>
       {isInSchool && (
         <div className={styles.HomeMiniMapBackground}>
