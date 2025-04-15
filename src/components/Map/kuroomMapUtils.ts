@@ -9,7 +9,8 @@ interface MarkerData {
 }
 export function renderMarkers(
   map: naver.maps.Map,
-  markers: MarkerData[]
+  markers: MarkerData[],
+  setIsTracking: (value: boolean) => void
 ): void {
   markers.forEach(({ lat, lng, title, onClick }) => {
     const marker = new window.naver.maps.Marker({
@@ -20,6 +21,7 @@ export function renderMarkers(
     window.naver.maps.Event.addListener(marker, "click", () => {
       const position = marker.getPosition();
       map.setCenter(position); // 마커 클릭 시 지도 중심으로 이동
+      setIsTracking(false);
 
       if (onClick) onClick(); // 기존 이벤트도 실행
     });
@@ -124,7 +126,7 @@ export function moveToLocation(
   if (target) {
     const targetLatLng = new window.naver.maps.LatLng(target.lat, target.lng);
 
-    // 10ms 정도 딜레이 후 중심 이동
+    // 100ms 정도 딜레이 후 중심 이동
     setTimeout(() => {
       mapInstance.current?.setCenter(targetLatLng);
 
@@ -133,7 +135,7 @@ export function moveToLocation(
         isTrackingRef.current = false;
       }
 
-      console.log(`[검색] ${searchLocation} 위치로 지도 이동 (with delay)`);
-    }, 1000);
+      console.log(`[검색] ${searchLocation} 위치로 지도 이동`);
+    }, 100);
   }
 }
