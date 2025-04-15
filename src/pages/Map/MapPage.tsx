@@ -6,13 +6,14 @@ import myTrackingIcon from "../../assets/map/tomylocation.svg";
 import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
 import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChip";
 import KuroomMap from "../../components/Map/KuroomMap";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import MapSearch from "../../components/Map/MapSearch/MapSearch";
 
 const MapPage = () => {
-  const navigate = useNavigate();
   const loc = useLocation();
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
   const [searchTargetLocation, setSearchTargetLocation] = useState("");
+  const [searchMode, setSearchMode] = useState(false);
 
   const handleSelectLocation = (location: string) => {
     if (searchTargetLocation === location) {
@@ -39,30 +40,42 @@ const MapPage = () => {
   }, []);
   return (
     <div>
-      <button
-        className={styles.SearchBarContainer}
-        onClick={() => navigate("/mapsearch")}
-      >
-        {/* 이부분은 그냥 누르면 검색 화면으로 이동하도록 버튼형식 */}
-        <MapSearchBar />
-      </button>
-      <MapCategoryChip setSelectedChip={handleSelectLocation} />
-      <KuroomMap
-        height="calc(100vh - 92px)"
-        isTracking={isTracking}
-        setIsTracking={setIsTracking}
-        searchLocation={searchTargetLocation}
-      />
-      <button
-        className={styles.TrackingIcon}
-        onClick={() => setIsTracking(true)}
-      >
-        <img
-          src={myTrackingIcon}
-          alt="위치 추적 아이콘"
-          style={{ filter: isTracking ? "none" : "grayscale(100%)" }}
-        />
-      </button>
+      {searchMode ? (
+        <>
+          <MapSearch
+            setSearchMode={setSearchMode}
+            setSelectLocation={handleSelectLocation}
+          />
+        </>
+      ) : (
+        <>
+          <button
+            className={styles.SearchBarContainer}
+            onClick={() => setSearchMode(true)}
+          >
+            {/* 이부분은 그냥 누르면 검색 화면으로 이동하도록 버튼형식 */}
+            <MapSearchBar />
+          </button>
+          <MapCategoryChip setSelectedChip={handleSelectLocation} />
+          <KuroomMap
+            height="calc(100vh - 92px)"
+            isTracking={isTracking}
+            setIsTracking={setIsTracking}
+            searchLocation={searchTargetLocation}
+          />
+          <button
+            className={styles.TrackingIcon}
+            onClick={() => setIsTracking(true)}
+          >
+            <img
+              src={myTrackingIcon}
+              alt="위치 추적 아이콘"
+              style={{ filter: isTracking ? "none" : "grayscale(100%)" }}
+            />
+          </button>
+        </>
+      )}
+
       <BottomBar />
     </div>
   );
