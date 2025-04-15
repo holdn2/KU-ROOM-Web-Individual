@@ -74,7 +74,7 @@ export function myLocationTracking(
     {
       enableHighAccuracy: true, // 정확도 향상
       maximumAge: 0, // 캐시 X
-      timeout: 5000, // 타임아웃 5초
+      timeout: 10000, // 타임아웃 5초
     }
   );
 
