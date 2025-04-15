@@ -132,6 +132,6 @@ export function moveToLocation(
       }
 
       console.log(`[검색] ${searchLocation} 위치로 지도 이동 (with delay)`);
-    }, 100);
+    }, 1000);
   }
 }
