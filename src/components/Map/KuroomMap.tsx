@@ -51,8 +51,8 @@ const KuroomMap = ({
     {
       lat: 37.5421,
       lng: 127.0739,
-      title: "건국대학교 도서관",
-      onClick: () => console.log("건국대학교 도서관 정보"),
+      title: "상허기념도서관",
+      onClick: () => console.log("상허기념도서관 정보"),
     },
   ]);
 
@@ -60,6 +60,7 @@ const KuroomMap = ({
     if (!window.naver) return;
 
     const mapOptions = {
+      center: new naver.maps.LatLng(37.5423, 127.0759),
       zoom: 17,
       draggable: draggable,
       scrollWheel: zoomable,
@@ -113,15 +114,14 @@ const KuroomMap = ({
   }, [markers]);
 
   useEffect(() => {
-    if (searchLocation) {
-      moveToLocation(
-        searchLocation,
-        mapInstance,
-        markers,
-        setIsTracking,
-        isTrackingRef
-      );
-    }
+    if (!searchLocation || !mapInstance.current || markers.length === 0) return;
+    moveToLocation(
+      searchLocation,
+      mapInstance,
+      markers,
+      setIsTracking,
+      isTrackingRef
+    );
   }, [searchLocation]);
 
   // 추적 모드 활성화 시 현재 위치 중심으로 지도 이동

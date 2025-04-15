@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./MapSearch.module.css";
-import BottomBar from "../../../components/BottomBar/BottomBar";
+import BottomBar from "../../BottomBar/BottomBar";
 import arrowBack from "../../../assets/nav/arrowback.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
-import { useNavigate } from "react-router-dom";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
 
-const dummyRecentSearchData = ["신공학관", "종강102", "레스티오"];
+const dummyRecentSearchData = [
+  "신공학관",
+  "종강102",
+  "레스티오",
+  "제1학생회관",
+  "상허기념도서관",
+];
 const dummyLocationData = [
   "신공학관",
   "종강102",
@@ -14,11 +19,18 @@ const dummyLocationData = [
   "공학관",
   "편의점",
   "제1학생회관",
-  "건국대학교 도서관",
+  "상허기념도서관",
 ];
 
-const MapSearch = () => {
-  const navigate = useNavigate();
+interface MapSearchProps {
+  setSearchMode: (value: boolean) => void;
+  setSelectLocation: (Value: string) => void;
+}
+
+const MapSearch: React.FC<MapSearchProps> = ({
+  setSearchMode,
+  setSelectLocation,
+}) => {
   const [searchText, setSearchText] = useState("");
   const [recentSearchData, setRecentSearchData] = useState<string[]>([]);
   const [searchResult, setSearchResult] = useState<string[]>([]);
@@ -62,7 +74,8 @@ const MapSearch = () => {
   };
 
   const toSearchLocation = (location: string) => {
-    navigate("/map", { state: { searchLocation: location } });
+    setSelectLocation(location);
+    setSearchMode(false);
   };
 
   return (
@@ -73,7 +86,7 @@ const MapSearch = () => {
             className={styles.ArrowIcon}
             src={arrowBack}
             alt="뒤로 가기"
-            onClick={() => navigate("/map")}
+            onClick={() => setSearchMode(false)}
           />
           <input
             className={styles.SearchText}

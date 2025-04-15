@@ -8,7 +8,7 @@ const locationCategory = [
     icon: "",
   },
   {
-    title: "도서관",
+    title: "상허기념도서관",
     icon: "",
   },
   {
