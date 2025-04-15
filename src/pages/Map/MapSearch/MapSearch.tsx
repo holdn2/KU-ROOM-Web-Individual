@@ -78,6 +78,7 @@ const MapSearch = () => {
           <input
             className={styles.SearchText}
             type="search"
+            enterKeyHint="search"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             onKeyDown={handleKeyDown}
