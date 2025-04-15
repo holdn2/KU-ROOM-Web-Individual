@@ -22,6 +22,7 @@ import FriendList from "./pages/MyPage/FriendList/FriendList";
 import FriendAdd from "./pages/MyPage/FriendAdd/FriendAdd";
 import FriendLocationRanking from "./pages/MyLocationRanking/FriendLocationRanking/FriendLocationRanking";
 import MapPage from "./pages/Map/MapPage";
+import MapSearch from "./pages/Map/MapSearch/MapSearch";
 
 function App() {
   const router = createBrowserRouter([
@@ -79,6 +80,10 @@ function App() {
         {
           path: "map",
           element: <MapPage />,
+        },
+        {
+          path: "mapsearch",
+          element: <MapSearch />,
         },
         {
           path: "myinfo",
