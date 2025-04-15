@@ -40,7 +40,7 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
           <div className={styles.HomeMiniMapWrapper}>
             <div className={styles.MiniMapTextContainer}>
               <h1 className={styles.MiniMapBoldText}>
-                현재 상허기념도서관에 계신가요?
+                현재 학교 내부에 있어요!
               </h1>
               <span className={styles.MiniMapNormalText}>
                 내 위치를 친구들에게 공유해보세요!
