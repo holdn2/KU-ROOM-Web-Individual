@@ -32,6 +32,7 @@ const MapPage = () => {
 
   useEffect(() => {
     if (loc.state?.searchLocation) {
+      setIsTracking(false);
       setSearchTargetLocation(loc.state.searchLocation);
       console.log(loc.state.searchLocation, " 으로 이동하기");
     }
