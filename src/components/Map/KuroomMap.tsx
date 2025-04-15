@@ -17,7 +17,7 @@ interface MapProps {
   width?: string;
   height?: string;
   isTracking?: boolean;
-  setIsTracking?: (value: boolean) => void;
+  setIsTracking: (value: boolean) => void;
   draggable?: boolean;
   zoomable?: boolean;
   searchLocation?: string;
@@ -109,7 +109,7 @@ const KuroomMap = ({
   // 마커 렌더링. 마커 배열이 변경될 때만 실행되도록
   useEffect(() => {
     if (mapInstance.current) {
-      renderMarkers(mapInstance.current, markers);
+      renderMarkers(mapInstance.current, markers, setIsTracking);
     }
   }, [markers]);
 
