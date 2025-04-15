@@ -76,7 +76,7 @@ const KuroomMap = ({
     if (setIsTracking) noTracking(map, setIsTracking, isTrackingRef);
 
     // 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가기
-    if (navigator.geolocation) {
+    if (navigator.geolocation || isTracking) {
       // 초기 위치 먼저 빠르게 잡기. watchPosition은 최초 위치 가져올 때 시간이 걸릴 수 있음.
       navigator.geolocation.getCurrentPosition(
         (position) => {
