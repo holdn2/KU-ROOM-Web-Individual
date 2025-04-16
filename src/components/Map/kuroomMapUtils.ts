@@ -1,6 +1,6 @@
 import myMarkerIcon from "../../assets/map/mylocationMarker.svg";
 import markerIcon from "../../assets/map/markerIcon.svg";
-import focusedMarkerIcon from "../../assets/map/focusedMarker.svg";
+import focusedMarkerIcon from "../../assets/map/focusedMarker.png";
 
 // 마커 렌더링 로직
 interface MarkerData {
