@@ -62,6 +62,23 @@ export function renderMarkers(
 
     renderedMarkers.push(marker);
   });
+
+  // 마커가 하나뿐일 경우 자동 포커스 처리
+  if (renderedMarkers.length === 1) {
+    const soloMarker = renderedMarkers[0];
+    const position = soloMarker.getPosition();
+
+    map.setCenter(position);
+    map.setZoom(17);
+    setIsTracking(false);
+
+    soloMarker.setIcon({
+      url: focusedMarkerIcon,
+      scaledSize: new naver.maps.Size(80, 80),
+      origin: new naver.maps.Point(0, 0),
+      anchor: new naver.maps.Point(40, 80),
+    });
+  }
 }
 
 // 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가는 로직
