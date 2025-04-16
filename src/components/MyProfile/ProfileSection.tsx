@@ -46,7 +46,10 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               }`}
               onClick={() => !isToggle && handleSectionClick(item)}
               disabled={
-                item === "이메일" || item === "아이디" || item === "학번"
+                item === "이메일" ||
+                item === "아이디" ||
+                item === "학번" ||
+                item === "앱버전"
               }
             >
               {item}
