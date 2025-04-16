@@ -5,7 +5,7 @@ const MyPageSectionData: { title: string; contents: string[] }[] = [
   },
   {
     title: "앱 정보",
-    contents: ["약관 및 정책", "앱 배포", "고객 센터"],
+    contents: ["약관 및 정책", "개인정보 처리방침", "앱버전", "고객 센터"],
   },
   {
     title: "설정",

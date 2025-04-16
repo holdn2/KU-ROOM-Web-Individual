@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "./ProfileSection.module.css";
-import { useNavigate } from "react-router-dom";
 import arrowRight from "../../assets/nav/arrowRight.svg";
 import ToggleAlarmButton from "../ToggleAlarmButton";
 import KeywordButton from "../KeywordButton/KeywordButton";
+import { AppVersion } from "../../constants/appInfo";
+import { useHandleSectionClick } from "./hooks/profileSectionClickUtil";
 
 const userEmail = "kurum12@gmail.com";
 const userId = "kurum12";
@@ -22,19 +23,6 @@ interface ProfileSectionProps {
   onDeleteKeyword?: (keyword: string) => void;
 }
 
-const buttonActions: { [key: string]: (() => void) | null } = {
-  "친구 추가": null,
-  "친구 목록": null,
-  "약관 및 정책": () => console.log("약관 및 정책 실행"),
-  "앱 배포": () => console.log("앱 배포 실행"),
-  "고객 센터": () => console.log("고객 센터 실행"),
-  "알림 설정": null,
-  로그아웃: () => console.log("로그아웃 실행"),
-  탈퇴하기: () => console.log("탈퇴하기 실행"),
-  "비밀번호 변경하기": null,
-  "닉네임 변경하기": null,
-};
-
 const ProfileSection: React.FC<ProfileSectionProps> = ({
   sectionData,
   isLastSection,
@@ -44,32 +32,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   keywordData,
   onDeleteKeyword,
 }) => {
-  const navigate = useNavigate();
-
-  const handleButtonClick = (item: string) => {
-    if (item === "비밀번호 변경하기") {
-      navigate("/changepw");
-    }
-    if (item === "닉네임 변경하기") {
-      navigate("/changenickname");
-    }
-    if (item === "알림 설정") {
-      navigate("/alarmsetting");
-    }
-    if (item === "친구 목록") {
-      navigate("/friendlist");
-    }
-    if (item === "친구 추가") {
-      navigate("/friendadd");
-    }
-    const action = buttonActions[item];
-    if (action) {
-      action(); // 해당하는 함수 실행
-    } else {
-      console.log(`${item} 버튼이 클릭됨`);
-    }
-  };
-
+  const handleSectionClick = useHandleSectionClick();
   return (
     <>
       <div className={styles.SectionContainer}>
@@ -81,7 +44,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               className={`${styles.SectionContentButton} ${
                 isToggle && styles.ToggleButtonStyle
               }`}
-              onClick={() => !isToggle && handleButtonClick(item)}
+              onClick={() => !isToggle && handleSectionClick(item)}
               disabled={
                 item === "이메일" || item === "아이디" || item === "학번"
               }
@@ -99,7 +62,9 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               {item === "학과" && (
                 <img className={styles.ArrowIcon} src={arrowRight} alt="학과" />
               )}
-
+              {item === "앱버전" && (
+                <span className={styles.ExtraInfoText}>{AppVersion}</span>
+              )}
               {isToggle && (
                 <ToggleAlarmButton
                   isOn={toggleStates?.[item] ?? false} // undefined면 false로 처리
