@@ -6,7 +6,10 @@ import {
 } from "../../../constants/appInfo";
 
 // 마이페이지 섹션 별 클릭 시 이벤트 처리
-export const useHandleSectionClick = () => {
+export const useHandleSectionClick = (
+  setModalType?: (value: string) => void,
+  setModalState?: (value: boolean) => void
+) => {
   const navigate = useNavigate();
   return (item: string) => {
     switch (item) {
@@ -34,6 +37,18 @@ export const useHandleSectionClick = () => {
         break;
       case "고객 센터":
         window.open(ServiceCenterLink, "_blank");
+        break;
+      case "로그아웃":
+        if (setModalType && setModalState) {
+          setModalType("logout");
+          setModalState(true);
+        }
+        break;
+      case "탈퇴하기":
+        if (setModalType && setModalState) {
+          setModalType("withdraw");
+          setModalState(true);
+        }
         break;
       default:
         console.log(item, "실행하기");

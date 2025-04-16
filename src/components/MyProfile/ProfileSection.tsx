@@ -21,6 +21,8 @@ interface ProfileSectionProps {
   onToggle?: (item: string) => void;
   keywordData?: { keyword: string }[];
   onDeleteKeyword?: (keyword: string) => void;
+  setModalType?: (value: string) => void;
+  setModalState?: (value: boolean) => void;
 }
 
 const ProfileSection: React.FC<ProfileSectionProps> = ({
@@ -31,8 +33,10 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   onToggle,
   keywordData,
   onDeleteKeyword,
+  setModalType,
+  setModalState,
 }) => {
-  const handleSectionClick = useHandleSectionClick();
+  const handleSectionClick = useHandleSectionClick(setModalType, setModalState);
   return (
     <>
       <div className={styles.SectionContainer}>

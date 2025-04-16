@@ -7,9 +7,12 @@ import ProfileSection from "../../components/MyProfile/ProfileSection";
 import { MyPageSectionData } from "../../constants/sectionDatas";
 import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
+import ProfileModal from "../../components/MyProfile/ProfileModal/ProfileModal";
 
 const MyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [modalState, setModalState] = useState(false);
+  const [modalType, setModalType] = useState("");
 
   useEffect(() => {
     // ✅ 여기에 실제 API 로딩 or 이미지 로딩 조건으로 변경 가능
@@ -39,10 +42,17 @@ const MyPage = () => {
             key={index}
             sectionData={data}
             isLastSection={index === MyPageSectionData.length - 1}
+            setModalType={setModalType}
+            setModalState={setModalState}
           />
         ))}
       </div>
       <BottomBar />
+      <ProfileModal
+        modalState={modalState}
+        modalType={modalType}
+        setModalState={setModalState}
+      />
     </div>
   );
 };
