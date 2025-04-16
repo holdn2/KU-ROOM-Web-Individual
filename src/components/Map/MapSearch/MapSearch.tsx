@@ -13,7 +13,7 @@ const dummyRecentSearchData = [
   "제1학생회관",
   "1847",
 ];
-const dummyLocationData = ["레스티오", "1847"];
+const dummyLocationData = ["레스티오", "1847", "신공학관"];
 
 interface MarkerData {
   lat: number;
