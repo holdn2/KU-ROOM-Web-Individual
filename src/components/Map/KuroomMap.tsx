@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  moveToLocation,
   myLocationTracking,
   noTracking,
   renderMarkers,
 } from "./kuroomMapUtils";
-import { kuroomMarkers } from "./MarkerDatas";
 
 interface MarkerData {
   lat: number;
@@ -16,11 +14,11 @@ interface MarkerData {
 interface MapProps {
   width?: string;
   height?: string;
+  markers?: MarkerData[];
   isTracking?: boolean;
   setIsTracking?: (value: boolean) => void;
   draggable?: boolean;
   zoomable?: boolean;
-  searchLocation?: string;
 }
 
 // React Strict Mode로 인해 두번 마운트 되어서 하단 왼쪽 로고 두개로 보이는데
@@ -29,11 +27,11 @@ interface MapProps {
 const KuroomMap = ({
   width = "100%",
   height = "100%",
+  markers,
   isTracking = true,
   setIsTracking,
   draggable = true,
   zoomable = true,
-  searchLocation,
 }: MapProps) => {
   const mapRef = useRef(null);
   const markerRef = useRef<naver.maps.Marker | null>(null);
@@ -41,13 +39,11 @@ const KuroomMap = ({
   const [currentLatLng, setCurrentLatLng] = useState<any>(null); // 현재 위치를 기억
   const isTrackingRef = useRef(true); // 추적 상태 최신값을 유지할 ref
 
-  const [markers] = useState<MarkerData[]>(kuroomMarkers);
-
   useEffect(() => {
     if (!window.naver) return;
 
     const mapOptions = {
-      center: new naver.maps.LatLng(37.5423, 127.0759),
+      center: new naver.maps.LatLng(37.5423, 127.0759), // 건국대학교 중심
       zoom: 17,
       draggable: draggable,
       scrollWheel: zoomable,
@@ -63,7 +59,7 @@ const KuroomMap = ({
     if (setIsTracking) noTracking(map, setIsTracking, isTrackingRef);
 
     // 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가기
-    if (navigator.geolocation || isTracking) {
+    if (navigator.geolocation) {
       // 초기 위치 먼저 빠르게 잡기. watchPosition은 최초 위치 가져올 때 시간이 걸릴 수 있음.
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -73,6 +69,7 @@ const KuroomMap = ({
           );
           setCurrentLatLng(current); // 상태 업데이트
           map.setCenter(current); // 지도 중심 이동
+          if (setIsTracking) setIsTracking(true);
         },
         (err) => console.warn("초기 위치 가져오기 실패", err),
         {
@@ -95,21 +92,10 @@ const KuroomMap = ({
 
   // 마커 렌더링. 마커 배열이 변경될 때만 실행되도록
   useEffect(() => {
-    if (mapInstance.current && setIsTracking) {
+    if (mapInstance.current && setIsTracking && markers) {
       renderMarkers(mapInstance.current, markers, setIsTracking);
     }
   }, [markers]);
-
-  useEffect(() => {
-    if (!searchLocation || !mapInstance.current || markers.length === 0) return;
-    moveToLocation(
-      searchLocation,
-      mapInstance,
-      markers,
-      setIsTracking,
-      isTrackingRef
-    );
-  }, [searchLocation]);
 
   // 추적 모드 활성화 시 현재 위치 중심으로 지도 이동
   useEffect(() => {

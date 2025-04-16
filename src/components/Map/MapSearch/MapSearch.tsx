@@ -4,32 +4,34 @@ import BottomBar from "../../BottomBar/BottomBar";
 import arrowBack from "../../../assets/nav/arrowback.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
+import { KuroomMarkers } from "../MapData";
 
 const dummyRecentSearchData = [
   "신공학관",
   "종강102",
   "레스티오",
   "제1학생회관",
-  "상허기념도서관",
+  "1847",
 ];
-const dummyLocationData = [
-  "신공학관",
-  "종강102",
-  "레스티오",
-  "공학관",
-  "편의점",
-  "제1학생회관",
-  "상허기념도서관",
-];
+const dummyLocationData = ["레스티오", "1847"];
 
+interface MarkerData {
+  lat: number;
+  lng: number;
+  title: string;
+}
 interface MapSearchProps {
   setSearchMode: (value: boolean) => void;
-  setSelectLocation: (Value: string) => void;
+  mapSearchResult: string;
+  setMapSearchResult: (value: string) => void;
+  setMarkers: (value: MarkerData[]) => void;
 }
 
 const MapSearch: React.FC<MapSearchProps> = ({
   setSearchMode,
-  setSelectLocation,
+  mapSearchResult,
+  setMapSearchResult,
+  setMarkers,
 }) => {
   const [searchText, setSearchText] = useState("");
   const [recentSearchData, setRecentSearchData] = useState<string[]>([]);
@@ -68,16 +70,36 @@ const MapSearch: React.FC<MapSearchProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && searchText) {
       setTrySearch(true);
       handleSearch();
     }
   };
 
-  const toSearchLocation = (location: string) => {
-    setSelectLocation(location);
+  // 버튼 클릭 시 해당하는 위치 배열을 서버에 요청하여 받아야함.
+  const getSelectedLocationArray = (title: string) => {
+    // title을 이용하여 요청
+    setMapSearchResult(title);
     setSearchMode(false);
   };
+
+  // 요청의 응답값을 markers배열에 저장.  이부분은 테스트용 로직
+  useEffect(() => {
+    if (!mapSearchResult) {
+      setMarkers([]);
+      return;
+    }
+
+    const categoryMatch = KuroomMarkers.find(
+      (item) => item.category === mapSearchResult
+    );
+
+    if (categoryMatch) {
+      setMarkers(categoryMatch.markers);
+    } else {
+      setMarkers([]); // 해당 카테고리 없으면 빈 배열로
+    }
+  }, [mapSearchResult]);
 
   return (
     <div>
@@ -124,7 +146,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
               <div
                 key={index}
                 className={styles.RecentSearchContainer}
-                onClick={() => toSearchLocation(item)}
+                onClick={() => getSelectedLocationArray(item)}
               >
                 <span className={styles.LocationTitle}>{item}</span>
                 <img
@@ -148,7 +170,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
               <div
                 key={index}
                 className={styles.ResultContainer}
-                onClick={() => toSearchLocation(result)}
+                onClick={() => getSelectedLocationArray(result)}
               >
                 <span className={styles.LocationTitle}>{result}</span>
               </div>

@@ -1,5 +1,5 @@
 // 지도 페이지
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import styles from "./MapPage.module.css";
 import myTrackingIcon from "../../assets/map/tomylocation.svg";
@@ -8,35 +8,27 @@ import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChi
 import KuroomMap from "../../components/Map/KuroomMap";
 import MapSearch from "../../components/Map/MapSearch/MapSearch";
 
+interface MarkerData {
+  lat: number;
+  lng: number;
+  title: string;
+}
+
 const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
-  const [searchTargetLocation, setSearchTargetLocation] = useState("");
   const [searchMode, setSearchMode] = useState(false);
+  const [mapSearchResult, setMapSearchResult] = useState("");
 
-  const handleSelectLocation = (location: string) => {
-    if (searchTargetLocation === location) {
-      // 강제로 한 번 초기화 후 다시 설정
-      setSearchTargetLocation(""); // 다른 값으로 초기화
-      setTimeout(() => {
-        setSearchTargetLocation(location); // 다시 설정
-      }, 0);
-    } else {
-      setSearchTargetLocation(location);
-    }
-  };
-
-  useEffect(() => {
-    if (searchTargetLocation) console.log(searchTargetLocation, " 선택");
-  }, [searchTargetLocation]);
+  const [markers, setMarkers] = useState<MarkerData[]>([]);
 
   return (
     <div>
       {/* KuroomMap은 항상 렌더링되고 */}
       <KuroomMap
         height="calc(100vh - 92px)"
+        markers={markers}
         isTracking={isTracking}
         setIsTracking={setIsTracking}
-        searchLocation={searchTargetLocation}
       />
 
       {/* 검색 모드일 때 MapSearch만 덮어씌우기 */}
@@ -44,7 +36,9 @@ const MapPage = () => {
         <div className={styles.FullScreenOverlay}>
           <MapSearch
             setSearchMode={setSearchMode}
-            setSelectLocation={handleSelectLocation}
+            mapSearchResult={mapSearchResult}
+            setMapSearchResult={setMapSearchResult}
+            setMarkers={setMarkers}
           />
         </div>
       ) : (
@@ -58,7 +52,11 @@ const MapPage = () => {
           >
             <MapSearchBar />
           </button>
-          <MapCategoryChip setSelectedChip={handleSelectLocation} />
+          <MapCategoryChip
+            mapSearchResult={mapSearchResult}
+            setMapSearchResult={setMapSearchResult}
+            setMarkers={setMarkers}
+          />
           <button
             className={styles.TrackingIcon}
             onClick={() => setIsTracking(true)}

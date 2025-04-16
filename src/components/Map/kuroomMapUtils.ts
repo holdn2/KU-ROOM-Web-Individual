@@ -1,4 +1,6 @@
 import myMarkerIcon from "../../assets/map/mylocationMarker.svg";
+import markerIcon from "../../assets/map/markerIcon.svg";
+import focusedMarkerIcon from "../../assets/map/focusedMarker.svg";
 
 // 마커 렌더링 로직
 interface MarkerData {
@@ -6,23 +8,56 @@ interface MarkerData {
   lng: number;
   title: string;
 }
+
+let renderedMarkers: naver.maps.Marker[] = []; // 전역 배열로 기존 마커 저장
+
 export function renderMarkers(
   map: naver.maps.Map,
   markers: MarkerData[],
   setIsTracking: (value: boolean) => void
 ): void {
+  // 기존 마커 제거
+  renderedMarkers.forEach((marker) => marker.setMap(null));
+  renderedMarkers = [];
+
+  // 마커가 변경될 때마다 건대 중심을 center로 변경하고 줌도 16으로 되게 설정.
+  const defaultCenter = new window.naver.maps.LatLng(37.5423, 127.0759);
+  map.setCenter(defaultCenter);
+  map.setZoom(16);
+  setIsTracking(false);
+
   markers.forEach(({ lat, lng, title }) => {
     const marker = new window.naver.maps.Marker({
       position: new window.naver.maps.LatLng(lat, lng),
       map,
       title,
+      icon: {
+        // 마커 아이콘 추가
+        url: markerIcon,
+      },
     });
     window.naver.maps.Event.addListener(marker, "click", () => {
       const position = marker.getPosition();
       map.setCenter(position); // 마커 클릭 시 지도 중심으로 이동
+      map.setZoom(17); // 클릭 시 마커 중심으로 줌인
       setIsTracking(false);
-      console.log(marker.title, "클릭");
+
+      // 클릭한 마커만 아이콘 변경
+      marker.setIcon({
+        url: focusedMarkerIcon,
+      });
+
+      // 이전 선택 마커 아이콘 초기화
+      renderedMarkers.forEach((m) => {
+        if (m !== marker) {
+          m.setIcon({
+            url: markerIcon,
+          });
+        }
+      });
     });
+
+    renderedMarkers.push(marker);
   });
 }
 
@@ -50,7 +85,7 @@ export function myLocationTracking(
           map,
           title: "내 위치",
           icon: {
-            // 마커 아이콘 추가
+            // 내 위치 마커 아이콘 추가
             url: myMarkerIcon,
           },
         });
@@ -108,29 +143,4 @@ export function noTracking(
 
   // 마우스 휠
   window.naver.maps.Event.addListener(map, "wheel", disableTracking);
-}
-
-// 검색 혹은 칩 선택 시 해당 위치로 이동하는 로직
-export function moveToLocation(
-  searchLocation: string,
-  mapInstance: React.MutableRefObject<naver.maps.Map | null>,
-  markers: MarkerData[],
-  setIsTracking?: (value: boolean) => void,
-  isTrackingRef?: React.MutableRefObject<boolean>
-) {
-  if (!searchLocation || !mapInstance.current) return;
-
-  const target = markers.find((m) => m.title === searchLocation);
-  if (target) {
-    const targetLatLng = new window.naver.maps.LatLng(target.lat, target.lng);
-
-    mapInstance.current?.setCenter(targetLatLng);
-
-    if (setIsTracking && isTrackingRef) {
-      setIsTracking(false);
-      isTrackingRef.current = false;
-    }
-
-    console.log(`[검색] ${searchLocation} 위치로 지도 이동`);
-  }
 }
