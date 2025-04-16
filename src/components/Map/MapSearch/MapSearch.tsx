@@ -57,6 +57,8 @@ const MapSearch: React.FC<MapSearchProps> = ({
   };
 
   const handleSearch = () => {
+    // 서버에 검색 요청하기. 내가 볼 때 줄임말 등의 검색어를 보내면 관련된 위치를 검색결과에 뜨도록
+    // 검색 기록에 추가하는 요청 추가
     const trimmedText = searchText.trim();
     if (trimmedText.length === 0) return;
     const matchedResults = dummyLocationData.filter((location) =>
@@ -69,7 +71,6 @@ const MapSearch: React.FC<MapSearchProps> = ({
     if (e.key === "Enter") {
       setTrySearch(true);
       handleSearch();
-      // 검색 기록에 추가하는 요청 추가
     }
   };
 

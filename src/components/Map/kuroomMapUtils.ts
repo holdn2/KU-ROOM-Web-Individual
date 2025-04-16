@@ -5,14 +5,13 @@ interface MarkerData {
   lat: number;
   lng: number;
   title: string;
-  onClick?: () => void;
 }
 export function renderMarkers(
   map: naver.maps.Map,
   markers: MarkerData[],
   setIsTracking: (value: boolean) => void
 ): void {
-  markers.forEach(({ lat, lng, title, onClick }) => {
+  markers.forEach(({ lat, lng, title }) => {
     const marker = new window.naver.maps.Marker({
       position: new window.naver.maps.LatLng(lat, lng),
       map,
@@ -22,8 +21,7 @@ export function renderMarkers(
       const position = marker.getPosition();
       map.setCenter(position); // 마커 클릭 시 지도 중심으로 이동
       setIsTracking(false);
-
-      if (onClick) onClick(); // 기존 이벤트도 실행
+      console.log(marker.title, "클릭");
     });
   });
 }

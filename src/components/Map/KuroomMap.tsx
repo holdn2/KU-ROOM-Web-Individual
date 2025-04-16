@@ -5,12 +5,12 @@ import {
   noTracking,
   renderMarkers,
 } from "./kuroomMapUtils";
+import { kuroomMarkers } from "./MarkerDatas";
 
 interface MarkerData {
   lat: number;
   lng: number;
   title: string;
-  onClick?: () => void;
 }
 
 interface MapProps {
@@ -41,20 +41,7 @@ const KuroomMap = ({
   const [currentLatLng, setCurrentLatLng] = useState<any>(null); // 현재 위치를 기억
   const isTrackingRef = useRef(true); // 추적 상태 최신값을 유지할 ref
 
-  const [markers] = useState<MarkerData[]>([
-    {
-      lat: 37.5419,
-      lng: 127.078,
-      title: "제1학생회관",
-      onClick: () => console.log("제1학생회관 정보"),
-    },
-    {
-      lat: 37.5421,
-      lng: 127.0739,
-      title: "상허기념도서관",
-      onClick: () => console.log("상허기념도서관 정보"),
-    },
-  ]);
+  const [markers] = useState<MarkerData[]>(kuroomMarkers);
 
   useEffect(() => {
     if (!window.naver) return;
