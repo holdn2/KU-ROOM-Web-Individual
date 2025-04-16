@@ -45,7 +45,9 @@ export function renderMarkers(
       // 클릭한 마커만 아이콘 변경
       marker.setIcon({
         url: focusedMarkerIcon,
-        size: new naver.maps.Size(80, 80),
+        scaledSize: new naver.maps.Size(80, 80), // 지도에 표시될 크기
+        origin: new naver.maps.Point(0, 0),
+        anchor: new naver.maps.Point(40, 80),
       });
 
       // 이전 선택 마커 아이콘 초기화
