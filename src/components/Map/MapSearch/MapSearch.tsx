@@ -4,7 +4,6 @@ import BottomBar from "../../BottomBar/BottomBar";
 import arrowBack from "../../../assets/nav/arrowback.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
-import { KuroomMarkers } from "../MapData";
 
 const dummyRecentSearchData = [
   "신공학관",
@@ -14,24 +13,14 @@ const dummyRecentSearchData = [
   "1847",
 ];
 const dummyLocationData = ["레스티오", "1847", "신공학관"];
-
-interface MarkerData {
-  lat: number;
-  lng: number;
-  title: string;
-}
 interface MapSearchProps {
   setSearchMode: (value: boolean) => void;
-  mapSearchResult: string;
   setMapSearchResult: (value: string) => void;
-  setMarkers: (value: MarkerData[]) => void;
 }
 
 const MapSearch: React.FC<MapSearchProps> = ({
   setSearchMode,
-  mapSearchResult,
   setMapSearchResult,
-  setMarkers,
 }) => {
   const [searchText, setSearchText] = useState("");
   const [recentSearchData, setRecentSearchData] = useState<string[]>([]);
@@ -83,26 +72,8 @@ const MapSearch: React.FC<MapSearchProps> = ({
     setSearchMode(false);
   };
 
-  // 요청의 응답값을 markers배열에 저장.  이부분은 테스트용 로직
-  useEffect(() => {
-    if (!mapSearchResult) {
-      setMarkers([]);
-      return;
-    }
-
-    const categoryMatch = KuroomMarkers.find(
-      (item) => item.category === mapSearchResult
-    );
-
-    if (categoryMatch) {
-      setMarkers(categoryMatch.markers);
-    } else {
-      setMarkers([]); // 해당 카테고리 없으면 빈 배열로
-    }
-  }, [mapSearchResult]);
-
   return (
-    <div>
+    <div className={styles.SearchModeContainer}>
       <div className={styles.SearchBarContainer}>
         <div className={styles.LeftContentWrapper}>
           <img

@@ -1,5 +1,5 @@
 // 지도 페이지
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import styles from "./MapPage.module.css";
 import myTrackingIcon from "../../assets/map/tomylocation.svg";
@@ -7,6 +7,8 @@ import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
 import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChip";
 import KuroomMap from "../../components/Map/KuroomMap";
 import MapSearch from "../../components/Map/MapSearch/MapSearch";
+import { KuroomMarkers } from "../../components/Map/MapData";
+import SearchResultHeader from "../../components/Map/MapSearch/SearchResultHeader";
 
 interface MarkerData {
   lat: number;
@@ -21,6 +23,23 @@ const MapPage = () => {
 
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
+  // 요청의 응답값을 markers배열에 저장. 이부분은 테스트용 로직
+  useEffect(() => {
+    if (!mapSearchResult) {
+      setMarkers([]);
+      return;
+    }
+    const categoryMatch = KuroomMarkers.find(
+      (item) => item.category === mapSearchResult
+    );
+
+    if (categoryMatch) {
+      setMarkers(categoryMatch.markers);
+    } else {
+      setMarkers([]); // 해당 카테고리 없으면 빈 배열로
+    }
+  }, [mapSearchResult]);
+
   return (
     <div>
       {/* KuroomMap은 항상 렌더링되고 */}
@@ -33,30 +52,39 @@ const MapPage = () => {
 
       {/* 검색 모드일 때 MapSearch만 덮어씌우기 */}
       {searchMode ? (
+        // 검색 모드 전체 화면
         <div className={styles.FullScreenOverlay}>
           <MapSearch
             setSearchMode={setSearchMode}
-            mapSearchResult={mapSearchResult}
             setMapSearchResult={setMapSearchResult}
-            setMarkers={setMarkers}
           />
         </div>
       ) : (
         <>
-          <button
-            className={styles.SearchBarContainer}
-            onClick={() => {
-              setIsTracking(false);
-              setSearchMode(true);
-            }}
-          >
-            <MapSearchBar />
-          </button>
-          <MapCategoryChip
-            mapSearchResult={mapSearchResult}
-            setMapSearchResult={setMapSearchResult}
-            setMarkers={setMarkers}
-          />
+          {/* 검색 결과가 있을 때만 상단 바 보여주기 */}
+          {mapSearchResult ? (
+            <SearchResultHeader
+              mapSearchResult={mapSearchResult}
+              setSearchMode={setSearchMode}
+              setMapSearchResult={setMapSearchResult}
+              setMarkers={setMarkers}
+            />
+          ) : (
+            // 검색 결과 없을 때만 기본 UI 보여주기
+            <>
+              <button
+                className={styles.SearchBarContainer}
+                onClick={() => {
+                  setIsTracking(false);
+                  setSearchMode(true);
+                }}
+              >
+                <MapSearchBar />
+              </button>
+              <MapCategoryChip setMapSearchResult={setMapSearchResult} />
+            </>
+          )}
+
           <button
             className={styles.TrackingIcon}
             onClick={() => setIsTracking(true)}

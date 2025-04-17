@@ -1,26 +1,3 @@
-.SearchBarContainer {
-  position: absolute;
-  top: 16px;
-  width: 100%;
-  padding: 0 25px;
-  z-index: 100;
-  box-sizing: border-box;
-}
-.TrackingIcon {
-  position: absolute;
-  left: 15px;
-  bottom: 120px;
-  z-index: 100;
-}
-.FullScreenOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
-  z-index: 200; /* KuroomMap보다 위에 오도록 */
-}
 .SearchResultContainer {
   position: absolute;
   top: 0;

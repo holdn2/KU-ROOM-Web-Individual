@@ -1,9 +1,14 @@
+.SearchModeContainer {
+  background: #f8f9fc;
+  height: 100%;
+}
 .SearchBarContainer {
   padding: 20px 30px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  background: #fff;
 }
 .LeftContentWrapper {
   display: flex;
