@@ -41,6 +41,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
     setSelectedLocationInfos(match ? match.infos : []);
   }, [mapSearchResult]);
 
+  // 바텀 시트 올리고 내리는 로직. 좀 더 연구 필요할듯.
   useEffect(() => {
     const sheet = sheetRef.current;
     if (!sheet) return;
