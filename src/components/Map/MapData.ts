@@ -114,4 +114,77 @@ const KuroomMarkers = [
   },
 ];
 
-export { CategoryChips, KuroomMarkers };
+// 장소 정보
+const dummyLocationInfo = [
+  {
+    category: "레스티오",
+    infos: [
+      {
+        title: "레스티오 건대점",
+        subtit: "~~~입니다.",
+        friends: [],
+        info: "예시 정보들입니다!!!!",
+      },
+      {
+        title: "레스티오 동물생명대점",
+        subtit: "~~~입니다.",
+        friends: [],
+        info: "예시 정보들입니다!!!!",
+      },
+      {
+        title: "레스티오 도서관점",
+        subtit: "~~~입니다.",
+        friends: [],
+        info: "예시 정보들입니다!!!!",
+      },
+      {
+        title: "레스티오 예술문화관점",
+        subtit: "~~~입니다.",
+        friends: [],
+        info: "예시 정보들입니다!!!!",
+      },
+      {
+        title: "레스티오 경영대점",
+        subtit: "~~~입니다.",
+        friends: [],
+        info: "예시 정보들입니다!!!!",
+      },
+      {
+        title: "레스티오 공학관점",
+        subtit: "~~~입니다.",
+        friends: [],
+        info: "예시 정보들입니다!!!!",
+      },
+    ],
+  },
+  {
+    category: "1847",
+    infos: [
+      {
+        title: "1847 건국대학생회관점",
+        subtit: "~~~입니다.",
+        friends: [],
+        info: "예시 정보들입니다!!!!",
+      },
+      {
+        title: "1847 상허기념도서관점",
+        subtit: "~~~입니다.",
+        friends: [],
+        info: "예시 정보들입니다!!!!",
+      },
+    ],
+  },
+  {
+    category: "신공학관",
+    infos: [
+      {
+        title: "신공학관",
+        subtit: "~~~입니다.",
+        friends: [],
+        info: "예시 정보들입니다!!!!",
+      },
+    ],
+  },
+];
+
+export { CategoryChips, KuroomMarkers, dummyLocationInfo };
