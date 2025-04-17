@@ -36,6 +36,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 100;
+}
+.Expanded {
+  height: calc(100vh - 100px); /* or whatever full height */
+  background: #fff;
+  overflow-y: scroll;
 }
 .SheetIndicator {
   width: 45px;
@@ -43,6 +49,7 @@
   border-radius: 5.242px;
   background: #e0e0e0;
   margin-top: 10px;
+  flex-shrink: 0;
 }
 .LocationInfoWrapper {
   width: calc(100% - 28px);
@@ -78,7 +85,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 38px;
+  height: 30px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 66.83%);
   z-index: 1000;
 }

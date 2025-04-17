@@ -14,6 +14,7 @@ interface SearchResultProps {
   setSearchMode: (value: boolean) => void;
   setMapSearchResult: (value: string) => void;
   setMarkers: (value: MarkerData[]) => void;
+  setIsExpandedSheet: (value: boolean) => void;
 }
 
 const SearchResult: React.FC<SearchResultProps> = ({
@@ -21,6 +22,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
   setSearchMode,
   setMapSearchResult,
   setMarkers,
+  setIsExpandedSheet,
 }) => {
   return (
     <div className={styles.SearchResultContainer}>
@@ -33,6 +35,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
             setSearchMode(false);
             setMapSearchResult("");
             setMarkers([]);
+            setIsExpandedSheet(false);
           }}
         />
         <span className={styles.ResultTitle}>{mapSearchResult}</span>
@@ -45,6 +48,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
           setMapSearchResult("");
           setSearchMode(true);
           setMarkers([]);
+          setIsExpandedSheet(false);
         }}
       />
     </div>

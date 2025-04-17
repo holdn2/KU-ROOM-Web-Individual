@@ -22,6 +22,8 @@ const MapPage = () => {
   const [searchMode, setSearchMode] = useState(false);
   const [mapSearchResult, setMapSearchResult] = useState("");
 
+  const [isExpandedSheet, setIsExpandedSheet] = useState(false);
+
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
   // 요청의 응답값을 markers배열에 저장. 이부분은 테스트용 로직
@@ -70,8 +72,13 @@ const MapPage = () => {
                 setSearchMode={setSearchMode}
                 setMapSearchResult={setMapSearchResult}
                 setMarkers={setMarkers}
+                setIsExpandedSheet={setIsExpandedSheet}
               />
-              <LocationsBottomSheet mapSearchResult={mapSearchResult} />
+              <LocationsBottomSheet
+                mapSearchResult={mapSearchResult}
+                isExpandedSheet={isExpandedSheet}
+                setIsExpandedSheet={setIsExpandedSheet}
+              />
             </>
           ) : (
             // 검색 결과 없을 때만 기본 UI 보여주기
