@@ -50,6 +50,8 @@ export function renderMarkers(
         anchor: new naver.maps.Point(40, 80),
       });
 
+      marker.setZIndex(1000);
+
       // 이전 선택 마커 아이콘 초기화
       renderedMarkers.forEach((m) => {
         if (m !== marker) {
