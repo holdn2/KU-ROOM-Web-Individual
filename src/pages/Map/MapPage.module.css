@@ -21,35 +21,50 @@
   background: white;
   z-index: 200; /* KuroomMap보다 위에 오도록 */
 }
-.SearchResultContainer {
-  position: absolute;
-  top: 0;
+
+/* 바텀 시트 */
+.LocationInfoBottomSheetContainer {
   width: 100%;
-  padding: 20px 30px;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  z-index: 1000;
+}
+.ListButton {
+  padding: 9px 13px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  gap: 8px;
+  border-radius: 18px;
+  border: 2px solid var(--Gray-400, #e3e7eb);
   background: #fff;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
-  box-sizing: border-box;
 }
-.LeftContentWrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.ResultTitle {
+.ListButtonText {
   color: var(--Black, #1d2228);
-  text-align: center;
-  font-size: 18px;
+  font-size: 15px;
   font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  font-weight: 400;
+  line-height: 120%; /* 18px */
 }
-.ArrowIcon {
-  padding: 8px 12px;
+.LocationInfoBottomSheet {
+  height: 150px;
+  width: 100%;
+  max-width: 700px;
+  border-top-left-radius: 20.967px;
+  border-top-right-radius: 20.967px;
+  background: #fff;
+  box-shadow: 5.242px 0px 15.725px 0px rgba(0, 0, 0, 0.13);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.DeleteIcon {
-  padding: 9px;
+.SheetIndicator {
+  width: 45px;
+  height: 5px;
+  border-radius: 5.242px;
+  background: #e0e0e0;
+  margin-top: 10px;
 }

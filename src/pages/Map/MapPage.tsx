@@ -9,6 +9,7 @@ import KuroomMap from "../../components/Map/KuroomMap";
 import MapSearch from "../../components/Map/MapSearch/MapSearch";
 import { KuroomMarkers } from "../../components/Map/MapData";
 import SearchResultHeader from "../../components/Map/MapSearch/SearchResultHeader";
+import LocationsBottomSheet from "../../components/Map/LocationsBottomSheet/LocationsBottomSheet";
 
 interface MarkerData {
   lat: number;
@@ -60,15 +61,18 @@ const MapPage = () => {
           />
         </div>
       ) : (
+        // 검색 결과가 있을 때 상단 바, 바텀시트, (2개 이상일 때 목록보기) 보여주기
         <>
-          {/* 검색 결과가 있을 때만 상단 바 보여주기 */}
           {mapSearchResult ? (
-            <SearchResultHeader
-              mapSearchResult={mapSearchResult}
-              setSearchMode={setSearchMode}
-              setMapSearchResult={setMapSearchResult}
-              setMarkers={setMarkers}
-            />
+            <>
+              <SearchResultHeader
+                mapSearchResult={mapSearchResult}
+                setSearchMode={setSearchMode}
+                setMapSearchResult={setMapSearchResult}
+                setMarkers={setMarkers}
+              />
+              <LocationsBottomSheet mapSearchResult={mapSearchResult} />
+            </>
           ) : (
             // 검색 결과 없을 때만 기본 UI 보여주기
             <>
@@ -82,19 +86,18 @@ const MapPage = () => {
                 <MapSearchBar />
               </button>
               <MapCategoryChip setMapSearchResult={setMapSearchResult} />
+              <button
+                className={styles.TrackingIcon}
+                onClick={() => setIsTracking(true)}
+              >
+                <img
+                  src={myTrackingIcon}
+                  alt="위치 추적 아이콘"
+                  style={{ filter: isTracking ? "none" : "grayscale(100%)" }}
+                />
+              </button>
             </>
           )}
-
-          <button
-            className={styles.TrackingIcon}
-            onClick={() => setIsTracking(true)}
-          >
-            <img
-              src={myTrackingIcon}
-              alt="위치 추적 아이콘"
-              style={{ filter: isTracking ? "none" : "grayscale(100%)" }}
-            />
-          </button>
         </>
       )}
       <BottomBar />
