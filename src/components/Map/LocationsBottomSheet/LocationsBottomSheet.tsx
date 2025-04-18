@@ -38,6 +38,16 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   const isDragging = useRef(false);
   const canDragToClose = useRef(true);
 
+  // 바텀 시트가 자연스럽게 올라오도록 적용. 렌더링 시에 애니메이션 적용되도록 useEffect 사용함
+  const [isVisibleSheet, setIsVisibleSheet] = useState(false);
+  useEffect(() => {
+    if (mapSearchResult) {
+      setIsVisibleSheet(true);
+    } else {
+      setIsVisibleSheet(false);
+    }
+  }, [mapSearchResult]);
+
   // 시트에서 위치 클릭 시 이동하는 로직
   const clickLocation = (location: string) => {
     setIsExpandedSheet(false); // 바텀시트 내리기
@@ -125,7 +135,9 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   }, [isExpandedSheet]);
 
   return (
-    <div className={styles.LocationInfoBottomSheetContainer}>
+    <div
+      className={`${styles.LocationInfoBottomSheetContainer} ${isVisibleSheet ? styles.open : ""}`}
+    >
       {!isExpandedSheet && (
         <button
           className={styles.ListButton}

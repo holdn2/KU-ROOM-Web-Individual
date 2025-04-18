@@ -8,6 +8,15 @@
   gap: 30px;
   align-items: center;
   z-index: 100;
+
+  /* 애니메이션 효과 */
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.3s ease-in-out;
+}
+.LocationInfoBottomSheetContainer.open {
+  transform: translateY(0%);
+  opacity: 1;
 }
 .ListButton {
   padding: 9px 13px;
