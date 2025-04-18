@@ -27,12 +27,11 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   const [selectedLocationInfos, setSelectedLocationInfos] = useState<
     LocationInfo[]
   >([]);
-  const [translateY, setTranslateY] = useState(0);
-  console.log(translateY);
   const sheetRef = useRef<HTMLDivElement>(null);
   const startY = useRef(0);
   const currentY = useRef(0);
   const isDragging = useRef(false);
+  const canDragToClose = useRef(true);
 
   useEffect(() => {
     const match = dummyLocationInfo.find(
@@ -50,14 +49,15 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
       isDragging.current = true;
       startY.current = e.touches[0].clientY;
       sheet.style.transition = "none";
+      // 현재 스크롤이 최상단일 때만 아래로 드래그 가능
+      canDragToClose.current = sheet.scrollTop === 0;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (!isDragging.current) return;
+      if (!isDragging.current || !canDragToClose.current) return;
       currentY.current = e.touches[0].clientY;
       const diff = currentY.current - startY.current;
 
-      // 아래로 드래그(양수)만 허용 (올리는 동작은 무시)
       if (diff > 0) {
         const maxTranslate = window.innerHeight - 150;
         const limitedDiff = Math.min(diff, maxTranslate);
@@ -80,7 +80,6 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
         sheet.style.transform = "translateY(0)";
       }
 
-      setTranslateY(0);
       isDragging.current = false;
     };
 
@@ -141,7 +140,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
           </button>
         ))}
       </div>
-      <div className={styles.BottomSheetGrad} />
+      {!isExpandedSheet && <div className={styles.BottomSheetGrad} />}
     </div>
   );
 };
