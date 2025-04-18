@@ -97,7 +97,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
         isDragging.current = false;
         return;
       }
-      if (diff > 100 && canDragToClose.current) {
+      if (diff > 60 && canDragToClose.current) {
         // 닫기
         setIsExpandedSheet(false);
         sheet.style.transform = "translateY(calc(100% - 150px))";
