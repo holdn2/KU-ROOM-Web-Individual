@@ -15,6 +15,7 @@ interface MapProps {
   width?: string;
   height?: string;
   markers?: MarkerData[];
+  mapRefProp?: React.MutableRefObject<naver.maps.Map | null>;
   isTracking?: boolean;
   setIsTracking?: (value: boolean) => void;
   draggable?: boolean;
@@ -28,6 +29,7 @@ const KuroomMap = ({
   width = "100%",
   height = "100%",
   markers,
+  mapRefProp,
   isTracking = true,
   setIsTracking,
   draggable = true,
@@ -54,6 +56,10 @@ const KuroomMap = ({
 
     const map = new window.naver.maps.Map(mapRef.current, mapOptions);
     mapInstance.current = map; // 지도 인스턴스를 ref에 저장
+
+    if (mapRefProp) {
+      mapRefProp.current = map; // 외부 지도 ref에 전달
+    }
 
     // 화면 조작 시 위치 추적 비활성화
     if (setIsTracking) noTracking(map, setIsTracking, isTrackingRef);
