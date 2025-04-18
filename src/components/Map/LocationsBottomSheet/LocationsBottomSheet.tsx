@@ -33,6 +33,10 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   const isDragging = useRef(false);
   const canDragToClose = useRef(true);
 
+  const clickLocation = (location: string) => {
+    console.log(location, "위치 선택");
+  };
+
   useEffect(() => {
     const match = dummyLocationInfo.find(
       (item) => item.category === mapSearchResult
@@ -48,6 +52,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
     const handleTouchStart = (e: TouchEvent) => {
       isDragging.current = true;
       startY.current = e.touches[0].clientY;
+      // console.log(startY.current);
       sheet.style.transition = "none";
       // 현재 스크롤이 최상단일 때만 아래로 드래그 가능
       canDragToClose.current = sheet.scrollTop === 0;
@@ -69,8 +74,15 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
       if (!isDragging.current) return;
       const diff = currentY.current - startY.current;
       sheet.style.transition = "transform 0.3s ease-in-out";
-
-      if (diff > 80) {
+      // 💡 이동 거리가 작으면 그냥 무시 (클릭 처리)
+      if (Math.abs(diff) < 10) {
+        sheet.style.transform = isExpandedSheet
+          ? "translateY(0)"
+          : "translateY(calc(100% - 150px))";
+        isDragging.current = false;
+        return;
+      }
+      if (diff > 100 && canDragToClose.current) {
         // 닫기
         setIsExpandedSheet(false);
         sheet.style.transform = "translateY(calc(100% - 150px))";
@@ -81,6 +93,9 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
       }
 
       isDragging.current = false;
+      // 위치 초기화
+      startY.current = 0;
+      currentY.current = 0;
     };
 
     sheet.addEventListener("touchstart", handleTouchStart);
@@ -119,7 +134,14 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
       >
         <div className={styles.SheetIndicator} />
         {selectedLocationInfos.map((info, index) => (
-          <button key={index} className={styles.LocationInfoWrapper}>
+          <button
+            key={index}
+            className={styles.LocationInfoWrapper}
+            onClick={(e) => {
+              e.stopPropagation();
+              clickLocation(info.title);
+            }}
+          >
             <div className={styles.TitleWrapper}>
               <span className={styles.TitleText}>{info.title}</span>
               <span className={styles.SubTitleText}>{info.subtit}</span>
