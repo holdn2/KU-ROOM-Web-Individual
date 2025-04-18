@@ -37,29 +37,7 @@ export function renderMarkers(
       },
     });
     window.naver.maps.Event.addListener(marker, "click", () => {
-      const position = marker.getPosition();
-      map.setCenter(position); // 마커 클릭 시 지도 중심으로 이동
-      map.setZoom(17); // 클릭 시 마커 중심으로 줌인
-      setIsTracking(false);
-
-      // 클릭한 마커만 아이콘 변경
-      marker.setIcon({
-        url: focusedMarkerIcon,
-        scaledSize: new naver.maps.Size(80, 80), // 지도에 표시될 크기
-        origin: new naver.maps.Point(0, 0),
-        anchor: new naver.maps.Point(40, 80),
-      });
-
-      marker.setZIndex(1000);
-
-      // 이전 선택 마커 아이콘 초기화
-      renderedMarkers.forEach((m) => {
-        if (m !== marker) {
-          m.setIcon({
-            url: markerIcon,
-          });
-        }
-      });
+      focusMarker(map, marker, setIsTracking);
     });
 
     renderedMarkers.push(marker);
@@ -67,21 +45,41 @@ export function renderMarkers(
 
   // 마커가 하나뿐일 경우 자동 포커스 처리
   if (renderedMarkers.length === 1) {
-    const soloMarker = renderedMarkers[0];
-    const position = soloMarker.getPosition();
-
-    map.setCenter(position);
-    map.setZoom(17);
-    setIsTracking(false);
-
-    soloMarker.setIcon({
-      url: focusedMarkerIcon,
-      scaledSize: new naver.maps.Size(80, 80),
-      origin: new naver.maps.Point(0, 0),
-      anchor: new naver.maps.Point(40, 80),
-    });
+    focusMarker(map, renderedMarkers[0], setIsTracking);
   }
 }
+
+// 특정 마커 포커스
+function focusMarker(
+  map: naver.maps.Map,
+  marker: naver.maps.Marker,
+  setIsTracking: (value: boolean) => void
+) {
+  const position = marker.getPosition();
+
+  map.setCenter(position);
+  map.setZoom(17);
+  setIsTracking(false);
+
+  marker.setIcon({
+    url: focusedMarkerIcon,
+    scaledSize: new naver.maps.Size(80, 80),
+    origin: new naver.maps.Point(0, 0),
+    anchor: new naver.maps.Point(40, 80),
+  });
+
+  marker.setZIndex(1000);
+
+  renderedMarkers.forEach((m) => {
+    if (m !== marker) {
+      m.setIcon({
+        url: markerIcon,
+      });
+    }
+  });
+}
+
+export { renderedMarkers, focusMarker };
 
 // 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가는 로직
 export function myLocationTracking(

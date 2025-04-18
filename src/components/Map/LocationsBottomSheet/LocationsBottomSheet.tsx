@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./LocationsBottomSheet.module.css";
 import mapListIcon from "../../../assets/map/mapListIcon.svg";
 import { dummyLocationInfo } from "../MapData";
+import { focusMarker, renderedMarkers } from "../kuroomMapUtils";
 
 interface LocationInfo {
   title: string;
@@ -16,13 +17,17 @@ interface LocationInfo {
 interface LocationsBottomSheetProps {
   mapSearchResult: string;
   isExpandedSheet: boolean;
+  mapInstance: React.MutableRefObject<naver.maps.Map | null>;
   setIsExpandedSheet: (value: boolean) => void;
+  setIsTracking: (value: boolean) => void;
 }
 
 const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   mapSearchResult,
   isExpandedSheet,
+  mapInstance,
   setIsExpandedSheet,
+  setIsTracking,
 }) => {
   const [selectedLocationInfos, setSelectedLocationInfos] = useState<
     LocationInfo[]
@@ -35,8 +40,19 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
 
   const clickLocation = (location: string) => {
     console.log(location, "위치 선택");
+
+    setIsExpandedSheet(false); // 바텀시트 내리기
+
+    // 다음 frame에 마커 포커스하기 (지도가 닫힌 후 실행되도록)
+    setTimeout(() => {
+      const marker = renderedMarkers.find((m) => m.getTitle() === location);
+      if (marker && mapInstance.current && setIsTracking) {
+        focusMarker(mapInstance.current, marker, setIsTracking);
+      }
+    }, 300); // transition 시간과 맞춰서 살짝 delay
   };
 
+  // 서버에 해당 정보들 요청해야함.
   useEffect(() => {
     const match = dummyLocationInfo.find(
       (item) => item.category === mapSearchResult

@@ -1,5 +1,5 @@
 // 지도 페이지
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import styles from "./MapPage.module.css";
 import myTrackingIcon from "../../assets/map/tomylocation.svg";
@@ -25,6 +25,7 @@ const MapPage = () => {
   const [isExpandedSheet, setIsExpandedSheet] = useState(false);
 
   const [markers, setMarkers] = useState<MarkerData[]>([]);
+  const mapInstanceRef = useRef<naver.maps.Map | null>(null);
 
   // 요청의 응답값을 markers배열에 저장. 이부분은 테스트용 로직
   useEffect(() => {
@@ -49,6 +50,7 @@ const MapPage = () => {
       <KuroomMap
         height="calc(100vh - 92px)"
         markers={markers}
+        mapRefProp={mapInstanceRef}
         isTracking={isTracking}
         setIsTracking={setIsTracking}
       />
@@ -77,7 +79,9 @@ const MapPage = () => {
               <LocationsBottomSheet
                 mapSearchResult={mapSearchResult}
                 isExpandedSheet={isExpandedSheet}
+                mapInstance={mapInstanceRef}
                 setIsExpandedSheet={setIsExpandedSheet}
+                setIsTracking={setIsTracking}
               />
             </>
           ) : (
