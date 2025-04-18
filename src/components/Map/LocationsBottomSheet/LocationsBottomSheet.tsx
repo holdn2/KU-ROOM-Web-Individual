@@ -38,9 +38,8 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   const isDragging = useRef(false);
   const canDragToClose = useRef(true);
 
+  // 시트에서 위치 클릭 시 이동하는 로직
   const clickLocation = (location: string) => {
-    console.log(location, "위치 선택");
-
     setIsExpandedSheet(false); // 바텀시트 내리기
 
     // 다음 frame에 마커 포커스하기 (지도가 닫힌 후 실행되도록)
@@ -153,10 +152,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
           <button
             key={index}
             className={styles.LocationInfoWrapper}
-            onClick={(e) => {
-              e.stopPropagation();
-              clickLocation(info.title);
-            }}
+            onClick={() => isExpandedSheet && clickLocation(info.title)}
           >
             <div className={styles.TitleWrapper}>
               <span className={styles.TitleText}>{info.title}</span>
