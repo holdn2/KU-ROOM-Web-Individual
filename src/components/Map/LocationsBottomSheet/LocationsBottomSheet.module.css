@@ -36,10 +36,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 100;
 }
 .Expanded {
-  height: calc(100vh - 100px); /* or whatever full height */
+  height: calc(100vh - 50px); /* or whatever full height */
   background: #fff;
   overflow-y: scroll;
 }
@@ -50,6 +49,10 @@
   background: #e0e0e0;
   margin-top: 10px;
   flex-shrink: 0;
+
+  position: sticky;
+  top: 10px;
+  z-index: 10; /* 다른 요소 위에 오도록 */
 }
 .LocationInfoWrapper {
   width: calc(100% - 28px);
