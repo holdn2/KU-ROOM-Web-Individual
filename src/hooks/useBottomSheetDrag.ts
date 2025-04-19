@@ -46,6 +46,13 @@ export default function useBottomSheetDrag({
       const diff = currentY.current - startY.current;
       sheet.style.transition = "transform 0.3s ease-in-out";
 
+      // 클릭만 한 경우라면 아무 동작 하지 않게
+      if (currentY.current === 0) {
+        isDragging.current = false;
+        startY.current = 0;
+        return;
+      }
+
       if (Math.abs(diff) < 10) {
         sheet.style.transform = isExpanded
           ? "translateY(0)"
@@ -54,10 +61,10 @@ export default function useBottomSheetDrag({
         return;
       }
 
-      if (diff > 60) {
+      if (diff > 100) {
         setIsExpanded(false);
         sheet.style.transform = `translateY(calc(100% - ${minHeight}px))`;
-      } else {
+      } else if (diff < -100) {
         setIsExpanded(true);
         sheet.style.transform = "translateY(0)";
       }

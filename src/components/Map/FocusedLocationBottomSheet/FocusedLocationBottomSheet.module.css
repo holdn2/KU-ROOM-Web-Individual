@@ -123,3 +123,6 @@
   width: 100%;
   box-sizing: border-box;
 }
+.ButtonContainer button {
+  touch-action: manipulation; /* 또는 none */
+}
