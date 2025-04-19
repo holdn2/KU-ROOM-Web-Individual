@@ -10,6 +10,8 @@ interface MarkerData {
 }
 
 let renderedMarkers: naver.maps.Marker[] = []; // 전역 배열로 기존 마커 저장
+let focusedMarker: naver.maps.Marker | null = null;
+let isDraggingMap = false;
 
 export function renderMarkers(
   map: naver.maps.Map,
@@ -24,7 +26,6 @@ export function renderMarkers(
   const defaultCenter = new window.naver.maps.LatLng(37.5423, 127.0759);
   map.setCenter(defaultCenter);
   map.setZoom(16);
-  setIsTracking(false);
 
   markers.forEach(({ lat, lng, title }) => {
     const marker = new window.naver.maps.Marker({
@@ -40,6 +41,7 @@ export function renderMarkers(
       focusMarker(map, marker, setIsTracking);
     });
 
+    setIsTracking(false);
     renderedMarkers.push(marker);
   });
 
@@ -50,6 +52,26 @@ export function renderMarkers(
       focusMarker(map, renderedMarkers[0], setIsTracking);
     }, 10);
   }
+
+  // 지도 드래그 상태 관리
+  window.naver.maps.Event.addListener(map, "dragstart", () => {
+    isDraggingMap = true;
+  });
+
+  window.naver.maps.Event.addListener(map, "dragend", () => {
+    // 드래그가 끝난 후엔 false로 되돌림 (단, 포커스는 유지)
+    isDraggingMap = false;
+  });
+
+  // 지도 클릭 시 포커스 해제 (단, 드래그 아닌 경우에만)
+  window.naver.maps.Event.addListener(map, "click", () => {
+    if (!isDraggingMap && focusedMarker) {
+      focusedMarker.setIcon({
+        url: markerIcon,
+      });
+      focusedMarker = null;
+    }
+  });
 }
 
 // 특정 마커 포커스
@@ -63,6 +85,8 @@ function focusMarker(
   map.setCenter(position);
   map.setZoom(17);
   setIsTracking(false);
+
+  focusedMarker = marker; // 현재 포커스 마커 기억
 
   // HTMLIcon으로 스타일링 + 라벨링. 텍스트 스트로크 넣기
   marker.setIcon({

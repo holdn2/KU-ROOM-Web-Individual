@@ -52,15 +52,14 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
 
   // 시트에서 위치 클릭 시 이동하는 로직
   const clickLocation = (location: string) => {
-    setIsExpandedSheet(false); // 바텀시트 내리기
+    if (!isExpandedSheet) return;
+    // 다음 frame에 마커 포커스하기
+    const marker = renderedMarkers.find((m) => m.getTitle() === location);
+    if (marker && mapInstance.current && setIsTracking) {
+      focusMarker(mapInstance.current, marker, setIsTracking);
+    }
 
-    // 다음 frame에 마커 포커스하기 (지도가 닫힌 후 실행되도록)
-    setTimeout(() => {
-      const marker = renderedMarkers.find((m) => m.getTitle() === location);
-      if (marker && mapInstance.current && setIsTracking) {
-        focusMarker(mapInstance.current, marker, setIsTracking);
-      }
-    }, 300); // transition 시간과 맞춰서 살짝 delay
+    setIsExpandedSheet(false); // 바텀시트 내리기
   };
 
   // 서버에 해당 정보들 요청해야함.
@@ -166,7 +165,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
           <button
             key={index}
             className={styles.LocationInfoWrapper}
-            onClick={() => isExpandedSheet && clickLocation(info.title)}
+            onClick={() => clickLocation(info.title)}
           >
             <div className={styles.TitleWrapper}>
               <span className={styles.TitleText}>{info.title}</span>
