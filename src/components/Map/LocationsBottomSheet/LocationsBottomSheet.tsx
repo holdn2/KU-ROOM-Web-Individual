@@ -3,6 +3,7 @@ import styles from "./LocationsBottomSheet.module.css";
 import mapListIcon from "../../../assets/map/mapListIcon.svg";
 import { dummyLocationInfo } from "../MapData";
 import { makeFocusMarker, renderedMarkers } from "../kuroomMapUtils";
+import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
 
 interface LocationInfo {
   title: string;
@@ -39,10 +40,6 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
     LocationInfo[]
   >([]);
   const sheetRef = useRef<HTMLDivElement>(null);
-  const startY = useRef(0);
-  const currentY = useRef(0);
-  const isDragging = useRef(false);
-  const canDragToClose = useRef(true);
 
   // 시트에서 위치 클릭 시 이동하는 로직
   const clickLocation = (location: string) => {
@@ -68,69 +65,12 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   }, [mapSearchResult]);
 
   // 바텀 시트 올리고 내리는 로직. 좀 더 연구 필요할듯.
-  useEffect(() => {
-    const sheet = sheetRef.current;
-    if (!sheet) return;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      isDragging.current = true;
-      startY.current = e.touches[0].clientY;
-      // console.log(startY.current);
-      sheet.style.transition = "none";
-      // 현재 스크롤이 최상단일 때만 아래로 드래그 가능
-      canDragToClose.current = sheet.scrollTop === 0;
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!isDragging.current || !canDragToClose.current) return;
-      currentY.current = e.touches[0].clientY;
-      const diff = currentY.current - startY.current;
-
-      if (diff > 0) {
-        const maxTranslate = window.innerHeight - 150;
-        const limitedDiff = Math.min(diff, maxTranslate);
-        sheet.style.transform = `translateY(${limitedDiff}px)`;
-      }
-    };
-
-    const handleTouchEnd = () => {
-      if (!isDragging.current) return;
-      const diff = currentY.current - startY.current;
-      sheet.style.transition = "transform 0.3s ease-in-out";
-      // 💡 이동 거리가 작으면 그냥 무시 (클릭 처리)
-      if (Math.abs(diff) < 10) {
-        sheet.style.transform = isExpandedSheet
-          ? "translateY(0)"
-          : "translateY(calc(100% - 150px))";
-        isDragging.current = false;
-        return;
-      }
-      if (diff > 60 && canDragToClose.current) {
-        // 닫기
-        setIsExpandedSheet(false);
-        sheet.style.transform = "translateY(calc(100% - 150px))";
-      } else {
-        // 열기
-        setIsExpandedSheet(true);
-        sheet.style.transform = "translateY(0)";
-      }
-
-      isDragging.current = false;
-      // 위치 초기화
-      startY.current = 0;
-      currentY.current = 0;
-    };
-
-    sheet.addEventListener("touchstart", handleTouchStart);
-    sheet.addEventListener("touchmove", handleTouchMove);
-    sheet.addEventListener("touchend", handleTouchEnd);
-
-    return () => {
-      sheet.removeEventListener("touchstart", handleTouchStart);
-      sheet.removeEventListener("touchmove", handleTouchMove);
-      sheet.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [isExpandedSheet]);
+  useBottomSheetDrag({
+    sheetRef,
+    isExpanded: isExpandedSheet,
+    setIsExpanded: setIsExpandedSheet,
+    minHeight: 150,
+  });
 
   return (
     <div

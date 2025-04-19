@@ -211,6 +211,7 @@ const dummyLocationInfo = [
 import defaultProfileImg from "../../assets/defaultProfileImg.svg";
 // 장소 상세 정보
 const dummyDetailInfo = {
+  imgs: [""],
   title: "레스티오 공학관점",
   subtit: "레스티오의 공학관점입니다!",
   friends: [
