@@ -47,6 +47,13 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
     minHeight: 380,
   });
 
+  const handleShareLocation = () => {
+    setIsSharedLocation(true);
+  };
+  const handleUnShareLocation = () => {
+    setIsSharedLocation(false);
+  };
+
   return (
     <div
       className={`${styles.DetailInfoBottomSheetContainer} ${hasFocusedMarker ? styles.open : ""}`}
@@ -104,16 +111,11 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
           }
         >
           {isSharedLocation ? (
-            <Button
-              variant="quaternary"
-              onClick={() => setIsSharedLocation(false)}
-            >
+            <Button variant="quaternary" onClick={handleUnShareLocation}>
               내 위치 공유 중
             </Button>
           ) : (
-            <Button onClick={() => setIsSharedLocation(true)}>
-              내 위치 공유
-            </Button>
+            <Button onClick={handleShareLocation}>내 위치 공유</Button>
           )}
         </div>
       </div>

@@ -102,7 +102,10 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
           <button
             key={index}
             className={styles.LocationInfoWrapper}
-            onClick={() => clickLocation(info.title)}
+            onClick={() => {
+              if (isExpandedSheet) clickLocation(info.title);
+              else console.log(info.title, "클릭안됨");
+            }}
           >
             <div className={styles.TitleWrapper}>
               <span className={styles.TitleText}>{info.title}</span>
