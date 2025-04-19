@@ -116,7 +116,18 @@
   font-weight: 500;
   line-height: 120%; /* 19.2px */
 }
+.InfoContentClamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
+  /* 페이드 아웃 마스크 효과 */
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
 .ButtonContainer {
   position: fixed;
   padding: 15px 27px;

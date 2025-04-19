@@ -219,7 +219,7 @@ const dummyDetailInfo = {
     { nickname: "쿠룸2", profileImg: defaultProfileImg },
     { nickname: "쿠룸3", profileImg: defaultProfileImg },
   ],
-  info: "어쩌구저쩌구~~~ 중요한 정보!!??!",
+  info: "어쩌구저쩌구~~~ 중요한 정보!!??! 어쩌구저쩌구~~~ 중요한 정보!!??! 어쩌구저쩌구~~~ 중요한 정보!!??! 어쩌구저쩌구~~~ 중요한 정보!!??! 어쩌구저쩌구~~~ 중요한 정보!!??! 어쩌구저쩌구~~~ 중요한 정보!!??! 어쩌구저쩌구~~~ 중요한 정보!!??! 어쩌구저쩌구~~~ 중요한 정보!!??! 어쩌구저쩌구~~~ 중요한 정보!!??! 어쩌구저쩌구~~~ 중요한 정보!!??!",
 };
 
 export { CategoryChips, KuroomMarkers, dummyLocationInfo, dummyDetailInfo };
