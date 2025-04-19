@@ -44,9 +44,11 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   const clickLocation = (location: string) => {
     if (!isExpandedSheet) return;
     // 다음 frame에 마커 포커스하기
-    const marker = renderedMarkers.find((m) => m.getTitle() === location);
-    if (marker && mapInstance.current && setIsTracking) {
-      makeFocusMarker(mapInstance.current, marker, setIsTracking);
+    const target = renderedMarkers.find(
+      ({ marker }) => marker.getTitle() === location
+    );
+    if (target && mapInstance.current) {
+      makeFocusMarker(mapInstance.current, target.marker, setIsTracking);
     }
 
     setIsExpandedSheet(false); // 바텀시트 내리기

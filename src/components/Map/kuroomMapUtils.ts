@@ -1,5 +1,4 @@
 import myMarkerIcon from "../../assets/map/mylocationMarker.svg";
-import markerIcon from "../../assets/map/markerIcon.svg";
 import focusedMarkerIcon from "../../assets/map/focusedMarker.png";
 
 // 마커 렌더링 로직
@@ -7,9 +6,15 @@ interface MarkerData {
   lat: number;
   lng: number;
   title: string;
+  icon: string;
 }
 
-let renderedMarkers: naver.maps.Marker[] = []; // 전역 배열로 기존 마커 저장
+interface KuroomMarker {
+  marker: naver.maps.Marker;
+  originalIcon: string;
+}
+
+let renderedMarkers: KuroomMarker[] = []; // 전역 배열로 기존 마커 저장
 let focusedMarker: naver.maps.Marker | null = null;
 let isDraggingMap = false;
 
@@ -23,7 +28,7 @@ export function renderMarkers(
   setFocusedMarkerTitle?: (value: string | null) => void
 ): void {
   // 기존 마커 제거
-  renderedMarkers.forEach((marker) => marker.setMap(null));
+  renderedMarkers.forEach(({ marker }) => marker.setMap(null));
   renderedMarkers = [];
 
   // 마커가 변경될 때마다 건대 중심을 center로 변경하고 줌도 16으로 되게 설정.
@@ -31,14 +36,14 @@ export function renderMarkers(
   map.setCenter(defaultCenter);
   map.setZoom(16);
 
-  markers.forEach(({ lat, lng, title }) => {
+  markers.forEach(({ lat, lng, title, icon }) => {
     const marker = new window.naver.maps.Marker({
       position: new window.naver.maps.LatLng(lat, lng),
       map,
       title,
       icon: {
         // 마커 아이콘 추가
-        url: markerIcon,
+        url: icon,
       },
     });
     window.naver.maps.Event.addListener(marker, "click", () => {
@@ -52,7 +57,7 @@ export function renderMarkers(
     });
 
     setIsTracking(false);
-    renderedMarkers.push(marker);
+    renderedMarkers.push({ marker, originalIcon: icon });
   });
 
   // 마커가 하나뿐일 경우 자동 포커스 처리
@@ -61,7 +66,7 @@ export function renderMarkers(
     setTimeout(() => {
       makeFocusMarker(
         map,
-        renderedMarkers[0],
+        renderedMarkers[0].marker,
         setIsTracking,
         setHasFocusedMarker,
         setFocusedMarkerTitle
@@ -82,11 +87,14 @@ export function renderMarkers(
   // 지도 클릭 시 포커스 해제 (단, 드래그 아닌 경우에만)
   window.naver.maps.Event.addListener(map, "click", () => {
     if (!isDraggingMap && focusedMarker) {
-      focusedMarker.setIcon({
-        url: markerIcon,
-      });
+      const target = renderedMarkers.find(
+        ({ marker }) => marker === focusedMarker
+      );
+      if (target) {
+        focusedMarker.setIcon({ url: target.originalIcon }); // ← 여기 수정
+      }
       focusedMarker = null;
-      setHasFocusedMarker?.(false); // 포커스 해제 알림
+      setHasFocusedMarker?.(false);
       setFocusedMarkerTitle?.(null);
     }
   });
@@ -142,11 +150,9 @@ function makeFocusMarker(
 
   marker.setZIndex(1000);
 
-  renderedMarkers.forEach((m) => {
+  renderedMarkers.forEach(({ marker: m, originalIcon }) => {
     if (m !== marker) {
-      m.setIcon({
-        url: markerIcon,
-      });
+      m.setIcon({ url: originalIcon }); // ← 여기 수정
     }
   });
 }
