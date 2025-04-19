@@ -47,6 +47,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
     minHeight: 380,
   });
 
+  // 서버에 위치 공유 상태 요청해야함.
   const handleShareLocation = () => {
     setIsSharedLocation(true);
   };
@@ -70,6 +71,11 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
         }}
       >
         <div className={styles.SheetIndicator} />
+        {isExpandedFocusedSheet && (
+          <div
+            style={{ width: "100%", height: "206px", background: "green" }}
+          ></div>
+        )}
         {detailInfo && (
           <div className={styles.DetailInfoWrapper}>
             <div className={styles.TitleWrapper}>
@@ -99,7 +105,13 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
               )}
               <div className={styles.InfoWrapper}>
                 <span className={styles.InfoTitle}>정보</span>
-                <span className={styles.InfoContent}>{detailInfo.info}</span>
+                <span
+                  className={`${styles.InfoContent} ${
+                    !isExpandedFocusedSheet ? styles.InfoContentClamp : ""
+                  }`}
+                >
+                  {detailInfo.info}
+                </span>
               </div>
             </div>
           </div>
