@@ -15,6 +15,7 @@ interface LocationInfo {
 }
 
 interface LocationsBottomSheetProps {
+  visibleBottomSheet: boolean;
   mapSearchResult: string;
   isExpandedSheet: boolean;
   mapInstance: React.MutableRefObject<naver.maps.Map | null>;
@@ -23,6 +24,7 @@ interface LocationsBottomSheetProps {
 }
 
 const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
+  visibleBottomSheet,
   mapSearchResult,
   isExpandedSheet,
   mapInstance,
@@ -39,14 +41,14 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   const canDragToClose = useRef(true);
 
   // 바텀 시트가 자연스럽게 올라오도록 적용. 렌더링 시에 애니메이션 적용되도록 useEffect 사용함
-  const [isVisibleSheet, setIsVisibleSheet] = useState(false);
-  useEffect(() => {
-    if (mapSearchResult) {
-      setIsVisibleSheet(true);
-    } else {
-      setIsVisibleSheet(false);
-    }
-  }, [mapSearchResult]);
+  // const [isVisibleSheet, setIsVisibleSheet] = useState(false);
+  // useEffect(() => {
+  //   if (mapSearchResult) {
+  //     setIsVisibleSheet(true);
+  //   } else {
+  //     setIsVisibleSheet(false);
+  //   }
+  // }, [mapSearchResult]);
 
   // 시트에서 위치 클릭 시 이동하는 로직
   const clickLocation = (location: string) => {
@@ -136,7 +138,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
 
   return (
     <div
-      className={`${styles.LocationInfoBottomSheetContainer} ${isVisibleSheet ? styles.open : ""}`}
+      className={`${styles.LocationInfoBottomSheetContainer} ${visibleBottomSheet ? styles.open : ""}`}
     >
       {!isExpandedSheet && (
         <button
@@ -174,7 +176,15 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
               {info.friends.length !== 0 && (
                 <div className={styles.FriendWrapper}>
                   <span className={styles.FriendTitle}>친구</span>
-                  {/* <span className={styles.FriendImg}>{info.info}</span> */}
+                  <div className={styles.FriendContainer}>
+                    {info.friends.map((friend, index) => (
+                      <img
+                        key={index}
+                        src={friend.profileImg}
+                        alt={friend.nickname}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
 

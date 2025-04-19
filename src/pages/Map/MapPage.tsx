@@ -27,12 +27,16 @@ const MapPage = () => {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
 
-  // 요청의 응답값을 markers배열에 저장. 이부분은 테스트용 로직
+  const [visibleBottomSheet, setVisibleBottomSheet] = useState(false);
+
+  // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작. 이부분은 테스트용 로직
   useEffect(() => {
     if (!mapSearchResult) {
       setMarkers([]);
+      setVisibleBottomSheet(false);
       return;
     }
+    setVisibleBottomSheet(true);
     const categoryMatch = KuroomMarkers.find(
       (item) => item.category === mapSearchResult
     );
@@ -76,13 +80,6 @@ const MapPage = () => {
                 setMarkers={setMarkers}
                 setIsExpandedSheet={setIsExpandedSheet}
               />
-              <LocationsBottomSheet
-                mapSearchResult={mapSearchResult}
-                isExpandedSheet={isExpandedSheet}
-                mapInstance={mapInstanceRef}
-                setIsExpandedSheet={setIsExpandedSheet}
-                setIsTracking={setIsTracking}
-              />
             </>
           ) : (
             // 검색 결과 없을 때만 기본 UI 보여주기
@@ -111,6 +108,14 @@ const MapPage = () => {
           )}
         </>
       )}
+      <LocationsBottomSheet
+        visibleBottomSheet={visibleBottomSheet}
+        mapSearchResult={mapSearchResult}
+        isExpandedSheet={isExpandedSheet}
+        mapInstance={mapInstanceRef}
+        setIsExpandedSheet={setIsExpandedSheet}
+        setIsTracking={setIsTracking}
+      />
       <BottomBar />
     </div>
   );
