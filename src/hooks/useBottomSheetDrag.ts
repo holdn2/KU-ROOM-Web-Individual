@@ -61,12 +61,16 @@ export default function useBottomSheetDrag({
         return;
       }
 
-      if (diff > 100) {
+      if (diff > 80) {
         setIsExpanded(false);
         sheet.style.transform = `translateY(calc(100% - ${minHeight}px))`;
-      } else if (diff < -100) {
+      } else if (diff < -80) {
         setIsExpanded(true);
         sheet.style.transform = "translateY(0)";
+      } else {
+        sheet.style.transform = isExpanded
+          ? "translateY(0)"
+          : `translateY(calc(100% - ${minHeight}px))`;
       }
 
       isDragging.current = false;
