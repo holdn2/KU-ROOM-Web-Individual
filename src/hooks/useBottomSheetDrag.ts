@@ -16,7 +16,7 @@ export default function useBottomSheetDrag({
   const startY = useRef(0);
   const currentY = useRef(0);
   const isDragging = useRef(false);
-  const canDragToClose = useRef(true);
+  //   const canDragToClose = useRef(true);
 
   useEffect(() => {
     const sheet = sheetRef.current;
@@ -26,11 +26,11 @@ export default function useBottomSheetDrag({
       isDragging.current = true;
       startY.current = e.touches[0].clientY;
       sheet.style.transition = "none";
-      canDragToClose.current = sheet.scrollTop === 0;
+      //   canDragToClose.current = sheet.scrollTop === 0;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (!isDragging.current || !canDragToClose.current) return;
+      if (!isDragging.current) return;
       currentY.current = e.touches[0].clientY;
       const diff = currentY.current - startY.current;
 
@@ -54,7 +54,7 @@ export default function useBottomSheetDrag({
         return;
       }
 
-      if (diff > 60 && canDragToClose.current) {
+      if (diff > 60) {
         setIsExpanded(false);
         sheet.style.transform = `translateY(calc(100% - ${minHeight}px))`;
       } else {
