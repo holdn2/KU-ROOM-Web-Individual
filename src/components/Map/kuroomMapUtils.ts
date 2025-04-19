@@ -145,7 +145,7 @@ function makeFocusMarker(
       </span>
     </div>
   `,
-    anchor: new naver.maps.Point(15, 50), // 가운데 정렬
+    anchor: new naver.maps.Point(15, 130), // 가운데 정렬
   });
 
   marker.setZIndex(1000);

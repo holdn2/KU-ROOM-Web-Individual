@@ -56,7 +56,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
       const diff = currentY.current - startY.current;
 
       if (diff > 0) {
-        const maxTranslate = window.innerHeight - 150;
+        const maxTranslate = window.innerHeight - 380;
         const limitedDiff = Math.min(diff, maxTranslate);
         sheet.style.transform = `translateY(${limitedDiff}px)`;
       }
@@ -70,14 +70,14 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
       if (Math.abs(diff) < 10) {
         sheet.style.transform = isExpandedFocusedSheet
           ? "translateY(0)"
-          : "translateY(calc(100% - 150px))";
+          : "translateY(calc(100% - 380px))";
         isDragging.current = false;
         return;
       }
       if (diff > 60 && canDragToClose.current) {
         // 닫기
         setIsExpandedFocusedSheet(false);
-        sheet.style.transform = "translateY(calc(100% - 150px))";
+        sheet.style.transform = "translateY(calc(100% - 380px))";
       } else {
         // 열기
         setIsExpandedFocusedSheet(true);
@@ -114,7 +114,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
           style={{
             transform: isExpandedFocusedSheet
               ? "translateY(0)"
-              : "translateY(calc(100% - 150px))",
+              : "translateY(calc(100% - 380px))",
           }}
         >
           <div className={styles.SheetIndicator} />
