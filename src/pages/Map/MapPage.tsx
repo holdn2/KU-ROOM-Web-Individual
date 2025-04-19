@@ -10,11 +10,13 @@ import MapSearch from "../../components/Map/MapSearch/MapSearch";
 import { KuroomMarkers } from "../../components/Map/MapData";
 import SearchResultHeader from "../../components/Map/MapSearch/SearchResultHeader";
 import LocationsBottomSheet from "../../components/Map/LocationsBottomSheet/LocationsBottomSheet";
+import FocusedLocationBottomSheet from "../../components/Map/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
 
 interface MarkerData {
   lat: number;
   lng: number;
   title: string;
+  icon: string;
 }
 
 const MapPage = () => {
@@ -22,12 +24,19 @@ const MapPage = () => {
   const [searchMode, setSearchMode] = useState(false);
   const [mapSearchResult, setMapSearchResult] = useState("");
 
-  const [isExpandedSheet, setIsExpandedSheet] = useState(false);
-
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
 
+  // 검색 또는 칩 클릭 시 바텀 시트
   const [visibleBottomSheet, setVisibleBottomSheet] = useState(false);
+  const [isExpandedSheet, setIsExpandedSheet] = useState(false);
+
+  // 클릭 또는 마커가 하나만 있을 때(==마커가 포커스되었을 때) 바텀시트
+  const [hasFocusedMarker, setHasFocusedMarker] = useState(false);
+  const [isExpandedFocusedSheet, setIsExpandedFocusedSheet] = useState(false);
+  const [focusedMarkerTitle, setFocusedMarkerTitle] = useState<string | null>(
+    null
+  );
 
   // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작. 이부분은 테스트용 로직
   useEffect(() => {
@@ -48,6 +57,10 @@ const MapPage = () => {
     }
   }, [mapSearchResult]);
 
+  useEffect(() => {
+    console.log("현재 포커된 상태: ", hasFocusedMarker);
+  }, [hasFocusedMarker]);
+
   return (
     <div>
       {/* KuroomMap은 항상 렌더링되고 */}
@@ -57,6 +70,8 @@ const MapPage = () => {
         mapRefProp={mapInstanceRef}
         isTracking={isTracking}
         setIsTracking={setIsTracking}
+        setHasFocusedMarker={setHasFocusedMarker}
+        setFocusedMarkerTitle={setFocusedMarkerTitle}
       />
 
       {/* 검색 모드일 때 MapSearch만 덮어씌우기 */}
@@ -79,6 +94,8 @@ const MapPage = () => {
                 setMapSearchResult={setMapSearchResult}
                 setMarkers={setMarkers}
                 setIsExpandedSheet={setIsExpandedSheet}
+                setHasFocusedMarker={setHasFocusedMarker}
+                setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
               />
             </>
           ) : (
@@ -115,6 +132,14 @@ const MapPage = () => {
         mapInstance={mapInstanceRef}
         setIsExpandedSheet={setIsExpandedSheet}
         setIsTracking={setIsTracking}
+        hasFocusedMarker={hasFocusedMarker}
+        setHasFocusedMarker={setHasFocusedMarker}
+      />
+      <FocusedLocationBottomSheet
+        hasFocusedMarker={hasFocusedMarker}
+        isExpandedFocusedSheet={isExpandedFocusedSheet}
+        setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+        focusedMarkerTitle={focusedMarkerTitle}
       />
       <BottomBar />
     </div>

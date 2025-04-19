@@ -26,7 +26,7 @@ const MapCategoryChip: React.FC<MapCategoryChip> = ({ setMapSearchResult }) => {
               : undefined
           }
         >
-          <div className={styles.CategoryChipIcon} />
+          <img src={category.icon} alt="칩 아이콘" />
           <span className={styles.CategoryChipTitle}>{category.title}</span>
         </button>
       ))}

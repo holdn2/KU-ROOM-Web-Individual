@@ -1,55 +1,67 @@
+import friendChip from "../../assets/map/chips/friendChip.svg";
+import collegeChip from "../../assets/map/chips/collegeChip.svg";
+import kcubehubChip from "../../assets/map/chips/kcubehubChip.svg";
+import storeChip from "../../assets/map/chips/storeChip.svg";
+import cafeChip from "../../assets/map/chips/cafeChip.svg";
+import restaurantChip from "../../assets/map/chips/restaurantChip.svg";
+import officeChip from "../../assets/map/chips/officeChip.svg";
+import dormitoryChip from "../../assets/map/chips/dormitoryChip.svg";
+import bankChip from "../../assets/map/chips/bankChip.svg";
+import postChip from "../../assets/map/chips/postChip.svg";
 // 카테고리 칩
 const CategoryChips = [
   {
     title: "친구",
-    icon: "",
+    icon: friendChip,
   },
   {
     title: "단과대",
-    icon: "",
+    icon: collegeChip,
   },
   {
     title: "K-Cube",
-    icon: "",
+    icon: kcubehubChip,
   },
   {
     title: "K-Hub",
-    icon: "",
+    icon: kcubehubChip,
   },
   {
     title: "편의점",
-    icon: "",
+    icon: storeChip,
   },
   {
     title: "레스티오",
-    icon: "",
+    icon: cafeChip,
   },
   {
     title: "1847",
-    icon: "",
+    icon: cafeChip,
   },
   {
     title: "학생식당",
-    icon: "",
+    icon: restaurantChip,
   },
   {
     title: "학과사무실",
-    icon: "",
+    icon: officeChip,
   },
   {
     title: "기숙사",
-    icon: "",
+    icon: dormitoryChip,
   },
   {
     title: "은행",
-    icon: "",
+    icon: bankChip,
   },
   {
     title: "우체국",
-    icon: "",
+    icon: postChip,
   },
 ];
 
+import collegeMarker from "../../assets/map/markers/collegeMarker.svg";
+import cafeMarker from "../../assets/map/markers/cafeMarker.svg";
 // 마커
 const KuroomMarkers = [
   {
@@ -59,31 +71,37 @@ const KuroomMarkers = [
         lat: 37.5396,
         lng: 127.0731,
         title: "레스티오 건대점",
+        icon: cafeMarker,
       },
       {
         lat: 37.5402,
         lng: 127.0735,
         title: "레스티오 동물생명대점",
+        icon: cafeMarker,
       },
       {
         lat: 37.542,
         lng: 127.0738,
         title: "레스티오 도서관점",
+        icon: cafeMarker,
       },
       {
         lat: 37.5428,
         lng: 127.0728,
         title: "레스티오 예술문화관점",
+        icon: cafeMarker,
       },
       {
         lat: 37.5444,
         lng: 127.0764,
         title: "레스티오 경영대점",
+        icon: cafeMarker,
       },
       {
         lat: 37.5418,
         lng: 127.0788,
         title: "레스티오 공학관점",
+        icon: cafeMarker,
       },
     ],
   },
@@ -94,11 +112,13 @@ const KuroomMarkers = [
         lat: 37.5417,
         lng: 127.0781,
         title: "1847 건국대학생회관점",
+        icon: cafeMarker,
       },
       {
         lat: 37.5418,
         lng: 127.0737,
         title: "1847 상허기념도서관점",
+        icon: cafeMarker,
       },
     ],
   },
@@ -109,6 +129,7 @@ const KuroomMarkers = [
         lat: 37.5405,
         lng: 127.0793,
         title: "신공학관",
+        icon: collegeMarker,
       },
     ],
   },
@@ -187,4 +208,17 @@ const dummyLocationInfo = [
   },
 ];
 
-export { CategoryChips, KuroomMarkers, dummyLocationInfo };
+import defaultProfileImg from "../../assets/defaultProfileImg.svg";
+// 장소 상세 정보
+const dummyDetailInfo = {
+  title: "레스티오 공학관점",
+  subtit: "레스티오의 공학관점입니다!",
+  friends: [
+    { nickname: "쿠룸", profileImg: defaultProfileImg },
+    { nickname: "쿠룸2", profileImg: defaultProfileImg },
+    { nickname: "쿠룸3", profileImg: defaultProfileImg },
+  ],
+  info: "어쩌구저쩌구~~~ 중요한 정보!!??!",
+};
+
+export { CategoryChips, KuroomMarkers, dummyLocationInfo, dummyDetailInfo };
