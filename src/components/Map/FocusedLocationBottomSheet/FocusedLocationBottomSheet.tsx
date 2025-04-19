@@ -99,7 +99,9 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
         )}
         <div
           className={styles.ButtonContainer}
-          style={isExpandedFocusedSheet ? { bottom: "25px" } : { bottom: "0" }}
+          style={
+            isExpandedFocusedSheet ? { bottom: "40px" } : { bottom: "15px" }
+          }
         >
           {isSharedLocation ? (
             <Button
