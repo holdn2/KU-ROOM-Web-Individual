@@ -45,7 +45,10 @@ export function renderMarkers(
 
   // 마커가 하나뿐일 경우 자동 포커스 처리
   if (renderedMarkers.length === 1) {
-    focusMarker(map, renderedMarkers[0], setIsTracking);
+    // 강제로 delay를 주어 렌더링이 보장된 후 중심 이동되게 함.
+    setTimeout(() => {
+      focusMarker(map, renderedMarkers[0], setIsTracking);
+    }, 10);
   }
 }
 
@@ -61,11 +64,25 @@ function focusMarker(
   map.setZoom(17);
   setIsTracking(false);
 
+  // HTMLIcon으로 스타일링 + 라벨링
   marker.setIcon({
-    url: focusedMarkerIcon,
-    scaledSize: new naver.maps.Size(80, 80),
-    origin: new naver.maps.Point(0, 0),
-    anchor: new naver.maps.Point(40, 80),
+    content: `
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <img src="${focusedMarkerIcon}" width="80" height="80" />
+      <span style="
+        font-size: 13px;
+        font-weight: 700;
+        max-width: 100px;
+        white-space: normal;
+        word-break: keep-all;         
+        overflow-wrap: break-word;   
+        text-align: center;
+      ">
+        ${marker.getTitle()}
+      </span>
+    </div>
+  `,
+    anchor: new naver.maps.Point(15, 50), // 가운데 정렬
   });
 
   marker.setZIndex(1000);
