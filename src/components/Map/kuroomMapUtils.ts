@@ -13,10 +13,14 @@ let renderedMarkers: naver.maps.Marker[] = []; // 전역 배열로 기존 마커
 let focusedMarker: naver.maps.Marker | null = null;
 let isDraggingMap = false;
 
+export { renderedMarkers, makeFocusMarker };
+
 export function renderMarkers(
   map: naver.maps.Map,
   markers: MarkerData[],
-  setIsTracking: (value: boolean) => void
+  setIsTracking: (value: boolean) => void,
+  setHasFocusedMarker?: (value: boolean) => void,
+  setFocusedMarkerTitle?: (value: string | null) => void
 ): void {
   // 기존 마커 제거
   renderedMarkers.forEach((marker) => marker.setMap(null));
@@ -38,7 +42,13 @@ export function renderMarkers(
       },
     });
     window.naver.maps.Event.addListener(marker, "click", () => {
-      focusMarker(map, marker, setIsTracking);
+      makeFocusMarker(
+        map,
+        marker,
+        setIsTracking,
+        setHasFocusedMarker,
+        setFocusedMarkerTitle
+      );
     });
 
     setIsTracking(false);
@@ -49,7 +59,13 @@ export function renderMarkers(
   if (renderedMarkers.length === 1) {
     // 강제로 delay를 주어 렌더링이 보장된 후 중심 이동되게 함.
     setTimeout(() => {
-      focusMarker(map, renderedMarkers[0], setIsTracking);
+      makeFocusMarker(
+        map,
+        renderedMarkers[0],
+        setIsTracking,
+        setHasFocusedMarker,
+        setFocusedMarkerTitle
+      );
     }, 10);
   }
 
@@ -70,15 +86,19 @@ export function renderMarkers(
         url: markerIcon,
       });
       focusedMarker = null;
+      setHasFocusedMarker?.(false); // 포커스 해제 알림
+      setFocusedMarkerTitle?.(null);
     }
   });
 }
 
 // 특정 마커 포커스
-function focusMarker(
+function makeFocusMarker(
   map: naver.maps.Map,
   marker: naver.maps.Marker,
-  setIsTracking: (value: boolean) => void
+  setIsTracking: (value: boolean) => void,
+  setHasFocusedMarker?: (value: boolean) => void,
+  setFocusedMarkerTitle?: (value: string) => void
 ) {
   const position = marker.getPosition();
 
@@ -87,11 +107,13 @@ function focusMarker(
   setIsTracking(false);
 
   focusedMarker = marker; // 현재 포커스 마커 기억
+  setHasFocusedMarker?.(true); // 포커스 되었음을 알림
+  setFocusedMarkerTitle?.(marker.getTitle());
 
   // HTMLIcon으로 스타일링 + 라벨링. 텍스트 스트로크 넣기
   marker.setIcon({
     content: `
-    <div style="display: flex; flex-direction: column; align-items: center;">
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top:-25px">
       <img src="${focusedMarkerIcon}" width="80" height="80" />
       <span style="
         margin-top: -4px;
@@ -128,9 +150,6 @@ function focusMarker(
     }
   });
 }
-
-export { renderedMarkers, focusMarker };
-
 // 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가는 로직
 export function myLocationTracking(
   map: naver.maps.Map,
