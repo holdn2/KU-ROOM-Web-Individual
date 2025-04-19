@@ -136,6 +136,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
                     {detailInfo.friends.map((friend, index) => (
                       <img
                         key={index}
+                        className={styles.FriendProfileImg}
                         src={friend.profileImg}
                         alt={friend.nickname}
                       />
