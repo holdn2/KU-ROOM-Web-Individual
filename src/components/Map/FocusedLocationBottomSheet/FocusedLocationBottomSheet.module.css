@@ -88,6 +88,15 @@
   flex-direction: column;
   gap: 10px;
 }
+.FriendContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+.FriendProfileImg {
+  width: 40px;
+  height: 40px;
+}
 .InfoWrapper {
   display: flex;
   flex-direction: column;
