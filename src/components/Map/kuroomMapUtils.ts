@@ -64,15 +64,24 @@ function focusMarker(
   map.setZoom(17);
   setIsTracking(false);
 
-  // HTMLIcon으로 스타일링 + 라벨링
+  // HTMLIcon으로 스타일링 + 라벨링. 텍스트 스트로크 넣기
   marker.setIcon({
     content: `
     <div style="display: flex; flex-direction: column; align-items: center;">
       <img src="${focusedMarkerIcon}" width="80" height="80" />
       <span style="
-        font-size: 13px;
+        margin-top: -4px;
+        color: #000;
+        text-align: center;
+        font-size: 14px;
+        font-style: normal;
         font-weight: 700;
-        max-width: 100px;
+        line-height: normal;
+        text-shadow:
+          -2px -2px 0 white,
+          2px -2px 0 white,
+          -2px  2px 0 white,
+          2px  2px 0 white;
         white-space: normal;
         word-break: keep-all;         
         overflow-wrap: break-word;   
