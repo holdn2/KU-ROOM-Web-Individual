@@ -9,6 +9,7 @@ interface MarkerData {
   lat: number;
   lng: number;
   title: string;
+  icon: string;
 }
 
 interface MapProps {
@@ -20,6 +21,8 @@ interface MapProps {
   setIsTracking?: (value: boolean) => void;
   draggable?: boolean;
   zoomable?: boolean;
+  setHasFocusedMarker?: (value: boolean) => void;
+  setFocusedMarkerTitle?: (value: string | null) => void;
 }
 
 // React Strict Mode로 인해 두번 마운트 되어서 하단 왼쪽 로고 두개로 보이는데
@@ -34,6 +37,8 @@ const KuroomMap = ({
   setIsTracking,
   draggable = true,
   zoomable = true,
+  setHasFocusedMarker,
+  setFocusedMarkerTitle,
 }: MapProps) => {
   const mapRef = useRef(null);
   const markerRef = useRef<naver.maps.Marker | null>(null);
@@ -99,7 +104,13 @@ const KuroomMap = ({
   // 마커 렌더링. 마커 배열이 변경될 때만 실행되도록
   useEffect(() => {
     if (mapInstance.current && setIsTracking && markers) {
-      renderMarkers(mapInstance.current, markers, setIsTracking);
+      renderMarkers(
+        mapInstance.current,
+        markers,
+        setIsTracking,
+        setHasFocusedMarker,
+        setFocusedMarkerTitle
+      );
     }
   }, [markers]);
 

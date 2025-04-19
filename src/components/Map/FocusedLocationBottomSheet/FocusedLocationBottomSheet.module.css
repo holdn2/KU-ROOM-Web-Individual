@@ -1,0 +1,132 @@
+.LocationInfoBottomSheetContainer {
+  position: relative;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  z-index: 100;
+
+  /* 애니메이션 효과 */
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.3s ease-in-out;
+}
+.LocationInfoBottomSheetContainer.open {
+  transform: translateY(0%);
+  opacity: 1;
+}
+.ListButton {
+  padding: 9px 13px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  border-radius: 18px;
+  border: 2px solid var(--Gray-400, #e3e7eb);
+  background: #fff;
+}
+.ListButtonText {
+  color: var(--Black, #1d2228);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 18px */
+}
+.LocationInfoBottomSheet {
+  height: 380px;
+  width: 100%;
+  max-width: 700px;
+  border-top-left-radius: 20.967px;
+  border-top-right-radius: 20.967px;
+  background: #fff;
+  box-shadow: 5.242px 0px 15.725px 0px rgba(0, 0, 0, 0.13);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Expanded {
+  height: calc(100vh - 50px); /* or whatever full height */
+  background: #fff;
+  overflow-y: scroll;
+}
+.SheetIndicator {
+  width: 45px;
+  height: 5px;
+  border-radius: 5.242px;
+  background: #e0e0e0;
+  margin-top: 10px;
+  flex-shrink: 0;
+
+  position: sticky;
+  top: 10px;
+  z-index: 10; /* 다른 요소 위에 오도록 */
+}
+.LocationInfoWrapper {
+  width: calc(100% - 28px);
+  padding: 20px 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.TitleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px 22px;
+}
+.ContentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 22px 20px 22px;
+}
+.FriendWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.InfoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.BottomSheetGrad {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 30px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 66.83%);
+  z-index: 1000;
+}
+
+.TitleText,
+.SubTitleText,
+.FriendTitle,
+.InfoTitle,
+.InfoContent {
+  color: #000;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.SubTitleText {
+  color: var(--Gray-100, #9eaab5);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 120%; /* 21.6px */
+}
+.FriendTitle,
+.InfoTitle {
+  color: #009733;
+  font-size: 14px;
+  line-height: 120%; /* 16.8px */
+}
+.InfoContent {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 120%; /* 19.2px */
+}

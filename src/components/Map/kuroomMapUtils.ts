@@ -1,5 +1,4 @@
 import myMarkerIcon from "../../assets/map/mylocationMarker.svg";
-import markerIcon from "../../assets/map/markerIcon.svg";
 import focusedMarkerIcon from "../../assets/map/focusedMarker.png";
 
 // 마커 렌더링 로직
@@ -7,19 +6,29 @@ interface MarkerData {
   lat: number;
   lng: number;
   title: string;
+  icon: string;
 }
 
-let renderedMarkers: naver.maps.Marker[] = []; // 전역 배열로 기존 마커 저장
+interface KuroomMarker {
+  marker: naver.maps.Marker;
+  originalIcon: string;
+}
+
+let renderedMarkers: KuroomMarker[] = []; // 전역 배열로 기존 마커 저장
 let focusedMarker: naver.maps.Marker | null = null;
 let isDraggingMap = false;
+
+export { renderedMarkers, makeFocusMarker };
 
 export function renderMarkers(
   map: naver.maps.Map,
   markers: MarkerData[],
-  setIsTracking: (value: boolean) => void
+  setIsTracking: (value: boolean) => void,
+  setHasFocusedMarker?: (value: boolean) => void,
+  setFocusedMarkerTitle?: (value: string | null) => void
 ): void {
   // 기존 마커 제거
-  renderedMarkers.forEach((marker) => marker.setMap(null));
+  renderedMarkers.forEach(({ marker }) => marker.setMap(null));
   renderedMarkers = [];
 
   // 마커가 변경될 때마다 건대 중심을 center로 변경하고 줌도 16으로 되게 설정.
@@ -27,29 +36,41 @@ export function renderMarkers(
   map.setCenter(defaultCenter);
   map.setZoom(16);
 
-  markers.forEach(({ lat, lng, title }) => {
+  markers.forEach(({ lat, lng, title, icon }) => {
     const marker = new window.naver.maps.Marker({
       position: new window.naver.maps.LatLng(lat, lng),
       map,
       title,
       icon: {
         // 마커 아이콘 추가
-        url: markerIcon,
+        url: icon,
       },
     });
     window.naver.maps.Event.addListener(marker, "click", () => {
-      focusMarker(map, marker, setIsTracking);
+      makeFocusMarker(
+        map,
+        marker,
+        setIsTracking,
+        setHasFocusedMarker,
+        setFocusedMarkerTitle
+      );
     });
 
     setIsTracking(false);
-    renderedMarkers.push(marker);
+    renderedMarkers.push({ marker, originalIcon: icon });
   });
 
   // 마커가 하나뿐일 경우 자동 포커스 처리
   if (renderedMarkers.length === 1) {
     // 강제로 delay를 주어 렌더링이 보장된 후 중심 이동되게 함.
     setTimeout(() => {
-      focusMarker(map, renderedMarkers[0], setIsTracking);
+      makeFocusMarker(
+        map,
+        renderedMarkers[0].marker,
+        setIsTracking,
+        setHasFocusedMarker,
+        setFocusedMarkerTitle
+      );
     }, 10);
   }
 
@@ -66,19 +87,26 @@ export function renderMarkers(
   // 지도 클릭 시 포커스 해제 (단, 드래그 아닌 경우에만)
   window.naver.maps.Event.addListener(map, "click", () => {
     if (!isDraggingMap && focusedMarker) {
-      focusedMarker.setIcon({
-        url: markerIcon,
-      });
+      const target = renderedMarkers.find(
+        ({ marker }) => marker === focusedMarker
+      );
+      if (target) {
+        focusedMarker.setIcon({ url: target.originalIcon }); // ← 여기 수정
+      }
       focusedMarker = null;
+      setHasFocusedMarker?.(false);
+      setFocusedMarkerTitle?.(null);
     }
   });
 }
 
 // 특정 마커 포커스
-function focusMarker(
+function makeFocusMarker(
   map: naver.maps.Map,
   marker: naver.maps.Marker,
-  setIsTracking: (value: boolean) => void
+  setIsTracking: (value: boolean) => void,
+  setHasFocusedMarker?: (value: boolean) => void,
+  setFocusedMarkerTitle?: (value: string) => void
 ) {
   const position = marker.getPosition();
 
@@ -87,11 +115,13 @@ function focusMarker(
   setIsTracking(false);
 
   focusedMarker = marker; // 현재 포커스 마커 기억
+  setHasFocusedMarker?.(true); // 포커스 되었음을 알림
+  setFocusedMarkerTitle?.(marker.getTitle());
 
   // HTMLIcon으로 스타일링 + 라벨링. 텍스트 스트로크 넣기
   marker.setIcon({
     content: `
-    <div style="display: flex; flex-direction: column; align-items: center;">
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top:-25px">
       <img src="${focusedMarkerIcon}" width="80" height="80" />
       <span style="
         margin-top: -4px;
@@ -115,22 +145,17 @@ function focusMarker(
       </span>
     </div>
   `,
-    anchor: new naver.maps.Point(15, 50), // 가운데 정렬
+    anchor: new naver.maps.Point(15, 130), // 가운데 정렬
   });
 
   marker.setZIndex(1000);
 
-  renderedMarkers.forEach((m) => {
+  renderedMarkers.forEach(({ marker: m, originalIcon }) => {
     if (m !== marker) {
-      m.setIcon({
-        url: markerIcon,
-      });
+      m.setIcon({ url: originalIcon }); // ← 여기 수정
     }
   });
 }
-
-export { renderedMarkers, focusMarker };
-
 // 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가는 로직
 export function myLocationTracking(
   map: naver.maps.Map,

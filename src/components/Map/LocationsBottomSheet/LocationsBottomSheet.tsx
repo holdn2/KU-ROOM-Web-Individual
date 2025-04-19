@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./LocationsBottomSheet.module.css";
 import mapListIcon from "../../../assets/map/mapListIcon.svg";
 import { dummyLocationInfo } from "../MapData";
-import { focusMarker, renderedMarkers } from "../kuroomMapUtils";
+import { makeFocusMarker, renderedMarkers } from "../kuroomMapUtils";
 
 interface LocationInfo {
   title: string;
@@ -21,6 +21,8 @@ interface LocationsBottomSheetProps {
   mapInstance: React.MutableRefObject<naver.maps.Map | null>;
   setIsExpandedSheet: (value: boolean) => void;
   setIsTracking: (value: boolean) => void;
+  hasFocusedMarker: boolean;
+  setHasFocusedMarker: (value: boolean) => void;
 }
 
 const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
@@ -30,6 +32,8 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   mapInstance,
   setIsExpandedSheet,
   setIsTracking,
+  hasFocusedMarker,
+  setHasFocusedMarker,
 }) => {
   const [selectedLocationInfos, setSelectedLocationInfos] = useState<
     LocationInfo[]
@@ -40,29 +44,22 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   const isDragging = useRef(false);
   const canDragToClose = useRef(true);
 
-  // 바텀 시트가 자연스럽게 올라오도록 적용. 렌더링 시에 애니메이션 적용되도록 useEffect 사용함
-  // const [isVisibleSheet, setIsVisibleSheet] = useState(false);
-  // useEffect(() => {
-  //   if (mapSearchResult) {
-  //     setIsVisibleSheet(true);
-  //   } else {
-  //     setIsVisibleSheet(false);
-  //   }
-  // }, [mapSearchResult]);
-
   // 시트에서 위치 클릭 시 이동하는 로직
   const clickLocation = (location: string) => {
     if (!isExpandedSheet) return;
     // 다음 frame에 마커 포커스하기
-    const marker = renderedMarkers.find((m) => m.getTitle() === location);
-    if (marker && mapInstance.current && setIsTracking) {
-      focusMarker(mapInstance.current, marker, setIsTracking);
+    const target = renderedMarkers.find(
+      ({ marker }) => marker.getTitle() === location
+    );
+    if (target && mapInstance.current) {
+      setHasFocusedMarker(true);
+      makeFocusMarker(mapInstance.current, target.marker, setIsTracking);
     }
 
     setIsExpandedSheet(false); // 바텀시트 내리기
   };
 
-  // 서버에 해당 정보들 요청해야함.
+  // !!서버에 해당 정보들 요청해야함.
   useEffect(() => {
     const match = dummyLocationInfo.find(
       (item) => item.category === mapSearchResult
@@ -137,7 +134,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
 
   return (
     <div
-      className={`${styles.LocationInfoBottomSheetContainer} ${visibleBottomSheet ? styles.open : ""}`}
+      className={`${styles.LocationInfoBottomSheetContainer} ${visibleBottomSheet && !hasFocusedMarker ? styles.open : ""}`}
     >
       {!isExpandedSheet && (
         <button
