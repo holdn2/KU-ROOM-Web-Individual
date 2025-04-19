@@ -71,7 +71,9 @@
   flex-direction: column;
   border-bottom: 1px solid #e3e7eb;
 }
-
+.LocationInfoWrapper:last-child {
+  border: none;
+}
 .TitleWrapper {
   display: flex;
   flex-direction: column;

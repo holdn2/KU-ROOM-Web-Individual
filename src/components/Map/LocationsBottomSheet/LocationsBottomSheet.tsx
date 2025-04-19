@@ -21,6 +21,8 @@ interface LocationsBottomSheetProps {
   mapInstance: React.MutableRefObject<naver.maps.Map | null>;
   setIsExpandedSheet: (value: boolean) => void;
   setIsTracking: (value: boolean) => void;
+  hasFocusedMarker: boolean;
+  setHasFocusedMarker: (value: boolean) => void;
 }
 
 const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
@@ -30,6 +32,8 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   mapInstance,
   setIsExpandedSheet,
   setIsTracking,
+  hasFocusedMarker,
+  setHasFocusedMarker,
 }) => {
   const [selectedLocationInfos, setSelectedLocationInfos] = useState<
     LocationInfo[]
@@ -48,6 +52,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
       ({ marker }) => marker.getTitle() === location
     );
     if (target && mapInstance.current) {
+      setHasFocusedMarker(true);
       makeFocusMarker(mapInstance.current, target.marker, setIsTracking);
     }
 
@@ -129,7 +134,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
 
   return (
     <div
-      className={`${styles.LocationInfoBottomSheetContainer} ${visibleBottomSheet ? styles.open : ""}`}
+      className={`${styles.LocationInfoBottomSheetContainer} ${visibleBottomSheet && !hasFocusedMarker ? styles.open : ""}`}
     >
       {!isExpandedSheet && (
         <button

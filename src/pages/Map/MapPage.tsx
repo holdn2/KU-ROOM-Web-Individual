@@ -132,6 +132,8 @@ const MapPage = () => {
         mapInstance={mapInstanceRef}
         setIsExpandedSheet={setIsExpandedSheet}
         setIsTracking={setIsTracking}
+        hasFocusedMarker={hasFocusedMarker}
+        setHasFocusedMarker={setHasFocusedMarker}
       />
       <FocusedLocationBottomSheet
         hasFocusedMarker={hasFocusedMarker}

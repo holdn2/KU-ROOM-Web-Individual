@@ -208,4 +208,17 @@ const dummyLocationInfo = [
   },
 ];
 
-export { CategoryChips, KuroomMarkers, dummyLocationInfo };
+import defaultProfileImg from "../../assets/defaultProfileImg.svg";
+// 장소 상세 정보
+const dummyDetailInfo = {
+  title: "레스티오 공학관점",
+  subtit: "레스티오의 공학관점입니다!",
+  friends: [
+    { nickname: "쿠룸", profileImg: defaultProfileImg },
+    { nickname: "쿠룸2", profileImg: defaultProfileImg },
+    { nickname: "쿠룸3", profileImg: defaultProfileImg },
+  ],
+  info: "어쩌구저쩌구~~~ 중요한 정보!!??!",
+};
+
+export { CategoryChips, KuroomMarkers, dummyLocationInfo, dummyDetailInfo };
