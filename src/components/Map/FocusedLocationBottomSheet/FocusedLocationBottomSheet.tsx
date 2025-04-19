@@ -47,23 +47,30 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
     minHeight: 380,
   });
 
+  const handleShareLocation = () => {
+    setIsSharedLocation(true);
+  };
+  const handleUnShareLocation = () => {
+    setIsSharedLocation(false);
+  };
+
   return (
-    detailInfo && (
+    <div
+      className={`${styles.DetailInfoBottomSheetContainer} ${hasFocusedMarker ? styles.open : ""}`}
+    >
       <div
-        className={`${styles.DetailInfoBottomSheetContainer} ${hasFocusedMarker ? styles.open : ""}`}
+        ref={sheetRef}
+        className={`${styles.DetailInfoBottomSheet} ${
+          isExpandedFocusedSheet ? styles.Expanded : ""
+        }`}
+        style={{
+          transform: isExpandedFocusedSheet
+            ? "translateY(0)"
+            : "translateY(calc(100% - 380px))",
+        }}
       >
-        <div
-          ref={sheetRef}
-          className={`${styles.DetailInfoBottomSheet} ${
-            isExpandedFocusedSheet ? styles.Expanded : ""
-          }`}
-          style={{
-            transform: isExpandedFocusedSheet
-              ? "translateY(0)"
-              : "translateY(calc(100% - 380px))",
-          }}
-        >
-          <div className={styles.SheetIndicator} />
+        <div className={styles.SheetIndicator} />
+        {detailInfo && (
           <div className={styles.DetailInfoWrapper}>
             <div className={styles.TitleWrapper}>
               <span
@@ -96,28 +103,23 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
               </div>
             </div>
           </div>
-          <div
-            className={styles.ButtonContainer}
-            style={
-              isExpandedFocusedSheet ? { bottom: "25px" } : { bottom: "0" }
-            }
-          >
-            {isSharedLocation ? (
-              <Button
-                variant="quaternary"
-                onClick={() => setIsSharedLocation(false)}
-              >
-                내 위치 공유 중
-              </Button>
-            ) : (
-              <Button onClick={() => setIsSharedLocation(true)}>
-                내 위치 공유
-              </Button>
-            )}
-          </div>
+        )}
+        <div
+          className={styles.ButtonContainer}
+          style={
+            isExpandedFocusedSheet ? { bottom: "40px" } : { bottom: "15px" }
+          }
+        >
+          {isSharedLocation ? (
+            <Button variant="quaternary" onClick={handleUnShareLocation}>
+              내 위치 공유 중
+            </Button>
+          ) : (
+            <Button onClick={handleShareLocation}>내 위치 공유</Button>
+          )}
         </div>
       </div>
-    )
+    </div>
   );
 };
 

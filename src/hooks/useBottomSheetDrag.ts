@@ -16,7 +16,7 @@ export default function useBottomSheetDrag({
   const startY = useRef(0);
   const currentY = useRef(0);
   const isDragging = useRef(false);
-  const canDragToClose = useRef(true);
+  //   const canDragToClose = useRef(true);
 
   useEffect(() => {
     const sheet = sheetRef.current;
@@ -26,11 +26,11 @@ export default function useBottomSheetDrag({
       isDragging.current = true;
       startY.current = e.touches[0].clientY;
       sheet.style.transition = "none";
-      canDragToClose.current = sheet.scrollTop === 0;
+      //   canDragToClose.current = sheet.scrollTop === 0;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (!isDragging.current || !canDragToClose.current) return;
+      if (!isDragging.current) return;
       currentY.current = e.touches[0].clientY;
       const diff = currentY.current - startY.current;
 
@@ -46,6 +46,13 @@ export default function useBottomSheetDrag({
       const diff = currentY.current - startY.current;
       sheet.style.transition = "transform 0.3s ease-in-out";
 
+      // 클릭만 한 경우라면 아무 동작 하지 않게
+      if (currentY.current === 0) {
+        isDragging.current = false;
+        startY.current = 0;
+        return;
+      }
+
       if (Math.abs(diff) < 10) {
         sheet.style.transform = isExpanded
           ? "translateY(0)"
@@ -54,12 +61,16 @@ export default function useBottomSheetDrag({
         return;
       }
 
-      if (diff > 60 && canDragToClose.current) {
+      if (diff > 80) {
         setIsExpanded(false);
         sheet.style.transform = `translateY(calc(100% - ${minHeight}px))`;
-      } else {
+      } else if (diff < -80) {
         setIsExpanded(true);
         sheet.style.transform = "translateY(0)";
+      } else {
+        sheet.style.transform = isExpanded
+          ? "translateY(0)"
+          : `translateY(calc(100% - ${minHeight}px))`;
       }
 
       isDragging.current = false;
