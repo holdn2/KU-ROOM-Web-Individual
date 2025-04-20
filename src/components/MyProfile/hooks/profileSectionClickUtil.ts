@@ -28,10 +28,12 @@ export const useHandleSectionClick = (
       case "친구 추가":
         navigate("/friendadd");
         break;
+      case "학과":
+        navigate("/departmentsetting");
+        break;
       case "약관 및 정책":
         window.open(TermsAndPoliciesLink, "_blank");
         break;
-
       case "개인정보 처리방침":
         window.open(PrivacyPolicyLink, "_blank");
         break;

@@ -1,20 +1,18 @@
-import styles from "./FriendSearch.module.css";
+import React, { useRef } from "react";
+import styles from "./DepartmentSearchBar.module.css";
 import searchIcon from "../../../assets/icon/search.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
-import React, { useRef } from "react";
 
-interface FriendSearchProps {
+interface DepartmentSearchProps {
   searchTarget: string;
-  searchState: "list" | "add";
   setSearchTarget: (value: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const FriendSearch: React.FC<FriendSearchProps> = ({
+const DepartmentSearch: React.FC<DepartmentSearchProps> = ({
   searchTarget,
-  searchState,
   setSearchTarget,
   onFocus,
   onBlur,
@@ -31,11 +29,6 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
     inputFocus.current?.focus(); // 삭제 후 포커스 유지
   };
 
-  const placeholder =
-    searchState === "add"
-      ? "닉네임 또는 학번을 입력해주세요"
-      : "닉네임을 입력해주세요";
-
   return (
     <div className={styles.SearchBarContainer}>
       <div className={styles.SearchWrapper}>
@@ -47,7 +40,7 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
           enterKeyHint="search"
           value={searchTarget}
           onChange={handleChange}
-          placeholder={placeholder}
+          placeholder="추가할 학과명을 입력해주세요"
           onFocus={onFocus}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
@@ -69,4 +62,4 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
   );
 };
 
-export default FriendSearch;
+export default DepartmentSearch;

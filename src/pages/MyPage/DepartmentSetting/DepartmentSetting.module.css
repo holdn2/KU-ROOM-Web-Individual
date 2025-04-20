@@ -1,0 +1,49 @@
+.DepartmentSettingPage {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+}
+.SearchBarContainer {
+  padding: 17px 25px 12.5px 25px;
+}
+.UserDepartmentContainer {
+  padding: 20px 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.DepartmentInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.DepartmentTitle,
+.CollegeTitle {
+  color: var(--Black, #1d2228);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.CollegeTitle {
+  color: var(--Gray-100, #9eaab5);
+  font-size: 14px;
+  font-weight: 500;
+}
+.NoSearchResultWrapper {
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.NoSearchResultText {
+  color: #b0bac3;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.35px;
+}

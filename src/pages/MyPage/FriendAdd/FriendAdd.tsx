@@ -34,7 +34,7 @@ const FriendAdd = () => {
     setFilteredUsers([]);
   }, [searchTarget]);
 
-  // 검색 시 필터링 로직
+  // 검색 시 로직. 서버에 요청해야함.
   const filteringSearch = () => {
     const result = dummySearchData.filter(
       (user) =>
