@@ -1,0 +1,44 @@
+.SearchBarContainer {
+  border-radius: 10px;
+  background: #f2f4f7;
+  padding: 12px 11px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.SearchWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.SearchIcon {
+  padding: 5px;
+}
+.SearchBar,
+.SearchBar::placeholder {
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.SearchBar {
+  flex: 1;
+  min-width: 0;
+}
+.SearchBar::placeholder {
+  color: #9eaab5;
+  font-weight: 500;
+}
+.DeleteIcon {
+  padding: 5px;
+}
+
+/* 기본 검색 input의 x 버튼 제거 (크롬, 사파리 등) */
+input[type="search"]::-webkit-search-cancel-button {
+  display: none;
+}
