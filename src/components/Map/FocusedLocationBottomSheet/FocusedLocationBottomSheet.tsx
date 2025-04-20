@@ -4,6 +4,7 @@ import { dummyDetailInfo } from "../MapData";
 import Button from "../../Button/Button";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
 import arrowBackIcon from "../../../assets/nav/arrowBackWhite.svg";
+import ShareLocationModal from "../ShareLocationModal/ShareLocationModal";
 
 interface LocationDetailInfo {
   imgs: string[];
@@ -32,6 +33,8 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
   const [detailInfo, setDetailInfo] = useState<LocationDetailInfo | null>(null);
   const [isSharedLocation, setIsSharedLocation] = useState(false);
 
+  const [modalState, setModalState] = useState(false);
+
   const sheetRef = useRef<HTMLDivElement>(null);
 
   // 서버에 해당 장소 정보 요청
@@ -50,117 +53,124 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
 
   // 서버에 위치 공유 상태 요청해야함.
   const handleShareLocation = () => {
-    setIsSharedLocation(true);
+    setModalState(true);
   };
   const handleUnShareLocation = () => {
     setIsSharedLocation(false);
   };
 
   return (
-    <div
-      className={`${styles.DetailInfoBottomSheetContainer} ${hasFocusedMarker ? styles.open : ""}`}
-    >
+    <>
       <div
-        ref={sheetRef}
-        className={`${styles.DetailInfoBottomSheet} ${
-          isExpandedFocusedSheet ? styles.Expanded : ""
-        }`}
-        style={{
-          transform: isExpandedFocusedSheet
-            ? "translateY(0)"
-            : "translateY(calc(100% - 380px))",
-        }}
+        className={`${styles.DetailInfoBottomSheetContainer} ${hasFocusedMarker ? styles.open : ""}`}
       >
-        <div className={styles.SheetIndicator} />
-        {isExpandedFocusedSheet && (
-          <div className={styles.TopContentContainer}>
-            <div className={styles.ImgGridContainer}>
-              <img
-                src={detailInfo?.imgs[0]}
-                className={styles.MainImg}
-                alt="대표 이미지"
-              />
-              <div className={styles.SubImgGrid}>
-                {[1, 2, 3, 4].map((i, index) =>
-                  detailInfo?.imgs[i] ? (
-                    <img
-                      key={index}
-                      src={detailInfo.imgs[i]}
-                      className={styles.SubImg}
-                      alt={`서브 이미지 ${i}`}
-                    />
-                  ) : (
-                    <div key={index} />
-                  )
-                )}
-              </div>
-            </div>
-            <div className={styles.HeaderGrad} />
-            <div className={styles.HeaderContainer}>
-              <img
-                src={arrowBackIcon}
-                alt="내리기"
-                onClick={() => setIsExpandedFocusedSheet(false)}
-              />
-            </div>
-          </div>
-        )}
-        {detailInfo && (
-          <div className={styles.DetailInfoWrapper}>
-            <div className={styles.TitleWrapper}>
-              <span
-                className={styles.TitleText}
-                onClick={() => setIsExpandedFocusedSheet(true)}
-              >
-                {detailInfo.title}
-              </span>
-              <span className={styles.SubTitleText}>{detailInfo.subtit}</span>
-            </div>
-            <div className={styles.ContentWrapper}>
-              {detailInfo.friends.length !== 0 && (
-                <div className={styles.FriendWrapper}>
-                  <span className={styles.FriendTitle}>친구</span>
-                  <div className={styles.FriendContainer}>
-                    {detailInfo.friends.map((friend, index) => (
+        <div
+          ref={sheetRef}
+          className={`${styles.DetailInfoBottomSheet} ${
+            isExpandedFocusedSheet ? styles.Expanded : ""
+          }`}
+          style={{
+            transform: isExpandedFocusedSheet
+              ? "translateY(0)"
+              : "translateY(calc(100% - 380px))",
+          }}
+        >
+          <div className={styles.SheetIndicator} />
+          {isExpandedFocusedSheet && (
+            <div className={styles.TopContentContainer}>
+              <div className={styles.ImgGridContainer}>
+                <img
+                  src={detailInfo?.imgs[0]}
+                  className={styles.MainImg}
+                  alt="대표 이미지"
+                />
+                <div className={styles.SubImgGrid}>
+                  {[1, 2, 3, 4].map((i, index) =>
+                    detailInfo?.imgs[i] ? (
                       <img
                         key={index}
-                        className={styles.FriendProfileImg}
-                        src={friend.profileImg}
-                        alt={friend.nickname}
+                        src={detailInfo.imgs[i]}
+                        className={styles.SubImg}
+                        alt={`서브 이미지 ${i}`}
                       />
-                    ))}
-                  </div>
+                    ) : (
+                      <div key={index} />
+                    )
+                  )}
                 </div>
-              )}
-              <div className={styles.InfoWrapper}>
-                <span className={styles.InfoTitle}>정보</span>
-                <span
-                  className={`${styles.InfoContent} ${
-                    !isExpandedFocusedSheet ? styles.InfoContentClamp : ""
-                  }`}
-                >
-                  {detailInfo.info}
-                </span>
+              </div>
+              <div className={styles.HeaderGrad} />
+              <div className={styles.HeaderContainer}>
+                <img
+                  src={arrowBackIcon}
+                  alt="내리기"
+                  onClick={() => setIsExpandedFocusedSheet(false)}
+                />
               </div>
             </div>
-          </div>
-        )}
-        <div
-          className={styles.ButtonContainer}
-          style={
-            isExpandedFocusedSheet ? { bottom: "40px" } : { bottom: "15px" }
-          }
-        >
-          {isSharedLocation ? (
-            <Button variant="quaternary" onClick={handleUnShareLocation}>
-              내 위치 공유 중
-            </Button>
-          ) : (
-            <Button onClick={handleShareLocation}>내 위치 공유</Button>
           )}
+          {detailInfo && (
+            <div className={styles.DetailInfoWrapper}>
+              <div className={styles.TitleWrapper}>
+                <span
+                  className={styles.TitleText}
+                  onClick={() => setIsExpandedFocusedSheet(true)}
+                >
+                  {detailInfo.title}
+                </span>
+                <span className={styles.SubTitleText}>{detailInfo.subtit}</span>
+              </div>
+              <div className={styles.ContentWrapper}>
+                {detailInfo.friends.length !== 0 && (
+                  <div className={styles.FriendWrapper}>
+                    <span className={styles.FriendTitle}>친구</span>
+                    <div className={styles.FriendContainer}>
+                      {detailInfo.friends.map((friend, index) => (
+                        <img
+                          key={index}
+                          className={styles.FriendProfileImg}
+                          src={friend.profileImg}
+                          alt={friend.nickname}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <div className={styles.InfoWrapper}>
+                  <span className={styles.InfoTitle}>정보</span>
+                  <span
+                    className={`${styles.InfoContent} ${
+                      !isExpandedFocusedSheet ? styles.InfoContentClamp : ""
+                    }`}
+                  >
+                    {detailInfo.info}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+          <div
+            className={styles.ButtonContainer}
+            style={
+              isExpandedFocusedSheet ? { bottom: "40px" } : { bottom: "15px" }
+            }
+          >
+            {isSharedLocation ? (
+              <Button variant="quaternary" onClick={handleUnShareLocation}>
+                내 위치 공유 중
+              </Button>
+            ) : (
+              <Button onClick={handleShareLocation}>내 위치 공유</Button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      <ShareLocationModal
+        modalState={modalState}
+        setModalState={setModalState}
+        setIsSharedLocation={setIsSharedLocation}
+      />
+    </>
   );
 };
 
