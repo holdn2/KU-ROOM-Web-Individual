@@ -3,6 +3,7 @@ import styles from "./FocusedLocationBottomSheet.module.css";
 import { dummyDetailInfo } from "../MapData";
 import Button from "../../Button/Button";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
+import arrowBackIcon from "../../../assets/nav/arrowBackWhite.svg";
 
 interface LocationDetailInfo {
   imgs: string[];
@@ -72,9 +73,37 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
       >
         <div className={styles.SheetIndicator} />
         {isExpandedFocusedSheet && (
-          <div
-            style={{ width: "100%", height: "206px", background: "green" }}
-          ></div>
+          <div className={styles.TopContentContainer}>
+            <div className={styles.ImgGridContainer}>
+              <img
+                src={detailInfo?.imgs[0]}
+                className={styles.MainImg}
+                alt="대표 이미지"
+              />
+              <div className={styles.SubImgGrid}>
+                {[1, 2, 3, 4].map((i, index) =>
+                  detailInfo?.imgs[i] ? (
+                    <img
+                      key={index}
+                      src={detailInfo.imgs[i]}
+                      className={styles.SubImg}
+                      alt={`서브 이미지 ${i}`}
+                    />
+                  ) : (
+                    <div key={index} />
+                  )
+                )}
+              </div>
+            </div>
+            <div className={styles.HeaderGrad} />
+            <div className={styles.HeaderContainer}>
+              <img
+                src={arrowBackIcon}
+                alt="내리기"
+                onClick={() => setIsExpandedFocusedSheet(false)}
+              />
+            </div>
+          </div>
         )}
         {detailInfo && (
           <div className={styles.DetailInfoWrapper}>

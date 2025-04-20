@@ -209,9 +209,14 @@ const dummyLocationInfo = [
 ];
 
 import defaultProfileImg from "../../assets/defaultProfileImg.svg";
+import imgEx1 from "../../assets/ExampleImg/locationDetail/detailEx1.png";
+import imgEx2 from "../../assets/ExampleImg/locationDetail/detailEx2.png";
+import imgEx3 from "../../assets/ExampleImg/locationDetail/detailEx3.png";
+import imgEx4 from "../../assets/ExampleImg/locationDetail/detailEx4.png";
+
 // 장소 상세 정보
 const dummyDetailInfo = {
-  imgs: [""],
+  imgs: [imgEx1, imgEx2, imgEx3, imgEx4],
   title: "레스티오 공학관점",
   subtit: "레스티오의 공학관점입니다!",
   friends: [
