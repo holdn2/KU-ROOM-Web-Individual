@@ -3,8 +3,9 @@ import styles from "./FocusedLocationBottomSheet.module.css";
 import { dummyDetailInfo } from "../MapData";
 import Button from "../../Button/Button";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
-import arrowBackIcon from "../../../assets/nav/arrowBackWhite.svg";
 import ShareLocationModal from "../ShareLocationModal/ShareLocationModal";
+import LocationInfoTopContent from "./LocationInfoTopContent/LocationInfoTopContent";
+import FocusedLocationInfo from "./FocusedLocationInfo/FocusedLocationInfo";
 
 interface LocationDetailInfo {
   imgs: string[];
@@ -43,7 +44,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
     // 위치 공유 상태도 받아야 함.
     // isSharedLocation()
   }, [focusedMarkerTitle]);
-  // 바텀 시트 올리고 내리는 로직. 좀 더 연구 필요할듯.
+  // 바텀 시트 올리고 내리는 로직.
   useBottomSheetDrag({
     sheetRef,
     isExpanded: isExpandedFocusedSheet,
@@ -77,78 +78,16 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
         >
           <div className={styles.SheetIndicator} />
           {isExpandedFocusedSheet && (
-            <div className={styles.TopContentContainer}>
-              <div className={styles.ImgGridContainer}>
-                <img
-                  src={detailInfo?.imgs[0]}
-                  className={styles.MainImg}
-                  alt="대표 이미지"
-                />
-                <div className={styles.SubImgGrid}>
-                  {[1, 2, 3, 4].map((i, index) =>
-                    detailInfo?.imgs[i] ? (
-                      <img
-                        key={index}
-                        src={detailInfo.imgs[i]}
-                        className={styles.SubImg}
-                        alt={`서브 이미지 ${i}`}
-                      />
-                    ) : (
-                      <div key={index} />
-                    )
-                  )}
-                </div>
-              </div>
-              <div className={styles.HeaderGrad} />
-              <div className={styles.HeaderContainer}>
-                <img
-                  src={arrowBackIcon}
-                  alt="내리기"
-                  onClick={() => setIsExpandedFocusedSheet(false)}
-                />
-              </div>
-            </div>
+            <LocationInfoTopContent
+              detailInfo={detailInfo}
+              setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+            />
           )}
-          {detailInfo && (
-            <div className={styles.DetailInfoWrapper}>
-              <div className={styles.TitleWrapper}>
-                <span
-                  className={styles.TitleText}
-                  onClick={() => setIsExpandedFocusedSheet(true)}
-                >
-                  {detailInfo.title}
-                </span>
-                <span className={styles.SubTitleText}>{detailInfo.subtit}</span>
-              </div>
-              <div className={styles.ContentWrapper}>
-                {detailInfo.friends.length !== 0 && (
-                  <div className={styles.FriendWrapper}>
-                    <span className={styles.FriendTitle}>친구</span>
-                    <div className={styles.FriendContainer}>
-                      {detailInfo.friends.map((friend, index) => (
-                        <img
-                          key={index}
-                          className={styles.FriendProfileImg}
-                          src={friend.profileImg}
-                          alt={friend.nickname}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
-                <div className={styles.InfoWrapper}>
-                  <span className={styles.InfoTitle}>정보</span>
-                  <span
-                    className={`${styles.InfoContent} ${
-                      !isExpandedFocusedSheet ? styles.InfoContentClamp : ""
-                    }`}
-                  >
-                    {detailInfo.info}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
+          <FocusedLocationInfo
+            detailInfo={detailInfo}
+            isExpandedFocusedSheet={isExpandedFocusedSheet}
+            setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+          />
           <div
             className={styles.ButtonContainer}
             style={
