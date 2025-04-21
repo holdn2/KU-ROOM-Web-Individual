@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./DepartmentSetting.module.css";
 import Header from "../../../components/Header/Header";
 import DepartmentSearch from "../../../components/MyProfile/DepartmentSearchBar/DepartmentSearchBar";
-import deleteIcon from "../../../assets/icon/deleteIcon.svg";
-import noResultIcon from "../../../assets/icon/noResultSearch.svg";
+import UserDepartmentList from "../../../components/DepartmentList/UserDepartmentList";
+import SearchDepartmentList from "../../../components/DepartmentList/SearchDepartmentList";
 
 const dummyUserDepartmentData = [
   { department: "융합생명공학과", college: "KU융합과학기술원" },
@@ -21,7 +21,7 @@ const DepartmentSetting = () => {
     { department: string; college: string }[]
   >([]);
   const [filteredDepartment, setFilteredDepartment] = useState<
-    typeof dummySearchData
+    { department: string; college: string }[]
   >([]);
 
   const [trySearch, setTrySearch] = useState(false);
@@ -91,52 +91,19 @@ const DepartmentSetting = () => {
             onKeyDown={handleSearchKeyDown}
           />
         </div>
-        {isSearchFocused
-          ? trySearch &&
-            (filteredDepartment.length > 0
-              ? filteredDepartment.map((item, index) => (
-                  <div
-                    key={index}
-                    className={styles.UserDepartmentContainer}
-                    onClick={() => handleAddUserDepartment(item.department)}
-                  >
-                    <div className={styles.DepartmentInfoWrapper}>
-                      <span className={styles.DepartmentTitle}>
-                        {item.department}
-                      </span>
-                      <span className={styles.CollegeTitle}>
-                        {item.college}
-                      </span>
-                    </div>
-                  </div>
-                ))
-              : searchTarget && (
-                  <div className={styles.NoSearchResultWrapper}>
-                    <img
-                      className={styles.NoSearchResultIcon}
-                      src={noResultIcon}
-                      alt="검색 결과 없음"
-                    />
-                    <span className={styles.NoSearchResultText}>
-                      검색 결과가 없어요!
-                    </span>
-                  </div>
-                ))
-          : userDepartment.map((item, index) => (
-              <div key={index} className={styles.UserDepartmentContainer}>
-                <div className={styles.DepartmentInfoWrapper}>
-                  <span className={styles.DepartmentTitle}>
-                    {item.department}
-                  </span>
-                  <span className={styles.CollegeTitle}>{item.college}</span>
-                </div>
-                <img
-                  src={deleteIcon}
-                  alt="삭제"
-                  onClick={() => handleDeleteDepartment(item.department)}
-                />
-              </div>
-            ))}
+        {isSearchFocused ? (
+          <SearchDepartmentList
+            trySearch={trySearch}
+            searchTarget={searchTarget}
+            filteredDepartment={filteredDepartment}
+            handleAddUserDepartment={handleAddUserDepartment}
+          />
+        ) : (
+          <UserDepartmentList
+            userDepartment={userDepartment}
+            handleDeleteDepartment={handleDeleteDepartment}
+          />
+        )}
       </div>
     </div>
   );

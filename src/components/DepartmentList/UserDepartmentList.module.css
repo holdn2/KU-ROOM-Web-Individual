@@ -1,0 +1,25 @@
+.UserDepartmentContainer {
+  padding: 20px 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.DepartmentInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.DepartmentTitle,
+.CollegeTitle {
+  color: var(--Black, #1d2228);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.CollegeTitle {
+  color: var(--Gray-100, #9eaab5);
+  font-size: 14px;
+  font-weight: 500;
+}
