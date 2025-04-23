@@ -95,6 +95,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
           transform: isExpandedSheet
             ? "translateY(0)"
             : "translateY(calc(100% - 150px))",
+          background: "#fff",
         }}
       >
         <div className={styles.SheetIndicator} />

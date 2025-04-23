@@ -27,7 +27,7 @@ export default function useBottomSheetDrag({
       startY.current = e.touches[0].clientY;
       sheet.style.transition = "none";
       // 스크롤이 최상단일 때만 드래그 가능하도록
-      canDrag.current = sheet.scrollTop === 0;
+      canDrag.current = sheet.scrollTop <= 10;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
