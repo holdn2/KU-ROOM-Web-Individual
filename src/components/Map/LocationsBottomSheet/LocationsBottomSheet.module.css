@@ -22,6 +22,8 @@
   padding: 9px 13px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   gap: 8px;
   border-radius: 18px;
   border: 2px solid var(--Gray-400, #e3e7eb);

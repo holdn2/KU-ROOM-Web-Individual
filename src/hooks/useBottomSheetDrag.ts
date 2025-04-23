@@ -75,6 +75,7 @@ export default function useBottomSheetDrag({
       }
 
       isDragging.current = false;
+      canDrag.current = false;
       startY.current = 0;
       currentY.current = 0;
     };
