@@ -30,7 +30,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
   setIsExpandedFocusedSheet,
 }) => {
   return (
-    <div className={styles.SearchResultContainer}>
+    <header className={styles.SearchResultContainer}>
       <div className={styles.LeftContentWrapper}>
         <img
           className={styles.ArrowIcon}
@@ -60,7 +60,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
           setIsExpandedFocusedSheet(false);
         }}
       />
-    </div>
+    </header>
   );
 };
 

@@ -62,14 +62,14 @@ const renderHeaderContent = (children: React.ReactNode) => {
 const Header: React.FC<HeaderProps> = ({ children = "" }) => {
   return (
     <>
-      <div className="header-container">
+      <header className="header-container">
         {children === "홈" ? (
           <></>
         ) : (
           <span className="header-title">{children}</span>
         )}
         {renderHeaderContent(children)}
-      </div>
+      </header>
     </>
   );
 };

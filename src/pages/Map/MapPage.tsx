@@ -65,7 +65,7 @@ const MapPage = () => {
     <div>
       {/* KuroomMap은 항상 렌더링되고 */}
       <KuroomMap
-        height="calc(100vh - 92px)"
+        height={mapSearchResult === "친구" ? "100vh" : "calc(100vh - 92px)"}
         markers={markers}
         mapRefProp={mapInstanceRef}
         isTracking={isTracking}
@@ -125,23 +125,27 @@ const MapPage = () => {
           )}
         </>
       )}
-      <LocationsBottomSheet
-        visibleBottomSheet={visibleBottomSheet}
-        mapSearchResult={mapSearchResult}
-        isExpandedSheet={isExpandedSheet}
-        mapInstance={mapInstanceRef}
-        setIsExpandedSheet={setIsExpandedSheet}
-        setIsTracking={setIsTracking}
-        hasFocusedMarker={hasFocusedMarker}
-        setHasFocusedMarker={setHasFocusedMarker}
-      />
+      {mapSearchResult !== "친구" && (
+        <>
+          <LocationsBottomSheet
+            visibleBottomSheet={visibleBottomSheet}
+            mapSearchResult={mapSearchResult}
+            isExpandedSheet={isExpandedSheet}
+            mapInstance={mapInstanceRef}
+            setIsExpandedSheet={setIsExpandedSheet}
+            setIsTracking={setIsTracking}
+            hasFocusedMarker={hasFocusedMarker}
+            setHasFocusedMarker={setHasFocusedMarker}
+          />
+          <BottomBar />
+        </>
+      )}
       <FocusedLocationBottomSheet
         hasFocusedMarker={hasFocusedMarker}
         isExpandedFocusedSheet={isExpandedFocusedSheet}
         setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
         focusedMarkerTitle={focusedMarkerTitle}
       />
-      <BottomBar />
     </div>
   );
 };
