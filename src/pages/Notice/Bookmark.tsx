@@ -17,22 +17,41 @@ const Bookmark: React.FC = () => {
   const navigate = useNavigate();
   const [bookmarks, setBookmarks] = useState<Record<string, BookmarkItem>>({});
   const [sortedBookmarks, setSortedBookmarks] = useState<BookmarkItem[]>([]);
+  const [sortOrder, setSortOrder] = useState<string>("최신순"); // 기본값은 최신순
 
   useEffect(() => {
     // 로컬 스토리지에서 북마크 데이터 가져오기
     const storedBookmarks = JSON.parse(localStorage.getItem('noticeBookmarks') || '{}');
     setBookmarks(storedBookmarks);
 
-    // 북마크 데이터를 배열로 변환하고 타임스탬프 기준으로 정렬 (최신순)
-    const bookmarkArray = Object.values(storedBookmarks) as BookmarkItem[];
-    const sorted = bookmarkArray.sort((a, b) => {
-      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-    });
+    sortBookmarks(storedBookmarks, sortOrder);
+  }, [sortOrder]);
+
+  const sortBookmarks = (bookmarkData: Record<string, BookmarkItem>, order: string) => {
+    const bookmarkArray = Object.values(bookmarkData) as BookmarkItem[];
+    let sorted;
+    
+    if (order === "최신순") {
+      sorted = bookmarkArray.sort((a, b) => {
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+      });
+    } else {
+      // 북마크 등록순 (오래된 순)
+      sorted = bookmarkArray.sort((a, b) => {
+        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+      });
+    }
+    
     setSortedBookmarks(sorted);
-  }, []);
+  };
 
   const handleGoBack = () => {
     navigate(-1);
+  };
+
+  const toggleSortOrder = () => {
+    const newOrder = sortOrder === "최신순" ? "북마크 등록순" : "최신순";
+    setSortOrder(newOrder);
   };
 
   const navigateToNoticeDetail = (category: string, id: string) => {
@@ -46,8 +65,8 @@ const Bookmark: React.FC = () => {
         <div className={styles['back-button']} onClick={handleGoBack}>
           <img src={arrowBackIcon} alt="뒤로가기" />
         </div>
-        <div className={styles['bookmark-setting']}>
-          북마크 등록순 ▼
+        <div className={styles['bookmark-setting']} onClick={toggleSortOrder}>
+          {sortOrder} ▼
         </div>
       </div>
 
