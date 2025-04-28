@@ -10,19 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Set Git user and set remote URL with token
+      - name: Clone the team repository with token
         env:
           PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
         run: |
+          git clone https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/KU-rum/KU-ROOM-Web.git cloned-repo
+          cd cloned-repo
           git config user.name "ljh130334"
           git config user.email "ljh130334@naver.com"
           git remote set-url origin https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
-
-      - name: Push to Individual Repo
-        run: |
           git push origin main --force
