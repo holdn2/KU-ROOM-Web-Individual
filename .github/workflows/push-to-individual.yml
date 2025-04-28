@@ -15,14 +15,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set Git credentials manually
+      - name: Set Git user
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --global credential.helper store
-          echo "https://x-access-token:${{ secrets.PERSONAL_REPO_TOKEN }}@github.com" > ~/.git-credentials
+          git config user.name "ljh130334"
+          git config user.email "ljh130334@naver.com"
 
       - name: Push manually
+        env:
+          PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
         run: |
-          git remote add individual https://github.com/holdn2/KU-ROOM-Web-Individual.git
+          git remote add individual https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
           git push individual main --force
