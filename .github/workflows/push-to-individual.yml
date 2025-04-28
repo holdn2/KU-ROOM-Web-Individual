@@ -10,31 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout team repository
+      - name: Checkout the repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # 방법 1: cpina/github-action-push-to-another-repository 액션 사용
-      - name: Push to Individual Repository
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.PERSONAL_REPO_TOKEN }}
-        with:
-          source-directory: "." # 전체 레포지토리를 푸시
-          destination-github-username: "holdn2"
-          destination-repository-name: "KU-ROOM-Web-Individual"
-          user-email: "41898282+github-actions[bot]@users.noreply.github.com"
-          commit-message: ${{ github.event.head_commit.message || 'Auto commit from team repository' }}
-          target-branch: main
-          force: true
+      - name: Set Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      # 또는 방법 2: 직접 git 명령어 사용
-      # - name: Push to Individual Repository
-      #   run: |
-      #     git clone https://github.com/${{ github.repository }}.git source-repo
-      #     cd source-repo
-      #     git remote add individual-repo https://x-access-token:${{ secrets.PERSONAL_REPO_TOKEN }}@github.com/holdn2/KU-ROOM-Web-Individual.git
-      #     git config user.name "github-actions[bot]"
-      #     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      #     git push -f individual-repo main:main
+      - name: Push to Individual Repository manually
+        env:
+          PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
+        run: |
+          # remote url을 토큰 포함 형태로 세팅
+          git remote add individual https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
+
+          # 강제 push
+          git push individual main --force

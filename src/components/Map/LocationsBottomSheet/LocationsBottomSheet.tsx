@@ -64,17 +64,20 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
     setSelectedLocationInfos(match ? match.infos : []);
   }, [mapSearchResult]);
 
-  // 바텀 시트 올리고 내리는 로직. 좀 더 연구 필요할듯.
+  // 바텀 시트 드래그 로직 - 위/아래 모두 드래그 가능하도록 수정됨
   useBottomSheetDrag({
     sheetRef,
     isExpanded: isExpandedSheet,
     setIsExpanded: setIsExpandedSheet,
     minHeight: 150,
+    threshold: 70, // 약간 더 작은 임계값으로 더 민감하게 반응
   });
 
   return (
     <div
-      className={`${styles.LocationInfoBottomSheetContainer} ${visibleBottomSheet && !hasFocusedMarker ? styles.open : ""}`}
+      className={`${styles.LocationInfoBottomSheetContainer} ${
+        visibleBottomSheet && !hasFocusedMarker ? styles.open : ""
+      }`}
     >
       {!isExpandedSheet && (
         <button
@@ -92,13 +95,20 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
           isExpandedSheet ? styles.Expanded : ""
         }`}
         style={{
+          position: "relative",
           transform: isExpandedSheet
             ? "translateY(0)"
             : "translateY(calc(100% - 150px))",
           background: "#fff",
+          transition: "transform 0.3s ease-out", // 트랜지션 기본값 설정
         }}
       >
-        <div className={styles.SheetIndicator} />
+        {/* SheetIndicator를 더 명확하게 드래그 핸들러로 표시 */}
+        <div
+          className={styles.SheetIndicator}
+          style={{ cursor: "grab" }} // 커서를 추가하여 드래그 가능함을 시각적으로 알림
+        />
+
         {selectedLocationInfos.map((info, index) => (
           <button
             key={index}
@@ -133,6 +143,18 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
             </div>
           </button>
         ))}
+        {/* 내용이 없을 경우 안내 메시지 추가 */}
+        {selectedLocationInfos.length === 0 && (
+          <div
+            style={{
+              padding: "40px 20px",
+              textAlign: "center",
+              color: "#9eaab5",
+            }}
+          >
+            선택한 카테고리에 대한 정보가 없습니다.
+          </div>
+        )}
       </div>
       {!isExpandedSheet && <div className={styles.BottomSheetGrad} />}
     </div>
