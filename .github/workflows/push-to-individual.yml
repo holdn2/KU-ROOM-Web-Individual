@@ -15,14 +15,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set Git user
-        run: |
-          git config user.name "ljh130334"
-          git config user.email "ljh130334@naver.com"
-
-      - name: Push manually
+      - name: Set Git user and set remote URL with token
         env:
           PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
         run: |
-          git remote add individual https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
-          git push individual main --force
+          git config user.name "ljh130334"
+          git config user.email "ljh130334@naver.com"
+          git remote set-url origin https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
+
+      - name: Push to Individual Repo
+        run: |
+          git push origin main --force
