@@ -86,7 +86,7 @@ const Notice = () => {
       );
       setNotices(externalNotices.length > 0 ? externalNotices : []);
     } else {
-      // 해당 카테고리의 공지사항 필터링
+      // 해당 카테고리 공지사항 필터링
       const categoryNotices = NoticeService.getNoticesByCategory(activeTab);
       setNotices(categoryNotices);
     }
