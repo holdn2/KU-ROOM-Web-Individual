@@ -1,0 +1,25 @@
+name: Push to Individual Repo on Main Branch Update
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push-to-individual:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the team repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Push to Individual Repository
+        run: |
+          git remote add individual https://oauth2:${{ secrets.PERSONAL_REPO_TOKEN }}@github.com/holdn2/KU-ROOM-Web-Individual.git
+          git push individual main --force
