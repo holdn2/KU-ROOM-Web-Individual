@@ -10,20 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the team repository
+      - name: Checkout the repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Push to Individual Repository
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.PERSONAL_REPO_TOKEN }}
-        with:
-          source-directory: "." # 현재 프로젝트 전체
-          destination-github-username: "holdn2"
-          destination-repository-name: "KU-ROOM-Web-Individual"
-          target-branch: main
-          user-email: "41898282+github-actions[bot]@users.noreply.github.com"
-          commit-message: "Auto commit from team repository [skip ci]"
-          force: true
+      - name: Set Git credentials manually
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global credential.helper store
+          echo "https://x-access-token:${{ secrets.PERSONAL_REPO_TOKEN }}@github.com" > ~/.git-credentials
+
+      - name: Push manually
+        run: |
+          git remote add individual https://github.com/holdn2/KU-ROOM-Web-Individual.git
+          git push individual main --force
