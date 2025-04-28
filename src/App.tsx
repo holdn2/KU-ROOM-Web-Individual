@@ -23,6 +23,7 @@ import FriendAdd from "./pages/MyPage/FriendAdd/FriendAdd";
 import FriendLocationRanking from "./pages/MyLocationRanking/FriendLocationRanking/FriendLocationRanking";
 import MapPage from "./pages/Map/MapPage";
 import DepartmentSetting from "./pages/MyPage/DepartmentSetting/DepartmentSetting";
+import Bookmark from "./pages/Notice/Bookmark";
 
 function App() {
   const router = createBrowserRouter([
@@ -126,6 +127,10 @@ function App() {
             },
           ],
         },
+        {
+          path: "bookmark",
+          element: <Bookmark />,
+        }
       ],
     },
   ]);
