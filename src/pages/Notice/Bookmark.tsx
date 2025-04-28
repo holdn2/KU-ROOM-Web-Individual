@@ -69,13 +69,16 @@ const Bookmark: React.FC = () => {
           aria-label="뒤로가기"
           type="button"
         />
+      </div>
+
+      <div className={styles["sort-order-wrapper"]}>
         <button
           className={styles["bookmark-setting"]}
           onClick={toggleSortOrder}
           aria-label={`정렬 방식 변경: 현재 ${sortOrder}`}
           type="button"
         >
-          {sortOrder} ▼
+          북마크 등록순 ▼
         </button>
       </div>
 
