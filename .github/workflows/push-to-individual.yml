@@ -10,20 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout team repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Git
+        run: sudo apt-get update && sudo apt-get install -y git
+
+      - name: Clone the team repository
         env:
           PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
         run: |
-          # 팀 레포(KU-rum/KU-ROOM-Web)만 clone
-          git clone https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/KU-rum/KU-ROOM-Web.git cloned-repo
-          cd cloned-repo
-
-          # 사용자 설정
+          git clone https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/KU-rum/KU-ROOM-Web.git deployed-repo
+          cd deployed-repo
           git config user.name "ljh130334"
           git config user.email "ljh130334@naver.com"
 
           # origin을 개인 레포로 변경
           git remote set-url origin https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
 
-          # 개인 레포로 push
-          git push origin main --force
+          # pull로 최신화 (옵셔널)
+          git pull origin main || true
+
+          # 강제 푸쉬
+          git push -f origin main
