@@ -22,7 +22,7 @@ jobs:
           git config user.name "ljh130334"
           git config user.email "ljh130334@naver.com" # ← 여기는 본인 GitHub 이메일로 바꿔주세요
 
-          # ✅ origin을 개인 레포로 변경 (Token 포함)
+          # ✅ origin을 개인 레포로 변경
           git remote set-url origin https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
 
           # ✅ 강제 Push
