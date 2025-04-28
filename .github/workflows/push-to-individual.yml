@@ -24,8 +24,5 @@ jobs:
         env:
           PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
         run: |
-          # remote url을 토큰 포함 형태로 세팅
           git remote add individual https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
-
-          # 강제 push
           git push individual main --force
