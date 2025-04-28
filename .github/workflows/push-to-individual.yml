@@ -14,9 +14,16 @@ jobs:
         env:
           PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
         run: |
+          # 팀 레포를 Token으로 clone
           git clone https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/KU-rum/KU-ROOM-Web.git cloned-repo
           cd cloned-repo
+
+          # Git 사용자 설정
           git config user.name "ljh130334"
-          git config user.email "ljh130334@naver.com"
+          git config user.email "ljh130334@naver.com" # ← 여기는 본인 GitHub 이메일로 바꿔주세요
+
+          # ✅ origin을 개인 레포로 변경 (Token 포함)
           git remote set-url origin https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
+
+          # ✅ 강제 Push
           git push origin main --force
