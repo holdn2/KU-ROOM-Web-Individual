@@ -8,18 +8,24 @@ on:
 jobs:
   push-to-individual:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout the team repository
+      - name: Checkout team repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Configure Git
+      - name: Set up Git user
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Push to Individual Repository
+      - name: Force Push to Individual Repo
+        env:
+          PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
         run: |
-          git remote add individual https://oauth2:${{ secrets.PERSONAL_REPO_TOKEN }}@github.com/holdn2/KU-ROOM-Web-Individual.git
+          # 개인 레포를 새로운 origin으로 등록
+          git remote add individual https://oauth2:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
+
+          # main 브랜치 강제 푸쉬
           git push individual main --force
