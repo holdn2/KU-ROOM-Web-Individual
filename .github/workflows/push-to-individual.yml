@@ -21,6 +21,11 @@ jobs:
           git config user.name "holdn2"
           git config user.email "yoocy01@gmail.com"
 
+      - name: 디버그용 토큰 출력 (보안 주의)
+        run: echo "TOKEN 길이: ${#PERSONAL_REPO_TOKEN}"
+        env:
+          PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
+
       - name: Push to Personal Repository
         env:
           PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
