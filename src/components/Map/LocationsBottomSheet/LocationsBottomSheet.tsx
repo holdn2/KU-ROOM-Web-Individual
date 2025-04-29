@@ -70,7 +70,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
     isExpanded: isExpandedSheet,
     setIsExpanded: setIsExpandedSheet,
     minHeight: 150,
-    threshold: 70, // 약간 더 작은 임계값으로 더 민감하게 반응
+    // threshold: 70, // 약간 더 작은 임계값으로 더 민감하게 반응
   });
 
   return (
