@@ -22,7 +22,7 @@ jobs:
           git config user.email "yoocy01@gmail.com"
 
       - name: 디버그용 토큰 출력 (보안 주의)
-        run: echo "TOKEN 길이 ${#PERSONAL_REPO_TOKEN}"
+        run: echo "TOKEN 길이 \${#PERSONAL_REPO_TOKEN}"
         env:
           PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
 
@@ -31,4 +31,5 @@ jobs:
           PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
         run: |
           git remote set-url origin https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
-          git push origin main
+          git fetch origin
+          git push https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git main
