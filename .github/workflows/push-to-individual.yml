@@ -16,20 +16,14 @@ jobs:
       - name: Install Git
         run: sudo apt-get update && sudo apt-get install -y git
 
-      - name: Clone the team repository
+      - name: Configure Git
+        run: |
+          git config user.name "holdn2"
+          git config user.email "yoocy01@gmail.com"
+
+      - name: Push to Personal Repository
         env:
           PERSONAL_REPO_TOKEN: ${{ secrets.PERSONAL_REPO_TOKEN }}
         run: |
-          git clone https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/KU-rum/KU-ROOM-Web.git deployed-repo
-          cd deployed-repo
-          git config user.name "ljh130334"
-          git config user.email "ljh130334@naver.com"
-
-          # origin을 개인 레포로 변경
           git remote set-url origin https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
-
-          # pull로 최신화 (옵셔널)
-          git pull origin main || true
-
-          # 강제 푸쉬
-          git push -f origin main
+          git push origin main
