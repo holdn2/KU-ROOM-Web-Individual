@@ -34,4 +34,4 @@ jobs:
         run: |
           git remote set-url origin https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git
           git fetch origin
-          git push https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git main
+          git push -f https://x-access-token:${PERSONAL_REPO_TOKEN}@github.com/holdn2/KU-ROOM-Web-Individual.git main
