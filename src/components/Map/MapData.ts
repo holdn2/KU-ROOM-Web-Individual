@@ -230,3 +230,4 @@ const dummyDetailInfo = {
 export { CategoryChips, KuroomMarkers, dummyLocationInfo, dummyDetailInfo };
 
 // test
+// test용 주석
