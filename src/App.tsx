@@ -24,6 +24,7 @@ import FriendLocationRanking from "./pages/MyLocationRanking/FriendLocationRanki
 import MapPage from "./pages/Map/MapPage";
 import DepartmentSetting from "./pages/MyPage/DepartmentSetting/DepartmentSetting";
 import Bookmark from "./pages/Notice/Bookmark";
+import Search from "./pages/Notice/Search";
 
 function App() {
   const router = createBrowserRouter([
@@ -130,7 +131,11 @@ function App() {
         {
           path: "bookmark",
           element: <Bookmark />,
-        }
+        },
+        {
+          path: "search",
+          element: <Search />,
+        },
       ],
     },
   ]);
