@@ -5,6 +5,7 @@ import SearchInput from "./Components/SearchInput";
 import SearchHistory from "./Components/SearchHistory";
 import TagButtons from "./Components/TagButtons";
 import NoticeList from "./Components/NoticeList";
+import SearchResult from "./Components/SearchResult";
 import { getAllNotices } from "../../../services/NoticeService";
 import type { NoticeItem } from "../../../services/NoticeService";
 import styles from "./Search.module.css";
@@ -65,6 +66,9 @@ const Search: React.FC = () => {
     }
   };
 
+  // 검색어가 있으면 검색 결과만 표시
+  const isSearching = searchText.length > 0;
+
   return (
     <div className={styles.container}>
       <Header>검색</Header>
@@ -75,41 +79,40 @@ const Search: React.FC = () => {
         onSearch={handleSearch}
       />
 
-      <h2 className={styles.sectionTitle}>최근 검색어</h2>
-      <SearchHistory
-        searchTerms={searchHistory}
-        onRemoveTerm={handleRemoveSearchTerm}
-      />
-
-      <h2 className={styles.sectionTitle}>추천 검색어</h2>
-      <TagButtons
-        tags={[
-          "교환학생",
-          "장학금",
-          "수강신청",
-          "수강바구니",
-          "다전공",
-          "졸업유예",
-        ]}
-        selectedTags={selectedTags}
-        onTagClick={handleTagClick}
-      />
-
-      <h2 className={styles.sectionTitle}>인기 공지</h2>
-      <NoticeList notices={notices.slice(0, 3)} />
-
-      <h2 className={styles.sectionTitle}>주요 공지</h2>
-      <NoticeList notices={notices.slice(5, 8)} />
-
-      {(searchText || selectedTags.length > 0) && (
+      {!isSearching ? (
+        // 검색어가 없을 때 보여줄 기본 화면
         <>
-          <h2 className={styles.sectionTitle}>검색 결과</h2>
-          {filteredNotices.length > 0 ? (
-            <NoticeList notices={filteredNotices} />
-          ) : (
-            <div className={styles.noResults}>검색 결과가 없습니다.</div>
-          )}
+          <h2 className={styles.sectionTitle}>최근 검색어</h2>
+          <SearchHistory
+            searchTerms={searchHistory}
+            onRemoveTerm={handleRemoveSearchTerm}
+          />
+
+          <h2 className={styles.sectionTitle}>추천 검색어</h2>
+          <TagButtons
+            tags={[
+              "교환학생",
+              "장학금",
+              "수강신청",
+              "수강바구니",
+              "다전공",
+              "졸업유예",
+            ]}
+            selectedTags={selectedTags}
+            onTagClick={handleTagClick}
+          />
+
+          <h2 className={styles.sectionTitle}>인기 공지</h2>
+          <NoticeList notices={notices.slice(0, 3)} />
+
+          <h2 className={styles.sectionTitle}>주요 공지</h2>
+          <NoticeList notices={notices.slice(5, 8)} />
         </>
+      ) : (
+        <SearchResult
+          searchText={searchText}
+          filteredNotices={filteredNotices}
+        />
       )}
     </div>
   );

@@ -1,0 +1,29 @@
+.searchResult {
+  /* 검색 결과가 있을 때 스타일 */
+}
+
+.noResultContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.searchIcon {
+  width: 54px;
+  height: 54px;
+  margin-bottom: 8px;
+  opacity: 0.3;
+}
+
+.noResultText {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #b0bac3;
+}
