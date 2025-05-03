@@ -14,7 +14,6 @@ import styles from "./Search.module.css";
 const Search: React.FC = () => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [notices, setNotices] = useState<NoticeItem[]>([]);
   const [filteredNotices, setFilteredNotices] = useState<NoticeItem[]>([]);
   const [searchHistory, setSearchHistory] = useState<string[]>([
@@ -31,7 +30,7 @@ const Search: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // 검색어와 선택된 태그에 따라 공지사항 필터링
+    // 검색어에 따라 공지사항 필터링
     let filtered = notices;
 
     if (searchText) {
@@ -40,23 +39,25 @@ const Search: React.FC = () => {
       );
     }
 
-    if (selectedTags.length > 0) {
-      filtered = filtered.filter((notice) =>
-        selectedTags.includes(notice.category)
-      );
-    }
-
     setFilteredNotices(filtered);
-  }, [searchText, selectedTags, notices]);
+  }, [searchText, notices]);
 
   const handleTagClick = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
+    setSearchText(tag);
+
+    // 검색 히스토리에 추가
+    if (!searchHistory.includes(tag)) {
+      setSearchHistory((prev) => [tag, ...prev].slice(0, 10));
+    }
   };
 
   const handleRemoveSearchTerm = (term: string) => {
     setSearchHistory((prev) => prev.filter((t) => t !== term));
+  };
+
+  const handleSelectSearchTerm = (term: string) => {
+    // 최근 검색어 태그 클릭 시 검색창에 입력하고 검색 실행
+    setSearchText(term);
   };
 
   const handleSearch = (text: string) => {
@@ -89,12 +90,12 @@ const Search: React.FC = () => {
       />
 
       {!isSearching ? (
-        // 검색어가 없을 때 보여줄 기본 화면 (기존 검색용 NoticeList 사용)
         <>
           <h2 className={styles.sectionTitle}>최근 검색어</h2>
           <SearchHistory
             searchTerms={searchHistory}
             onRemoveTerm={handleRemoveSearchTerm}
+            onSelectTerm={handleSelectSearchTerm}
           />
 
           <h2 className={styles.sectionTitle}>추천 검색어</h2>
@@ -107,22 +108,26 @@ const Search: React.FC = () => {
               "다전공",
               "졸업유예",
             ]}
-            selectedTags={selectedTags}
+            selectedTags={[]} // 추천 검색어에서는 선택 상태가 없음
             onTagClick={handleTagClick}
           />
 
           <h2 className={styles.sectionTitle}>인기 공지</h2>
-          <SearchNoticeList notices={notices.slice(0, 3)} />
+          <SearchNoticeList
+            notices={notices.slice(0, 3)}
+            onItemClick={(noticeId) => navigateToNoticeDetail(noticeId)}
+          />
 
           <h2 className={styles.sectionTitle}>주요 공지</h2>
-          <SearchNoticeList notices={notices.slice(5, 8)} />
+          <SearchNoticeList
+            notices={notices.slice(5, 8)}
+            onItemClick={(noticeId) => navigateToNoticeDetail(noticeId)}
+          />
         </>
       ) : (
-        // 검색 결과는 Notice의 NoticeList 사용
         <SearchResult
-          searchText={searchText}
           filteredNotices={filteredNotices}
-          activeTab="학사" // 기본 카테고리 설정
+          activeTab="학사"
           onItemClick={navigateToNoticeDetail}
         />
       )}

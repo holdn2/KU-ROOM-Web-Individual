@@ -5,21 +5,26 @@ import styles from "./SearchHistory.module.css";
 interface SearchHistoryProps {
   searchTerms: string[];
   onRemoveTerm: (term: string) => void;
+  onSelectTerm: (term: string) => void;
 }
 
 const SearchHistory: React.FC<SearchHistoryProps> = ({
   searchTerms,
   onRemoveTerm,
+  onSelectTerm,
 }) => {
   return (
     <div className={styles.searchHistory}>
       <div className={styles.tagContainer}>
         {searchTerms.map((term) => (
-          <SearchTag
+          <button
             key={term}
-            text={term}
-            onRemove={() => onRemoveTerm(term)}
-          />
+            type="button"
+            onClick={() => onSelectTerm(term)}
+            className={styles.searchButton}
+          >
+            <SearchTag text={term} onRemove={() => onRemoveTerm(term)} />
+          </button>
         ))}
       </div>
     </div>

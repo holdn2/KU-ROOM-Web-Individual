@@ -5,14 +5,12 @@ import NoticeList from "../../NoticeList";
 import searchresultIcon from "../../../../assets/icon/notice/search/searchresult.svg";
 
 interface SearchResultProps {
-  searchText: string;
   filteredNotices: NoticeItem[];
   activeTab: string;
   onItemClick: (noticeId: string) => void;
 }
 
 const SearchResult: React.FC<SearchResultProps> = ({
-  searchText,
   filteredNotices,
   activeTab,
   onItemClick,
