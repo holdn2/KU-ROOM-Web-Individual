@@ -1,6 +1,9 @@
 .container {
-  min-height: 100vh;
+  position: relative;
+  height: 100vh;
   background-color: #f8f9fc;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sectionTitle {
