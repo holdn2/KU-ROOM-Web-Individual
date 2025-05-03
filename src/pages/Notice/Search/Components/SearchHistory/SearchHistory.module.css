@@ -1,0 +1,50 @@
+.searchHistoryContainer {
+  margin-bottom: 24px;
+}
+
+.searchHistoryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1d2228;
+  margin: 30px 0 20px;
+  line-height: 100%;
+}
+
+.kebabButton {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kebabButton img {
+  width: 20px;
+  height: 20px;
+}
+
+.searchHistory {
+  padding: 0 25px;
+}
+
+.tagContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.searchButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}

@@ -1,0 +1,38 @@
+.suggestionsContainer {
+  position: absolute;
+  top: 100%;
+  left: 25px;
+  right: 25px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  margin-top: 8px;
+}
+
+.suggestionItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #e3e7eb;
+}
+
+.suggestionItem:last-child {
+  border-bottom: none;
+}
+
+.suggestionItem:hover {
+  background-color: #f8f9fc;
+}
+
+.suggestionText {
+  flex: 1;
+  font-size: 16px;
+  color: #1d2228;
+}
+
+.arrowIcon {
+  color: #9eaab5;
+  font-size: 16px;
+}

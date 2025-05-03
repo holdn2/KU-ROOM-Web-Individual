@@ -1,0 +1,71 @@
+.container {
+  position: relative;
+  height: 100vh;
+  background-color: #f8f9fc;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1d2228;
+  margin: 30px 25px 20px;
+  line-height: 100%;
+}
+
+.searchHistory {
+  padding: 0 20px;
+  margin-bottom: 24px;
+}
+
+.searchTerm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.slider {
+  width: 60px;
+  height: 12px;
+  background-color: #e0e0e0;
+  border-radius: 6px;
+  margin-left: 8px;
+  margin-right: auto;
+  position: relative;
+}
+
+.slider::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 8px;
+  height: 8px;
+  background-color: #2196f3;
+  border-radius: 50%;
+}
+
+.noResults {
+  padding: 80px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.noResultIcon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+
+.noResultText {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 100%;
+  color: #9eaab5;
+}

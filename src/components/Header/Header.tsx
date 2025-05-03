@@ -27,9 +27,16 @@ const renderHeaderContent = (children: React.ReactNode) => {
     case "공지사항":
       return (
         <div className="notice-header-content-wrapper">
-          <img src={bookmarkIcon} alt="북마크"
-          onClick={() => navigate("/bookmark")} />
-          <img src={searchIcon} alt="검색" />
+          <img
+            src={bookmarkIcon}
+            alt="북마크"
+            onClick={() => navigate("/bookmark")}
+          />
+          <img
+            src={searchIcon}
+            alt="검색"
+            onClick={() => navigate("/search")}
+          />
         </div>
       );
     case "":

@@ -1,0 +1,48 @@
+.notificationContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 25px 0;
+}
+
+.subscribeBadge,
+.subscribedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.subscribeBadge {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.subscribeBadge:hover {
+  background-color: #e0e3e4;
+}
+
+.subscribedBadge {
+  background-color: #f2faf5;
+  color: #000000;
+}
+
+.subscribedBadge:hover {
+  background-color: #d7f2d9;
+}
+
+.icon {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+.badgeText {
+  line-height: 1;
+}

@@ -1,0 +1,23 @@
+.searchTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px 10px 20px;
+  border-radius: 25px;
+  border: 1px solid #ced5db;
+  gap: 12px;
+}
+
+.tagText {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.closeIcon {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.closeIcon:hover {
+  opacity: 0.7;
+}

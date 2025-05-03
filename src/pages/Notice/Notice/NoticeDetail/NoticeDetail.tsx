@@ -1,11 +1,11 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "../../components/Header/Header";
+import Header from "../../../../components/Header/Header";
 import styles from "./NoticeDetail.module.css";
-import bookmarkIcon from "../../assets/headericon/bookmark.svg";
-import bookmarkFillIcon from "../../assets/headericon/bookmark-fill.svg";
-import NoticeService from "../../services/NoticeService";
+import bookmarkIcon from "../../../../assets/headericon/bookmark.svg";
+import bookmarkFillIcon from "../../../../assets/headericon/bookmark-fill.svg";
+import NoticeService from "../../../../services/NoticeService";
 
 const NoticeDetail: React.FC = () => {
   const { category, id } = useParams<{ category: string; id: string }>();
