@@ -1,5 +1,5 @@
 import type React from "react";
-import type { NoticeItem } from "../../../../services/NoticeService";
+import type { NoticeItem } from "../../../../../services/NoticeService";
 import styles from "./NoticeList.module.css";
 
 interface NoticeListProps {

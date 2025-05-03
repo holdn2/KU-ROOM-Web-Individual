@@ -2,8 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./styles/global.css";
 import Home from "./pages/Home/Home";
 import Community from "./pages/Community";
-import Notice from "./pages/Notice/Notice";
-import NoticeDetail from "./pages/Notice/NoticeDetail";
+import Notice from "./pages/Notice/Notice/Notice";
+import NoticeDetail from "./pages/Notice/Notice/NoticeDetail/NoticeDetail";
 import Login from "./pages/Login/Login";
 import FindIdPw from "./pages/FindIdPw/FindIdPw";
 import SignupInfo from "./pages/Signup/SignupInfo";
@@ -23,7 +23,7 @@ import FriendAdd from "./pages/MyPage/FriendAdd/FriendAdd";
 import FriendLocationRanking from "./pages/MyLocationRanking/FriendLocationRanking/FriendLocationRanking";
 import MapPage from "./pages/Map/MapPage";
 import DepartmentSetting from "./pages/MyPage/DepartmentSetting/DepartmentSetting";
-import Bookmark from "./pages/Notice/Bookmark";
+import Bookmark from "./pages/Notice/Bookmark/Bookmark";
 import Search from "./pages/Notice/Search/Search";
 
 function App() {

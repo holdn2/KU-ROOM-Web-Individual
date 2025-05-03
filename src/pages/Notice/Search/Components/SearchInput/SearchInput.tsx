@@ -1,8 +1,8 @@
 import type React from "react";
 import { forwardRef } from "react";
 import styles from "./SearchInput.module.css";
-import searchIcon from "../../../../assets/icon/search.svg";
-import closeIcon from "../../../../assets/icon/notice/search/searchremove.svg";
+import searchIcon from "../../../../../assets/icon/search.svg";
+import closeIcon from "../../../../../assets/icon/notice/search/searchremove.svg";
 
 interface SearchInputProps {
   value: string;

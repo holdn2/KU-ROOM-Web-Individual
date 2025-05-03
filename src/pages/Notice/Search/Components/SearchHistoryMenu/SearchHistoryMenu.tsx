@@ -1,7 +1,7 @@
 import type React from "react";
 import styles from "./SearchHistoryMenu.module.css";
-import trashIcon from "../../../../assets/icon/notice/search/trash.svg";
-import ToggleButton from "./ToggleButton";
+import trashIcon from "../../../../../assets/icon/notice/search/trash.svg";
+import ToggleButton from "../ToggleButton/ToggleButton";
 
 interface SearchHistoryMenuProps {
   isHistoryEnabled: boolean;

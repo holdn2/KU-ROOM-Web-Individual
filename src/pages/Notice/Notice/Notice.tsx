@@ -1,16 +1,16 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Notice.module.css";
-import Select from "../../components/profilesetting/Select/Select";
-import BottomSheet from "../../components/profilesetting/BottomSheet/BottomSheet";
-import Header from "../../components/Header/Header";
-import BottomBar from "../../components/BottomBar/BottomBar";
-import chatbot from "../../assets/icon/chat-bot.svg";
-import { departments, colleges } from "../../constants/dummyData";
+import Select from "../../../components/profilesetting/Select/Select";
+import BottomSheet from "../../../components/profilesetting/BottomSheet/BottomSheet";
+import Header from "../../../components/Header/Header";
+import BottomBar from "../../../components/BottomBar/BottomBar";
+import chatbot from "../../../assets/icon/chat-bot.svg";
+import { departments, colleges } from "../../../constants/dummyData";
 import NoticeService, {
   initializeBookmarks,
-} from "../../services/NoticeService";
-import type { NoticeItem } from "../../services/NoticeService";
+} from "../../../services/NoticeService";
+import type { NoticeItem } from "../../../services/NoticeService";
 
 type DepartmentsType = {
   [key: string]: string[];

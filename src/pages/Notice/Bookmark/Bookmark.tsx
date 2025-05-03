@@ -1,11 +1,11 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header/Header";
-import BottomBar from "../../components/BottomBar/BottomBar";
+import Header from "../../../components/Header/Header";
+import BottomBar from "../../../components/BottomBar/BottomBar";
 import styles from "./Bookmark.module.css";
-import type { BookmarkItem } from "../../services/NoticeService";
-import NoticeService from "../../services/NoticeService";
+import type { BookmarkItem } from "../../../services/NoticeService";
+import NoticeService from "../../../services/NoticeService";
 
 const Bookmark: React.FC = () => {
   const navigate = useNavigate();

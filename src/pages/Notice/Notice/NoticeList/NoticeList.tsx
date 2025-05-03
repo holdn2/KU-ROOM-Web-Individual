@@ -1,7 +1,7 @@
 import type React from "react";
 import styles from "./NoticeList.module.css";
-import NoticeItem from "./NoticeItem";
-import type { NoticeItem as NoticeItemType } from "../../services/NoticeService";
+import NoticeItem from "../NoticeItem/NoticeItem";
+import type { NoticeItem as NoticeItemType } from "../../../../services/NoticeService";
 
 interface NoticeListProps {
   notices: NoticeItemType[];
