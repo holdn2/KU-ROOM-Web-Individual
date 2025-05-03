@@ -1,0 +1,37 @@
+.noticeList {
+  margin: 0 20px;
+}
+
+.noticeItem {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.noticeItem:last-child {
+  border-bottom: none;
+}
+
+.noticeNumber {
+  width: 20px;
+  font-size: 14px;
+  color: #666;
+  margin-right: 12px;
+}
+
+.noticeTitle {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arrow {
+  font-size: 16px;
+  color: #999;
+  margin-left: 8px;
+}

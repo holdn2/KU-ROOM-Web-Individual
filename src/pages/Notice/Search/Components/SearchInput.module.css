@@ -1,0 +1,37 @@
+.searchContainer {
+  padding: 10px 25px 0;
+  background-color: #f8f8f8;
+  margin-top: 56px;
+  --primary-green: #009733; /* 메인 초록색 */
+}
+
+.searchInputWrapper {
+  background-color: #f2f4f7;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.searchIcon {
+  width: 17.5px;
+  height: 17.5px;
+  margin-right: 12px;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  flex: 1;
+  color: #1d2228;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 100%;
+  caret-color: var(--primary-green); /* 초록색 커서 */
+}
+
+.searchInput::placeholder {
+  color: #9eaab5;
+  font-size: 16px;
+  font-weight: 500;
+}
