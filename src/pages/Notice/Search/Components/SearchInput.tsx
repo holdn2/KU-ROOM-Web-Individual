@@ -2,6 +2,7 @@ import type React from "react";
 import { forwardRef } from "react";
 import styles from "./SearchInput.module.css";
 import searchIcon from "../../../../assets/icon/search.svg";
+import closeIcon from "../../../../assets/icon/notice/search/remove.svg";
 
 interface SearchInputProps {
   value: string;
@@ -17,6 +18,10 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
       }
     };
 
+    const handleClear = () => {
+      onChange("");
+    };
+
     return (
       <div className={styles.searchContainer}>
         <div className={styles.searchInputWrapper}>
@@ -30,6 +35,16 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             onKeyPress={handleKeyPress}
             className={styles.searchInput}
           />
+          {value.length > 0 && (
+            <button
+              type="button"
+              className={styles.clearButton}
+              onClick={handleClear}
+              aria-label="검색어 지우기"
+            >
+              <img src={closeIcon} alt="지우기" />
+            </button>
+          )}
         </div>
       </div>
     );

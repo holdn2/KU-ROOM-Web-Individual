@@ -7,6 +7,7 @@ import SearchHistory from "./Components/SearchHistory";
 import TagButtons from "./Components/TagButtons";
 import SearchNoticeList from "./Components/NoticeList";
 import SearchResult from "./Components/SearchResult";
+import NotificationBadge from "./Components/NotificationBadge";
 import { getAllNotices } from "../../../services/NoticeService";
 import type { NoticeItem } from "../../../services/NoticeService";
 import styles from "./Search.module.css";
@@ -21,6 +22,7 @@ const Search: React.FC = () => {
     "수강 신청",
     "장학금",
   ]);
+  const [subscribedKeywords, setSubscribedKeywords] = useState<string[]>([]);
 
   useEffect(() => {
     // 모든 공지사항 가져오기
@@ -76,6 +78,15 @@ const Search: React.FC = () => {
     navigate(`/notice/${category}/${noticeId}`);
   };
 
+  const handleToggleNotification = (keyword: string) => {
+    setSubscribedKeywords((prev) => {
+      if (prev.includes(keyword)) {
+        return prev.filter((k) => k !== keyword);
+      }
+      return [...prev, keyword];
+    });
+  };
+
   // 검색어가 있으면 검색 결과만 표시
   const isSearching = searchText.length > 0;
 
@@ -125,11 +136,18 @@ const Search: React.FC = () => {
           />
         </>
       ) : (
-        <SearchResult
-          filteredNotices={filteredNotices}
-          activeTab="학사"
-          onItemClick={navigateToNoticeDetail}
-        />
+        <>
+          <NotificationBadge
+            keyword={searchText}
+            isSubscribed={subscribedKeywords.includes(searchText)}
+            onToggle={() => handleToggleNotification(searchText)}
+          />
+          <SearchResult
+            filteredNotices={filteredNotices}
+            activeTab="학사"
+            onItemClick={navigateToNoticeDetail}
+          />
+        </>
       )}
     </div>
   );
