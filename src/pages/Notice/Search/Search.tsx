@@ -23,6 +23,7 @@ const Search: React.FC = () => {
     "장학금",
   ]);
   const [subscribedKeywords, setSubscribedKeywords] = useState<string[]>([]);
+  const [isHistoryEnabled, setIsHistoryEnabled] = useState(true);
 
   useEffect(() => {
     // 모든 공지사항 가져오기
@@ -48,7 +49,7 @@ const Search: React.FC = () => {
     setSearchText(tag);
 
     // 검색 히스토리에 추가
-    if (!searchHistory.includes(tag)) {
+    if (isHistoryEnabled && !searchHistory.includes(tag)) {
       setSearchHistory((prev) => [tag, ...prev].slice(0, 10));
     }
   };
@@ -66,7 +67,7 @@ const Search: React.FC = () => {
     setSearchText(text);
 
     // 검색어가 있고, 엔터 등의 검색 이벤트가 발생했을 때 히스토리에 추가
-    if (text && !searchHistory.includes(text)) {
+    if (text && isHistoryEnabled && !searchHistory.includes(text)) {
       setSearchHistory((prev) => [text, ...prev].slice(0, 10)); // 최대 10개 유지
     }
   };
@@ -87,6 +88,14 @@ const Search: React.FC = () => {
     });
   };
 
+  const handleToggleHistory = () => {
+    setIsHistoryEnabled((prev) => !prev);
+  };
+
+  const handleClearHistory = () => {
+    setSearchHistory([]);
+  };
+
   // 검색어가 있으면 검색 결과만 표시
   const isSearching = searchText.length > 0;
 
@@ -102,11 +111,13 @@ const Search: React.FC = () => {
 
       {!isSearching ? (
         <>
-          <h2 className={styles.sectionTitle}>최근 검색어</h2>
           <SearchHistory
             searchTerms={searchHistory}
             onRemoveTerm={handleRemoveSearchTerm}
             onSelectTerm={handleSelectSearchTerm}
+            isHistoryEnabled={isHistoryEnabled}
+            onToggleHistory={handleToggleHistory}
+            onClearHistory={handleClearHistory}
           />
 
           <h2 className={styles.sectionTitle}>추천 검색어</h2>

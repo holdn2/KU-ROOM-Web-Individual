@@ -1,0 +1,73 @@
+import type React from "react";
+import styles from "./SearchHistoryMenu.module.css";
+import trashIcon from "../../../../assets/icon/notice/search/trash.svg";
+import ToggleButton from "./ToggleButton";
+
+interface SearchHistoryMenuProps {
+  isHistoryEnabled: boolean;
+  onToggleHistory: () => void;
+  onClearHistory: () => void;
+  onClose: () => void;
+}
+
+const SearchHistoryMenu: React.FC<SearchHistoryMenuProps> = ({
+  isHistoryEnabled,
+  onToggleHistory,
+  onClearHistory,
+  onClose,
+}) => {
+  const handleClearClick = () => {
+    onClearHistory();
+    onClose();
+  };
+
+  return (
+    <div>
+      <button
+        className={styles.menuOverlay}
+        onClick={onClose}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            onClose();
+          }
+        }}
+        type="button"
+      >
+        <div
+          className={styles.menuContainer}
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.stopPropagation();
+            }
+          }}
+        >
+          <div className={styles.menuItem}>
+            <span className={styles.menuLabel}>최근 검색어 저장</span>
+            <div className={styles.toggleContainer}>
+              <ToggleButton
+                isOn={isHistoryEnabled}
+                onToggle={onToggleHistory}
+              />
+            </div>
+          </div>
+          <div className={styles.divider} />
+          <button
+            className={styles.menuItem}
+            onClick={handleClearClick}
+            type="button"
+          >
+            <span className={`${styles.menuLabel} ${styles.delete}`}>
+              최근 검색어 초기화
+            </span>
+            <div className={styles.toggleContainer}>
+              <img src={trashIcon} alt="삭제" className={styles.trashIcon} />
+            </div>
+          </button>
+        </div>
+      </button>
+    </div>
+  );
+};
+
+export default SearchHistoryMenu;
