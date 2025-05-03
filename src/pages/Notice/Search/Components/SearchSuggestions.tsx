@@ -22,15 +22,21 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 
   return (
     <div className={styles.suggestionsContainer}>
-      {filteredSuggestions.map((suggestion, index) => (
-        <div
-          key={index}
+      {filteredSuggestions.map((suggestion) => (
+        <button
+          key={suggestion}
+          type="button"
           className={styles.suggestionItem}
           onClick={() => onSuggestionClick(suggestion)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              onSuggestionClick(suggestion);
+            }
+          }}
         >
           <div className={styles.suggestionText}>{suggestion}</div>
           <div className={styles.arrowIcon}>↗</div>
-        </div>
+        </button>
       ))}
     </div>
   );

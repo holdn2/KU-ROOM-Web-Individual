@@ -1,16 +1,18 @@
 import type React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../../../components/Header/Header";
 import SearchInput from "./Components/SearchInput";
 import SearchHistory from "./Components/SearchHistory";
 import TagButtons from "./Components/TagButtons";
-import NoticeList from "./Components/NoticeList";
+import SearchNoticeList from "./Components/NoticeList";
 import SearchResult from "./Components/SearchResult";
 import { getAllNotices } from "../../../services/NoticeService";
 import type { NoticeItem } from "../../../services/NoticeService";
 import styles from "./Search.module.css";
 
 const Search: React.FC = () => {
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [notices, setNotices] = useState<NoticeItem[]>([]);
@@ -66,6 +68,13 @@ const Search: React.FC = () => {
     }
   };
 
+  const navigateToNoticeDetail = (noticeId: string) => {
+    // 검색 결과에서 어떤 카테고리로 이동할지 결정
+    const notice = notices.find((n) => n.id === noticeId);
+    const category = notice?.category || "학사";
+    navigate(`/notice/${category}/${noticeId}`);
+  };
+
   // 검색어가 있으면 검색 결과만 표시
   const isSearching = searchText.length > 0;
 
@@ -80,7 +89,7 @@ const Search: React.FC = () => {
       />
 
       {!isSearching ? (
-        // 검색어가 없을 때 보여줄 기본 화면
+        // 검색어가 없을 때 보여줄 기본 화면 (기존 검색용 NoticeList 사용)
         <>
           <h2 className={styles.sectionTitle}>최근 검색어</h2>
           <SearchHistory
@@ -103,15 +112,18 @@ const Search: React.FC = () => {
           />
 
           <h2 className={styles.sectionTitle}>인기 공지</h2>
-          <NoticeList notices={notices.slice(0, 3)} />
+          <SearchNoticeList notices={notices.slice(0, 3)} />
 
           <h2 className={styles.sectionTitle}>주요 공지</h2>
-          <NoticeList notices={notices.slice(5, 8)} />
+          <SearchNoticeList notices={notices.slice(5, 8)} />
         </>
       ) : (
+        // 검색 결과는 Notice의 NoticeList 사용
         <SearchResult
           searchText={searchText}
           filteredNotices={filteredNotices}
+          activeTab="학사" // 기본 카테고리 설정
+          onItemClick={navigateToNoticeDetail}
         />
       )}
     </div>

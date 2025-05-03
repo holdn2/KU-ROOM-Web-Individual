@@ -1,17 +1,21 @@
 import type React from "react";
 import styles from "./SearchResult.module.css";
 import type { NoticeItem } from "../../../../services/NoticeService";
-import NoticeList from "./NoticeList";
+import NoticeList from "../../NoticeList";
 import searchresultIcon from "../../../../assets/icon/notice/search/searchresult.svg";
 
 interface SearchResultProps {
   searchText: string;
   filteredNotices: NoticeItem[];
+  activeTab: string;
+  onItemClick: (noticeId: string) => void;
 }
 
 const SearchResult: React.FC<SearchResultProps> = ({
   searchText,
   filteredNotices,
+  activeTab,
+  onItemClick,
 }) => {
   if (filteredNotices.length === 0) {
     return (
@@ -24,7 +28,11 @@ const SearchResult: React.FC<SearchResultProps> = ({
 
   return (
     <div className={styles.searchResult}>
-      <NoticeList notices={filteredNotices} />
+      <NoticeList
+        notices={filteredNotices}
+        activeTab={activeTab}
+        onItemClick={onItemClick}
+      />
     </div>
   );
 };
