@@ -13,7 +13,6 @@ const NoticeList: React.FC<NoticeListProps> = ({ notices }) => {
         <div key={notice.id} className={styles.noticeItem}>
           <span className={styles.noticeNumber}>{index + 1}</span>
           <p className={styles.noticeTitle}>{notice.title}</p>
-          <div className={styles.arrow}>→</div>
         </div>
       ))}
     </div>
