@@ -6,13 +6,11 @@ import searchresultIcon from "../../../../../assets/icon/notice/search/searchres
 
 interface SearchResultProps {
   filteredNotices: NoticeItem[];
-  activeTab: string;
   onItemClick: (noticeId: string) => void;
 }
 
 const SearchResult: React.FC<SearchResultProps> = ({
   filteredNotices,
-  activeTab,
   onItemClick,
 }) => {
   if (filteredNotices.length === 0) {
@@ -26,11 +24,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
 
   return (
     <div className={styles.searchResult}>
-      <NoticeList
-        notices={filteredNotices}
-        activeTab={activeTab}
-        onItemClick={onItemClick}
-      />
+      <NoticeList notices={filteredNotices} onItemClick={onItemClick} />
     </div>
   );
 };

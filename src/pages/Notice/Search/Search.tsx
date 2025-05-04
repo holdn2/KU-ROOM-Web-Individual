@@ -155,7 +155,6 @@ const Search: React.FC = () => {
           />
           <SearchResult
             filteredNotices={filteredNotices}
-            activeTab="학사"
             onItemClick={navigateToNoticeDetail}
           />
         </>
