@@ -5,6 +5,7 @@ import type { NoticeItem as NoticeItemType } from "../../../../services/NoticeSe
 
 interface NoticeListProps {
   notices: NoticeItemType[];
+  activeTab: string;
   onItemClick: (noticeId: string) => void;
 }
 
