@@ -8,20 +8,28 @@ import kuroomIcon from "../../assets/icon/cloud.svg";
 import homeAlarmIcon from "../../assets/icon/homealarm.svg";
 interface HeaderProps {
   children?: React.ReactNode;
+  hasNewAlarm?: boolean;
 }
 
-const renderHeaderContent = (children: React.ReactNode) => {
+const renderHeaderContent = (
+  children: React.ReactNode,
+  newAlarmState: boolean
+) => {
   const navigate = useNavigate();
+
   switch (children) {
     case "홈":
       return (
         <div className="home-header-wrapper">
           <h1 className="home-header-title">KURUM</h1>
-          <img
-            src={homeAlarmIcon}
-            alt="알림"
-            onClick={() => navigate("/alarm")}
-          />
+          <div style={{ position: "relative" }}>
+            <img
+              src={homeAlarmIcon}
+              alt="알림"
+              onClick={() => navigate("/alarm")}
+            />
+            {newAlarmState ? <div className="new-alarm-marker" /> : <></>}
+          </div>
         </div>
       );
     case "공지사항":
@@ -67,7 +75,9 @@ const renderHeaderContent = (children: React.ReactNode) => {
   }
 };
 
-const Header: React.FC<HeaderProps> = ({ children = "" }) => {
+const Header: React.FC<HeaderProps> = ({ children = "", hasNewAlarm }) => {
+  const newAlarmState = children === "홈" && hasNewAlarm === true;
+
   return (
     <>
       <header className="header-container">
@@ -76,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ children = "" }) => {
         ) : (
           <span className="header-title">{children}</span>
         )}
-        {renderHeaderContent(children)}
+        {renderHeaderContent(children, newAlarmState)}
       </header>
     </>
   );

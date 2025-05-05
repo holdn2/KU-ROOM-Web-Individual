@@ -16,9 +16,13 @@ const isInSchool = true; // 학교 내부인지 외부인지
 const Home = () => {
   const [showSplash, setShowSplash] = useState(true);
   const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
+  const [hasNewAlarm, setHasNewAlarm] = useState(false); // 새로운 알람이 있는지
 
   // api 기다리는 상태 관리도 추후 추가 예정.
   useEffect(() => {
+    // 서버에 새로운 알람이 있는지 검증. 있다면 true로
+    setHasNewAlarm(true);
+
     const timeout = setTimeout(() => {
       setShowSplash(false);
     }, 2000); // 1.5초 후에 splash 화면 종료
@@ -31,7 +35,7 @@ const Home = () => {
 
   return (
     <div>
-      <Header>홈</Header>
+      <Header hasNewAlarm={hasNewAlarm}>홈</Header>
       <div className={styles.HomeContentWrapper}>
         <HomeSildeBanner />
         <HomeMenu />
