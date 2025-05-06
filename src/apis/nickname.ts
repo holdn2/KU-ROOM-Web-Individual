@@ -43,12 +43,15 @@ export const changeNicknameApi = async (changeNickname: {
   nickname: string;
 }) => {
   try {
-    const accessToken = localStorage.getItem("accessToken");
-    console.log(accessToken);
+    const token = localStorage.getItem("accessToken");
+    console.log(token);
+    if (!token) {
+      throw new Error("AccessToken이 없습니다.");
+    }
     const response = await axios.patch(CHANGE_NICKNAME_API, changeNickname, {
       headers: {
         "Content-Type": "application/json",
-        ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+        Authorization: `Bearer ${token}`,
       },
     });
     console.log(response.data);

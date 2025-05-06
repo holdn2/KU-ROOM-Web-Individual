@@ -3,6 +3,8 @@ import styles from "./ProfileModal.module.css";
 import ReactModal from "react-modal";
 import Button from "../../Button/Button";
 import cautionIcon from "../../../assets/icon/editFriend/cautionIcon.svg";
+import { logoutApi, withdrawApi } from "../../../apis/auth";
+import { useNavigate } from "react-router-dom";
 
 interface ProfileModalProps {
   modalState: boolean;
@@ -15,18 +17,28 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   modalType,
   setModalState,
 }) => {
+  const navigate = useNavigate();
   const handleCloseModal = () => setModalState(false);
 
   // 서버에 각각 요청
-  const handleClick = () => {
+  const handleClick = async () => {
     switch (modalType) {
       case "logout":
         console.log("로그아웃 실행");
         setModalState(false);
+        const logoutResponse = await logoutApi();
+        console.log(logoutResponse);
+        navigate("/login");
+
         break;
       case "withdraw":
         console.log("회원 탈퇴 실행");
         setModalState(false);
+        const withdrawRepsonse = await withdrawApi();
+        console.log(withdrawRepsonse);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        navigate("/login");
         break;
     }
   };

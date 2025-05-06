@@ -9,7 +9,7 @@ import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import TopIcon from "../../components/TopIcon";
-import { loginApi } from "../../apis/login";
+import { loginApi } from "../../apis/auth";
 
 const Login = () => {
   const navigate = useNavigate();

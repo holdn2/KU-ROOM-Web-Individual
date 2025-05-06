@@ -45,7 +45,10 @@ export const changePwAfterLogin = async (
   },
   setOriginalPwChecked: (value: boolean) => void
 ) => {
-  const accessToken = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    throw new Error("AccessToken이 없습니다.");
+  }
   try {
     const response = await axios.post<ChangePwResponse>(
       CHANGE_PW_AFTER_LOGIN_URL,
@@ -53,11 +56,12 @@ export const changePwAfterLogin = async (
       {
         headers: {
           "Content-Type": "application/json",
-          ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+          Authorization: `Bearer ${token}`,
         },
       }
     );
     console.log(response.data.data);
+    setOriginalPwChecked(true);
     return response.data.data; // 성공 응답 반환
   } catch (error: any) {
     console.error("비밀번호 변경 실패:", error.response?.data || error.message);
