@@ -9,7 +9,7 @@ import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import TopIcon from "../../components/TopIcon";
-import { loginApi } from "../../apis/auth";
+import { loginApi, getNaverLoginURL } from "../../apis/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -47,6 +47,12 @@ const Login = () => {
       console.error("로그인 중 오류 발생:", error.message); // 서버 오류(500) 같은 경우
       setIsLoginAttempted(true);
     }
+  };
+
+  // 네이버 소셜 로그인 핸들러
+  const handleNaverLogin = () => {
+    const naverLoginURL = getNaverLoginURL();
+    window.location.href = naverLoginURL;
   };
 
   // 로그인 실패 시 2초 간 보여줌
@@ -130,8 +136,7 @@ const Login = () => {
           <img
             src={naverIcon}
             alt="네이버로 로그인"
-            // 소셜로그인 성공 시 약관 동의 페이지로 이동
-            onClick={() => navigate("/agreement")}
+            onClick={handleNaverLogin}
           />
           <img
             src={googleIcon}
