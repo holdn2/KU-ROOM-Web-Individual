@@ -4,6 +4,7 @@ import Button from "../Button/Button";
 import defaultProfileImg from "../../assets/defaultProfileImg.svg";
 import { useNavigate } from "react-router-dom";
 import editIcon from "../../assets/icon/editpencil.svg";
+import { useUserStore } from "../../stores/userStore";
 
 interface MyProfileComponentProps {
   isChangeProfile: boolean;
@@ -13,6 +14,10 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
   isChangeProfile,
 }) => {
   const navigate = useNavigate();
+  const nickname = useUserStore((state) => state.user?.nickname);
+  const imageUrl = useUserStore((state) => state.user?.imageUrl);
+  // const department = useUserStore((state) => state.user?.department);
+
   const goToProfileSetting = () => {
     navigate("/profilechange");
   };
@@ -28,7 +33,7 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
       <div className={styles.MyProfileInfoWrapper}>
         <div className={styles.ImgWrapper}>
           <img
-            src={defaultProfileImg}
+            src={imageUrl || defaultProfileImg}
             alt="프로필 사진"
             style={
               isChangeProfile
@@ -42,7 +47,7 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
         </div>
 
         <div className={styles.InfoWrapper}>
-          <span className={styles.MyName}>김쿠룸</span>
+          <span className={styles.MyName}>{nickname}</span>
           {!isChangeProfile && (
             <span className={styles.MyDepartment}>융합생명공학과</span>
           )}

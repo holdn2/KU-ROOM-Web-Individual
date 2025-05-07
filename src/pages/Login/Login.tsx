@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import TopIcon from "../../components/TopIcon";
 import { loginApi } from "../../apis/auth";
+import { useUserStore } from "../../stores/userStore";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUser } = useUserStore();
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");
   // 로그인 버튼을 눌렀는지 여부
@@ -38,10 +40,17 @@ const Login = () => {
         setIsLoginAttempted(true);
         return;
       }
-      console.log("로그인 성공!", response);
+      console.log("로그인 성공!", response.data);
       // 토큰 저장 후 홈으로 이동
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
+      const {
+        tokenResponse: { accessToken, refreshToken },
+        userResponse,
+      } = response.data;
+
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      // 전역 상태관리 zustand 사용해서 저장
+      setUser(userResponse);
       navigate("/");
     } catch (error: any) {
       console.error("로그인 중 오류 발생:", error.message); // 서버 오류(500) 같은 경우

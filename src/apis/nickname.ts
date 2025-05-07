@@ -44,7 +44,6 @@ export const changeNicknameApi = async (changeNickname: {
 }) => {
   try {
     const token = localStorage.getItem("accessToken");
-    console.log(token);
     if (!token) {
       throw new Error("AccessToken이 없습니다.");
     }

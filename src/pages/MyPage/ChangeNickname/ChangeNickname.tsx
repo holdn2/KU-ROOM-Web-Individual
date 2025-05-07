@@ -8,8 +8,12 @@ import {
 } from "../../../apis/nickname";
 import InformModal from "../../../components/InformModal/InformModal";
 import Header from "../../../components/Header/Header";
+import { useUserStore } from "../../../stores/userStore";
 
 const ChangeNickname = () => {
+  const { setUser } = useUserStore();
+  const user = useUserStore((state) => state.user);
+  const nickname = useUserStore((state) => state.user?.nickname);
   const [newNickname, setNewNickname] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [modalState, setModalState] = useState(false);
@@ -19,7 +23,7 @@ const ChangeNickname = () => {
     newNickname.length > 1 &&
     newNickname.length <= 10 &&
     (/[a-zA-Z]/.test(newNickname) || /[가-힣ㄱ-ㅎ]/.test(newNickname));
-  const handleInputIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputNicknameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputNickname = e.target.value;
     if (inputNickname.length <= 10) {
       setNewNickname(inputNickname);
@@ -31,11 +35,15 @@ const ChangeNickname = () => {
       newNickname,
       setErrorMsg
     );
-    console.log(checkResponse);
+    if (!checkResponse) return;
     // 서버에 닉네임 변경 요청
     const changeNickname = { nickname: newNickname };
     const changeResponse = await changeNicknameApi(changeNickname);
     console.log(changeResponse);
+
+    if (user) {
+      setUser({ ...user, nickname: newNickname });
+    }
     // 닉네임 변경 모달 생성
     setModalType("NicknameChange");
     setModalState(true);
@@ -54,8 +62,8 @@ const ChangeNickname = () => {
           label="닉네임"
           type="text"
           value={newNickname}
-          placeholder="변경할 닉네임을 입력해주세요"
-          onChange={handleInputIdChange}
+          placeholder={nickname}
+          onChange={handleInputNicknameChange}
         />
         {!isNicknameValid && newNickname && (
           <span className="ErrorMsg">

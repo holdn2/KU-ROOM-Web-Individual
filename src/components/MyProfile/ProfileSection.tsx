@@ -5,11 +5,7 @@ import ToggleAlarmButton from "../ToggleAlarmButton";
 import KeywordButton from "../KeywordButton/KeywordButton";
 import { AppVersion } from "../../constants/appInfo";
 import { useHandleSectionClick } from "./hooks/profileSectionClickUtil";
-
-const userEmail = "kurum12@gmail.com";
-const userId = "kurum12";
-const studentId = "202012356";
-
+import { useUserStore } from "../../stores/userStore";
 interface ProfileSectionProps {
   sectionData: {
     title: string;
@@ -36,6 +32,10 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   setModalType,
   setModalState,
 }) => {
+  const userEmail = useUserStore((state) => state.user?.email);
+  const userId = useUserStore((state) => state.user?.loginId);
+  const studentId = useUserStore((state) => state.user?.studentId);
+
   const handleSectionClick = useHandleSectionClick(setModalType, setModalState);
   return (
     <>

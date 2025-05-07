@@ -5,12 +5,35 @@ const LOGIN_API_URL = "https://kuroom.shop/api/v1/auth/login";
 const LOGOUT_API_URL = "https://kuroom.shop/api/v1/auth/logout";
 const WITHDRAW_API_URL = "https://kuroom.shop/api/v1/users/deactivate";
 
+interface LoginResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    tokenResponse: {
+      accessExpireIn: number;
+      accessToken: string;
+      refreshExpireIn: number;
+      refreshToken: string;
+    };
+    userResponse: {
+      email: string;
+      id: number;
+      imageUrl: string | null;
+      loginId: string;
+      nickname: string;
+      oauthId: string | null;
+      studentId: string;
+    };
+  };
+}
+
 export const loginApi = async (userData: {
   loginId: string;
   password: string;
 }) => {
   try {
-    const response = await axios.post(LOGIN_API_URL, userData, {
+    const response = await axios.post<LoginResponse>(LOGIN_API_URL, userData, {
       headers: { "Content-Type": "application/json" },
     });
     return response.data; // 성공 시 반환
