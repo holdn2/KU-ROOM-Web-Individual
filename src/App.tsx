@@ -25,6 +25,7 @@ import MapPage from "./pages/Map/MapPage";
 import DepartmentSetting from "./pages/MyPage/DepartmentSetting/DepartmentSetting";
 import Bookmark from "./pages/Notice/Bookmark/Bookmark";
 import Search from "./pages/Notice/Search/Search";
+import NaverCallback from "./pages/NaverCallback/NaverCallback";
 
 function App() {
   const router = createBrowserRouter([
@@ -34,6 +35,10 @@ function App() {
         {
           index: true,
           element: <Home />,
+        },
+        {
+          path: "auth/naver/callback",
+          element: <NaverCallback />,
         },
         {
           path: "alarm",
