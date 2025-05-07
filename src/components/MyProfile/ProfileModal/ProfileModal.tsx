@@ -46,12 +46,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
     switch (modalType) {
       case "logout":
         return (
-          <>
-            <span className={styles.InformText}>로그아웃 하시겠습니까?</span>
-            <span className={styles.AdditionalInform}>
-              다시 친구로 추가하실 수 있습니다.
-            </span>
-          </>
+          <span className={styles.InformText}>로그아웃 하시겠습니까?</span>
         );
       case "withdraw":
         return (
