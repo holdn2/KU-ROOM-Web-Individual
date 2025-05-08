@@ -1,5 +1,5 @@
-// 로그인 페이지
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
 import styles from "./Login.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
@@ -133,11 +133,22 @@ const Login = () => {
             // 소셜로그인 성공 시 약관 동의 페이지로 이동
             onClick={() => navigate("/agreement")}
           />
-          <img
-            src={naverIcon}
-            alt="네이버로 로그인"
+          <button
+            type="button"
             onClick={handleNaverLogin}
-          />
+            onKeyUp={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                handleNaverLogin();
+              }
+            }}
+            style={{ background: "none", border: "none", padding: 0 }}
+          >
+            <img
+              src={naverIcon}
+              alt="네이버로 로그인"
+              style={{ cursor: "pointer" }}
+            />
+          </button>
           <img
             src={googleIcon}
             alt="구글로 로그인"

@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { naverLoginCallback } from "../../apis/auth";
 import styles from "./NaverCallback.module.css";
+import { useAuth } from "../../hooks/useAuth";
 
-// auth.ts에서 반환되는 응답 타입 정의
 interface LoginResponseData {
   accessToken: string;
   refreshToken: string;
   isNewUser?: boolean;
+  accessExpireIn?: number;
+  refreshExpireIn?: number;
 }
 
 interface ApiResponse<T> {
@@ -18,6 +20,7 @@ interface ApiResponse<T> {
 }
 
 const NaverCallback = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,23 +43,22 @@ const NaverCallback = () => {
           state
         )) as ApiResponse<LoginResponseData>;
 
-        // 토큰 저장
-        localStorage.setItem("accessToken", result.data.accessToken);
-        localStorage.setItem("refreshToken", result.data.refreshToken);
-
-        // 로그인 성공 후 이동
-        // 신규 사용자이면 약관 동의 페이지로, 기존 사용자면 홈으로
-        if (result.data.isNewUser) {
-          navigate("/agreement");
-        } else {
-          navigate("/");
-        }
+        // useAuth 훅의 login 함수 사용
+        login(
+          result.data.accessToken,
+          result.data.refreshToken,
+          result.data.isNewUser
+        );
       } catch (error) {
         // AxiosError 타입 문제 해결을 위해 Error로만 처리
         const typedError = error as Error;
-        console.error("네이버 로그인 처리 중 오류:", typedError);
 
-        setError(typedError.message || "로그인 처리 중 오류가 발생했습니다.");
+        if (process.env.NODE_ENV === "development") {
+          console.error("네이버 로그인 오류 상세:", typedError);
+        }
+        setError(
+          "로그인 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요."
+        );
 
         // 3초 후 로그인 페이지로 리다이렉션
         setTimeout(() => navigate("/login"), 3000);
@@ -66,7 +68,7 @@ const NaverCallback = () => {
     };
 
     processNaverLogin();
-  }, [navigate]);
+  }, [navigate, login]);
 
   const containerClass = styles?.callbackContainer || "callback-container";
   const loadingClass = styles?.loadingMessage || "loading-message";

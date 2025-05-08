@@ -37,7 +37,7 @@ function App() {
           element: <Home />,
         },
         {
-          path: "auth/naver/callback",
+          path: "naver-callback",
           element: <NaverCallback />,
         },
         {

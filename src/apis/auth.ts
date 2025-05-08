@@ -8,7 +8,10 @@ const NAVER_LOGIN_API_URL = "https://kuroom.shop/api/v1/auth/social/naver";
 
 // 네이버 로그인 관련 상수
 const NAVER_CLIENT_ID = "0JPy8UxAyPa3jRSDHePI";
-const REDIRECT_URI = "https://ku-room-web-individual.vercel.app/";
+const REDIRECT_URI =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5173/naver-callback"
+    : "https://ku-room-web-individual.vercel.app/naver-callback";
 
 export const loginApi = async (userData: {
   loginId: string;
@@ -79,7 +82,15 @@ export const withdrawApi = async () => {
 // 네이버 로그인 URL 생성 함수
 export const getNaverLoginURL = () => {
   // 랜덤 state 생성 (CSRF 방지)
-  const generatedState = Math.random().toString(36).substring(2, 15);
+  const generateRandomState = () => {
+    const randomValues = new Uint8Array(16);
+    window.crypto.getRandomValues(randomValues);
+    return Array.from(randomValues)
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+  };
+
+  const generatedState = generateRandomState();
   // 세션 스토리지에 state 저장 (콜백에서 검증용)
   sessionStorage.setItem("naverLoginState", generatedState);
 
