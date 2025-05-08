@@ -1,16 +1,21 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
+interface Department {
+  departmentId: number;
+  departmentName: string;
+}
+
 interface UserInfo {
   id: number;
-  email: string;
+  oauthId: string | null;
   loginId: string;
+  email: string;
   nickname: string;
   studentId: string;
   imageUrl: string | null;
-  oauthId: string | null;
+  departmentResponse: Department[];
 }
-
 interface UserState {
   user: UserInfo | null;
   setUser: (user: UserInfo) => void;

@@ -17,13 +17,17 @@ interface LoginResponse {
       refreshToken: string;
     };
     userResponse: {
-      email: string;
       id: number;
-      imageUrl: string | null;
-      loginId: string;
-      nickname: string;
       oauthId: string | null;
+      loginId: string;
+      email: string;
+      nickname: string;
       studentId: string;
+      imageUrl: string | null;
+      departmentResponse: {
+        departmentId: number;
+        departmentName: string;
+      }[];
     };
   };
 }
