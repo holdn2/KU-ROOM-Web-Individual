@@ -28,6 +28,8 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
         setModalState(false);
         const logoutResponse = await logoutApi();
         console.log(logoutResponse);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         navigate("/login");
 
         break;

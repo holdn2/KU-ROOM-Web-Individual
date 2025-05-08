@@ -58,12 +58,16 @@ export const logoutApi = async () => {
     if (!token) {
       throw new Error("AccessToken이 없습니다.");
     }
-    const response = await axios.patch<LogoutResponse>(LOGOUT_API_URL, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.patch<LogoutResponse>(
+      LOGOUT_API_URL,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return response.data.data; // 성공 시 반환
   } catch (error: any) {
