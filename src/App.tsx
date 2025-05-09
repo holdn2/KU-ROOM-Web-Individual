@@ -26,11 +26,13 @@ import DepartmentSetting from "./pages/MyPage/DepartmentSetting/DepartmentSettin
 import Bookmark from "./pages/Notice/Bookmark/Bookmark";
 import Search from "./pages/Notice/Search/Search";
 import NaverCallback from "./pages/NaverCallback/NaverCallback";
+import AuthWrapper from "./components/AuthWrapper";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <AuthWrapper />,
       children: [
         {
           index: true,

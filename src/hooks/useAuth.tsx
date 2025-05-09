@@ -6,6 +6,8 @@ interface AuthContextType {
   login: (
     accessToken: string,
     refreshToken: string,
+    accessExpireIn?: number,
+    refreshExpireIn?: number,
     isNewUser?: boolean
   ) => void;
   logout: () => void;
@@ -41,10 +43,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = (
     accessToken: string,
     refreshToken: string,
+    accessExpireIn?: number,
+    refreshExpireIn?: number,
     isNewUser?: boolean
   ) => {
+    // 만료 시간 계산 및 저장 로직 추가
+    const now = new Date();
+    const accessExpires = new Date(
+      now.getTime() + (accessExpireIn || 1800000) // 기본값 30분
+    );
+    const refreshExpires = new Date(
+      now.getTime() + (refreshExpireIn || 604800000) // 기본값 7일
+    );
+
     localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("accessTokenExpires", accessExpires.toISOString());
     localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("refreshTokenExpires", refreshExpires.toISOString());
+
     setIsLoggedIn(true);
 
     if (isNewUser) {
