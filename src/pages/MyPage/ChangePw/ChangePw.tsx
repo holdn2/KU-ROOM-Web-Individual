@@ -10,12 +10,13 @@ import { changePwAfterLogin } from "../../../apis/changePw";
 
 const ChangePw = () => {
   const [originalPw, setOriginalPw] = useState("");
-  const [originalPwChecked, setOriginalPwChecked] = useState(false);
+  const [isOriginalPwValid, setIsOriginalPwValid] = useState(false);
   const [isAttemptReset, setIsAttemptReset] = useState(false);
   const [newPw, setNewPw] = useState("");
   const [allowedPw, setAllowedPw] = useState(false);
   const [checkPw, setCheckPw] = useState("");
   const [isCheckedPw, setIsCheckedPw] = useState(false);
+  const [errorCode, setErrorCode] = useState<number | null>(null);
 
   const [modalType, setModalType] = useState("");
   const [modalState, setModalState] = useState(false);
@@ -40,10 +41,14 @@ const ChangePw = () => {
   };
   const handleResetPassword = async () => {
     setIsAttemptReset(true);
+    setErrorCode(null);
+
     // 조건에 맞는지 확인
+    const isValidOriginalPw = isValidPassword(originalPw);
     const isAllowedPw = isValidPassword(newPw);
     const isPwMatched = checkPw === newPw;
 
+    setIsOriginalPwValid(isValidOriginalPw);
     setAllowedPw(isAllowedPw);
     setIsCheckedPw(isPwMatched);
     const userInfo = {
@@ -52,19 +57,32 @@ const ChangePw = () => {
     };
 
     // 모든 조건이 충족되었을 때 재설정 성공
-    if (isAllowedPw && isPwMatched) {
+    if (isValidOriginalPw && isAllowedPw && isPwMatched) {
       try {
-        const response = await changePwAfterLogin(
-          userInfo,
-          setOriginalPwChecked
-        );
-        console.log(response);
-        console.log("재설정 성공!");
-        setModalType("NewPassword");
-        setModalState(true);
+        try {
+          const result = await changePwAfterLogin(userInfo);
+
+          if (!result.success) {
+            if (result.code === 310 || result.code === 311) {
+              setErrorCode(result.code);
+              return;
+            }
+          }
+
+          // 성공 시
+          setErrorCode(null);
+          setModalType("NewPassword");
+          setModalState(true);
+        } catch (error: any) {
+          alert(error.message); // 네트워크 에러나 기타 에러
+        }
       } catch (error: any) {
         console.error("서버 에러:", error.message);
-        // 사용자에게 알림 메시지 보여주기 등
+        if (error.code === 310 || error.code === 311) {
+          setErrorCode(error.code);
+        } else {
+          alert(error.message); // 기타 에러 알림
+        }
       }
     } else {
       console.log("재설정 실패: 조건을 다시 확인하세요.");
@@ -83,9 +101,14 @@ const ChangePw = () => {
           placeholder="기존 비밀번호를 입력해주세요"
           onChange={handleOriginalPwChange}
         />
-        {!originalPwChecked && isAttemptReset && (
+        {!isOriginalPwValid && isAttemptReset && (
           <span className={styles.ErrorMsg}>
-            기존 비밀번호를 알맞게 입력해주세요.
+            영문, 숫자, 특수문자 포함 8자 이상이어야 합니다.
+          </span>
+        )}
+        {errorCode === 310 && (
+          <span className={styles.ErrorMsg}>
+            기존 비밀번호가 일치하지 않습니다.
           </span>
         )}
         <InputBar
@@ -98,6 +121,11 @@ const ChangePw = () => {
         {!allowedPw && isAttemptReset && (
           <span className={styles.ErrorMsg}>
             영문, 숫자, 특수문자 포함 8자 이상이어야 합니다.
+          </span>
+        )}
+        {errorCode === 311 && (
+          <span className={styles.ErrorMsg}>
+            기존 비밀번호와 새 비밀번호가 일치할 수 없습니다.
           </span>
         )}
         <InputBar

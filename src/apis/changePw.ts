@@ -38,17 +38,15 @@ export const changePwBeforeLogin = async (userInfo: {
   }
 };
 
-export const changePwAfterLogin = async (
-  userInfo: {
-    prevPassword: string;
-    newPassword: string;
-  },
-  setOriginalPwChecked: (value: boolean) => void
-) => {
+export const changePwAfterLogin = async (userInfo: {
+  prevPassword: string;
+  newPassword: string;
+}) => {
   const token = localStorage.getItem("accessToken");
   if (!token) {
     throw new Error("AccessToken이 없습니다.");
   }
+
   try {
     const response = await axios.post<ChangePwResponse>(
       CHANGE_PW_AFTER_LOGIN_URL,
@@ -60,20 +58,20 @@ export const changePwAfterLogin = async (
         },
       }
     );
-    console.log(response.data.data);
-    setOriginalPwChecked(true);
-    return response.data.data; // 성공 응답 반환
-  } catch (error: any) {
-    console.error("비밀번호 변경 실패:", error.response?.data || error.message);
-    const errorMessage =
-      error.response?.data?.message || "비밀번호 변경 중 오류 발생";
-    if (errorMessage === "기존 비밀번호가 틀렸습니다.") {
-      setOriginalPwChecked(false);
-    } else {
-      setOriginalPwChecked(true);
+
+    const { code, message, data } = response.data;
+
+    // 서버 응답 코드 기반 처리
+    if (code === 310) {
+      return { success: false, code, message };
     }
-    throw new Error(
-      error.response?.data?.message || "비밀번호 변경 중 오류 발생"
-    );
+    if (code === 311) {
+      return { success: false, code, message };
+    }
+
+    return { success: true, data };
+  } catch (error: any) {
+    const errData = error.response?.data;
+    throw { code: errData?.code, message: errData?.message };
   }
 };
