@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import BottomBar from "../../components/BottomBar/BottomBar";
 import styles from "./MapPage.module.css";
 import myTrackingIcon from "../../assets/map/tomylocation.svg";
+import shareLocationIcon from "../../assets/map/shareLocation.svg";
 import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
 import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChip";
 import KuroomMap from "../../components/Map/KuroomMap";
@@ -11,6 +12,7 @@ import { KuroomMarkers } from "../../components/Map/MapData";
 import SearchResultHeader from "../../components/Map/MapSearch/SearchResultHeader";
 import LocationsBottomSheet from "../../components/Map/LocationsBottomSheet/LocationsBottomSheet";
 import FocusedLocationBottomSheet from "../../components/Map/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
+import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
 
 interface MarkerData {
   lat: number;
@@ -23,6 +25,7 @@ const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
   const [searchMode, setSearchMode] = useState(false);
   const [mapSearchResult, setMapSearchResult] = useState("");
+  const [isInSchool, setIsInSchool] = useState(false);
 
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
@@ -61,6 +64,14 @@ const MapPage = () => {
     console.log("현재 포커된 상태: ", hasFocusedMarker);
   }, [hasFocusedMarker]);
 
+  // 현재 위치가 학교 내부 인지 검증
+  useEffect(() => {
+    isMyLocationInSchool(setIsInSchool);
+  }, []);
+
+  const handleShareLocation = () => {
+    console.log("내 위치 공유");
+  };
   return (
     <div>
       {/* KuroomMap은 항상 렌더링되고 */}
@@ -120,6 +131,23 @@ const MapPage = () => {
                   alt="위치 추적 아이콘"
                   style={{ filter: isTracking ? "none" : "grayscale(100%)" }}
                 />
+              </button>
+              {/* 학교 내부에서만 보이도록 */}
+              {/* {isInSchool && (
+                <button
+                  className={styles.SharedLocationButton}
+                  onClick={handleShareLocation}
+                >
+                  <img src={shareLocationIcon} alt="위치 공유 아이콘" />
+                  <span className={styles.SharingText}>내 위치 공유</span>
+                </button>
+              )} */}
+              <button
+                className={styles.SharedLocationButton}
+                onClick={handleShareLocation}
+              >
+                <img src={shareLocationIcon} alt="위치 공유 아이콘" />
+                <span className={styles.SharingText}>내 위치 공유</span>
               </button>
             </>
           )}

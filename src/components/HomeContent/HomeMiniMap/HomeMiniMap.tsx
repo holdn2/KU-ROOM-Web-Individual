@@ -3,7 +3,7 @@ import styles from "./HomeMiniMap.module.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import KuroomMap from "../../Map/KuroomMap";
-import { isMyLocationInSchool } from "./HomeMiniMapUtils";
+import { isMyLocationInSchool } from "../../../utils/mapRangeUtils";
 
 interface HomeMiniMapProps {
   isSharedLocation: boolean;
