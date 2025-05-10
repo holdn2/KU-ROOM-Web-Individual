@@ -127,12 +127,27 @@ const Login = () => {
             marginTop: "67px",
           }}
         >
-          <img
-            src={kakaoIcon}
-            alt="카카오로 로그인"
-            // 소셜로그인 성공 시 약관 동의 페이지로 이동
+          <button
+            type="button"
             onClick={() => navigate("/agreement")}
-          />
+            onKeyUp={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                navigate("/agreement");
+              }
+            }}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+            }}
+          >
+            <img
+              src={kakaoIcon}
+              alt="카카오로 로그인"
+              style={{ display: "block" }}
+            />
+          </button>
           <button
             type="button"
             onClick={handleNaverLogin}
@@ -149,12 +164,27 @@ const Login = () => {
               style={{ cursor: "pointer" }}
             />
           </button>
-          <img
-            src={googleIcon}
-            alt="구글로 로그인"
-            // 소셜로그인 성공 시 약관 동의 페이지로 이동
+          <button
+            type="button"
             onClick={() => navigate("/agreement")}
-          />
+            onKeyUp={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                navigate("/agreement");
+              }
+            }}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+            }}
+          >
+            <img
+              src={googleIcon}
+              alt="구글로 로그인"
+              style={{ display: "block" }}
+            />
+          </button>
         </div>
       </div>
     </div>
