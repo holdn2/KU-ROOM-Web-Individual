@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./FocusedLocationBottomSheet.module.css";
 import { dummyDetailInfo } from "../MapData";
-import Button from "../../Button/Button";
+// import Button from "../../Button/Button";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
-import ShareLocationModal from "../ShareLocationModal/ShareLocationModal";
+// import ShareLocationModal from "../ShareLocationModal/ShareLocationModal";
 import LocationInfoTopContent from "./LocationInfoTopContent/LocationInfoTopContent";
 import FocusedLocationInfo from "./FocusedLocationInfo/FocusedLocationInfo";
 
@@ -32,9 +32,9 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
 }) => {
   // 위치 상세 정보 저장할 상태
   const [detailInfo, setDetailInfo] = useState<LocationDetailInfo | null>(null);
-  const [isSharedLocation, setIsSharedLocation] = useState(false);
+  // const [isSharedLocation, setIsSharedLocation] = useState(false);
 
-  const [modalState, setModalState] = useState(false);
+  // const [modalState, setModalState] = useState(false);
 
   const sheetRef = useRef<HTMLDivElement>(null);
 
@@ -49,16 +49,16 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
     sheetRef,
     isExpanded: isExpandedFocusedSheet,
     setIsExpanded: setIsExpandedFocusedSheet,
-    minHeight: 380,
+    minHeight: 450,
   });
 
   // 서버에 위치 공유 상태 요청해야함.
-  const handleShareLocation = () => {
-    setModalState(true);
-  };
-  const handleUnShareLocation = () => {
-    setIsSharedLocation(false);
-  };
+  // const handleShareLocation = () => {
+  //   setModalState(true);
+  // };
+  // const handleUnShareLocation = () => {
+  //   setIsSharedLocation(false);
+  // };
 
   return (
     <>
@@ -73,7 +73,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
           style={{
             transform: isExpandedFocusedSheet
               ? "translateY(0)"
-              : "translateY(calc(100% - 380px))",
+              : "translateY(calc(100% - 450px))",
           }}
         >
           <div className={styles.SheetIndicator} />
@@ -88,7 +88,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
             isExpandedFocusedSheet={isExpandedFocusedSheet}
             setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
           />
-          <div
+          {/* <div
             className={styles.ButtonContainer}
             style={
               isExpandedFocusedSheet ? { bottom: "40px" } : { bottom: "15px" }
@@ -101,14 +101,29 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
             ) : (
               <Button onClick={handleShareLocation}>내 위치 공유</Button>
             )}
-          </div>
+          </div> */}
+          {!isExpandedFocusedSheet && (
+            <div className={styles.SheetImgContainer}>
+              {/* 최대 3개까지만 보이도록 */}
+              {detailInfo?.imgs
+                .slice(0, 3)
+                .map((item, index) => (
+                  <img
+                    className={styles.SheetImg}
+                    key={index}
+                    src={item}
+                    alt="위치 관련 이미지"
+                  />
+                ))}
+            </div>
+          )}
         </div>
       </div>
-      <ShareLocationModal
+      {/* <ShareLocationModal
         modalState={modalState}
         setModalState={setModalState}
         setIsSharedLocation={setIsSharedLocation}
-      />
+      /> */}
     </>
   );
 };

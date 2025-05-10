@@ -19,7 +19,7 @@
   opacity: 1;
 }
 .DetailInfoBottomSheet {
-  height: 380px;
+  height: 450px;
   width: 100%;
   max-width: 700px;
   border-top-left-radius: 20.967px;
@@ -31,6 +31,7 @@
   align-items: center;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overflow: hidden;
 }
 .Expanded {
   height: calc(100vh + 20px); /* or whatever full height */
@@ -49,13 +50,15 @@
   top: 10px;
   z-index: 10; /* 다른 요소 위에 오도록 */
 }
-
-.ButtonContainer {
-  position: fixed;
-  padding: 15px 27px;
+.SheetImgContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 6px;
   width: 100%;
+  padding: 0 35px 20px 35px;
   box-sizing: border-box;
 }
-.ButtonContainer button {
-  touch-action: manipulation; /* 또는 none */
+.SheetImg {
+  width: calc(100% / 3 - 4px);
 }
