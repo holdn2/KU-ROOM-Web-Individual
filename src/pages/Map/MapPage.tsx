@@ -27,7 +27,8 @@ const MapPage = () => {
   const [mapSearchResult, setMapSearchResult] = useState("");
   const [isInSchool, setIsInSchool] = useState(false);
 
-  console.log("학교 내부인가요? : ", isInSchool);
+  if (isInSchool) {
+  }
 
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
