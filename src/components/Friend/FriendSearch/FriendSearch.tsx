@@ -5,7 +5,6 @@ import React, { useRef } from "react";
 
 interface FriendSearchProps {
   searchTarget: string;
-  searchState: "list" | "add";
   setSearchTarget: (value: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -14,7 +13,6 @@ interface FriendSearchProps {
 
 const FriendSearch: React.FC<FriendSearchProps> = ({
   searchTarget,
-  searchState,
   setSearchTarget,
   onFocus,
   onBlur,
@@ -31,11 +29,6 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
     inputFocus.current?.focus(); // 삭제 후 포커스 유지
   };
 
-  const placeholder =
-    searchState === "add"
-      ? "닉네임 또는 학번을 입력해주세요"
-      : "닉네임을 입력해주세요";
-
   return (
     <div className={styles.SearchBarContainer}>
       <div className={styles.SearchWrapper}>
@@ -47,7 +40,7 @@ const FriendSearch: React.FC<FriendSearchProps> = ({
           enterKeyHint="search"
           value={searchTarget}
           onChange={handleChange}
-          placeholder={placeholder}
+          placeholder="닉네임을 입력해주세요"
           onFocus={onFocus}
           onBlur={onBlur}
           onKeyDown={onKeyDown}

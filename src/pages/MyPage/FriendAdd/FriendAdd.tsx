@@ -36,10 +36,8 @@ const FriendAdd = () => {
 
   // 검색 시 로직. 서버에 요청해야함.
   const filteringSearch = () => {
-    const result = dummySearchData.filter(
-      (user) =>
-        user.nickname.includes(searchTarget.trim()) ||
-        user.studentId.includes(searchTarget.trim())
+    const result = dummySearchData.filter((user) =>
+      user.nickname.includes(searchTarget.trim())
     );
     setFilteredUsers(result);
   };
@@ -93,7 +91,6 @@ const FriendAdd = () => {
               setSearchTarget(value);
               setFilteredUsers([]);
             }}
-            searchState="add"
             onFocus={() => setIsSearchFocused(true)}
             onBlur={handleBlurSearch}
             onKeyDown={handleSearchKeyDown}

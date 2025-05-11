@@ -135,8 +135,8 @@ const MapPage = () => {
                   style={{ filter: isTracking ? "none" : "grayscale(100%)" }}
                 />
               </button>
-              {/* 학교 내부에서만 보이도록 */}
-              {/* {isInSchool && (
+              {/* 학교 내부에서만 보이도록 하기! */}
+              {isInSchool && (
                 <button
                   className={styles.SharedLocationButton}
                   onClick={handleShareLocation}
@@ -144,14 +144,14 @@ const MapPage = () => {
                   <img src={shareLocationIcon} alt="위치 공유 아이콘" />
                   <span className={styles.SharingText}>내 위치 공유</span>
                 </button>
-              )} */}
-              <button
+              )}
+              {/* <button
                 className={styles.SharedLocationButton}
                 onClick={handleShareLocation}
               >
                 <img src={shareLocationIcon} alt="위치 공유 아이콘" />
                 <span className={styles.SharingText}>내 위치 공유</span>
-              </button>
+              </button> */}
             </>
           )}
         </>

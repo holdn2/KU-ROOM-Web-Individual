@@ -62,3 +62,7 @@
 .SheetImg {
   width: calc(100% / 3 - 4px);
 }
+/* 이건 그냥 예시 */
+.SheetImg:nth-child(3) {
+  filter: grayscale(60%) opacity(0.3);
+}

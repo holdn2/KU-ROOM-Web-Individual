@@ -16,9 +16,10 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
   const navigate = useNavigate();
   const nickname = useUserStore((state) => state.user?.nickname);
   const imageUrl = useUserStore((state) => state.user?.imageUrl);
-  const department = useUserStore(
-    (state) => state.user?.departmentResponse[0].departmentName
-  );
+  // const department = useUserStore(
+  //   (state) => state.user?.departmentResponse[0].departmentName
+  // );
+  const email = useUserStore((state) => state.user?.email);
   // const department = useUserStore((state) => state.user?.department);
 
   const goToProfileSetting = () => {
@@ -52,7 +53,7 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
         <div className={styles.InfoWrapper}>
           <span className={styles.MyName}>{nickname}</span>
           {!isChangeProfile && (
-            <span className={styles.MyDepartment}>{department}</span>
+            <span className={styles.MyDepartment}>{email}</span>
           )}
         </div>
       </div>
