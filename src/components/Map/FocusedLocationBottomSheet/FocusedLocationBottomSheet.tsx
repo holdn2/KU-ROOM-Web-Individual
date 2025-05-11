@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./FocusedLocationBottomSheet.module.css";
 import { dummyDetailInfo } from "../MapData";
-// import Button from "../../Button/Button";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
-// import ShareLocationModal from "../ShareLocationModal/ShareLocationModal";
 import LocationInfoTopContent from "./LocationInfoTopContent/LocationInfoTopContent";
 import FocusedLocationInfo from "./FocusedLocationInfo/FocusedLocationInfo";
+import { BeatLoader } from "react-spinners";
 
 interface LocationDetailInfo {
   imgs: string[];
@@ -32,18 +31,22 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
 }) => {
   // 위치 상세 정보 저장할 상태
   const [detailInfo, setDetailInfo] = useState<LocationDetailInfo | null>(null);
-  // const [isSharedLocation, setIsSharedLocation] = useState(false);
-
-  // const [modalState, setModalState] = useState(false);
-
   const sheetRef = useRef<HTMLDivElement>(null);
+
+  // 아직 해당 장소 정보가 안 왔을 때 로딩처리
+  const [isLoading, setIsLoading] = useState(true);
 
   // 서버에 해당 장소 정보 요청
   useEffect(() => {
     setDetailInfo(dummyDetailInfo);
-    // 위치 공유 상태도 받아야 함.
-    // isSharedLocation()
+    // 여기에 실제 API 로딩 or 이미지 로딩 조건으로 변경해야함.
+    setIsLoading(true);
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    return () => clearTimeout(timeout);
   }, [focusedMarkerTitle]);
+
   // 바텀 시트 올리고 내리는 로직.
   useBottomSheetDrag({
     sheetRef,
@@ -52,79 +55,58 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
     minHeight: 450,
   });
 
-  // 서버에 위치 공유 상태 요청해야함.
-  // const handleShareLocation = () => {
-  //   setModalState(true);
-  // };
-  // const handleUnShareLocation = () => {
-  //   setIsSharedLocation(false);
-  // };
-
   return (
-    <>
+    <div
+      className={`${styles.DetailInfoBottomSheetContainer} ${hasFocusedMarker ? styles.open : ""}`}
+    >
       <div
-        className={`${styles.DetailInfoBottomSheetContainer} ${hasFocusedMarker ? styles.open : ""}`}
+        ref={sheetRef}
+        className={`${styles.DetailInfoBottomSheet} ${
+          isExpandedFocusedSheet ? styles.Expanded : ""
+        }`}
+        style={{
+          transform: isExpandedFocusedSheet
+            ? "translateY(0)"
+            : "translateY(calc(100% - 450px))",
+        }}
       >
-        <div
-          ref={sheetRef}
-          className={`${styles.DetailInfoBottomSheet} ${
-            isExpandedFocusedSheet ? styles.Expanded : ""
-          }`}
-          style={{
-            transform: isExpandedFocusedSheet
-              ? "translateY(0)"
-              : "translateY(calc(100% - 450px))",
-          }}
-        >
-          <div className={styles.SheetIndicator} />
-          {isExpandedFocusedSheet && (
-            <LocationInfoTopContent
+        <div className={styles.SheetIndicator} />
+        {isLoading ? (
+          <div className={styles.MyPageLoadingWrapper}>
+            <BeatLoader color="#009733" size={18} margin={4} />
+          </div>
+        ) : (
+          <>
+            {isExpandedFocusedSheet && (
+              <LocationInfoTopContent
+                detailInfo={detailInfo}
+                setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+              />
+            )}
+            <FocusedLocationInfo
               detailInfo={detailInfo}
+              isExpandedFocusedSheet={isExpandedFocusedSheet}
               setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
             />
-          )}
-          <FocusedLocationInfo
-            detailInfo={detailInfo}
-            isExpandedFocusedSheet={isExpandedFocusedSheet}
-            setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
-          />
-          {/* <div
-            className={styles.ButtonContainer}
-            style={
-              isExpandedFocusedSheet ? { bottom: "40px" } : { bottom: "15px" }
-            }
-          >
-            {isSharedLocation ? (
-              <Button variant="quaternary" onClick={handleUnShareLocation}>
-                내 위치 공유 중
-              </Button>
-            ) : (
-              <Button onClick={handleShareLocation}>내 위치 공유</Button>
+            {!isExpandedFocusedSheet && (
+              <div className={styles.SheetImgContainer}>
+                {/* 최대 3개까지만 보이도록 */}
+                {detailInfo?.imgs
+                  .slice(0, 3)
+                  .map((item, index) => (
+                    <img
+                      className={styles.SheetImg}
+                      key={index}
+                      src={item}
+                      alt="위치 관련 이미지"
+                    />
+                  ))}
+              </div>
             )}
-          </div> */}
-          {!isExpandedFocusedSheet && (
-            <div className={styles.SheetImgContainer}>
-              {/* 최대 3개까지만 보이도록 */}
-              {detailInfo?.imgs
-                .slice(0, 3)
-                .map((item, index) => (
-                  <img
-                    className={styles.SheetImg}
-                    key={index}
-                    src={item}
-                    alt="위치 관련 이미지"
-                  />
-                ))}
-            </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
-      {/* <ShareLocationModal
-        modalState={modalState}
-        setModalState={setModalState}
-        setIsSharedLocation={setIsSharedLocation}
-      /> */}
-    </>
+    </div>
   );
 };
 

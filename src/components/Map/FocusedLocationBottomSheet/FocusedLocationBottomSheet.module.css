@@ -62,7 +62,15 @@
 .SheetImg {
   width: calc(100% / 3 - 4px);
 }
-/* 이건 그냥 예시 */
+/* 이건 그냥 예시 
+세번째 사진 약간 블러 처리 */
 .SheetImg:nth-child(3) {
   filter: grayscale(60%) opacity(0.3);
+}
+
+.MyPageLoadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }

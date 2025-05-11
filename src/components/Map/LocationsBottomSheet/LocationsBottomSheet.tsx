@@ -24,6 +24,7 @@ interface LocationsBottomSheetProps {
   setIsTracking: (value: boolean) => void;
   hasFocusedMarker: boolean;
   setHasFocusedMarker: (value: boolean) => void;
+  setFocusedMarkerTitle: (value: string) => void;
 }
 
 const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
@@ -35,6 +36,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   setIsTracking,
   hasFocusedMarker,
   setHasFocusedMarker,
+  setFocusedMarkerTitle,
 }) => {
   const [selectedLocationInfos, setSelectedLocationInfos] = useState<
     LocationInfo[]
@@ -50,7 +52,13 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
     );
     if (target && mapInstance.current) {
       setHasFocusedMarker(true);
-      makeFocusMarker(mapInstance.current, target.marker, setIsTracking);
+      makeFocusMarker(
+        mapInstance.current,
+        target.marker,
+        setIsTracking,
+        setHasFocusedMarker,
+        setFocusedMarkerTitle
+      );
     }
 
     setIsExpandedSheet(false); // 바텀시트 내리기

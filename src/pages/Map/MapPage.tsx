@@ -167,6 +167,7 @@ const MapPage = () => {
             setIsTracking={setIsTracking}
             hasFocusedMarker={hasFocusedMarker}
             setHasFocusedMarker={setHasFocusedMarker}
+            setFocusedMarkerTitle={setFocusedMarkerTitle}
           />
           <BottomBar />
         </>
