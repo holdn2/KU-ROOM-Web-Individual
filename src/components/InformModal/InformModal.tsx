@@ -4,6 +4,7 @@ import styles from "./InformModal.module.css";
 import cloudIcon from "../../assets/icon/cloud.svg";
 import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
+import { logoutApi } from "../../apis/auth";
 
 type Props = {
   modalType: string;
@@ -51,9 +52,12 @@ const InformModal = ({
     NewPassword: {
       title: "비밀번호가 재설정되었습니다.",
       description: "다시 로그인해주세요.",
-      handleModalButton: () => {
+      handleModalButton: async () => {
         setModalState(false);
-        navigate("/login");
+        const logoutResponse = await logoutApi();
+        console.log(logoutResponse);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
       },
     },
     NicknameChange: {
