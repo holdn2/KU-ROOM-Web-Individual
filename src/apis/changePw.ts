@@ -15,6 +15,10 @@ interface ChangePwResponse {
 
 // 로그인 전 비밀번호 변경 (아이디/비밀번호 찾기 시 사용)
 export const changePwBeforeLogin = async (userInfo: {
+  emailRequest: {
+    email: string;
+    code: string;
+  };
   loginId: string;
   newPassword: string;
 }) => {

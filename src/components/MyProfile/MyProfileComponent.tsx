@@ -36,15 +36,18 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
     >
       <div className={styles.MyProfileInfoWrapper}>
         <div className={styles.ImgWrapper}>
-          <img
-            src={imageUrl || defaultProfileImg}
-            alt="프로필 사진"
-            style={
-              isChangeProfile
-                ? { borderRadius: "65px", border: "2px solid #009733" }
-                : {}
-            }
-          />
+          {isChangeProfile ? (
+            <button onClick={() => console.log("프로필 사진 변경")}>
+              <img
+                src={imageUrl || defaultProfileImg}
+                alt="프로필 사진"
+                style={{ borderRadius: "65px", border: "2px solid #009733" }}
+              />
+            </button>
+          ) : (
+            <img src={imageUrl || defaultProfileImg} alt="프로필 사진" />
+          )}
+
           {isChangeProfile && (
             <img src={editIcon} alt="수정하기" className={styles.EditIcon} />
           )}

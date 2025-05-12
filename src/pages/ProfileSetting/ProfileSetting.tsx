@@ -8,28 +8,56 @@ import BottomSheet from "../../components/profilesetting/BottomSheet/BottomSheet
 import SelectItem from "../../components/profilesetting/SelectItem/SelectItem";
 import InputBar from "../../components/InputBar/InputBar";
 import { isValidStudentId } from "../../utils/validations";
-import { colleges, departments } from "../../constants/dummyData";
 import { signupApi } from "../../apis/signup";
+import { getAllColleges, getDepartments } from "../../apis/department";
 
 const ProfileSetting: React.FC = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { signupEmail, signupId, signupPw, isMarketingOk } =
     location.state || {};
 
   const [nickname, setNickname] = useState("");
   const [isDuplicatedNickname, setIsDuplicatedNickname] = useState(false);
-  const [college, setCollege] = useState("");
-  const [department, setDepartment] = useState("");
+  const [colleges, setColleges] = useState<string[]>([]);
+  const [selectedCollege, setSelectedCollege] = useState("");
+  const [departments, setDepartments] = useState<string[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState("");
   const [studentId, setStudentId] = useState("");
   const [isDuplicatedStudentId, setIsDuplicatedStudentId] = useState(false);
 
-  // 임시 선택값 (바텀시트에서 선택한 값)
+  // 임시 선택값 (바텀시트에서 클릭한 값)
   const [tempSelectedCollege, setTempSelectedCollege] = useState("");
   const [tempSelectedDepartment, setTempSelectedDepartment] = useState("");
 
   const [isCollegeSheetOpen, setIsCollegeSheetOpen] = useState(false);
   const [isDepartmentSheetOpen, setIsDepartmentSheetOpen] = useState(false);
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchToGetColleges();
+  }, []);
+
+  useEffect(() => {
+    fetchToGetDepartments(selectedCollege);
+  }, [selectedCollege]);
+
+  const fetchToGetColleges = async () => {
+    try {
+      const response = await getAllColleges();
+      setColleges(response);
+    } catch (error) {
+      console.error("단과대학 목록 불러오기 실패", error);
+    }
+  };
+
+  const fetchToGetDepartments = async (college: string) => {
+    try {
+      const response = await getDepartments(college);
+      setDepartments(response);
+    } catch (error) {
+      console.error("학과 목록 불러오기 실패", error);
+    }
+  };
 
   // 닉네임이 유효한지 확인하는 변수
   const isNicknameValid =
@@ -49,21 +77,21 @@ const ProfileSetting: React.FC = () => {
     setStudentId(value);
   };
 
-  const handleCollegeSelect = (selectedCollege: string) => {
+  const handleClickedCollege = (selectedCollege: string) => {
     setTempSelectedCollege(selectedCollege);
   };
 
-  const handleDepartmentSelect = (selectedDepartment: string) => {
+  const handleClickedDepartment = (selectedDepartment: string) => {
     setTempSelectedDepartment(selectedDepartment);
   };
 
   const handleApplyCollege = (selectedItem: string) => {
-    setCollege(selectedItem);
-    setDepartment(""); // 대학이 바뀌면 학과 초기화
+    setSelectedCollege(selectedItem);
+    setSelectedDepartment(""); // 대학이 바뀌면 학과 초기화
   };
 
   const handleApplyDepartment = (selectedItem: string) => {
-    setDepartment(selectedItem);
+    setSelectedDepartment(selectedItem);
   };
 
   const handleSubmit = async () => {
@@ -72,7 +100,7 @@ const ProfileSetting: React.FC = () => {
       loginId: signupId,
       password: signupPw,
       studentId: studentId,
-      department: department,
+      department: selectedDepartment,
       nickname: nickname,
       agreementStatus: isMarketingOk ? "AGREED" : "DISAGREED",
     };
@@ -93,8 +121,8 @@ const ProfileSetting: React.FC = () => {
   // 프로필 설정이 완료되었는지 확인
   const isProfileComplete =
     isNicknameValid &&
-    college &&
-    department &&
+    selectedCollege &&
+    selectedDepartment &&
     studentId.length >= 9 &&
     isValidStudentId(studentId);
 
@@ -136,30 +164,30 @@ const ProfileSetting: React.FC = () => {
         {isNicknameValid && (
           <Select
             label="단과대학"
-            value={college}
+            value={selectedCollege}
             placeholder="단과대학을 선택해주세요"
             onClick={() => {
-              setTempSelectedCollege(college); // 현재 선택값으로 초기화
+              setTempSelectedCollege(selectedCollege); // 현재 선택값으로 초기화
               setIsCollegeSheetOpen(true);
             }}
           />
         )}
 
         {/* 단과대학이 선택되었을 때만 학과 선택 표시 */}
-        {isNicknameValid && college && (
+        {isNicknameValid && selectedCollege && (
           <Select
             label="학과"
-            value={department}
+            value={selectedDepartment}
             placeholder="학과를 선택해주세요"
             onClick={() => {
-              setTempSelectedDepartment(department); // 현재 선택값으로 초기화
+              setTempSelectedDepartment(selectedDepartment); // 현재 선택값으로 초기화
               setIsDepartmentSheetOpen(true);
             }}
           />
         )}
 
         {/* 학과가 선택되었을 때만 학번 입력 표시 */}
-        {isNicknameValid && college && department && (
+        {isNicknameValid && selectedCollege && selectedDepartment && (
           <InputBar
             label="학번"
             type="text"
@@ -195,7 +223,7 @@ const ProfileSetting: React.FC = () => {
               key={item}
               text={item}
               isSelected={tempSelectedCollege === item}
-              onClick={() => handleCollegeSelect(item)}
+              onClick={() => handleClickedCollege(item)}
             />
           ))}
         </div>
@@ -210,13 +238,13 @@ const ProfileSetting: React.FC = () => {
         selectedItem={tempSelectedDepartment}
       >
         <div className="profile-setting-select-list">
-          {college &&
-            departments[college as keyof typeof departments].map((item) => (
+          {selectedCollege &&
+            departments.map((item) => (
               <SelectItem
                 key={item}
                 text={item}
                 isSelected={tempSelectedDepartment === item}
-                onClick={() => handleDepartmentSelect(item)}
+                onClick={() => handleClickedDepartment(item)}
               />
             ))}
         </div>
