@@ -1,4 +1,3 @@
-// 로그인 관련 api
 import axios from "axios";
 
 const LOGIN_API_URL = "https://kuroom.shop/api/v1/auth/login";
@@ -12,6 +11,41 @@ const REDIRECT_URI =
   process.env.NODE_ENV === "development"
     ? "http://localhost:5173/naver-callback"
     : "https://ku-room-web-individual.vercel.app/naver-callback";
+
+// API 응답 타입 정의
+export interface ApiResponse<T> {
+  code: number;
+  status: string;
+  message: string;
+  data: T;
+}
+
+// 토큰 응답 타입
+export interface TokenResponse {
+  accessToken: string;
+  refreshToken: string;
+  accessExpireIn: number;
+  refreshExpireIn: number;
+}
+
+// 사용자 정보 응답 타입
+export interface UserResponse {
+  id: number;
+  oauthId: string;
+  loginId: string;
+  email: string;
+  nickname: string;
+  studentId: string;
+  imageUrl: string;
+  departmentResponse: any[];
+}
+
+// 로그인 응답 데이터 타입
+export interface LoginResponseData {
+  tokenResponse: TokenResponse;
+  userResponse: UserResponse;
+  isNewUser?: boolean;
+}
 
 export const loginApi = async (userData: {
   loginId: string;
@@ -37,18 +71,25 @@ interface LogoutResponse {
   message: string;
   data: string;
 }
+
 export const logoutApi = async () => {
   try {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       throw new Error("AccessToken이 없습니다.");
     }
-    const response = await axios.patch<LogoutResponse>(LOGOUT_API_URL, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+
+    // 수정: 요청 본문과 헤더를 올바르게 분리
+    const response = await axios.patch<LogoutResponse>(
+      LOGOUT_API_URL,
+      {}, // 빈 객체를 요청 본문으로 전송
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return response.data.data; // 성공 시 반환
   } catch (error: any) {
@@ -84,36 +125,28 @@ export const getNaverLoginURL = () => {
   return "https://kuroom.shop/oauth2/authorization/naver";
 };
 
-// // 네이버 로그인 콜백 처리 API
-// export const naverLoginCallback = async (code: string, state: string) => {
-//   try {
-//     // 저장된 state와 비교하여 CSRF 공격 방지
-//     const savedState = sessionStorage.getItem("naverLoginState");
-
-//     if (process.env.NODE_ENV === "development") {
-//       console.log("개발 환경: state 검증 우회");
-//     } else if (savedState !== state) {
-//       throw new Error("보안 검증에 실패했습니다.");
-//     }
-
-//     // state 검증에 성공했으므로 세션 스토리지에서 삭제
-//     sessionStorage.removeItem("naverLoginState");
-
-//     const response = await axios.post(
-//       "https://kuroom.shop/api/v1/auth/token",
-//       null,
-//       {
-//         params: { authCode: code },
-//         headers: { "Content-Type": "application/json" },
-//       }
-//     );
-
-//     return response.data;
-//   } catch (error: any) {
-//     console.error("네이버 로그인 처리 중 오류:", error);
-//     throw new Error(
-//       error.response?.data?.message ||
-//         "네이버 로그인 처리 중 오류가 발생했습니다."
-//     );
-//   }
-// };
+// 네이버 로그인 토큰 처리 함수 (NaverCallback에서 사용)
+export const processNaverToken = async (
+  token: string
+): Promise<LoginResponseData> => {
+  try {
+    // 토큰이 JSON 형식으로 인코딩된 문자열인 경우 디코딩
+    try {
+      const tokenData = JSON.parse(
+        decodeURIComponent(token)
+      ) as LoginResponseData;
+      return tokenData;
+    } catch (parseError) {
+      // 토큰이 JSON이 아닌 다른 형식인 경우, 서버에 토큰 검증 요청
+      const response = await axios.post<ApiResponse<LoginResponseData>>(
+        `${NAVER_LOGIN_API_URL}/validate`,
+        { token },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      return response.data.data;
+    }
+  } catch (error) {
+    console.error("네이버 토큰 처리 중 오류:", error);
+    throw new Error("네이버 로그인 처리 중 오류가 발생했습니다.");
+  }
+};
