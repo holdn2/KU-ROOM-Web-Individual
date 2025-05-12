@@ -122,31 +122,45 @@ export const withdrawApi = async () => {
 
 // 네이버 로그인 URL 생성 함수
 export const getNaverLoginURL = () => {
-  return "https://kuroom.shop/oauth2/authorization/naver";
+  console.log("네이버 로그인 URL 생성");
+
+  // 표준 OAuth 2.0 방식으로 변경
+  const clientId = "0JPy8UxAyPa3jRSDHePI";
+  const redirectURI = encodeURIComponent(
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5173/naver-callback"
+      : "https://ku-room-web-individual.vercel.app/naver-callback"
+  );
+  const state = Math.random().toString(36).substring(2, 15);
+
+  // 세션 스토리지에 state 저장 (CSRF 방지)
+  sessionStorage.setItem("naverOAuthState", state);
+
+  // 표준 네이버 OAuth 2.0 엔드포인트 사용
+  const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectURI}&state=${state}`;
+
+  console.log("생성된 URL:", naverAuthUrl);
+
+  return naverAuthUrl;
 };
 
-// 네이버 로그인 토큰 처리 함수 (NaverCallback에서 사용)
-export const processNaverToken = async (
-  token: string
+// 네이버 인증 코드를 토큰으로 교환하는 함수
+export const exchangeNaverAuthCode = async (
+  authCode: string
 ): Promise<LoginResponseData> => {
   try {
-    // 토큰이 JSON 형식으로 인코딩된 문자열인 경우 디코딩
-    try {
-      const tokenData = JSON.parse(
-        decodeURIComponent(token)
-      ) as LoginResponseData;
-      return tokenData;
-    } catch (parseError) {
-      // 토큰이 JSON이 아닌 다른 형식인 경우, 서버에 토큰 검증 요청
-      const response = await axios.post<ApiResponse<LoginResponseData>>(
-        `${NAVER_LOGIN_API_URL}/validate`,
-        { token },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      return response.data.data;
-    }
+    const response = await axios.post<ApiResponse<LoginResponseData>>(
+      "https://kuroom.shop/api/v1/auth/token",
+      null,
+      {
+        params: { authCode },
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    return response.data.data;
   } catch (error) {
-    console.error("네이버 토큰 처리 중 오류:", error);
+    console.error("네이버 인증 코드 교환 중 오류:", error);
     throw new Error("네이버 로그인 처리 중 오류가 발생했습니다.");
   }
 };

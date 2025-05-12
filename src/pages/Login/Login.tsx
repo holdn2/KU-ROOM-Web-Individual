@@ -52,6 +52,7 @@ const Login = () => {
   // 네이버 소셜 로그인 핸들러
   const handleNaverLogin = () => {
     const naverLoginURL = getNaverLoginURL();
+    console.log("네이버 로그인 URL:", naverLoginURL); // 디버깅용 로그 추가
     window.location.href = naverLoginURL;
   };
 
