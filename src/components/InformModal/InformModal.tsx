@@ -58,6 +58,7 @@ const InformModal = ({
         console.log(logoutResponse);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        navigate("/login");
       },
     },
     NicknameChange: {
