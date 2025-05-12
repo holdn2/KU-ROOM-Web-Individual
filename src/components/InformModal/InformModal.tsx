@@ -54,10 +54,12 @@ const InformModal = ({
       description: "다시 로그인해주세요.",
       handleModalButton: async () => {
         setModalState(false);
-        const logoutResponse = await logoutApi();
-        console.log(logoutResponse);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        if (localStorage.getItem("accessToken")) {
+          const logoutResponse = await logoutApi();
+          console.log(logoutResponse);
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+        }
         navigate("/login");
       },
     },

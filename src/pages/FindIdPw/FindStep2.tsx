@@ -8,6 +8,7 @@ interface Step2Props {
   newPw: string;
   allowedPw: boolean;
   checkPw: string;
+  errorCode: number | null;
   isCheckedPw: boolean;
   isAttemptReset: boolean;
   handleuserIdChange: (value: string) => void;
@@ -21,6 +22,7 @@ const FindStep2: React.FC<Step2Props> = ({
   newPw,
   allowedPw,
   checkPw,
+  errorCode,
   isCheckedPw,
   isAttemptReset,
   handleNewPwChange,
@@ -47,6 +49,11 @@ const FindStep2: React.FC<Step2Props> = ({
       {!allowedPw && isAttemptReset && (
         <span className={styles.ErrorMsg}>
           영문, 숫자, 특수문자 포함 8자 이상이어야 합니다.
+        </span>
+      )}
+      {errorCode === 311 && (
+        <span className={styles.ErrorMsg}>
+          기존 비밀번호로 변경하실 수 없습니다.
         </span>
       )}
       <InputBar

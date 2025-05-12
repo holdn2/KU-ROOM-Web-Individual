@@ -20,6 +20,7 @@ type State = {
   checkPw: string; // 비밀번호 확인 위해 한 번 더 입력
   isCheckedPw: boolean; // 두 비밀번호가 일치하는지 여부
   isAttemptReset: boolean; // 비밀번호 재설정 시도했는지 여부
+  errorCode: number | null;
 };
 
 // 액션 정의
@@ -33,6 +34,7 @@ type Action =
   | { type: "SET_CHECK_PW"; payload: string }
   | { type: "SET_CHECKED_PW"; payload: boolean }
   | { type: "SET_ATTEMPT_RESET"; payload: boolean }
+  | { type: "SET_ERROR_CODE"; payload: number | null }
   | { type: "RESET_ALL" };
 
 // 초기 상태
@@ -46,6 +48,7 @@ const initialState: State = {
   checkPw: "",
   isCheckedPw: false,
   isAttemptReset: false,
+  errorCode: null,
 };
 // Reducer 함수
 const reducer = (state: State, action: Action): State => {
@@ -68,6 +71,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, isCheckedPw: action.payload };
     case "SET_ATTEMPT_RESET":
       return { ...state, isAttemptReset: action.payload };
+    case "SET_ERROR_CODE":
+      return { ...state, errorCode: action.payload };
     case "RESET_ALL":
       return initialState;
     default:
@@ -98,6 +103,7 @@ const FindIdPw = () => {
   const handleNewPwChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     if (newValue.length <= 20) {
+      dispatch({ type: "SET_ERROR_CODE", payload: null });
       dispatch({ type: "SET_NEW_PW", payload: newValue });
     }
   };
@@ -179,10 +185,13 @@ const FindIdPw = () => {
       };
       const response = await changePwBeforeLogin(userInfo);
       console.log(response);
-      console.log("재설정 성공!");
-      // 서버 전송 로직 필요함.
-      setModalType("NewPassword");
-      setModalState(true);
+      if (response.code === 311) {
+        dispatch({ type: "SET_ERROR_CODE", payload: 311 });
+      } else {
+        console.log("재설정 성공!");
+        setModalType("NewPassword");
+        setModalState(true);
+      }
     } else {
       console.log("재설정 실패: 조건을 다시 확인하세요.");
     }
@@ -224,6 +233,7 @@ const FindIdPw = () => {
             newPw={state.newPw}
             allowedPw={state.allowedPw}
             checkPw={state.checkPw}
+            errorCode={state.errorCode}
             isCheckedPw={state.isCheckedPw}
             isAttemptReset={state.isAttemptReset}
             handleuserIdChange={handleuserIdChange}

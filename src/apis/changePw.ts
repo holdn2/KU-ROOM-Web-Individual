@@ -32,8 +32,8 @@ export const changePwBeforeLogin = async (userInfo: {
         },
       }
     );
-    console.log(response.data.data);
-    return response.data.data; // 성공 응답 반환
+    console.log(response.data);
+    return response.data; // 성공 응답 반환
   } catch (error: any) {
     console.error("비밀번호 변경 실패:", error.response?.data || error.message);
     throw new Error(
