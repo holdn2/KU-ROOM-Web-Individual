@@ -169,7 +169,14 @@ const FindIdPw = () => {
     });
     // 모든 조건이 충족되었을 때 재설정 성공
     if (state.checkPw === state.newPw && isValidPassword(state.newPw)) {
-      const userInfo = { loginId: state.userId, newPassword: state.newPw };
+      const userInfo = {
+        emailRequest: {
+          email: state.informEmail,
+          code: state.verifyCode,
+        },
+        loginId: state.userId,
+        newPassword: state.newPw,
+      };
       const response = await changePwBeforeLogin(userInfo);
       console.log(response);
       console.log("재설정 성공!");
