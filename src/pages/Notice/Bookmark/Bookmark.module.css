@@ -31,7 +31,17 @@
   display: flex;
   justify-content: flex-end;
   padding: 15px 20px;
-  border-bottom: 1px solid #e3e7eb;
+  position: relative;
+}
+
+.sort-order-wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 18px;
+  right: 18px;
+  height: 1px;
+  background-color: #e3e7eb;
 }
 
 .bookmark-setting {
@@ -47,7 +57,7 @@
 }
 
 .dropdown-arrow {
-  margin-left: 4px;
+  margin-left: 5px;
   display: flex;
   align-items: center;
 }
@@ -66,12 +76,26 @@
 
 .bookmark-item {
   display: flex;
-  padding: 26px 18px;
-  border-bottom: 1px solid #e3e7eb;
+  padding: 18px;
   background-color: #f8f9fc;
   cursor: pointer;
   width: 100%;
   text-align: left;
+  position: relative;
+}
+
+.bookmark-item::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 18px;
+  right: 18px;
+  height: 1px;
+  background-color: #e3e7eb;
+}
+
+.bookmark-item:last-child::after {
+  display: none;
 }
 
 .bookmark-item-content {
@@ -104,7 +128,6 @@
   text-align: center;
 }
 
-/* 드롭다운 스타일 추가 */
 .sort-dropdown {
   position: relative;
 }
