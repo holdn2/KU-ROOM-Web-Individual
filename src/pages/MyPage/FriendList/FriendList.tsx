@@ -1,38 +1,22 @@
 import Header from "../../../components/Header/Header";
 import styles from "./FriendList.module.css";
-import defaultImg from "../../../assets/defaultProfileImg.svg";
 import { useEffect, useRef, useState } from "react";
 import FriendEdit from "../../../components/Friend/FriendEdit/FriendEdit";
 import FriendSearch from "../../../components/Friend/FriendSearch/FriendSearch";
 import FriendModal from "../../../components/Friend/FriendModal/FriendModal";
 import { useOutsideClick } from "../../../utils/friendUtils";
 import FriendContainer from "../../../components/Friend/FriendContainer/FriendContainer";
-
-const dummyFriendList = [
-  {
-    nickname: "쿠룸",
-    profileImg: defaultImg,
-  },
-  {
-    nickname: "쿠루미",
-    profileImg: defaultImg,
-  },
-  {
-    nickname: "건국대",
-    profileImg: defaultImg,
-  },
-  {
-    nickname: "휴학생",
-    profileImg: defaultImg,
-  },
-];
+import { getAllFriends } from "../../../apis/friend";
+import { useNavigate } from "react-router-dom";
 
 interface Friend {
+  id: number;
   nickname: string;
   profileImg: string;
 }
 
 const FriendList = () => {
+  const navigate = useNavigate();
   const [friendList, setFriendList] = useState<Friend[]>([]);
   const [searchNickname, setSearchNickname] = useState("");
 
@@ -61,7 +45,18 @@ const FriendList = () => {
 
   // 서버에서 친구 목록 가져오기
   useEffect(() => {
-    setFriendList(dummyFriendList);
+    const getMyFriends = async () => {
+      try {
+        const response = await getAllFriends();
+        console.log(response);
+        setFriendList(response);
+        return response;
+      } catch (error) {
+        console.error("친구 목록 불러오기 실패", error);
+      }
+    };
+
+    getMyFriends();
   }, []);
 
   // 팝업 외부 클릭 시 닫기
@@ -85,14 +80,26 @@ const FriendList = () => {
           />
         </div>
         <div className={styles.FriendListWrapper}>
-          {(searchNickname ? filteredFriends : friendList).map(
-            (friend, index) => (
-              <div key={index}>
-                <FriendContainer
-                  friend={friend}
-                  setEditPopupState={setEditPopupState}
-                />
-              </div>
+          {friendList.length === 0 ? (
+            <div className={styles.NoFriendsContainer}>
+              <span>현재 친구가 없습니다!</span>
+              <span
+                className={styles.ToFriendAdd}
+                onClick={() => navigate("/friendadd")}
+              >
+                친구 추가하러 가기
+              </span>
+            </div>
+          ) : (
+            (searchNickname ? filteredFriends : friendList).map(
+              (friend, index) => (
+                <div key={index}>
+                  <FriendContainer
+                    friend={friend}
+                    setEditPopupState={setEditPopupState}
+                  />
+                </div>
+              )
             )
           )}
         </div>

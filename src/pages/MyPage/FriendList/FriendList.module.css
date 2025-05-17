@@ -12,3 +12,20 @@
   padding: 40px 30px;
   gap: 30px;
 }
+.NoFriendsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 200px auto;
+  align-items: center;
+
+  color: #b0bac3;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+}
+.ToFriendAdd {
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
