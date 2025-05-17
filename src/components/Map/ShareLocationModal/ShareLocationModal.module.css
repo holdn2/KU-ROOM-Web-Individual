@@ -29,14 +29,18 @@
   gap: 5px;
 }
 .InformText,
+.BoldText,
 .AdditionalInform {
   color: #000;
   font-size: 18px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 120%;
   max-width: 250px;
   text-align: center;
+}
+.BoldText {
+  font-weight: 700;
 }
 .AdditionalInform {
   color: #a8a8a8;

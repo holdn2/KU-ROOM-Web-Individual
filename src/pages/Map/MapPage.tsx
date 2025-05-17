@@ -13,6 +13,7 @@ import SearchResultHeader from "../../components/Map/MapSearch/SearchResultHeade
 import LocationsBottomSheet from "../../components/Map/LocationsBottomSheet/LocationsBottomSheet";
 import FocusedLocationBottomSheet from "../../components/Map/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
 import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
+import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
 
 interface MarkerData {
   lat: number;
@@ -21,13 +22,26 @@ interface MarkerData {
   icon: string;
 }
 
+interface LocationData {
+  userLat: number;
+  userLng: number;
+}
+
 const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
   const [searchMode, setSearchMode] = useState(false);
   const [mapSearchResult, setMapSearchResult] = useState("");
   const [isInSchool, setIsInSchool] = useState(false);
+  const [isSharedLocation, setIsSharedLocation] = useState(false);
+
+  // 위치 공유 상태
+  const [modalState, setModalState] = useState(false);
+  const [currenLocation, setCurrentLocation] = useState<LocationData | null>(
+    null
+  ); // 현재 위치
 
   if (isInSchool) {
+    // vercel 배포 오류 해결 위해.
   }
 
   const [markers, setMarkers] = useState<MarkerData[]>([]);
@@ -67,13 +81,14 @@ const MapPage = () => {
     console.log("현재 포커된 상태: ", hasFocusedMarker);
   }, [hasFocusedMarker]);
 
-  // 현재 위치가 학교 내부 인지 검증
+  // 현재 위치가 학교 내부 인지 검증. 내 위치도 함께 저장
   useEffect(() => {
-    isMyLocationInSchool(setIsInSchool);
-  }, []);
+    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
+  }, [currenLocation]);
 
+  // 위치 공유 모달
   const handleShareLocation = () => {
-    console.log("내 위치 공유");
+    setModalState(true);
   };
   return (
     <div>
@@ -125,6 +140,7 @@ const MapPage = () => {
                 <MapSearchBar />
               </button>
               <MapCategoryChip setMapSearchResult={setMapSearchResult} />
+              {/* 내 위치 추적 아이콘 */}
               <button
                 className={styles.TrackingIcon}
                 onClick={() => setIsTracking(true)}
@@ -136,22 +152,31 @@ const MapPage = () => {
                 />
               </button>
               {/* 학교 내부에서만 보이도록 하기! */}
-              {isInSchool && (
+              {/* 내 위치 공유 버튼 */}
+              {/* {isInSchool && (
                 <button
                   className={styles.SharedLocationButton}
                   onClick={handleShareLocation}
                 >
                   <img src={shareLocationIcon} alt="위치 공유 아이콘" />
-                  <span className={styles.SharingText}>내 위치 공유</span>
+                  {isSharedLocation ? (
+                    <span className={styles.SharingText}>위치 공유 해제</span>
+                  ) : (
+                    <span className={styles.SharingText}>내 위치 공유</span>
+                  )}
                 </button>
-              )}
-              {/* <button
+              )} */}
+              <button
                 className={styles.SharedLocationButton}
                 onClick={handleShareLocation}
               >
                 <img src={shareLocationIcon} alt="위치 공유 아이콘" />
-                <span className={styles.SharingText}>내 위치 공유</span>
-              </button> */}
+                {isSharedLocation ? (
+                  <span className={styles.SharingText}>위치 공유 해제</span>
+                ) : (
+                  <span className={styles.SharingText}>내 위치 공유</span>
+                )}
+              </button>
             </>
           )}
         </>
@@ -177,6 +202,13 @@ const MapPage = () => {
         isExpandedFocusedSheet={isExpandedFocusedSheet}
         setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
         focusedMarkerTitle={focusedMarkerTitle}
+      />
+      <ShareLocationModal
+        modalState={modalState}
+        isSharedLocation={isSharedLocation}
+        currentLocation={currenLocation}
+        setModalState={setModalState}
+        setIsSharedLocation={setIsSharedLocation}
       />
     </div>
   );

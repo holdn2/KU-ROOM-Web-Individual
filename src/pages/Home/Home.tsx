@@ -11,8 +11,13 @@ import FriendLocation from "../../components/HomeContent/FriendLocation/FriendLo
 import MyLocationRanking from "../../components/HomeContent/MyLocationRanking/MyLocationRanking";
 import HomeNotice from "../../components/HomeContent/HomeNotice/HomeNotice";
 import { useNavigate } from "react-router-dom";
+import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
+import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
 
-const isInSchool = true; // 학교 내부인지 외부인지
+interface LocationData {
+  userLat: number;
+  userLng: number;
+}
 
 const Home = () => {
   const navigate = useNavigate();
@@ -20,8 +25,19 @@ const Home = () => {
   const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
   const [hasNewAlarm, setHasNewAlarm] = useState(false); // 새로운 알람이 있는지
 
+  // 학교 내부에 있는지 상태
+  const [isInSchool, setIsInSchool] = useState(false);
+
+  // 내 위치 공유 버튼 모달 상태
+  const [shareModalState, setShareModalState] = useState(false);
+  const [currenLocation, setCurrentLocation] = useState<LocationData | null>(
+    null
+  ); // 현재 위치
+
   // api 기다리는 상태 관리도 추후 추가 예정.
   useEffect(() => {
+    // vercel 배포 시 에러 방지용
+    console.log(isInSchool);
     // 로그인 여부 확인
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -30,6 +46,9 @@ const Home = () => {
     }
     // 서버에 새로운 알람이 있는지 검증. 있다면 true로
     setHasNewAlarm(true);
+
+    // 현재 위치가 학교 내부 인지 검증. 위치도 함께 저장
+    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
 
     const timeout = setTimeout(() => {
       setShowSplash(false);
@@ -47,17 +66,28 @@ const Home = () => {
       <div className={styles.HomeContentWrapper}>
         <HomeSildeBanner />
         <HomeMenu />
-        {isInSchool && (
+        {/* {isInSchool && (
           <HomeMiniMap
             isSharedLocation={isSharedLocation}
-            setIsSharedLocation={setIsSharedLocation}
+            setModalState={setShareModalState}
           />
-        )}
+        )} */}
+        <HomeMiniMap
+          isSharedLocation={isSharedLocation}
+          setModalState={setShareModalState}
+        />
         <FriendLocation isSharedLocation={isSharedLocation} />
         <MyLocationRanking />
         <HomeNotice />
       </div>
       <BottomBar />
+      <ShareLocationModal
+        modalState={shareModalState}
+        isSharedLocation={isSharedLocation}
+        currentLocation={currenLocation}
+        setModalState={setShareModalState}
+        setIsSharedLocation={setIsSharedLocation}
+      />
     </div>
   );
 };

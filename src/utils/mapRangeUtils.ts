@@ -36,8 +36,12 @@ export function isPointInSchool(
   return inside;
 }
 
+let errorShown = false;
 // 내 위치를 추적하여 학교 내부인지 검증하는 로직
-export function isMyLocationInSchool(setIsInSchool: (value: boolean) => void) {
+export function isMyLocationInSchool(
+  setIsInSchool: (value: boolean) => void,
+  setCurrentLocation: (location: { userLat: number; userLng: number }) => void
+) {
   if (!navigator.geolocation) return;
 
   // watchPosition으로 이동할 때마다 검증
@@ -46,11 +50,15 @@ export function isMyLocationInSchool(setIsInSchool: (value: boolean) => void) {
       const userLat = position.coords.latitude;
       const userLng = position.coords.longitude;
 
+      setCurrentLocation({ userLat, userLng });
       const inside = isPointInSchool(userLng, userLat, schoolRange);
       setIsInSchool(inside); // 밖으로 나가면 false 처리됨
     },
     (err) => {
-      console.warn("위치 정보를 가져올 수 없습니다.", err);
+      if (!errorShown) {
+        console.warn("위치 정보를 가져올 수 없습니다.", err);
+        errorShown = true;
+      }
     },
     {
       enableHighAccuracy: true,
