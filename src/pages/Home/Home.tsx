@@ -48,7 +48,9 @@ const Home = () => {
     setHasNewAlarm(true);
 
     // 현재 위치가 학교 내부 인지 검증. 위치도 함께 저장
+    // 서버에서 현재 공유 상태도 받아와야 함.
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
+    // setIsSharedLocation()
 
     const timeout = setTimeout(() => {
       setShowSplash(false);

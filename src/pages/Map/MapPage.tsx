@@ -82,9 +82,11 @@ const MapPage = () => {
   }, [hasFocusedMarker]);
 
   // 현재 위치가 학교 내부 인지 검증. 내 위치도 함께 저장
+  // 서버에서 공유 상태인지 받아오기
   useEffect(() => {
+    // setIsSharedLocation()
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
-  }, [currenLocation]);
+  }, [currenLocation, isSharedLocation]);
 
   // 위치 공유 모달
   const handleShareLocation = () => {

@@ -25,7 +25,6 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
 
   return (
     // 내 위치 불러오기 전에 렌더링 안되게. 로딩 표시라도 추가
-
     isSharedLocation ? (
       <div className={styles.HomeMiniMapBackground}>
         <div className={styles.HomeMiniMapWrapper}>
