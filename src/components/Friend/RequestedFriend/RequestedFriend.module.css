@@ -10,7 +10,6 @@
   flex-direction: column;
   padding: 40px 16px;
   gap: 30px;
-  border-bottom: 1px solid #e3e7eb;
 }
 .FriendProfileWrapper {
   display: flex;

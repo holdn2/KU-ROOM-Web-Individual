@@ -3,6 +3,7 @@
   flex-direction: column;
   padding: 40px 16px;
   gap: 30px;
+  border-top: 1px solid #e3e7eb;
 }
 .EachFriendContainer {
   display: flex;
