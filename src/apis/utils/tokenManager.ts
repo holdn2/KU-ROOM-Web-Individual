@@ -31,6 +31,8 @@ export const scheduleTokenRefresh = (expireIn: number) => {
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", newRefreshToken);
+      const expireAt = Date.now() + accessExpireIn * 1000;
+      localStorage.setItem("accessExpireIn", String(expireAt));
 
       // 다음 만료 시점 예약
       scheduleTokenRefresh(accessExpireIn);
