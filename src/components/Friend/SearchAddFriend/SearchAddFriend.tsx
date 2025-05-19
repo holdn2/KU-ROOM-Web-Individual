@@ -5,6 +5,7 @@ import noResultIcon from "../../../assets/icon/noResultSearch.svg";
 
 // 검색 결과 렌더링
 interface User {
+  id: number;
   nickname: string;
   studentId: string;
   profileImg: string;
@@ -15,7 +16,8 @@ interface SearchAddFriendProps {
   trySearch: boolean;
   filteredUsers: User[];
   searchSentRequests: string[];
-  handleSendRequest: (nickname: string) => void;
+  handleSendRequest: (id: number) => void;
+  handleDeleteRequest: (id: number) => void;
 }
 
 const SearchAddFriend: React.FC<SearchAddFriendProps> = ({
@@ -24,6 +26,7 @@ const SearchAddFriend: React.FC<SearchAddFriendProps> = ({
   filteredUsers,
   searchSentRequests,
   handleSendRequest,
+  handleDeleteRequest,
 }) => {
   if (!searchTarget || !trySearch) return null;
 
@@ -43,13 +46,23 @@ const SearchAddFriend: React.FC<SearchAddFriendProps> = ({
                 <span className={styles.Nickname}>{user.nickname}</span>
               </div>
               <div className={styles.SendRequestBtnWrapper}>
-                <Button
-                  onClick={() => handleSendRequest(user.nickname)}
-                  size="xs"
-                  variant={isSent ? "quaternary" : "primary"}
-                >
-                  {isSent ? "신청취소" : "친구신청"}
-                </Button>
+                {isSent ? (
+                  <Button
+                    onClick={() => handleDeleteRequest(user.id)}
+                    size="xs"
+                    variant="quaternary"
+                  >
+                    신청취소
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => handleSendRequest(user.id)}
+                    size="xs"
+                    variant="primary"
+                  >
+                    친구신청
+                  </Button>
+                )}
               </div>
             </div>
           );

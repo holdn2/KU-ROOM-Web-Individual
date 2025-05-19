@@ -5,20 +5,20 @@ import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 
 // 더미 데이터
 const dummyRequestAdd = [
-  { nickname: "쿠룸", profileImg: defaultImg },
-  { nickname: "쿠루미", profileImg: defaultImg },
+  { id: 1, nickname: "쿠룸", profileImg: defaultImg },
+  { id: 2, nickname: "쿠루미", profileImg: defaultImg },
 ];
 
 interface Friend {
+  id: number;
   nickname: string;
   profileImg: string;
 }
+interface RequestedFriendProps {
+  handleDeleteRequest: (id: number) => void;
+}
 
-const RequestedFriend = () => {
-  const handleDeleteRequest = (nickname: string) => {
-    console.log(`${nickname}에게 보낸 요청 삭제`);
-  };
-
+const RequestedFriend = ({ handleDeleteRequest }: RequestedFriendProps) => {
   const [requestList, setRequestList] = useState<Friend[]>([]);
 
   // 서버에서 보낸 요청 불러오기
@@ -43,7 +43,7 @@ const RequestedFriend = () => {
             className={styles.DeleteIcon}
             src={deleteIcon}
             alt="요청 삭제"
-            onClick={() => handleDeleteRequest(friend.nickname)}
+            onClick={() => handleDeleteRequest(friend.id)}
           />
         </div>
       ))}

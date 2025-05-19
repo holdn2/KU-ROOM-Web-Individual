@@ -7,11 +7,12 @@ import FriendModal from "../../../components/Friend/FriendModal/FriendModal";
 import RequestedFriend from "../../../components/Friend/RequestedFriend/RequestedFriend";
 import ReceivedFriend from "../../../components/Friend/ReceivedFriend/ReceivedFriend";
 import SearchAddFriend from "../../../components/Friend/SearchAddFriend/SearchAddFriend";
+import { cancelRequest, requestFriend } from "../../../apis/friend";
 
 // 더미 데이터
 const dummySearchData = [
-  { nickname: "건국", studentId: "202012345", profileImg: defaultImg },
-  { nickname: "건쿠", studentId: "202512345", profileImg: defaultImg },
+  { id: 1, nickname: "건국", studentId: "202012345", profileImg: defaultImg },
+  { id: 2, nickname: "건쿠", studentId: "202512345", profileImg: defaultImg },
 ];
 
 const FriendAdd = () => {
@@ -36,10 +37,10 @@ const FriendAdd = () => {
 
   // 검색 시 로직. 서버에 요청해야함.
   const filteringSearch = () => {
-    const result = dummySearchData.filter((user) =>
-      user.nickname.includes(searchTarget.trim())
-    );
-    setFilteredUsers(result);
+    // const result = dummySearchData.filter((user) =>
+    //   user.nickname.includes(searchTarget.trim())
+    // );
+    // setFilteredUsers(result);
   };
 
   // 엔터 시 검색 로직
@@ -64,19 +65,22 @@ const FriendAdd = () => {
   };
 
   // 친구 요청 취소
-  const handleDeleteRequest = (nickname: string) => {
-    console.log(`${nickname}에게 보낸 요청 삭제`);
+  const handleDeleteRequest = async (id: number) => {
+    try {
+      const response = await cancelRequest(id);
+      console.log(response);
+    } catch (error) {
+      console.error("친구요청 취소 실패 :", error);
+    }
   };
 
   // 검색 결과에서 친구 신청/취소. 서버에 데이터 요청 필요함. 서버와 연계 시 로직 변경 예정.
-  const handleSendRequest = (nickname: string) => {
-    if (searchSentRequests.includes(nickname)) {
-      setSearchSentRequests((prev) => prev.filter((name) => name !== nickname));
-      handleDeleteRequest(nickname);
-      console.log(`${nickname}에게 친구 신청 취소`);
-    } else {
-      setSearchSentRequests((prev) => [...prev, nickname]);
-      console.log(`${nickname}에게 친구 신청`);
+  const handleSendRequest = async (id: number) => {
+    try {
+      const response = await requestFriend(id);
+      console.log(response);
+    } catch (error) {
+      console.error("친구요청 실패 :", error);
     }
   };
 
@@ -104,11 +108,12 @@ const FriendAdd = () => {
             filteredUsers={filteredUsers}
             searchSentRequests={searchSentRequests}
             handleSendRequest={handleSendRequest}
+            handleDeleteRequest={handleDeleteRequest}
           />
         ) : (
           <div className={styles.FriendAddListWrapper}>
             {/* 보낸 요청 */}
-            <RequestedFriend />
+            <RequestedFriend handleDeleteRequest={handleDeleteRequest} />
             {/* 받은 요청 */}
             <ReceivedFriend
               setAcceptReceiveFriend={setAcceptReceiveFriend}

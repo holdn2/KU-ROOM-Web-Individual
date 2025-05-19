@@ -2,7 +2,13 @@
 import axiosInstance from "./axiosInstance"; // axiosInstance import
 
 const GET_ALL_FRIENDS = "/friends/list";
+const REQUEST_FRIEND = "/friends/request";
+const GET_SENT_REQUESTS = "/friends/requests/sent";
 const GET_RECEIVED_REQUESTS = "/friends/requests/received";
+const ACCEPT_REQUEST = "/friends/accept";
+const REJECT_REQUEST = "/friends/reject";
+const BLOCK_FRIEND = "/friends/block";
+const REPORT_FRIEND = "/friends/report";
 
 // 친구 목록 조회 api
 interface GetAllFriendsResponse {
@@ -19,15 +25,32 @@ export const getAllFriends = async () => {
     console.log(response.data.data);
     return response.data.data;
   } catch (error: any) {
-    console.error("단과대 조회 실패:", error.response?.data || error.message);
+    console.error(
+      "친구 목록 조회 실패:",
+      error.response?.data || error.message
+    );
     throw new Error(
-      error.response?.data?.message || "단과대 조회 중 오류 발생"
+      error.response?.data?.message || "친구 목록 조회 중 오류 발생"
     );
   }
 };
 
-// 받은 요청 목록 조회 api
-interface GetReceivedRequests {
+// 친구 요청 api
+export const requestFriend = async (receivedId: number) => {
+  try {
+    const response = await axiosInstance.post(REQUEST_FRIEND, {
+      receivedId: receivedId,
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("친구 요청 실패:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "친구 요청 중 오류 발생");
+  }
+};
+
+// 보낸 요청 목록 조회 api
+interface GetRequests {
   code: number;
   status: string;
   message: string;
@@ -38,17 +61,145 @@ interface GetReceivedRequests {
     imageUrl: string;
   }[];
 }
+export const getSentRequests = async () => {
+  try {
+    const response = await axiosInstance.get<GetRequests>(GET_SENT_REQUESTS);
+    console.log("보낸 요청: ", response.data.data);
+    return response.data.data;
+  } catch (error: any) {
+    console.error(
+      "보낸 요청 조회 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "보낸 요청 조회 중 오류 발생"
+    );
+  }
+};
+// 받은 요청 목록 조회 api
 export const getReceivedRequests = async () => {
   try {
-    const response = await axiosInstance.get<GetReceivedRequests>(
+    const response = await axiosInstance.get<GetRequests>(
       GET_RECEIVED_REQUESTS
     );
     console.log("받은 요청: ", response.data.data);
     return response.data.data;
   } catch (error: any) {
-    console.error("단과대 조회 실패:", error.response?.data || error.message);
-    throw new Error(
-      error.response?.data?.message || "단과대 조회 중 오류 발생"
+    console.error(
+      "받은 요청 조회 실패:",
+      error.response?.data || error.message
     );
+    throw new Error(
+      error.response?.data?.message || "받은 요청 조회 중 오류 발생"
+    );
+  }
+};
+
+// 친구 요청 수락 api
+export const acceptRequest = async (receiverId: number) => {
+  try {
+    const response = await axiosInstance.put(
+      ACCEPT_REQUEST,
+      {
+        receiverId: receiverId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("요청 수락 결과 : ", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("요청 수락 실패:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "요청 수락 중 오류 발생");
+  }
+};
+// 친구 요청 거절 api
+export const rejectRequest = async (requestId: number) => {
+  try {
+    const response = await axiosInstance.put(
+      REJECT_REQUEST,
+      {
+        requestId: requestId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("요청 거절 결과 : ", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("요청 거절 실패:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "요청 거절 중 오류 발생");
+  }
+};
+
+// 보낸 요청 취소 api
+export const cancelRequest = async (requestId: number) => {
+  try {
+    // delete 요청에 body가 필요할 때 아래와 같이 사용한다.
+    const response = await axiosInstance.request({
+      url: REQUEST_FRIEND,
+      method: "DELETE",
+      data: { requestId },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("요청 취소 결과 : ", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("요청 취소 실패:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "요청 취소 중 오류 발생");
+  }
+};
+
+// 친구 삭제 api
+
+// 친구 차단 api
+export const friendBlock = async (reportId: number) => {
+  try {
+    const response = await axiosInstance.patch(
+      BLOCK_FRIEND,
+      {
+        reportId: reportId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("친구 차단 결과 : ", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("친구 차단 실패:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "친구 차단 중 오류 발생");
+  }
+};
+// 친구 신고 api
+export const friendReport = async (reportId: number, reason: string) => {
+  try {
+    const response = await axiosInstance.patch(
+      REPORT_FRIEND,
+      {
+        reportId: reportId,
+        reason: reason,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("친구 신고 결과 : ", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("친구 신고 실패:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "친구 신고 중 오류 발생");
   }
 };
