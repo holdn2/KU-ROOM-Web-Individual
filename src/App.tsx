@@ -25,8 +25,24 @@ import MapPage from "./pages/Map/MapPage";
 import DepartmentSetting from "./pages/MyPage/DepartmentSetting/DepartmentSetting";
 import Bookmark from "./pages/Notice/Bookmark/Bookmark";
 import Search from "./pages/Notice/Search/Search";
+import { useEffect } from "react";
+import { scheduleTokenRefresh } from "./apis/utils/tokenManager";
 
 function App() {
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const expireAtStr = localStorage.getItem("accessExpireIn");
+
+    if (token && expireAtStr) {
+      const expireAt = parseInt(expireAtStr, 10);
+      const now = Date.now();
+      const remain = Math.floor((expireAt - now) / 1000); // 남은 초
+
+      if (remain > 60) {
+        scheduleTokenRefresh(remain);
+      }
+    }
+  }, []);
   const router = createBrowserRouter([
     {
       path: "/",

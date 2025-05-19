@@ -30,6 +30,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
         console.log(logoutResponse);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("accessExpireIn");
         navigate("/login");
 
         break;

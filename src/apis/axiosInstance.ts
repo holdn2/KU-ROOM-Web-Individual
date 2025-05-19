@@ -27,9 +27,12 @@ interface TokenReissueResponse {
   data: {
     accessToken: string;
     refreshToken: string;
+    accessExpireIn: number;
+    refreshExpireIn: number;
   };
 }
 
+// 토큰 갱신
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -43,18 +46,23 @@ axiosInstance.interceptors.response.use(
         const refreshToken = localStorage.getItem("refreshToken");
         if (!refreshToken) throw new Error("refreshToken 없음");
 
-        const res = await axios.post<TokenReissueResponse>(
+        const res = await axios.patch<TokenReissueResponse>(
           "https://kuroom.shop/api/v1/auth/reissue",
-          {},
+          {
+            refreshToken: refreshToken,
+          },
           {
             headers: {
-              Authorization: `Bearer ${refreshToken}`,
+              "Content-Type": "application/json",
             },
           }
         );
 
         const newAccessToken = res.data.data.accessToken;
+        const newRefreshToken = res.data.data.refreshToken;
+
         localStorage.setItem("accessToken", newAccessToken);
+        localStorage.setItem("refreshToken", newRefreshToken);
 
         if (!originalRequest.headers) originalRequest.headers = {};
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
