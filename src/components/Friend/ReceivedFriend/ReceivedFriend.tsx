@@ -12,12 +12,14 @@ interface Friend {
 
 interface ReceivedFriendProps {
   setAcceptReceiveFriend: (value: string) => void;
+  setAcceptReceiveFriendId: (value: number) => void;
   setModalType: (value: string) => void;
   setModalState: (value: boolean) => void;
 }
 
 const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
   setAcceptReceiveFriend,
+  setAcceptReceiveFriendId,
   setModalType,
   setModalState,
 }) => {
@@ -38,15 +40,17 @@ const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
   }, []);
 
   // 친구 요청 수락
-  const handleAcceptRequest = (nickname: string) => {
-    setAcceptReceiveFriend(nickname);
+  const handleAcceptRequest = (friend: Friend) => {
+    setAcceptReceiveFriend(friend.fromUserNickname);
+    setAcceptReceiveFriendId(friend.fromUserId);
     setModalType("accept");
     setModalState(true);
   };
 
   // 친구 요청 거절
-  const handleRefuseRequest = (nickname: string) => {
-    setAcceptReceiveFriend(nickname);
+  const handleRefuseRequest = (friend: Friend) => {
+    setAcceptReceiveFriend(friend.fromUserNickname);
+    setAcceptReceiveFriendId(friend.fromUserId);
     setModalType("refuse");
     setModalState(true);
   };
@@ -57,7 +61,7 @@ const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
         {receivedList.map((friend, index) => (
           <div key={index} className={styles.EachFriendContainer}>
             <div className={styles.FriendProfileWrapper}>
-              {friend.imageUrl === "" ? (
+              {friend.imageUrl ? (
                 <img
                   className={styles.ProfileImg}
                   src={defaultImg}
@@ -74,14 +78,11 @@ const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
               <span className={styles.Nickname}>{friend.fromUserNickname}</span>
             </div>
             <div className={styles.AcceptRefuseBtnWrapper}>
-              <Button
-                onClick={() => handleAcceptRequest(friend.fromUserNickname)}
-                size="xs"
-              >
+              <Button onClick={() => handleAcceptRequest(friend)} size="xs">
                 수락
               </Button>
               <Button
-                onClick={() => handleRefuseRequest(friend.fromUserNickname)}
+                onClick={() => handleRefuseRequest(friend)}
                 size="xs"
                 variant="quaternary"
               >

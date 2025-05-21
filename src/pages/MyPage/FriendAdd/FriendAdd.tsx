@@ -2,31 +2,33 @@ import { useEffect, useState } from "react";
 import styles from "./FriendAdd.module.css";
 import Header from "../../../components/Header/Header";
 import FriendSearch from "../../../components/Friend/FriendSearch/FriendSearch";
-import defaultImg from "../../../assets/defaultProfileImg.svg";
 import FriendModal from "../../../components/Friend/FriendModal/FriendModal";
 import RequestedFriend from "../../../components/Friend/RequestedFriend/RequestedFriend";
 import ReceivedFriend from "../../../components/Friend/ReceivedFriend/ReceivedFriend";
 import SearchAddFriend from "../../../components/Friend/SearchAddFriend/SearchAddFriend";
-import { cancelRequest, requestFriend } from "../../../apis/friend";
+import {
+  cancelRequest,
+  getSearchedNewFriends,
+  requestFriend,
+} from "../../../apis/friend";
 
-// 더미 데이터
-const dummySearchData = [
-  { id: 1, nickname: "건국", studentId: "202012345", profileImg: defaultImg },
-  { id: 2, nickname: "건쿠", studentId: "202512345", profileImg: defaultImg },
-];
+interface SearchedFriend {
+  userId: number;
+  nickname: string;
+  imageUrl: string;
+  requestSent: boolean;
+  isFriend: boolean;
+}
 
 const FriendAdd = () => {
   const [searchTarget, setSearchTarget] = useState("");
 
-  const [filteredUsers, setFilteredUsers] = useState<typeof dummySearchData>(
-    []
-  );
+  const [filteredUsers, setFilteredUsers] = useState<SearchedFriend[]>([]);
   const [trySearch, setTrySearch] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
-  const [searchSentRequests, setSearchSentRequests] = useState<string[]>([]); // 검색 결과에서 보낸 요청 추적
-
   const [acceptReceiveFriend, setAcceptReceiveFriend] = useState("");
+  const [acceptReceiveFriendId, setAcceptReceiveFriendId] = useState(0);
   const [modalState, setModalState] = useState(false);
   const [modalType, setModalType] = useState("");
 
@@ -36,11 +38,18 @@ const FriendAdd = () => {
   }, [searchTarget]);
 
   // 검색 시 로직. 서버에 요청해야함.
-  const filteringSearch = () => {
-    // const result = dummySearchData.filter((user) =>
-    //   user.nickname.includes(searchTarget.trim())
-    // );
-    // setFilteredUsers(result);
+  const filteringSearch = async () => {
+    try {
+      const response = await getSearchedNewFriends(searchTarget);
+      // console.log(response);
+      // 이미 친구인 유저 제외
+      const filtered = response.filter(
+        (user: SearchedFriend) => !user.isFriend
+      );
+      setFilteredUsers(filtered);
+    } catch (error) {
+      console.error("친구 검색 실패 : ", error);
+    }
   };
 
   // 엔터 시 검색 로직
@@ -106,7 +115,6 @@ const FriendAdd = () => {
             searchTarget={searchTarget}
             trySearch={trySearch}
             filteredUsers={filteredUsers}
-            searchSentRequests={searchSentRequests}
             handleSendRequest={handleSendRequest}
             handleDeleteRequest={handleDeleteRequest}
           />
@@ -117,6 +125,7 @@ const FriendAdd = () => {
             {/* 받은 요청 */}
             <ReceivedFriend
               setAcceptReceiveFriend={setAcceptReceiveFriend}
+              setAcceptReceiveFriendId={setAcceptReceiveFriendId}
               setModalType={setModalType}
               setModalState={setModalState}
             />
@@ -127,6 +136,7 @@ const FriendAdd = () => {
       {/* 수락/거절 모달 */}
       <FriendModal
         editFriend={acceptReceiveFriend}
+        editFriendId={acceptReceiveFriendId}
         modalState={modalState}
         modalType={modalType}
         setModalState={setModalState}

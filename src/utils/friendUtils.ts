@@ -2,11 +2,13 @@
 export const openFriendEditPopup = (
   event: React.MouseEvent,
   nickname: string,
+  friendId: number,
   setEditPopupState: React.Dispatch<
     React.SetStateAction<{
       isPopupOpen: boolean;
       popupPosition: { top: number; left: number };
       editFriend: string;
+      editFriendId: number;
     }>
   >
 ) => {
@@ -21,6 +23,7 @@ export const openFriendEditPopup = (
       left: friendContainer.left + window.scrollX - 200,
     },
     editFriend: nickname,
+    editFriendId: friendId,
   });
 };
 

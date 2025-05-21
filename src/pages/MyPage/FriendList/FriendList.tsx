@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 interface Friend {
   id: number;
   nickname: string;
-  profileImg: string;
+  imageUrl: string;
 }
 
 const FriendList = () => {
@@ -30,10 +30,12 @@ const FriendList = () => {
     isPopupOpen: boolean;
     popupPosition: { top: number; left: number };
     editFriend: string;
+    editFriendId: number;
   }>({
     isPopupOpen: false,
     popupPosition: { top: 0, left: 0 },
     editFriend: "",
+    editFriendId: 0,
   });
 
   // 친구 삭제, 차단, 신고하기 팝업 관련 상태
@@ -130,6 +132,7 @@ const FriendList = () => {
       )}
       <FriendModal
         editFriend={editPopupState.editFriend}
+        editFriendId={editPopupState.editFriendId}
         modalState={modalState}
         modalType={modalType}
         setModalState={setModalState}

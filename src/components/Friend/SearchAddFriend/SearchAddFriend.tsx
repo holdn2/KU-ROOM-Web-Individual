@@ -2,20 +2,20 @@ import React from "react";
 import styles from "./SearchAddFriend.module.css";
 import Button from "../../../components/Button/Button";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
+import defaultImg from "../../../assets/defaultProfileImg.svg";
 
 // 검색 결과 렌더링
-interface User {
-  id: number;
+interface SearchedFriend {
+  userId: number;
   nickname: string;
-  studentId: string;
-  profileImg: string;
+  imageUrl: string;
+  requestSent: boolean;
+  isFriend: boolean;
 }
-
 interface SearchAddFriendProps {
   searchTarget: string;
   trySearch: boolean;
-  filteredUsers: User[];
-  searchSentRequests: string[];
+  filteredUsers: SearchedFriend[];
   handleSendRequest: (id: number) => void;
   handleDeleteRequest: (id: number) => void;
 }
@@ -24,7 +24,6 @@ const SearchAddFriend: React.FC<SearchAddFriendProps> = ({
   searchTarget,
   trySearch,
   filteredUsers,
-  searchSentRequests,
   handleSendRequest,
   handleDeleteRequest,
 }) => {
@@ -34,21 +33,29 @@ const SearchAddFriend: React.FC<SearchAddFriendProps> = ({
     <div className={styles.SearchResultContainer}>
       {filteredUsers.length > 0 ? (
         filteredUsers.map((user, index) => {
-          const isSent = searchSentRequests.includes(user.nickname);
           return (
             <div key={index} className={styles.EachFriendContainer}>
               <div className={styles.FriendProfileWrapper}>
-                <img
-                  className={styles.ProfileImg}
-                  src={user.profileImg}
-                  alt="프로필 사진"
-                />
+                {user.imageUrl ? (
+                  <img
+                    className={styles.ProfileImg}
+                    src={user.imageUrl}
+                    alt="프로필 사진"
+                  />
+                ) : (
+                  <img
+                    className={styles.ProfileImg}
+                    src={defaultImg}
+                    alt="프로필 사진"
+                  />
+                )}
+
                 <span className={styles.Nickname}>{user.nickname}</span>
               </div>
               <div className={styles.SendRequestBtnWrapper}>
-                {isSent ? (
+                {user.requestSent ? (
                   <Button
-                    onClick={() => handleDeleteRequest(user.id)}
+                    onClick={() => handleDeleteRequest(user.userId)}
                     size="xs"
                     variant="quaternary"
                   >
@@ -56,7 +63,7 @@ const SearchAddFriend: React.FC<SearchAddFriendProps> = ({
                   </Button>
                 ) : (
                   <Button
-                    onClick={() => handleSendRequest(user.id)}
+                    onClick={() => handleSendRequest(user.userId)}
                     size="xs"
                     variant="primary"
                   >

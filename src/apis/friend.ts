@@ -2,20 +2,28 @@
 import axiosInstance from "./axiosInstance"; // axiosInstance import
 
 const GET_ALL_FRIENDS = "/friends/list";
+const SEARCH_NEW_FRIENDS = "/friends/search?nickname=";
 const REQUEST_FRIEND = "/friends/request";
 const GET_SENT_REQUESTS = "/friends/requests/sent";
 const GET_RECEIVED_REQUESTS = "/friends/requests/received";
 const ACCEPT_REQUEST = "/friends/accept";
 const REJECT_REQUEST = "/friends/reject";
+const DELETE_FRIEND = "/friends/";
 const BLOCK_FRIEND = "/friends/block";
 const REPORT_FRIEND = "/friends/report";
+
+interface DefaultResponse {
+  code: number;
+  status: string;
+  message: string;
+}
 
 // 친구 목록 조회 api
 interface GetAllFriendsResponse {
   code: number;
   status: string;
   message: string;
-  data: { id: number; nickname: string; profileImg: string }[];
+  data: { id: number; nickname: string; imageUrl: string }[];
 }
 
 export const getAllFriends = async () => {
@@ -34,15 +42,47 @@ export const getAllFriends = async () => {
     );
   }
 };
-
+// 친구 요청할 친구 닉네임 검색 api
+interface NewFriendsSearchResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    userId: number;
+    nickname: string;
+    imageUrl: string;
+    requestSent: boolean;
+    isFriend: boolean;
+  }[];
+}
+export const getSearchedNewFriends = async (nickname: string) => {
+  try {
+    const response = await axiosInstance.get<NewFriendsSearchResponse>(
+      SEARCH_NEW_FRIENDS + nickname
+    );
+    console.log(response.data.data);
+    return response.data.data;
+  } catch (error: any) {
+    console.error(
+      "추가할 친구 닉네임 검색 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "추가할 친구 닉네임 검색 중 오류 발생"
+    );
+  }
+};
 // 친구 요청 api
 export const requestFriend = async (receivedId: number) => {
   try {
-    const response = await axiosInstance.post(REQUEST_FRIEND, {
+    const response = await axiosInstance.post<DefaultResponse>(REQUEST_FRIEND, {
       receivedId: receivedId,
     });
-    console.log(response.data);
-    return response.data;
+    if (response.data.code === 304) {
+      throw response.data;
+    } else {
+      return response.data;
+    }
   } catch (error: any) {
     console.error("친구 요청 실패:", error.response?.data || error.message);
     throw new Error(error.response?.data?.message || "친구 요청 중 오류 발생");
@@ -159,6 +199,20 @@ export const cancelRequest = async (requestId: number) => {
 };
 
 // 친구 삭제 api
+export const friendDelete = async (friendId: string) => {
+  try {
+    const response = await axiosInstance.delete(DELETE_FRIEND + friendId, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("친구 삭제 결과 : ", response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error("친구 삭제 실패:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "친구 삭제 중 오류 발생");
+  }
+};
 
 // 친구 차단 api
 export const friendBlock = async (reportId: number) => {
