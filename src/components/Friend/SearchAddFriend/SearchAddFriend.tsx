@@ -2,28 +2,30 @@ import React from "react";
 import styles from "./SearchAddFriend.module.css";
 import Button from "../../../components/Button/Button";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
+import defaultImg from "../../../assets/defaultProfileImg.svg";
 
 // 검색 결과 렌더링
-interface User {
+interface SearchedFriend {
+  userId: number;
   nickname: string;
-  studentId: string;
-  profileImg: string;
+  imageUrl: string;
+  requestSent: boolean;
+  isFriend: boolean;
 }
-
 interface SearchAddFriendProps {
   searchTarget: string;
   trySearch: boolean;
-  filteredUsers: User[];
-  searchSentRequests: string[];
-  handleSendRequest: (nickname: string) => void;
+  filteredUsers: SearchedFriend[];
+  handleSendRequest: (id: number) => void;
+  handleDeleteRequest: (id: number) => void;
 }
 
 const SearchAddFriend: React.FC<SearchAddFriendProps> = ({
   searchTarget,
   trySearch,
   filteredUsers,
-  searchSentRequests,
   handleSendRequest,
+  handleDeleteRequest,
 }) => {
   if (!searchTarget || !trySearch) return null;
 
@@ -31,25 +33,43 @@ const SearchAddFriend: React.FC<SearchAddFriendProps> = ({
     <div className={styles.SearchResultContainer}>
       {filteredUsers.length > 0 ? (
         filteredUsers.map((user, index) => {
-          const isSent = searchSentRequests.includes(user.nickname);
           return (
             <div key={index} className={styles.EachFriendContainer}>
               <div className={styles.FriendProfileWrapper}>
-                <img
-                  className={styles.ProfileImg}
-                  src={user.profileImg}
-                  alt="프로필 사진"
-                />
+                {user.imageUrl ? (
+                  <img
+                    className={styles.ProfileImg}
+                    src={user.imageUrl}
+                    alt="프로필 사진"
+                  />
+                ) : (
+                  <img
+                    className={styles.ProfileImg}
+                    src={defaultImg}
+                    alt="프로필 사진"
+                  />
+                )}
+
                 <span className={styles.Nickname}>{user.nickname}</span>
               </div>
               <div className={styles.SendRequestBtnWrapper}>
-                <Button
-                  onClick={() => handleSendRequest(user.nickname)}
-                  size="xs"
-                  variant={isSent ? "quaternary" : "primary"}
-                >
-                  {isSent ? "신청취소" : "친구신청"}
-                </Button>
+                {user.requestSent ? (
+                  <Button
+                    onClick={() => handleDeleteRequest(user.userId)}
+                    size="xs"
+                    variant="quaternary"
+                  >
+                    신청취소
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => handleSendRequest(user.userId)}
+                    size="xs"
+                    variant="primary"
+                  >
+                    친구신청
+                  </Button>
+                )}
               </div>
             </div>
           );

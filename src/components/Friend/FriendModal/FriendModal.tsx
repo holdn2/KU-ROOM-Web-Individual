@@ -3,9 +3,17 @@ import styles from "./FriendModal.module.css";
 import ReactModal from "react-modal";
 import cautionIcon from "../../../assets/icon/editFriend/cautionIcon.svg";
 import Button from "../../Button/Button";
+import {
+  acceptRequest,
+  friendBlock,
+  friendDelete,
+  friendReport,
+  rejectRequest,
+} from "../../../apis/friend";
 
 interface FriendModalProps {
-  editFriend?: string;
+  editFriend: string;
+  editFriendId: number;
   modalState: boolean;
   modalType: string;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +21,7 @@ interface FriendModalProps {
 
 const FriendModal: React.FC<FriendModalProps> = ({
   editFriend,
+  editFriendId,
   modalState,
   modalType,
   setModalState,
@@ -20,22 +29,55 @@ const FriendModal: React.FC<FriendModalProps> = ({
   const handleCloseModal = () => setModalState(false);
 
   // 서버에 각각에 대해 요청
-  const handleEditFriend = () => {
+  const handleEditFriend = async () => {
     switch (modalType) {
       case "delete":
-        console.log(editFriend, "삭제");
+        try {
+          const response = await friendDelete(editFriendId.toString());
+          console.log(response);
+          console.log(editFriend, " 친구 삭제");
+        } catch (error) {
+          console.error("친구 삭제 중 오류 : ", error);
+        }
         break;
       case "block":
-        console.log(editFriend, "차단");
+        try {
+          const response = await friendBlock(editFriendId);
+          console.log(response);
+          console.log(editFriend, " 친구 차단");
+        } catch (error) {
+          console.error("친구 차단 중 오류 : ", error);
+        }
         break;
       case "report":
-        console.log(editFriend, "신고");
+        try {
+          const response = await friendReport(
+            editFriendId,
+            "아직 모릅니다 ㅎㅎ.."
+          );
+          console.log(response);
+          console.log(editFriend, " 친구 신고");
+        } catch (error) {
+          console.error("친구 신고 중 오류 : ", error);
+        }
         break;
       case "accept":
-        console.log(editFriend, "의 친구요청 수락");
+        try {
+          const response = await acceptRequest(editFriendId);
+          console.log(response);
+          console.log(editFriend, "의 친구요청 수락");
+        } catch (error) {
+          console.error("친구 요청 수락 중 오류 : ", error);
+        }
         break;
       case "refuse":
-        console.log(editFriend, "의 친구요청 거절");
+        try {
+          const response = await rejectRequest(editFriendId);
+          console.log(response);
+          console.log(editFriend, "의 친구요청 거절");
+        } catch (error) {
+          console.error("친구 요청 거절 중 오류 : ", error);
+        }
         break;
     }
     setModalState(false);

@@ -8,13 +8,14 @@ interface FriendContainerProps {
   friend: {
     id: number;
     nickname: string;
-    profileImg: string;
+    imageUrl: string;
   };
   setEditPopupState: React.Dispatch<
     React.SetStateAction<{
       isPopupOpen: boolean;
       popupPosition: { top: number; left: number };
       editFriend: string;
+      editFriendId: number;
     }>
   >;
 }
@@ -26,7 +27,7 @@ const FriendContainer: React.FC<FriendContainerProps> = ({
   return (
     <div className={styles.EachFriendContainer}>
       <div className={styles.FriendProfileWrapper}>
-        {friend.profileImg === "" ? (
+        {friend.imageUrl === "" ? (
           <img
             className={styles.ProfileImg}
             src={defaultImg}
@@ -35,7 +36,7 @@ const FriendContainer: React.FC<FriendContainerProps> = ({
         ) : (
           <img
             className={styles.ProfileImg}
-            src={friend.profileImg}
+            src={friend.imageUrl}
             alt="프로필 사진"
           />
         )}
@@ -45,7 +46,7 @@ const FriendContainer: React.FC<FriendContainerProps> = ({
         src={kebabIcon}
         alt="설정"
         onClick={(e) =>
-          openFriendEditPopup(e, friend.nickname, setEditPopupState)
+          openFriendEditPopup(e, friend.nickname, friend.id, setEditPopupState)
         }
       />
     </div>
