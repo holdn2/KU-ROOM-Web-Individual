@@ -4,7 +4,8 @@ export const scheduleTokenRefresh = (expireIn: number) => {
   if (refreshTimer) clearTimeout(refreshTimer);
 
   // 만료 1분 전 자동 재발급 시도
-  const refreshDelay = (expireIn - 60) * 1000;
+  // 60_000 === 60000 => 읽기 쉽게 표기한 것
+  const refreshDelay = expireIn - 60_000;
 
   refreshTimer = setTimeout(async () => {
     try {
@@ -31,7 +32,7 @@ export const scheduleTokenRefresh = (expireIn: number) => {
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", newRefreshToken);
-      const expireAt = Date.now() + accessExpireIn * 1000;
+      const expireAt = Date.now() + accessExpireIn;
       localStorage.setItem("accessExpireIn", String(expireAt));
 
       // 다음 만료 시점 예약

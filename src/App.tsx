@@ -34,12 +34,13 @@ function App() {
     const expireAtStr = localStorage.getItem("accessExpireIn");
 
     if (token && expireAtStr) {
-      const expireAt = parseInt(expireAtStr, 10);
+      const expireAt = parseInt(expireAtStr, 10); // ms 단위로 저장된 값
       const now = Date.now();
-      const remain = Math.floor((expireAt - now) / 1000); // 남은 초
+      const remain = expireAt - now; // ms 단위로 남은 시간 계산
 
-      if (remain > 60) {
-        scheduleTokenRefresh(remain);
+      if (remain > 60_000) {
+        // 1분(60,000ms) 이상 남았을 때만 예약
+        scheduleTokenRefresh(remain); // ms 단위 그대로 전달
       }
     }
   }, []);

@@ -51,7 +51,7 @@ const Login = () => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       // 받은 만료시간을 상대 시간에서 절대 시간으로 변환하여 저장
-      const expireAt = Date.now() + accessExpireIn * 1000;
+      const expireAt = Date.now() + accessExpireIn;
       localStorage.setItem("accessExpireIn", String(expireAt));
 
       // 자동 토큰 재발급 예약
