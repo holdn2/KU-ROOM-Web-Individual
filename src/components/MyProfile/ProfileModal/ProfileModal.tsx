@@ -28,9 +28,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
         setModalState(false);
         const logoutResponse = await logoutApi();
         console.log(logoutResponse);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("accessExpireIn");
+        localStorage.clear();
         navigate("/login");
 
         break;
@@ -39,8 +37,8 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
         setModalState(false);
         const withdrawRepsonse = await withdrawApi();
         console.log(withdrawRepsonse);
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        localStorage.clear();
+
         navigate("/login");
         break;
     }

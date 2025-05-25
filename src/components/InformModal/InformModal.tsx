@@ -57,8 +57,7 @@ const InformModal = ({
         if (localStorage.getItem("accessToken")) {
           const logoutResponse = await logoutApi();
           console.log(logoutResponse);
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
+          localStorage.clear();
         }
         navigate("/login");
       },

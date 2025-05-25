@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./styles/global.css";
 import Home from "./pages/Home/Home";
-import Community from "./pages/Community";
 import Notice from "./pages/Notice/Notice/Notice";
 import NoticeDetail from "./pages/Notice/Notice/NoticeDetail/NoticeDetail";
 import Login from "./pages/Login/Login";
@@ -26,24 +25,45 @@ import DepartmentSetting from "./pages/MyPage/DepartmentSetting/DepartmentSettin
 import Bookmark from "./pages/Notice/Bookmark/Bookmark";
 import Search from "./pages/Notice/Search/Search";
 import { useEffect } from "react";
-import { scheduleTokenRefresh } from "./apis/utils/tokenManager";
+import { checkAndReissueToken } from "./utils/checkAndReissueToken";
 
 function App() {
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    const expireAtStr = localStorage.getItem("accessExpireIn");
+    const handleVisibilityChange = () => {
+      const path = window.location.pathname;
+      // 토큰이 없을 경우에도 보일 수 있는 화면들.
+      // 홈이나 지도, 공지사항 등의 경우 페이지는 보임
+      // 페이지 속 요소들 몇가지만 비활성화시키는 것
+      // 마이페이지에 접근하는 것도 가능하지만 토큰이 없을 시 모달창으로 회원가입 시에만 접근 가능하다고 표시 후 뒤로 리다이렉트
+      const excludedPaths = [
+        "/",
+        "/login",
+        "/signup",
+        "/agreement",
+        "/findidpw",
+        "/map",
+        "/identityverifictaion",
+        "/agreement",
+        "/profilesetting",
+        "/welcome",
+        "/search",
+        "/myinfo",
+      ];
+      if (excludedPaths.includes(path)) return;
+      if (window.location.pathname.startsWith("/notice")) return;
 
-    if (token && expireAtStr) {
-      const expireAt = parseInt(expireAtStr, 10); // ms 단위로 저장된 값
-      const now = Date.now();
-      const remain = expireAt - now; // ms 단위로 남은 시간 계산
-
-      if (remain > 60_000) {
-        // 1분(60,000ms) 이상 남았을 때만 예약
-        scheduleTokenRefresh(remain); // ms 단위 그대로 전달
+      // 토큰 없을 경우 보이면 안되는 화면들
+      if (document.visibilityState === "visible") {
+        checkAndReissueToken();
       }
-    }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -63,10 +83,6 @@ function App() {
         {
           path: "notice/:category/:id",
           element: <NoticeDetail />,
-        },
-        {
-          path: "community",
-          element: <Community />,
         },
         {
           path: "signup",

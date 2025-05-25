@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import TopIcon from "../../components/TopIcon";
 import { loginApi } from "../../apis/auth";
 import { useUserStore } from "../../stores/userStore";
-import { scheduleTokenRefresh } from "../../apis/utils/tokenManager";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -44,18 +43,24 @@ const Login = () => {
       console.log("로그인 성공!", response.data);
       // 토큰 저장 후 홈으로 이동
       const {
-        tokenResponse: { accessToken, refreshToken, accessExpireIn },
+        tokenResponse: {
+          accessToken,
+          refreshToken,
+          accessExpireIn,
+          refreshExpireIn,
+        },
         userResponse,
       } = response.data;
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       // 받은 만료시간을 상대 시간에서 절대 시간으로 변환하여 저장
-      const expireAt = Date.now() + accessExpireIn;
-      localStorage.setItem("accessExpireIn", String(expireAt));
-
-      // 자동 토큰 재발급 예약
-      scheduleTokenRefresh(accessExpireIn);
+      const now = Date.now();
+      console.log(Date.now());
+      console.log(now + accessExpireIn);
+      console.log(now + refreshExpireIn);
+      localStorage.setItem("accessExpireIn", String(now + accessExpireIn));
+      localStorage.setItem("refreshExpireIn", String(now + refreshExpireIn));
 
       // 전역 상태관리 zustand 사용해서 저장
       setUser(userResponse);

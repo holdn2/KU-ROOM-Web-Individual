@@ -1,4 +1,5 @@
 // 닉네임 관련 api
+import { checkAndReissueToken } from "../utils/checkAndReissueToken";
 import axiosInstance from "./axiosInstance";
 
 const CHECK_DUPLICATED_NICKNAME_API = "/users/check-nickname?value";
@@ -41,6 +42,8 @@ export const checkDuplictedNickname = async (
 export const changeNicknameApi = async (changeNickname: {
   nickname: string;
 }) => {
+  await checkAndReissueToken();
+
   try {
     const response = await axiosInstance.patch(
       CHANGE_NICKNAME_API,
