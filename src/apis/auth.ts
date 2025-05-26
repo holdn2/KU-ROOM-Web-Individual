@@ -6,6 +6,7 @@ const LOGIN_API_URL = "/auth/login";
 const LOGOUT_API_URL = "/auth/logout";
 const WITHDRAW_API_URL = "/users/deactivate";
 const REISSUE_TOKEN_API_URL = "/auth/reissue";
+const OAUTH_TOKEN_API_URL = "/api/v1/auth/token"; // OAuth 로그인 관련 API URL
 
 interface LoginResponse {
   code: number;
@@ -125,5 +126,27 @@ export const reissueTokenApi = async () => {
     return response.data.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "회원탈퇴 중 오류 발생");
+  }
+};
+
+// 임시 토큰(authCode)으로 실제 토큰 발급받는 API
+export const getTokenByAuthCode = async (authCode: string) => {
+  try {
+    const response = await axiosInstance.post<LoginResponse>(
+      OAUTH_TOKEN_API_URL,
+      null,
+      {
+        params: { authCode },
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return response.data; // 성공 시 반환
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      return error.response.data; // 401이면 throw하지 않고 반환
+    }
+    throw new Error(
+      error.response?.data?.message || "OAuth 토큰 교환 중 오류 발생"
+    );
   }
 };
