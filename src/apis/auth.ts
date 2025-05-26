@@ -6,7 +6,7 @@ const LOGIN_API_URL = "/auth/login";
 const LOGOUT_API_URL = "/auth/logout";
 const WITHDRAW_API_URL = "/users/deactivate";
 const REISSUE_TOKEN_API_URL = "/auth/reissue";
-const OAUTH_TOKEN_API_URL = "/api/v1/auth/token"; // OAuth 로그인 관련 API URL
+const OAUTH_TOKEN_API_URL = "/auth/token";
 
 interface LoginResponse {
   code: number;

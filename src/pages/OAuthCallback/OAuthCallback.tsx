@@ -10,21 +10,40 @@ const OAuthCallback = () => {
 
   useEffect(() => {
     const handleOAuthCallback = async () => {
-      // URL에서 authCode 추출
-      const authCode = searchParams.get("authCode") || searchParams.get("code");
+      // 현재 URL 전체 확인
+      console.log("현재 URL:", window.location.href);
+      console.log("전체 URL 파라미터:", Object.fromEntries(searchParams));
+
+      // URL에서 token, authCode, code 파라미터 확인
+      const authCode =
+        searchParams.get("token") ||
+        searchParams.get("authCode") ||
+        searchParams.get("code");
+
+      console.log("받은 authCode:", authCode);
 
       if (!authCode) {
         console.error("AuthCode가 없습니다.");
-        navigate("/login");
+        console.error(
+          "사용 가능한 파라미터들:",
+          Array.from(searchParams.keys())
+        );
+        // 로그인 페이지로 이동하지 말고 일단 대기
+        alert(
+          "AuthCode를 찾을 수 없습니다. 개발자 도구 Console을 확인해주세요."
+        );
         return;
       }
 
       try {
+        console.log("토큰 교환 요청 중...", authCode);
         // 임시 토큰으로 실제 토큰 발급받기
         const response = await getTokenByAuthCode(authCode);
 
-        if (response?.code === 200 || response?.data) {
-          // 성공 코드 확인
+        console.log("토큰 교환 응답:", response);
+
+        if (response?.data) {
+          // 성공 조건 확인
           const {
             tokenResponse: {
               accessToken,
@@ -49,10 +68,15 @@ const OAuthCallback = () => {
           // 유저 정보 저장
           setUser(userResponse);
 
+          console.log("OAuth 로그인 성공!");
+
           // 홈으로 이동 (또는 이전 페이지로)
           const redirectUrl = sessionStorage.getItem("redirectUrl") || "/";
           sessionStorage.removeItem("redirectUrl");
           navigate(redirectUrl);
+        } else {
+          console.error("토큰 교환 실패:", response);
+          navigate("/login");
         }
       } catch (error) {
         console.error("OAuth 토큰 교환 중 오류:", error);
