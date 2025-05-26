@@ -71,6 +71,15 @@ const Login = () => {
     }
   };
 
+  // 구글 로그인 처리 함수
+  const handleGoogleLogin = () => {
+    // 현재 페이지 저장 (로그인 후 돌아올 위치)
+    sessionStorage.setItem("redirectUrl", "/");
+
+    // 구글 OAuth2 엔드포인트로 리다이렉트
+    window.location.href = "https://kuroom.shop/oauth2/authorization/google";
+  };
+
   // 로그인 실패 시 2초 간 보여줌
   useEffect(() => {
     if (!isLoginAttempted) return;
@@ -158,8 +167,7 @@ const Login = () => {
           <img
             src={googleIcon}
             alt="구글로 로그인"
-            // 소셜로그인 성공 시 약관 동의 페이지로 이동
-            onClick={() => navigate("/agreement")}
+            onClick={handleGoogleLogin} // 구글 OAuth 로그인으로 변경
           />
         </div>
       </div>
