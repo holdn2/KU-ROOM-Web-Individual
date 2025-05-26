@@ -24,6 +24,7 @@ import MapPage from "./pages/Map/MapPage";
 import DepartmentSetting from "./pages/MyPage/DepartmentSetting/DepartmentSetting";
 import Bookmark from "./pages/Notice/Bookmark/Bookmark";
 import Search from "./pages/Notice/Search/Search";
+import OAuthCallback from "./pages/OAuthCallback/OAuthCallback";
 import { useEffect } from "react";
 import { checkAndReissueToken } from "./utils/checkAndReissueToken";
 
@@ -48,6 +49,7 @@ function App() {
         "/welcome",
         "/search",
         "/myinfo",
+        "/oauth/callback", // OAuth 콜백도 토큰 체크에서 제외
       ];
       if (excludedPaths.includes(path)) return;
       if (window.location.pathname.startsWith("/notice")) return;
@@ -103,6 +105,10 @@ function App() {
         {
           path: "findidpw",
           element: <FindIdPw />,
+        },
+        {
+          path: "oauth/callback",
+          element: <OAuthCallback />,
         },
         {
           path: "profilesetting",

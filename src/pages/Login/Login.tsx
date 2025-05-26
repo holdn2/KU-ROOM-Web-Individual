@@ -1,5 +1,5 @@
-// 로그인 페이지
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
 import styles from "./Login.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
@@ -69,6 +69,16 @@ const Login = () => {
       console.error("로그인 중 오류 발생:", error.message); // 서버 오류(500) 같은 경우
       setIsLoginAttempted(true);
     }
+  };
+
+  // 구글 로그인 처리 함수
+  const handleGoogleLogin = () => {
+    // 현재 페이지 저장 (로그인 후 돌아올 위치)
+    sessionStorage.setItem("redirectUrl", "/");
+
+    // 구글 OAuth2 엔드포인트로 리다이렉트 (redirect_uri 파라미터 추가)
+    window.location.href =
+      "https://kuroom.shop/oauth2/authorization/google?redirect_uri=http://localhost:5173/oauth/callback";
   };
 
   // 로그인 실패 시 2초 간 보여줌
@@ -158,8 +168,7 @@ const Login = () => {
           <img
             src={googleIcon}
             alt="구글로 로그인"
-            // 소셜로그인 성공 시 약관 동의 페이지로 이동
-            onClick={() => navigate("/agreement")}
+            onClick={handleGoogleLogin}
           />
         </div>
       </div>
