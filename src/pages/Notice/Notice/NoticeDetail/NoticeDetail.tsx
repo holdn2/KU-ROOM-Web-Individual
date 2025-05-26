@@ -11,6 +11,7 @@ const NoticeDetail: React.FC = () => {
   const { category, id } = useParams<{ category: string; id: string }>();
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [noticeData, setNoticeData] = useState<{
     title: string;
     date: string;
@@ -38,6 +39,9 @@ const NoticeDetail: React.FC = () => {
 
       // 북마크 상태 확인
       setIsBookmarked(NoticeService.isBookmarked(id));
+
+      // iframe 로딩 상태 초기화
+      setIsLoading(true);
     }
   }, [id]);
 
@@ -53,10 +57,8 @@ const NoticeDetail: React.FC = () => {
     }
   };
 
-  const handleRedirect = () => {
-    if (id) {
-      window.open(getRedirectUrl(id), "_blank");
-    }
+  const handleIframeLoad = () => {
+    setIsLoading(false);
   };
 
   return (
@@ -88,15 +90,21 @@ const NoticeDetail: React.FC = () => {
           <p className={styles["notice-date"]}>{noticeData.date}</p>
         </div>
 
-        <div className={styles["notice-redirect"]}>
-          <p>공지사항의 상세 내용을 확인하려면 아래 버튼을 클릭하세요.</p>
-          <button
-            className={styles["redirect-button"]}
-            onClick={handleRedirect}
-            type="button"
-          >
-            공지사항 원문 보기
-          </button>
+        <div className={styles["notice-iframe-container"]}>
+          {isLoading && (
+            <div className={styles["loading-indicator"]}>
+              <p>공지사항을 불러오는 중입니다...</p>
+            </div>
+          )}
+          {id && (
+            <iframe
+              src={getRedirectUrl(id)}
+              title="공지사항 원문"
+              className={styles["notice-iframe"]}
+              onLoad={handleIframeLoad}
+              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+            />
+          )}
         </div>
       </div>
     </div>

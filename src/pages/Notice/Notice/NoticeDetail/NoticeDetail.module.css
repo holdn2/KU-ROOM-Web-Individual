@@ -42,25 +42,12 @@
   flex: 1;
   overflow-y: auto;
   padding: 18px 26px 26px;
-}
-
-.notice-content-wrapper::after {
-  content: "";
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100px;
-  background: linear-gradient(
-    to bottom,
-    rgba(248, 249, 252, 0),
-    rgba(248, 249, 252, 1)
-  );
-  pointer-events: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .notice-header {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   padding-bottom: 18px;
   border-bottom: 1px solid #e3e7eb;
 }
@@ -81,51 +68,42 @@
   line-height: 1.2;
 }
 
-.notice-content {
-  font-size: 14px;
-  font-weight: 400;
-  color: #000000;
-  line-height: 1.4;
+/* iframe 관련 스타일 */
+.notice-iframe-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.content-paragraph {
-  margin-bottom: 16px;
-}
-
-.notice-content a {
-  color: #009733;
-  text-decoration: underline;
-}
-
-.notice-content ul,
-.notice-content ol {
-  padding-left: 20px;
-  margin-bottom: 16px;
-}
-
-.notice-content li {
-  margin-bottom: 8px;
-}
-
-.notice-redirect {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  text-align: center;
-}
-
-.redirect-button {
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #003876;
-  color: white;
+.notice-iframe {
+  width: 100%;
+  height: 100%;
+  min-height: calc(100vh - 200px);
   border: none;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
+  background-color: #ffffff;
 }
 
-.redirect-button:hover {
-  background-color: #002d5e;
+.loading-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(248, 249, 252, 0.9);
+  z-index: 10;
+}
+
+.loading-indicator p {
+  font-size: 16px;
+  color: #003876;
+  font-weight: 500;
 }
