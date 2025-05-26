@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import type { ChangeEvent } from "react";
+// 로그인 페이지
+import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./Login.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
@@ -81,6 +81,16 @@ const Login = () => {
       "https://kuroom.shop/oauth2/authorization/google?redirect_uri=http://localhost:5173/oauth/callback";
   };
 
+  // 카카오 로그인 처리 함수
+  const handleKakaoLogin = () => {
+    // 현재 페이지 저장 (로그인 후 돌아올 위치)
+    sessionStorage.setItem("redirectUrl", "/");
+
+    // 카카오 OAuth2 엔드포인트로 리다이렉트
+    window.location.href =
+      "https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/oauth/callback";
+  };
+
   // 로그인 실패 시 2초 간 보여줌
   useEffect(() => {
     if (!isLoginAttempted) return;
@@ -156,8 +166,7 @@ const Login = () => {
           <img
             src={kakaoIcon}
             alt="카카오로 로그인"
-            // 소셜로그인 성공 시 약관 동의 페이지로 이동
-            onClick={() => navigate("/agreement")}
+            onClick={handleKakaoLogin} // 카카오 OAuth 로그인으로 변경
           />
           <img
             src={naverIcon}
@@ -168,7 +177,7 @@ const Login = () => {
           <img
             src={googleIcon}
             alt="구글로 로그인"
-            onClick={handleGoogleLogin}
+            onClick={handleGoogleLogin} // 구글 OAuth 로그인으로 변경
           />
         </div>
       </div>
