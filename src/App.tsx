@@ -25,7 +25,6 @@ import MapPage from "./pages/Map/MapPage";
 import DepartmentSetting from "./pages/MyPage/DepartmentSetting/DepartmentSetting";
 import Bookmark from "./pages/Notice/Bookmark/Bookmark";
 import Search from "./pages/Notice/Search/Search";
-import NaverCallback from "./pages/NaverCallback/NaverCallback";
 import AuthWrapper from "./components/AuthWrapper";
 
 function App() {
@@ -37,10 +36,6 @@ function App() {
         {
           index: true,
           element: <Home />,
-        },
-        {
-          path: "naver-callback",
-          element: <NaverCallback />,
         },
         {
           path: "alarm",

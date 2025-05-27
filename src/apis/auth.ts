@@ -1,50 +1,37 @@
-import axios from "axios";
+import { checkAndReissueToken } from "../utils/checkAndReissueToken";
+import axiosInstance from "./axiosInstance";
 
-const LOGIN_API_URL = "https://kuroom.shop/api/v1/auth/login";
-const LOGOUT_API_URL = "https://kuroom.shop/api/v1/auth/logout";
-const WITHDRAW_API_URL = "https://kuroom.shop/api/v1/users/deactivate";
-const NAVER_LOGIN_API_URL = "https://kuroom.shop/api/v1/auth/social/naver";
+const LOGIN_API_URL = "/auth/login";
+const LOGOUT_API_URL = "/auth/logout";
+const WITHDRAW_API_URL = "/users/deactivate";
+const REISSUE_TOKEN_API_URL = "/auth/reissue";
+const OAUTH_TOKEN_API_URL = "/auth/token";
 
-// 네이버 로그인 관련 상수
-const NAVER_CLIENT_ID = "0JPy8UxAyPa3jRSDHePI";
-const REDIRECT_URI =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:5173/naver-callback"
-    : "https://ku-room-web-individual.vercel.app/naver-callback";
-
-// API 응답 타입 정의
-export interface ApiResponse<T> {
+interface LoginResponse {
   code: number;
   status: string;
   message: string;
-  data: T;
-}
-
-// 토큰 응답 타입
-export interface TokenResponse {
-  accessToken: string;
-  refreshToken: string;
-  accessExpireIn: number;
-  refreshExpireIn: number;
-}
-
-// 사용자 정보 응답 타입
-export interface UserResponse {
-  id: number;
-  oauthId: string;
-  loginId: string;
-  email: string;
-  nickname: string;
-  studentId: string;
-  imageUrl: string;
-  departmentResponse: any[];
-}
-
-// 로그인 응답 데이터 타입
-export interface LoginResponseData {
-  tokenResponse: TokenResponse;
-  userResponse: UserResponse;
-  isNewUser?: boolean;
+  data: {
+    tokenResponse: {
+      accessToken: string;
+      refreshToken: string;
+      accessExpireIn: number;
+      refreshExpireIn: number;
+    };
+    userResponse: {
+      id: number;
+      oauthId: string | null;
+      loginId: string;
+      email: string;
+      nickname: string;
+      studentId: string;
+      imageUrl: string | null;
+      departmentResponse: {
+        departmentId: number;
+        departmentName: string;
+      }[];
+    };
+  };
 }
 
 export const loginApi = async (userData: {
@@ -52,9 +39,13 @@ export const loginApi = async (userData: {
   password: string;
 }) => {
   try {
-    const response = await axios.post(LOGIN_API_URL, userData, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await axiosInstance.post<LoginResponse>(
+      LOGIN_API_URL,
+      userData,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     return response.data; // 성공 시 반환
   } catch (error: any) {
     if (error.response?.status === 401) {
@@ -71,24 +62,13 @@ interface LogoutResponse {
   message: string;
   data: string;
 }
-
 export const logoutApi = async () => {
+  // 토큰 필요 시 이렇게 요청
+  await checkAndReissueToken();
   try {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      throw new Error("AccessToken이 없습니다.");
-    }
-
-    // 수정: 요청 본문과 헤더를 올바르게 분리
-    const response = await axios.patch<LogoutResponse>(
+    const response = await axiosInstance.patch<LogoutResponse>(
       LOGOUT_API_URL,
-      {}, // 빈 객체를 요청 본문으로 전송
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      {} // 요청 바디 없음
     );
 
     return response.data.data; // 성공 시 반환
@@ -102,65 +82,70 @@ export const logoutApi = async () => {
 
 // 회원 탈퇴 관련 api
 export const withdrawApi = async () => {
-  try {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      throw new Error("AccessToken이 없습니다.");
-    }
-    const response = await axios.delete(WITHDRAW_API_URL, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  await checkAndReissueToken();
 
+  try {
+    const response = await axiosInstance.delete(WITHDRAW_API_URL, {
+      headers: { "Content-Type": "application/json" },
+    });
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "회원탈퇴 중 오류 발생");
   }
 };
 
-// 네이버 로그인 URL 생성 함수
-export const getNaverLoginURL = () => {
-  console.log("네이버 로그인 URL 생성");
-
-  // 표준 OAuth 2.0 방식으로 변경
-  const clientId = "0JPy8UxAyPa3jRSDHePI";
-  const redirectURI = encodeURIComponent(
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:5173/naver-callback"
-      : "https://ku-room-web-individual.vercel.app/naver-callback"
-  );
-  const state = Math.random().toString(36).substring(2, 15);
-
-  // 세션 스토리지에 state 저장 (CSRF 방지)
-  sessionStorage.setItem("naverOAuthState", state);
-
-  // 표준 네이버 OAuth 2.0 엔드포인트 사용
-  const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectURI}&state=${state}`;
-
-  console.log("생성된 URL:", naverAuthUrl);
-
-  return naverAuthUrl;
+// 토큰 재발급 api
+interface ReissueResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    tokenResponse: {
+      accessToken: string;
+      refreshToken: string;
+      accessExpireIn: number;
+      refreshExpireIn: number;
+    };
+  };
+}
+export const reissueTokenApi = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
+  console.log("refresh 토큰으로 재발급 요청: ", refreshToken);
+  try {
+    const response = await axiosInstance.patch<ReissueResponse>(
+      REISSUE_TOKEN_API_URL,
+      {
+        refreshToken: refreshToken,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    console.log("access token 재발급함");
+    return response.data.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "회원탈퇴 중 오류 발생");
+  }
 };
 
-// 네이버 인증 코드를 토큰으로 교환하는 함수
-export const exchangeNaverAuthCode = async (
-  authCode: string
-): Promise<LoginResponseData> => {
+// 임시 토큰(authCode)으로 실제 토큰 발급받는 API
+export const getTokenByAuthCode = async (authCode: string) => {
   try {
-    const response = await axios.post<ApiResponse<LoginResponseData>>(
-      "https://kuroom.shop/api/v1/auth/token",
+    const response = await axiosInstance.post<LoginResponse>(
+      OAUTH_TOKEN_API_URL,
       null,
       {
         params: { authCode },
         headers: { "Content-Type": "application/json" },
       }
     );
-
-    return response.data.data;
-  } catch (error) {
-    console.error("네이버 인증 코드 교환 중 오류:", error);
-    throw new Error("네이버 로그인 처리 중 오류가 발생했습니다.");
+    return response.data; // 성공 시 반환
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      return error.response.data; // 401이면 throw하지 않고 반환
+    }
+    throw new Error(
+      error.response?.data?.message || "OAuth 토큰 교환 중 오류 발생"
+    );
   }
 };

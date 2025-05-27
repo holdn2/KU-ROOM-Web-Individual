@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Login.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
@@ -9,10 +9,12 @@ import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import TopIcon from "../../components/TopIcon";
-import { loginApi, getNaverLoginURL } from "../../apis/auth";
+import { loginApi } from "../../apis/auth";
+import { useUserStore } from "../../stores/userStore";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUser } = useUserStore();
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");
   // 로그인 버튼을 눌렀는지 여부
@@ -38,10 +40,30 @@ const Login = () => {
         setIsLoginAttempted(true);
         return;
       }
-      console.log("로그인 성공!", response);
+      console.log("로그인 성공!", response.data);
       // 토큰 저장 후 홈으로 이동
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
+      const {
+        tokenResponse: {
+          accessToken,
+          refreshToken,
+          accessExpireIn,
+          refreshExpireIn,
+        },
+        userResponse,
+      } = response.data;
+
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      // 받은 만료시간을 상대 시간에서 절대 시간으로 변환하여 저장
+      const now = Date.now();
+      console.log(Date.now());
+      console.log(now + accessExpireIn);
+      console.log(now + refreshExpireIn);
+      localStorage.setItem("accessExpireIn", String(now + accessExpireIn));
+      localStorage.setItem("refreshExpireIn", String(now + refreshExpireIn));
+
+      // 전역 상태관리 zustand 사용해서 저장
+      setUser(userResponse);
       navigate("/");
     } catch (error: any) {
       console.error("로그인 중 오류 발생:", error.message); // 서버 오류(500) 같은 경우
@@ -49,11 +71,34 @@ const Login = () => {
     }
   };
 
-  // 네이버 소셜 로그인 핸들러
+  // 구글 로그인 처리 함수
+  const handleGoogleLogin = () => {
+    // 현재 페이지 저장 (로그인 후 돌아올 위치)
+    sessionStorage.setItem("redirectUrl", "/");
+
+    // 구글 OAuth2 엔드포인트로 리다이렉트 (redirect_uri 파라미터 추가)
+    window.location.href =
+      "https://kuroom.shop/oauth2/authorization/google?redirect_uri=http://localhost:5173/oauth/callback";
+  };
+
+  // 카카오 로그인 처리 함수
+  const handleKakaoLogin = () => {
+    // 현재 페이지 저장 (로그인 후 돌아올 위치)
+    sessionStorage.setItem("redirectUrl", "/");
+
+    // 카카오 OAuth2 엔드포인트로 리다이렉트
+    window.location.href =
+      "https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/oauth/callback";
+  };
+
+  // 네이버 로그인 처리 함수
   const handleNaverLogin = () => {
-    const naverLoginURL = getNaverLoginURL();
-    console.log("네이버 로그인 URL:", naverLoginURL); // 디버깅용 로그 추가
-    window.location.href = naverLoginURL;
+    // 현재 페이지 저장 (로그인 후 돌아올 위치)
+    sessionStorage.setItem("redirectUrl", "/");
+
+    // 네이버 OAuth2 엔드포인트로 리다이렉트
+    window.location.href =
+      "https://kuroom.shop/oauth2/authorization/naver?redirect_uri=http://localhost:5173/oauth/callback";
   };
 
   // 로그인 실패 시 2초 간 보여줌
@@ -128,64 +173,24 @@ const Login = () => {
             marginTop: "67px",
           }}
         >
-          <button
-            type="button"
-            onClick={() => navigate("/agreement")}
-            onKeyUp={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                navigate("/agreement");
-              }
-            }}
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              cursor: "pointer",
-            }}
-          >
-            <img
-              src={kakaoIcon}
-              alt="카카오로 로그인"
-              style={{ display: "block" }}
-            />
-          </button>
-          <button
-            type="button"
+          <img
+            src={kakaoIcon}
+            alt="카카오로 로그인"
+            onClick={handleKakaoLogin}
+            style={{ cursor: "pointer" }}
+          />
+          <img
+            src={naverIcon}
+            alt="네이버로 로그인"
             onClick={handleNaverLogin}
-            onKeyUp={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                handleNaverLogin();
-              }
-            }}
-            style={{ background: "none", border: "none", padding: 0 }}
-          >
-            <img
-              src={naverIcon}
-              alt="네이버로 로그인"
-              style={{ cursor: "pointer" }}
-            />
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate("/agreement")}
-            onKeyUp={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                navigate("/agreement");
-              }
-            }}
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              cursor: "pointer",
-            }}
-          >
-            <img
-              src={googleIcon}
-              alt="구글로 로그인"
-              style={{ display: "block" }}
-            />
-          </button>
+            style={{ cursor: "pointer" }}
+          />
+          <img
+            src={googleIcon}
+            alt="구글로 로그인"
+            onClick={handleGoogleLogin}
+            style={{ cursor: "pointer" }}
+          />
         </div>
       </div>
     </div>
