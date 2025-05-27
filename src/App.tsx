@@ -49,7 +49,7 @@ function App() {
         "/welcome",
         "/search",
         "/myinfo",
-        "/oauth/callback", // OAuth 콜백도 토큰 체크에서 제외
+        "/oauth/callback",
       ];
       if (excludedPaths.includes(path)) return;
       if (window.location.pathname.startsWith("/notice")) return;
