@@ -13,7 +13,6 @@ import HomeNotice from "../../components/HomeContent/HomeNotice/HomeNotice";
 import { useNavigate } from "react-router-dom";
 import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
 import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
-import { reissueTokenApi } from "../../apis/auth";
 
 interface LocationData {
   userLat: number;
@@ -63,28 +62,10 @@ const Home = () => {
     return <Splash />;
   }
 
-  const handleReissue = async () => {
-    try {
-      const response = await reissueTokenApi();
-      console.log(response);
-      const { accessToken, refreshToken, accessExpireIn, refreshExpireIn } =
-        response;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      // 받은 만료시간을 상대 시간에서 절대 시간으로 변환하여 저장
-      const now = Date.now();
-      console.log(Date.now());
-      localStorage.setItem("accessExpireIn", String(now + accessExpireIn));
-      localStorage.setItem("refreshExpireIn", String(now + refreshExpireIn));
-    } catch (error) {
-      console.warn("재발급 오류:", error);
-    }
-  };
   return (
     <div>
       <Header hasNewAlarm={hasNewAlarm}>홈</Header>
       <div className={styles.HomeContentWrapper}>
-        <button onClick={handleReissue}>토큰 재발급 연습</button>
         <HomeSildeBanner />
         <HomeMenu />
         {/* {isInSchool && (
