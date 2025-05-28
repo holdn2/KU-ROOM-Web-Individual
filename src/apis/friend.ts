@@ -27,8 +27,6 @@ interface GetAllFriendsResponse {
 }
 
 export const getAllFriends = async () => {
-  // await checkAndReissueToken();
-
   try {
     const response =
       await axiosInstance.get<GetAllFriendsResponse>(GET_ALL_FRIENDS);

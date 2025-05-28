@@ -30,8 +30,13 @@ const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
     const fetchReceivedRequests = async () => {
       try {
         const response = await getReceivedRequests();
-        // console.log(response);
-        setReceivedList(response);
+        const friends = response ?? [];
+        if (!Array.isArray(friends)) {
+          setReceivedList([]);
+          return [];
+        }
+        setReceivedList(friends);
+        return friends;
       } catch (error) {
         console.error("받은 요청 목록 조회 실패:", error);
       }

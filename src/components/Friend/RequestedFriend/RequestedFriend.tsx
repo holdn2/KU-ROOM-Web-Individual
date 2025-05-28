@@ -21,7 +21,14 @@ const RequestedFriend = ({ handleDeleteRequest }: RequestedFriendProps) => {
   const fetchSentRequest = async () => {
     try {
       const response = await getSentRequests();
-      setRequestList(response);
+      console.log(response);
+      const friends = response ?? [];
+      if (!Array.isArray(friends)) {
+        setRequestList([]);
+        return [];
+      }
+      setRequestList(friends);
+      return friends;
     } catch (error) {
       console.error("보낸 요청 조회 실패 : ", error);
     }

@@ -51,8 +51,14 @@ const FriendList = () => {
       try {
         const response = await getAllFriends();
         console.log(response);
-        setFriendList(response);
-        return response;
+        const friends = response ?? [];
+        if (!Array.isArray(friends)) {
+          setFriendList([]);
+          return [];
+        }
+        setFriendList(friends);
+
+        return friends;
       } catch (error) {
         console.error("친구 목록 불러오기 실패", error);
       }
