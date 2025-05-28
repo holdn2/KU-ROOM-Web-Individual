@@ -43,24 +43,12 @@ const Login = () => {
       console.log("로그인 성공!", response.data);
       // 토큰 저장 후 홈으로 이동
       const {
-        tokenResponse: {
-          accessToken,
-          refreshToken,
-          accessExpireIn,
-          refreshExpireIn,
-        },
+        tokenResponse: { accessToken, refreshToken },
         userResponse,
       } = response.data;
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      // 받은 만료시간을 상대 시간에서 절대 시간으로 변환하여 저장
-      const now = Date.now();
-      console.log(Date.now());
-      console.log(now + accessExpireIn);
-      console.log(now + refreshExpireIn);
-      localStorage.setItem("accessExpireIn", String(now + accessExpireIn));
-      localStorage.setItem("refreshExpireIn", String(now + refreshExpireIn));
 
       // 전역 상태관리 zustand 사용해서 저장
       setUser(userResponse);

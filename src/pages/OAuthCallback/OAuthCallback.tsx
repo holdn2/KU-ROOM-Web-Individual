@@ -45,25 +45,13 @@ const OAuthCallback = () => {
         if (response?.data) {
           // 성공 조건 확인
           const {
-            tokenResponse: {
-              accessToken,
-              refreshToken,
-              accessExpireIn,
-              refreshExpireIn,
-            },
+            tokenResponse: { accessToken, refreshToken },
             userResponse,
           } = response.data;
 
           // 토큰 저장
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
-
-          const now = Date.now();
-          localStorage.setItem("accessExpireIn", String(now + accessExpireIn));
-          localStorage.setItem(
-            "refreshExpireIn",
-            String(now + refreshExpireIn)
-          );
 
           // 유저 정보 저장
           setUser(userResponse);

@@ -1,4 +1,3 @@
-import { checkAndReissueToken } from "../utils/checkAndReissueToken";
 import axiosInstance from "./axiosInstance";
 
 const LOGIN_API_URL = "/auth/login";
@@ -64,7 +63,6 @@ interface LogoutResponse {
 }
 export const logoutApi = async () => {
   // 토큰 필요 시 이렇게 요청
-  await checkAndReissueToken();
   try {
     const response = await axiosInstance.patch<LogoutResponse>(
       LOGOUT_API_URL,
@@ -82,8 +80,6 @@ export const logoutApi = async () => {
 
 // 회원 탈퇴 관련 api
 export const withdrawApi = async () => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.delete(WITHDRAW_API_URL, {
       headers: { "Content-Type": "application/json" },

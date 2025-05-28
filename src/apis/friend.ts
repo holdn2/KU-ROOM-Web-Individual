@@ -1,5 +1,4 @@
 // 친구 관련 api
-import { checkAndReissueToken } from "../utils/checkAndReissueToken";
 import axiosInstance from "./axiosInstance"; // axiosInstance import
 
 const GET_ALL_FRIENDS = "/friends/list";
@@ -28,7 +27,7 @@ interface GetAllFriendsResponse {
 }
 
 export const getAllFriends = async () => {
-  await checkAndReissueToken();
+  // await checkAndReissueToken();
 
   try {
     const response =
@@ -59,8 +58,6 @@ interface NewFriendsSearchResponse {
   }[];
 }
 export const getSearchedNewFriends = async (nickname: string) => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.get<NewFriendsSearchResponse>(
       SEARCH_NEW_FRIENDS + nickname
@@ -79,8 +76,6 @@ export const getSearchedNewFriends = async (nickname: string) => {
 };
 // 친구 요청 api
 export const requestFriend = async (receivedId: number) => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.post<DefaultResponse>(REQUEST_FRIEND, {
       receivedId: receivedId,
@@ -109,8 +104,6 @@ interface GetRequests {
   }[];
 }
 export const getSentRequests = async () => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.get<GetRequests>(GET_SENT_REQUESTS);
     console.log("보낸 요청: ", response.data.data);
@@ -127,8 +120,6 @@ export const getSentRequests = async () => {
 };
 // 받은 요청 목록 조회 api
 export const getReceivedRequests = async () => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.get<GetRequests>(
       GET_RECEIVED_REQUESTS
@@ -148,8 +139,6 @@ export const getReceivedRequests = async () => {
 
 // 친구 요청 수락 api
 export const acceptRequest = async (receiverId: number) => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.put(
       ACCEPT_REQUEST,
@@ -171,8 +160,6 @@ export const acceptRequest = async (receiverId: number) => {
 };
 // 친구 요청 거절 api
 export const rejectRequest = async (requestId: number) => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.put(
       REJECT_REQUEST,
@@ -195,8 +182,6 @@ export const rejectRequest = async (requestId: number) => {
 
 // 보낸 요청 취소 api
 export const cancelRequest = async (requestId: number) => {
-  await checkAndReissueToken();
-
   try {
     // delete 요청에 body가 필요할 때 아래와 같이 사용한다.
     const response = await axiosInstance.request({
@@ -217,8 +202,6 @@ export const cancelRequest = async (requestId: number) => {
 
 // 친구 삭제 api
 export const friendDelete = async (friendId: string) => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.delete(DELETE_FRIEND + friendId, {
       headers: {
@@ -235,8 +218,6 @@ export const friendDelete = async (friendId: string) => {
 
 // 친구 차단 api
 export const friendBlock = async (reportId: number) => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.patch(
       BLOCK_FRIEND,
@@ -258,8 +239,6 @@ export const friendBlock = async (reportId: number) => {
 };
 // 친구 신고 api
 export const friendReport = async (reportId: number, reason: string) => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.patch(
       REPORT_FRIEND,

@@ -1,5 +1,4 @@
 // 비밀번호 변경 관련 api
-import { checkAndReissueToken } from "../utils/checkAndReissueToken";
 import axiosInstance from "./axiosInstance";
 
 const CHANGE_PW_BEFORE_LOGIN_URL = "/users/password-reset/initiate";
@@ -45,8 +44,6 @@ export const changePwAfterLogin = async (userInfo: {
   prevPassword: string;
   newPassword: string;
 }) => {
-  await checkAndReissueToken();
-
   try {
     const response = await axiosInstance.post<ChangePwResponse>(
       CHANGE_PW_AFTER_LOGIN_URL,
