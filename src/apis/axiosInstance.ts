@@ -51,6 +51,7 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+// 토큰 재발급 api
 interface ReissueResponse {
   code: number;
   status: string;
@@ -62,26 +63,37 @@ interface ReissueResponse {
     refreshExpireIn: number;
   };
 }
-const reissueTokenApi = async () => {
+const reissueTokenApi = async (): Promise<string> => {
   const refreshToken = localStorage.getItem("refreshToken");
 
   try {
     const response = await axios.patch<ReissueResponse>(
       "https://kuroom.shop/api/v1/auth/reissue",
-      {
-        refreshToken,
-      }
+      { refreshToken }
     );
 
-    const tokenData = response.data.data;
+    const tokenData = response.data?.data;
+
+    // 이 조건이 중요: refreshToken은 있었지만, 만료되어 data 자체가 안 온 경우
+    if (!tokenData || !tokenData.accessToken) {
+      console.error(" refreshToken 만료 또는 재발급 실패 → 로그인 이동");
+      localStorage.clear();
+      window.location.href = "/login";
+      throw new Error("refreshToken 만료");
+    }
+
+    // 정상적으로 accessToken 재발급됨
     localStorage.setItem("accessToken", tokenData.accessToken);
     localStorage.setItem("refreshToken", tokenData.refreshToken);
-
-    console.log("재발급 성공");
+    console.log(" accessToken 재발급 성공");
 
     return tokenData.accessToken;
   } catch (err: any) {
-    console.error("토큰 재발급 실패", err.response?.data || err.message);
+    console.warn(
+      "⚠️ 재발급 실패 (기타 이유)",
+      err.response?.data || err.message
+    );
+
     throw err;
   }
 };
