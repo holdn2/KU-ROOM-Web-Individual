@@ -100,12 +100,10 @@ interface ReissueResponse {
   status: string;
   message: string;
   data: {
-    tokenResponse: {
-      accessToken: string;
-      refreshToken: string;
-      accessExpireIn: number;
-      refreshExpireIn: number;
-    };
+    accessToken: string;
+    refreshToken: string;
+    accessExpireIn: number;
+    refreshExpireIn: number;
   };
 }
 export const reissueTokenApi = async () => {
