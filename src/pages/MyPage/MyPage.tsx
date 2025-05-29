@@ -20,6 +20,7 @@ const MyPage = () => {
     // 로그인 여부 확인
     const token = localStorage.getItem("accessToken");
     if (!token) {
+      localStorage.clear();
       navigate("/login");
       return;
     }

@@ -41,6 +41,10 @@ axiosInstance.interceptors.response.use(
 
         // 새로운 accessToken을 헤더에 설정하고 재요청
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+
+        if (newAccessToken) {
+          window.location.reload();
+        }
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);
@@ -63,7 +67,7 @@ interface ReissueResponse {
     refreshExpireIn: number;
   };
 }
-const reissueTokenApi = async (): Promise<string> => {
+export const reissueTokenApi = async (): Promise<string> => {
   const refreshToken = localStorage.getItem("refreshToken");
 
   try {
@@ -72,7 +76,7 @@ const reissueTokenApi = async (): Promise<string> => {
       { refreshToken }
     );
 
-    const tokenData = response.data?.data;
+    const tokenData = response.data.data;
 
     // 이 조건이 중요: refreshToken은 있었지만, 만료되어 data 자체가 안 온 경우
     if (!tokenData || !tokenData.accessToken) {
