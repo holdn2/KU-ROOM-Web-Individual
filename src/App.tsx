@@ -30,31 +30,26 @@ import { reissueTokenApi } from "./apis/axiosInstance";
 
 function App() {
   useEffect(() => {
-    const handleVisibilityChange = async () => {
-      const path = window.location.pathname;
-      // 토큰이 없을 경우에도 보일 수 있는 화면들.
-      // 홈이나 지도, 공지사항 등의 경우 페이지는 보임
-      // 페이지 속 요소들 몇가지만 비활성화시키는 것
-      // 마이페이지에 접근하는 것도 가능하지만 토큰이 없을 시 모달창으로 회원가입 시에만 접근 가능하다고 표시 후 뒤로 리다이렉트
-      const excludedPaths = [
-        "/",
-        "/login",
-        "/signup",
-        "/agreement",
-        "/findidpw",
-        "/map",
-        "/identityverifictaion",
-        "/agreement",
-        "/profilesetting",
-        "/welcome",
-        "/search",
-        "/oauth/callback",
-      ];
-      if (excludedPaths.includes(path)) return;
-      if (window.location.pathname.startsWith("/notice")) return;
+    const path = window.location.pathname;
+    // 아래에 해당하는 페이지들은 다른 앱을 사용하다가 돌아오면 Access Token을 재발급함
+    const includedPaths = [
+      "alarm",
+      "myinfo",
+      "profilechange",
+      "changepw",
+      "changenickname",
+      "alarmsetting",
+      "friendadd",
+      "friendlist",
+      "departmentsetting",
+      "bookmark",
+    ];
 
-      // 토큰 없을 경우 보이면 안되는 화면들
-      if (document.visibilityState === "visible") {
+    const handleVisibilityChange = async () => {
+      if (
+        document.visibilityState === "visible" &&
+        includedPaths.includes(path)
+      ) {
         await reissueTokenApi();
       }
     };

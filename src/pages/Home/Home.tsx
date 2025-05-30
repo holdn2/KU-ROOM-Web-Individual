@@ -27,6 +27,8 @@ const Home = () => {
 
   // 학교 내부에 있는지 상태
   const [isInSchool, setIsInSchool] = useState(false);
+  // vercel 배포 시 에러 방지용
+  console.log(isInSchool);
 
   // 내 위치 공유 버튼 모달 상태
   const [shareModalState, setShareModalState] = useState(false);
@@ -36,8 +38,6 @@ const Home = () => {
 
   // api 기다리는 상태 관리도 추후 추가 예정.
   useEffect(() => {
-    // vercel 배포 시 에러 방지용
-    console.log(isInSchool);
     // 로그인 여부 확인
     const token = localStorage.getItem("accessToken");
     if (!token) {
