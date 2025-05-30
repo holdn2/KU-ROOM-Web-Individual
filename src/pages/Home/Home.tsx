@@ -6,7 +6,7 @@ import HomeMenu from "../../components/HomeContent/HomeMenu/HomeMenu";
 import HomeMiniMap from "../../components/HomeContent/HomeMiniMap/HomeMiniMap";
 import HomeSildeBanner from "../../components/HomeContent/HomeSlideBanner/HomeSildeBanner";
 import { useEffect, useState } from "react";
-import Splash from "../../components/Splash";
+// import Splash from "../../components/Splash";
 import FriendLocation from "../../components/HomeContent/FriendLocation/FriendLocation";
 import MyLocationRanking from "../../components/HomeContent/MyLocationRanking/MyLocationRanking";
 import HomeNotice from "../../components/HomeContent/HomeNotice/HomeNotice";
@@ -21,7 +21,7 @@ interface LocationData {
 
 const Home = () => {
   const navigate = useNavigate();
-  const [showSplash, setShowSplash] = useState(true);
+  // const [showSplash, setShowSplash] = useState(true);
   const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
   const [hasNewAlarm, setHasNewAlarm] = useState(false); // 새로운 알람이 있는지
 
@@ -53,15 +53,15 @@ const Home = () => {
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
     // setIsSharedLocation()
 
-    const timeout = setTimeout(() => {
-      setShowSplash(false);
-    }, 2000); // 1.5초 후에 splash 화면 종료
+    // const timeout = setTimeout(() => {
+    //   setShowSplash(false);
+    // }, 2000); // 1.5초 후에 splash 화면 종료
 
-    return () => clearTimeout(timeout);
+    // return () => clearTimeout(timeout);
   }, []);
-  if (showSplash) {
-    return <Splash />;
-  }
+  // if (showSplash) {
+  //   return <Splash />;
+  // }
 
   return (
     <div>
