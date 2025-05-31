@@ -1,6 +1,7 @@
 .FriendListPageWrapper {
   display: flex;
   flex-direction: column;
+  margin-top: 56px;
 }
 .SearchBarContainer {
   padding: 17px 25px 0 25px;
@@ -28,10 +29,10 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.LoadingWrapper {
+/* .LoadingWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 80px;
   background: var(--Gray-500, rgba(227, 231, 235, 0.3));
-}
+} */

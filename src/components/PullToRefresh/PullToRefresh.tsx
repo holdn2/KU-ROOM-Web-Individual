@@ -20,14 +20,14 @@ const PullToRefresh = ({
   const [isTouch, setIsTouch] = useState(false);
   const [pulled, setPulled] = useState(false);
 
-  // ✅ 수정된 useEffect
+  // 수정된 useEffect
   useEffect(() => {
     const touchMoveListener = (e: TouchEvent) => {
       const scrollTop = scrollContainerRef.current?.scrollTop ?? 0;
 
       if (isTouch && pulled && scrollTop === 0) {
         onMove(e.touches[0].clientY);
-        e.preventDefault(); // ✅ 오직 최상단일 때만 막기
+        // e.preventDefault();
       }
     };
 
@@ -70,7 +70,7 @@ const PullToRefresh = ({
 
       if (pulledDistance > 0) {
         spinnerRef.current.style.height = `${pulledDistance}px`;
-        preventBodyScroll();
+        // preventBodyScroll();
 
         if (pulledDistance >= maxDistance) {
           setIsRefreshing(true);
@@ -113,11 +113,11 @@ const PullToRefresh = ({
     }
   };
 
-  const preventBodyScroll = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.style.overflowY = "hidden";
-    }
-  };
+  // const preventBodyScroll = () => {
+  //   if (scrollContainerRef.current) {
+  //     scrollContainerRef.current.style.overflowY = "hidden";
+  //   }
+  // };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     const scrollTop = scrollContainerRef.current?.scrollTop ?? 0;
@@ -134,7 +134,7 @@ const PullToRefresh = ({
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isTouch && pulled) {
       onMove(e.clientY);
-      e.preventDefault();
+      // e.preventDefault();
     }
   };
 

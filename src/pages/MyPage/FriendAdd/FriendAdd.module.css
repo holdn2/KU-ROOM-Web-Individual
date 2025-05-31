@@ -1,7 +1,8 @@
 .FriendAddPageWrapper {
   display: flex;
   flex-direction: column;
-  min-height: 500px;
+  /* min-height: 500px; */
+  margin-top: 56px;
 }
 .SearchBarContainer {
   padding: 17px 25px 0 25px;
@@ -92,10 +93,10 @@
   gap: 8px;
 }
 
-.LoadingWrapper {
+/* .LoadingWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 80px;
   background: var(--Gray-500, rgba(227, 231, 235, 0.3));
-}
+} */
