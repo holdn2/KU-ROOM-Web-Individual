@@ -20,20 +20,14 @@ const PullToRefresh = ({
   const [isTouch, setIsTouch] = useState(false);
   const [pulled, setPulled] = useState(false);
 
-  useEffect(() => {
-    console.log("시작점", startY);
-  }, [startY]);
-
   // 수정된 useEffect
   useEffect(() => {
     const touchMoveListener = (e: TouchEvent) => {
       const scrollTop = scrollContainerRef.current?.scrollTop ?? 0;
-
       const currentY = e.touches[0].clientY;
-
       const isPullingDown = currentY > startY;
 
-      if (isTouch && pulled && scrollTop === 0 && isPullingDown) {
+      if (isTouch && pulled && scrollTop <= 50 && isPullingDown) {
         onMove(e.touches[0].clientY);
         e.preventDefault();
       }
@@ -104,7 +98,7 @@ const PullToRefresh = ({
       if (isRefreshing) {
         try {
           await onRefresh();
-          await new Promise((resolve) => setTimeout(resolve, 500));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           resetToInitial();
         } catch (error) {
           console.error("Error while refreshing:", error);

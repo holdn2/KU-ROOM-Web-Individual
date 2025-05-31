@@ -17,12 +17,14 @@ const MyPage = () => {
   const [modalState, setModalState] = useState(false);
   const [modalType, setModalType] = useState("");
 
-  const getNewToken = async () => {
+  const pageRefresh = async () => {
     try {
       await reissueTokenApi();
     } catch (error) {
       console.error("토큰 재발급 실패 : ", error);
       navigate("/login");
+    } finally {
+      window.location.reload(); // 재발급 후 리로드
     }
   };
 
@@ -57,7 +59,7 @@ const MyPage = () => {
   return (
     <div>
       <Header>마이페이지</Header>
-      <PullToRefresh onRefresh={getNewToken} maxDistance={80}>
+      <PullToRefresh onRefresh={pageRefresh} maxDistance={80}>
         <div className={styles.MyPageContentWrapper}>
           <MyProfileComponent isChangeProfile={false} />
           <div className={styles.DivideSectionThick} />
