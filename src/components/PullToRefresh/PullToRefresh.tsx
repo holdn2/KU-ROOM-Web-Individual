@@ -183,6 +183,7 @@ const PullToRefresh = ({
           cursor: "pointer",
           overflowY: "auto",
           maxHeight: "calc(100vh - 150px)",
+          overscrollBehavior: "none", // 바운스 효과 제거
         }}
       >
         {children}
