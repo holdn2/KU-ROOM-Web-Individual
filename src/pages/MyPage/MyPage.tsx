@@ -6,9 +6,10 @@ import MyProfileComponent from "../../components/MyProfile/MyProfileComponent";
 import ProfileSection from "../../components/MyProfile/ProfileSection";
 import { MyPageSectionData } from "../../constants/sectionDatas";
 import { useEffect, useState } from "react";
-// import { BeatLoader } from "react-spinners";
 import ProfileModal from "../../components/MyProfile/ProfileModal/ProfileModal";
 import { useNavigate } from "react-router-dom";
+import { reissueTokenApi } from "../../apis/axiosInstance";
+import PullToRefresh from "../../components/PullToRefresh/PullToRefresh";
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -16,14 +17,26 @@ const MyPage = () => {
   const [modalState, setModalState] = useState(false);
   const [modalType, setModalType] = useState("");
 
+  const getNewToken = async () => {
+    try {
+      await reissueTokenApi();
+    } catch (error) {
+      console.error("토큰 재발급 실패 : ", error);
+    }
+  };
+
   useEffect(() => {
     // 로그인 여부 확인
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      localStorage.clear();
-      navigate("/login");
-      return;
-    }
+    getNewToken();
+    const timeout = setTimeout(() => {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        localStorage.clear();
+        navigate("/login");
+        return;
+      }
+    }, 1000);
+    return () => clearTimeout(timeout);
     // 여기에 실제 API 로딩 or 이미지 로딩 조건으로 변경 가능
     // const timeout = setTimeout(() => {
     //   setIsLoading(false);
@@ -43,19 +56,22 @@ const MyPage = () => {
   return (
     <div>
       <Header>마이페이지</Header>
-      <div className={styles.MyPageContentWrapper}>
-        <MyProfileComponent isChangeProfile={false} />
-        <div className={styles.DivideSectionThick} />
-        {MyPageSectionData.map((data, index) => (
-          <ProfileSection
-            key={index}
-            sectionData={data}
-            isLastSection={index === MyPageSectionData.length - 1}
-            setModalType={setModalType}
-            setModalState={setModalState}
-          />
-        ))}
-      </div>
+      <PullToRefresh onRefresh={getNewToken} maxDistance={80}>
+        <div className={styles.MyPageContentWrapper}>
+          <MyProfileComponent isChangeProfile={false} />
+          <div className={styles.DivideSectionThick} />
+          {MyPageSectionData.map((data, index) => (
+            <ProfileSection
+              key={index}
+              sectionData={data}
+              isLastSection={index === MyPageSectionData.length - 1}
+              setModalType={setModalType}
+              setModalState={setModalState}
+            />
+          ))}
+        </div>
+      </PullToRefresh>
+
       <BottomBar />
       <ProfileModal
         modalState={modalState}

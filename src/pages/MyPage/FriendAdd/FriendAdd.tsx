@@ -11,6 +11,8 @@ import {
   getSearchedNewFriends,
   requestFriend,
 } from "../../../apis/friend";
+import PullToRefresh from "../../../components/PullToRefresh/PullToRefresh";
+import { reissueTokenApi } from "../../../apis/axiosInstance";
 
 interface SearchedFriend {
   userId: number;
@@ -36,6 +38,14 @@ const FriendAdd = () => {
     setTrySearch(false);
     setFilteredUsers([]);
   }, [searchTarget]);
+
+  const getNewToken = async () => {
+    try {
+      await reissueTokenApi();
+    } catch (error) {
+      console.error("토큰 재발급 실패 : ", error);
+    }
+  };
 
   // 검색 시 로직. 서버에 요청해야함.
   const filteringSearch = async () => {
@@ -96,42 +106,44 @@ const FriendAdd = () => {
   return (
     <div>
       <Header>친구 추가</Header>
-      <div className={styles.FriendAddPageWrapper}>
-        <div className={styles.SearchBarContainer}>
-          <FriendSearch
-            searchTarget={searchTarget}
-            setSearchTarget={(value) => {
-              setSearchTarget(value);
-              setFilteredUsers([]);
-            }}
-            onFocus={() => setIsSearchFocused(true)}
-            onBlur={handleBlurSearch}
-            onKeyDown={handleSearchKeyDown}
-          />
-        </div>
-        {isSearchFocused ? (
-          // 검색 결과 렌더링
-          <SearchAddFriend
-            searchTarget={searchTarget}
-            trySearch={trySearch}
-            filteredUsers={filteredUsers}
-            handleSendRequest={handleSendRequest}
-            handleDeleteRequest={handleDeleteRequest}
-          />
-        ) : (
-          <div className={styles.FriendAddListWrapper}>
-            {/* 보낸 요청 */}
-            <RequestedFriend handleDeleteRequest={handleDeleteRequest} />
-            {/* 받은 요청 */}
-            <ReceivedFriend
-              setAcceptReceiveFriend={setAcceptReceiveFriend}
-              setAcceptReceiveFriendId={setAcceptReceiveFriendId}
-              setModalType={setModalType}
-              setModalState={setModalState}
+      <PullToRefresh onRefresh={getNewToken} maxDistance={80}>
+        <div className={styles.FriendAddPageWrapper}>
+          <div className={styles.SearchBarContainer}>
+            <FriendSearch
+              searchTarget={searchTarget}
+              setSearchTarget={(value) => {
+                setSearchTarget(value);
+                setFilteredUsers([]);
+              }}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={handleBlurSearch}
+              onKeyDown={handleSearchKeyDown}
             />
           </div>
-        )}
-      </div>
+          {isSearchFocused ? (
+            // 검색 결과 렌더링
+            <SearchAddFriend
+              searchTarget={searchTarget}
+              trySearch={trySearch}
+              filteredUsers={filteredUsers}
+              handleSendRequest={handleSendRequest}
+              handleDeleteRequest={handleDeleteRequest}
+            />
+          ) : (
+            <div className={styles.FriendAddListWrapper}>
+              {/* 보낸 요청 */}
+              <RequestedFriend handleDeleteRequest={handleDeleteRequest} />
+              {/* 받은 요청 */}
+              <ReceivedFriend
+                setAcceptReceiveFriend={setAcceptReceiveFriend}
+                setAcceptReceiveFriendId={setAcceptReceiveFriendId}
+                setModalType={setModalType}
+                setModalState={setModalState}
+              />
+            </div>
+          )}
+        </div>
+      </PullToRefresh>
 
       {/* 수락/거절 모달 */}
       <FriendModal

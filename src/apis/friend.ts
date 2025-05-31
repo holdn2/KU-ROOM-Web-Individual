@@ -104,7 +104,7 @@ interface GetRequests {
 export const getSentRequests = async () => {
   try {
     const response = await axiosInstance.get<GetRequests>(GET_SENT_REQUESTS);
-    console.log("보낸 요청: ", response.data.data);
+    console.log("보낸 요청: ", response.data);
     return response.data.data;
   } catch (error: any) {
     console.error(
@@ -122,7 +122,7 @@ export const getReceivedRequests = async () => {
     const response = await axiosInstance.get<GetRequests>(
       GET_RECEIVED_REQUESTS
     );
-    console.log("받은 요청: ", response.data.data);
+    console.log("받은 요청: ", response.data);
     return response.data.data;
   } catch (error: any) {
     console.error(

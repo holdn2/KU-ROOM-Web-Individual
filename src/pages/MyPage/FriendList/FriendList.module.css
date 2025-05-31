@@ -1,5 +1,4 @@
 .FriendListPageWrapper {
-  margin-top: 56px;
   display: flex;
   flex-direction: column;
 }
@@ -28,4 +27,11 @@
   font-size: 14px;
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+.LoadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  background: var(--Gray-500, rgba(227, 231, 235, 0.3));
 }

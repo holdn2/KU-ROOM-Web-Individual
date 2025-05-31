@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestHeaders } from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "https://kuroom.shop/api/v1",
@@ -12,7 +12,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
-      if (!config.headers) config.headers = {};
+      if (!config.headers) config.headers = {} as AxiosRequestHeaders;
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -32,8 +32,10 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    console.log("에러코드: ", errorCode);
+
     // JWT 관련 오류 코드 또는 HTTP 401 Unauthorized일 경우 재발급 시도
-    const tokenErrorCodes = [1000, 1001, 1002, 1003, 1004, 1005, 1006];
+    const tokenErrorCodes = [1000, 1001, 1002, 1003, 1004, 1005, 1006, 401];
     if (tokenErrorCodes.includes(errorCode) || status === 401) {
       try {
         originalRequest._retry = true;
@@ -43,7 +45,7 @@ axiosInstance.interceptors.response.use(
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
         if (newAccessToken) {
-          window.location.reload();
+          // window.location.reload();
         }
         return axiosInstance(originalRequest);
       } catch (refreshError) {
