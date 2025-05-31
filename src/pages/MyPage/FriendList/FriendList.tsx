@@ -27,6 +27,7 @@ const FriendList = () => {
       await reissueTokenApi();
     } catch (error) {
       console.error("토큰 재발급 실패 : ", error);
+      navigate("/login");
     }
   };
 

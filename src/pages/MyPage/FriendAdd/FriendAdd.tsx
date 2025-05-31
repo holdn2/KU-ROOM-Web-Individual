@@ -13,6 +13,7 @@ import {
 } from "../../../apis/friend";
 import PullToRefresh from "../../../components/PullToRefresh/PullToRefresh";
 import { reissueTokenApi } from "../../../apis/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 interface SearchedFriend {
   userId: number;
@@ -23,6 +24,7 @@ interface SearchedFriend {
 }
 
 const FriendAdd = () => {
+  const navigate = useNavigate();
   const [searchTarget, setSearchTarget] = useState("");
 
   const [filteredUsers, setFilteredUsers] = useState<SearchedFriend[]>([]);
@@ -44,6 +46,7 @@ const FriendAdd = () => {
       await reissueTokenApi();
     } catch (error) {
       console.error("토큰 재발급 실패 : ", error);
+      navigate("/login");
     }
   };
 

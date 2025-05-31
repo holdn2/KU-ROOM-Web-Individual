@@ -99,6 +99,8 @@ export const reissueTokenApi = async (): Promise<string> => {
       "⚠️ 재발급 실패 (기타 이유)",
       err.response?.data || err.message
     );
+    localStorage.clear();
+    window.location.href = "/login";
 
     throw err;
   }

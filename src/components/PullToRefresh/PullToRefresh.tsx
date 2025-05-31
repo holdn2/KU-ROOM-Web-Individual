@@ -105,11 +105,15 @@ const PullToRefresh = ({
   };
 
   const ableBodyScroll = () => {
-    document.body.style.overflow = "auto";
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.style.overflowY = "auto";
+    }
   };
 
   const preventBodyScroll = () => {
-    document.body.style.overflow = "hidden";
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.style.overflowY = "hidden";
+    }
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -162,6 +166,8 @@ const PullToRefresh = ({
         onMouseUp={handleMouseUp}
         onTouchEnd={handleEnd}
         style={{
+          WebkitOverflowScrolling: "touch",
+          touchAction: "auto",
           cursor: "pointer",
           overflowY: "auto",
           maxHeight: "calc(100vh - 150px)", // 헤더와 바텀바 제외한 높이
