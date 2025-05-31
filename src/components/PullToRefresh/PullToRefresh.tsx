@@ -13,18 +13,21 @@ const PullToRefresh = ({
   maxDistance,
 }: PullToRefreshProps) => {
   const spinnerRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null); // 스크롤 대상 ref
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [startY, setStartY] = useState(0);
   const [isTouch, setIsTouch] = useState(false);
   const [pulled, setPulled] = useState(false);
 
+  // ✅ 수정된 useEffect
   useEffect(() => {
     const touchMoveListener = (e: TouchEvent) => {
-      if (isTouch && pulled) {
+      const scrollTop = scrollContainerRef.current?.scrollTop ?? 0;
+
+      if (isTouch && pulled && scrollTop === 0) {
         onMove(e.touches[0].clientY);
-        e.preventDefault();
+        e.preventDefault(); // ✅ 오직 최상단일 때만 막기
       }
     };
 
@@ -167,10 +170,11 @@ const PullToRefresh = ({
         onTouchEnd={handleEnd}
         style={{
           WebkitOverflowScrolling: "touch",
-          touchAction: "auto",
+          touchAction: "pan-y",
+          overscrollBehaviorY: "contain",
           cursor: "pointer",
           overflowY: "auto",
-          maxHeight: "calc(100vh - 150px)", // 헤더와 바텀바 제외한 높이
+          maxHeight: "calc(100vh - 150px)",
         }}
       >
         {children}
