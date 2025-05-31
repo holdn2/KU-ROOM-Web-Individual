@@ -27,7 +27,7 @@ const MyPage = () => {
 
   useEffect(() => {
     // 로그인 여부 확인
-    getNewToken();
+    // getNewToken();
     const timeout = setTimeout(() => {
       const token = localStorage.getItem("accessToken");
       if (!token) {
