@@ -20,14 +20,22 @@ const PullToRefresh = ({
   const [isTouch, setIsTouch] = useState(false);
   const [pulled, setPulled] = useState(false);
 
+  useEffect(() => {
+    console.log("시작점", startY);
+  }, [startY]);
+
   // 수정된 useEffect
   useEffect(() => {
     const touchMoveListener = (e: TouchEvent) => {
       const scrollTop = scrollContainerRef.current?.scrollTop ?? 0;
 
-      if (isTouch && pulled && scrollTop === 0) {
+      const currentY = e.touches[0].clientY;
+
+      const isPullingDown = currentY > startY;
+
+      if (isTouch && pulled && scrollTop === 0 && isPullingDown) {
         onMove(e.touches[0].clientY);
-        // e.preventDefault();
+        e.preventDefault();
       }
     };
 
