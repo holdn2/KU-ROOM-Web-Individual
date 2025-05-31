@@ -13,7 +13,7 @@ const PullToRefresh = ({
   maxDistance,
 }: PullToRefreshProps) => {
   const spinnerRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null); // 스크롤 대상 ref
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [startY, setStartY] = useState(0);
@@ -67,10 +67,15 @@ const PullToRefresh = ({
 
       if (pulledDistance > 0) {
         spinnerRef.current.style.height = `${pulledDistance}px`;
-        preventScroll();
-        setIsRefreshing(pulledDistance >= maxDistance);
+        preventBodyScroll();
+
+        if (pulledDistance >= maxDistance) {
+          setIsRefreshing(true);
+        } else {
+          setIsRefreshing(false);
+        }
       } else {
-        allowScroll();
+        ableBodyScroll();
         resetToInitial();
       }
     }
@@ -84,7 +89,7 @@ const PullToRefresh = ({
 
   const onEnd = async () => {
     if (pulled) {
-      allowScroll();
+      ableBodyScroll();
       if (isRefreshing) {
         try {
           await onRefresh();
@@ -99,16 +104,12 @@ const PullToRefresh = ({
     }
   };
 
-  const preventScroll = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.style.overflow = "hidden";
-    }
+  const ableBodyScroll = () => {
+    document.body.style.overflow = "auto";
   };
 
-  const allowScroll = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.style.overflow = "auto";
-    }
+  const preventBodyScroll = () => {
+    document.body.style.overflow = "hidden";
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -163,7 +164,7 @@ const PullToRefresh = ({
         style={{
           cursor: "pointer",
           overflowY: "auto",
-          maxHeight: "calc(100vh - 150px)", // 헤더 + 바텀바 제외
+          maxHeight: "calc(100vh - 150px)", // 헤더와 바텀바 제외한 높이
         }}
       >
         {children}
