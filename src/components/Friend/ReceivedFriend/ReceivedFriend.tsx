@@ -69,13 +69,13 @@ const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
               {friend.imageUrl ? (
                 <img
                   className={styles.ProfileImg}
-                  src={defaultImg}
+                  src={friend.imageUrl}
                   alt="프로필 사진"
                 />
               ) : (
                 <img
                   className={styles.ProfileImg}
-                  src={friend.imageUrl}
+                  src={defaultImg}
                   alt="프로필 사진"
                 />
               )}

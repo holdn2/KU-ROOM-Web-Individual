@@ -73,11 +73,20 @@ export const getSearchedNewFriends = async (nickname: string) => {
   }
 };
 // 친구 요청 api
-export const requestFriend = async (receivedId: number) => {
+export const requestFriend = async (receiverId: number) => {
+  console.log("요청할 친구 id : ", receiverId);
   try {
-    const response = await axiosInstance.post<DefaultResponse>(REQUEST_FRIEND, {
-      receivedId: receivedId,
-    });
+    const response = await axiosInstance.post<DefaultResponse>(
+      REQUEST_FRIEND,
+      {
+        receiverId: receiverId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (response.data.code === 304) {
       throw response.data;
     } else {
