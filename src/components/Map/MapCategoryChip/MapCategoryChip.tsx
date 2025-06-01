@@ -4,13 +4,18 @@ import { CategoryChips } from "../MapData";
 
 interface MapCategoryChip {
   setMapSearchResult: (value: string) => void;
+  setIsTracking: (value: boolean) => void;
 }
 
-const MapCategoryChip: React.FC<MapCategoryChip> = ({ setMapSearchResult }) => {
+const MapCategoryChip: React.FC<MapCategoryChip> = ({
+  setMapSearchResult,
+  setIsTracking,
+}) => {
   // 버튼 클릭 시 해당하는 위치 배열을 서버에 요청하여 받아야함.
   const getSelectedLocationArray = (title: string) => {
     // title을 이용하여 요청
     setMapSearchResult(title);
+    setIsTracking(false);
   };
 
   return (

@@ -141,7 +141,10 @@ const MapPage = () => {
               >
                 <MapSearchBar />
               </button>
-              <MapCategoryChip setMapSearchResult={setMapSearchResult} />
+              <MapCategoryChip
+                setMapSearchResult={setMapSearchResult}
+                setIsTracking={setIsTracking}
+              />
               {/* 내 위치 추적 아이콘 */}
               <button
                 className={styles.TrackingIcon}
