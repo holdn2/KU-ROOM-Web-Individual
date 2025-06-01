@@ -10,7 +10,9 @@
 .FriendAddListWrapper {
   display: flex;
   flex-direction: column;
-  padding: 0 14px;
+  padding: 0 14px 20px 14px;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
 }
 .RequestList,
 .ReceivedList {
