@@ -23,14 +23,13 @@ const MyPage = () => {
     } catch (error) {
       console.error("토큰 재발급 실패 : ", error);
       navigate("/login");
-    } finally {
-      window.location.reload(); // 재발급 후 리로드
     }
   };
 
   useEffect(() => {
     // 로그인 여부 확인
     // getNewToken();
+    // Access Token 재발급된 것이 반영되기 전 아래 로직이 실행되지 않도록 여유를 줌
     const timeout = setTimeout(() => {
       const token = localStorage.getItem("accessToken");
       if (!token) {
