@@ -22,6 +22,8 @@ const FriendList = () => {
   const [friendList, setFriendList] = useState<Friend[]>([]);
   const [searchNickname, setSearchNickname] = useState("");
 
+  const [refreshList, setRefreshList] = useState(false);
+
   // const getNewToken = async () => {
   //   try {
   //     await reissueTokenApi();
@@ -76,7 +78,7 @@ const FriendList = () => {
     };
 
     getMyFriends();
-  }, []);
+  }, [refreshList]);
 
   // 팝업 외부 클릭 시 닫기
   useEffect(() => {
@@ -155,6 +157,7 @@ const FriendList = () => {
         modalState={modalState}
         modalType={modalType}
         setModalState={setModalState}
+        setRefreshList={setRefreshList}
       />
     </div>
   );

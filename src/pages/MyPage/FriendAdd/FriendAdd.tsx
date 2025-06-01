@@ -20,12 +20,15 @@ interface SearchedFriend {
   nickname: string;
   imageUrl: string;
   requestSent: boolean;
+  requestReceived: boolean;
   isFriend: boolean;
 }
 
 const FriendAdd = () => {
   // const navigate = useNavigate();
   const [searchTarget, setSearchTarget] = useState("");
+
+  const [refreshList, setRefreshList] = useState(false);
 
   const [filteredUsers, setFilteredUsers] = useState<SearchedFriend[]>([]);
   const [trySearch, setTrySearch] = useState(false);
@@ -97,6 +100,8 @@ const FriendAdd = () => {
     try {
       const response = await cancelRequest(id);
       console.log(response);
+      setRefreshList((prev) => !prev);
+      await filteringSearch();
     } catch (error) {
       console.error("친구요청 취소 실패 :", error);
     }
@@ -107,6 +112,8 @@ const FriendAdd = () => {
     try {
       const response = await requestFriend(id);
       console.log(response);
+      setRefreshList((prev) => !prev);
+      await filteringSearch();
     } catch (error) {
       console.error("친구요청 실패 :", error);
     }
@@ -137,17 +144,26 @@ const FriendAdd = () => {
             filteredUsers={filteredUsers}
             handleSendRequest={handleSendRequest}
             handleDeleteRequest={handleDeleteRequest}
+            setAcceptReceiveFriend={setAcceptReceiveFriend}
+            setAcceptReceiveFriendId={setAcceptReceiveFriendId}
+            setModalType={setModalType}
+            setModalState={setModalState}
+            refreshList={refreshList}
           />
         ) : (
           <div className={styles.FriendAddListWrapper}>
             {/* 보낸 요청 */}
-            <RequestedFriend handleDeleteRequest={handleDeleteRequest} />
+            <RequestedFriend
+              handleDeleteRequest={handleDeleteRequest}
+              refreshList={refreshList}
+            />
             {/* 받은 요청 */}
             <ReceivedFriend
               setAcceptReceiveFriend={setAcceptReceiveFriend}
               setAcceptReceiveFriendId={setAcceptReceiveFriendId}
               setModalType={setModalType}
               setModalState={setModalState}
+              refreshList={refreshList}
             />
           </div>
         )}
@@ -161,6 +177,8 @@ const FriendAdd = () => {
         modalState={modalState}
         modalType={modalType}
         setModalState={setModalState}
+        setRefreshList={setRefreshList}
+        filteringSearch={filteringSearch}
       />
     </div>
   );

@@ -1,5 +1,8 @@
 import axios from "axios";
 
+// 타입 추론하여 사용
+type AxiosRequestConfig = Parameters<typeof axios>[0];
+
 const axiosInstance = axios.create({
   baseURL: "https://kuroom.shop/api/v1",
   // body가 있는 요청들의 경우에는 Content-Type: application/json를 명시해주는 것이 좋다.
@@ -20,43 +23,39 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    const errorCode = error.response?.data?.code;
-    const status = error.response?.status;
-
-    // 이미 재시도한 요청은 무한 루프 방지를 위해 막기
-    if (originalRequest._retry) {
-      return Promise.reject(error);
-    }
-
-    console.log("에러코드: ", errorCode);
-
-    // JWT 관련 오류 코드 또는 HTTP 401 Unauthorized일 경우 재발급 시도
-    const tokenErrorCodes = [1000, 1001, 1002, 1003, 1004, 1005, 1006, 401];
-    if (tokenErrorCodes.includes(errorCode) || status === 401) {
+interface AccessTokenExpiredReponse {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    token: string;
+  };
+}
+axiosInstance.interceptors.response.use<AccessTokenExpiredReponse>(
+  async (response: any) => {
+    // HTTP status는 200이지만 내부 code가 401이면 -> 강제로 에러 핸들러로 넘김
+    if (response.data.code === 401) {
+      const originalRequest = response.config as AxiosRequestConfig & {
+        _retry?: boolean;
+      };
       try {
-        originalRequest._retry = true;
         const newAccessToken = await reissueTokenApi();
-
-        // 새로운 accessToken을 헤더에 설정하고 재요청
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-
-        if (newAccessToken) {
-          // window.location.reload();
-        }
-        return axiosInstance(originalRequest);
-      } catch (refreshError) {
-        return Promise.reject(refreshError);
+        originalRequest.headers = {
+          ...originalRequest.headers,
+          Authorization: `Bearer ${newAccessToken}`,
+        };
+        return axiosInstance(response.config);
+      } catch (error: any) {
+        console.warn(
+          "재발급 실패 (기타 이유)",
+          error.response?.data || error.message
+        );
+        throw error;
       }
     }
-
-    return Promise.reject(error);
+    return response;
   }
 );
-
 // 토큰 재발급 api
 interface ReissueResponse {
   code: number;
@@ -80,7 +79,8 @@ export const reissueTokenApi = async (): Promise<string> => {
 
     const tokenData = response.data.data;
 
-    // 이 조건이 중요: refreshToken은 있었지만, 만료되어 data 자체가 안 온 경우
+    // 이 조건이 중요: refreshToken은 있었지만, 만료되어 data 자체가 안 온 경우.
+    // refresh token에 문제가 있는 경우에는 로그인 화면으로 리다이렉트 해야한다.
     if (!tokenData || !tokenData.accessToken) {
       console.error(" refreshToken 만료 또는 재발급 실패 → 로그인 이동");
       localStorage.clear();
@@ -95,13 +95,7 @@ export const reissueTokenApi = async (): Promise<string> => {
 
     return tokenData.accessToken;
   } catch (err: any) {
-    console.warn(
-      "⚠️ 재발급 실패 (기타 이유)",
-      err.response?.data || err.message
-    );
-    localStorage.clear();
-    window.location.href = "/login";
-
+    console.warn("재발급 실패 (기타 이유)", err.response?.data || err.message);
     throw err;
   }
 };

@@ -52,6 +52,7 @@ interface NewFriendsSearchResponse {
     nickname: string;
     imageUrl: string;
     requestSent: boolean;
+    requestReceived: boolean;
     isFriend: boolean;
   }[];
 }
@@ -116,6 +117,7 @@ export const getSentRequests = async () => {
     console.log("보낸 요청: ", response.data);
     return response.data.data;
   } catch (error: any) {
+    console.error(error);
     console.error(
       "보낸 요청 조회 실패:",
       error.response?.data || error.message
@@ -194,12 +196,12 @@ export const cancelRequest = async (requestId: number) => {
     const response = await axiosInstance.request({
       url: REQUEST_FRIEND,
       method: "DELETE",
-      data: { requestId },
+      data: { requestId: requestId },
       headers: {
         "Content-Type": "application/json",
       },
     });
-    console.log("요청 취소 결과 : ", response.data);
+    console.log("요청 취소 결과 : ", response);
     return response.data;
   } catch (error: any) {
     console.error("요청 취소 실패:", error.response?.data || error.message);

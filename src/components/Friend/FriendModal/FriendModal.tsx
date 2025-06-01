@@ -17,6 +17,8 @@ interface FriendModalProps {
   modalState: boolean;
   modalType: string;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
+  setRefreshList: React.Dispatch<React.SetStateAction<boolean>>;
+  filteringSearch?: () => Promise<void>;
 }
 
 const FriendModal: React.FC<FriendModalProps> = ({
@@ -25,62 +27,40 @@ const FriendModal: React.FC<FriendModalProps> = ({
   modalState,
   modalType,
   setModalState,
+  setRefreshList,
+  filteringSearch,
 }) => {
   const handleCloseModal = () => setModalState(false);
 
   // 서버에 각각에 대해 요청
   const handleEditFriend = async () => {
-    switch (modalType) {
-      case "delete":
-        try {
-          const response = await friendDelete(editFriendId.toString());
-          console.log(response);
-          console.log(editFriend, " 친구 삭제");
-        } catch (error) {
-          console.error("친구 삭제 중 오류 : ", error);
-        }
-        break;
-      case "block":
-        try {
-          const response = await friendBlock(editFriendId);
-          console.log(response);
-          console.log(editFriend, " 친구 차단");
-        } catch (error) {
-          console.error("친구 차단 중 오류 : ", error);
-        }
-        break;
-      case "report":
-        try {
-          const response = await friendReport(
-            editFriendId,
-            "아직 모릅니다 ㅎㅎ.."
-          );
-          console.log(response);
-          console.log(editFriend, " 친구 신고");
-        } catch (error) {
-          console.error("친구 신고 중 오류 : ", error);
-        }
-        break;
-      case "accept":
-        try {
-          const response = await acceptRequest(editFriendId);
-          console.log(response);
-          console.log(editFriend, "의 친구요청 수락");
-        } catch (error) {
-          console.error("친구 요청 수락 중 오류 : ", error);
-        }
-        break;
-      case "refuse":
-        try {
-          const response = await rejectRequest(editFriendId);
-          console.log(response);
-          console.log(editFriend, "의 친구요청 거절");
-        } catch (error) {
-          console.error("친구 요청 거절 중 오류 : ", error);
-        }
-        break;
+    try {
+      switch (modalType) {
+        case "accept":
+          await acceptRequest(editFriendId);
+          break;
+        case "refuse":
+          await rejectRequest(editFriendId);
+          break;
+        case "delete":
+          await friendDelete(editFriendId.toString());
+          break;
+        case "block":
+          await friendBlock(editFriendId);
+          break;
+        case "report":
+          await friendReport(editFriendId, "아직 모릅니다 ㅎㅎ..");
+          break;
+      }
+
+      console.log(`${editFriend}의 ${modalType} 완료`);
+    } catch (error) {
+      console.error(`친구 ${modalType} 중 오류:`, error);
+    } finally {
+      setModalState(false);
+      setRefreshList((prev) => !prev);
+      if (filteringSearch) await filteringSearch(); // UI 재반영
     }
-    setModalState(false);
   };
 
   const renderModalContent = () => {

@@ -13,9 +13,13 @@ interface Friend {
 
 interface RequestedFriendProps {
   handleDeleteRequest: (id: number) => void;
+  refreshList: boolean;
 }
 
-const RequestedFriend = ({ handleDeleteRequest }: RequestedFriendProps) => {
+const RequestedFriend = ({
+  handleDeleteRequest,
+  refreshList,
+}: RequestedFriendProps) => {
   const [requestList, setRequestList] = useState<Friend[]>([]);
 
   const fetchSentRequest = async () => {
@@ -37,7 +41,7 @@ const RequestedFriend = ({ handleDeleteRequest }: RequestedFriendProps) => {
   // 서버에서 보낸 요청 불러오기
   useEffect(() => {
     fetchSentRequest();
-  }, []);
+  }, [refreshList]);
 
   return (
     !(requestList.length === 0) && (
