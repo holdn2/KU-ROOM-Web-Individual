@@ -69,7 +69,13 @@ const FriendAdd = () => {
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       setTrySearch(true);
-      filteringSearch();
+      if (searchTarget.trim() === "") {
+        setSearchTarget("");
+        setIsSearchFocused(false);
+        setFilteredUsers([]);
+      } else {
+        filteringSearch();
+      }
     }
   };
 
