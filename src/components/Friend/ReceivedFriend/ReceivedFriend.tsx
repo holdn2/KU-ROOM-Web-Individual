@@ -30,6 +30,7 @@ const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
     const fetchReceivedRequests = async () => {
       try {
         const response = await getReceivedRequests();
+        console.log(response);
         const friends = response ?? [];
         if (!Array.isArray(friends)) {
           setReceivedList([]);

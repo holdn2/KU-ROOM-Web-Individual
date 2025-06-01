@@ -27,16 +27,16 @@ const FriendContainer: React.FC<FriendContainerProps> = ({
   return (
     <div className={styles.EachFriendContainer}>
       <div className={styles.FriendProfileWrapper}>
-        {friend.imageUrl === "" ? (
+        {friend.imageUrl ? (
           <img
             className={styles.ProfileImg}
-            src={defaultImg}
-            alt="기본 프로필 사진"
+            src={friend.imageUrl}
+            alt="프로필 사진"
           />
         ) : (
           <img
             className={styles.ProfileImg}
-            src={friend.imageUrl}
+            src={defaultImg}
             alt="프로필 사진"
           />
         )}
