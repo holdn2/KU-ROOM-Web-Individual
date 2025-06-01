@@ -70,7 +70,7 @@ const RequestedFriend = ({
               className={styles.DeleteIcon}
               src={deleteIcon}
               alt="요청 삭제"
-              onClick={() => handleDeleteRequest(friend.requestId)}
+              onClick={() => handleDeleteRequest(friend.fromUserId)}
             />
           </div>
         ))}

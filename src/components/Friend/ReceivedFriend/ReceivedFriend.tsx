@@ -58,8 +58,7 @@ const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
   // 친구 요청 거절
   const handleRefuseRequest = (friend: Friend) => {
     setAcceptReceiveFriend(friend.fromUserNickname);
-    console.log(friend.requestId);
-    setAcceptReceiveFriendId(friend.requestId);
+    setAcceptReceiveFriendId(friend.fromUserId);
     setModalType("refuse");
     setModalState(true);
   };
