@@ -2,13 +2,7 @@ import React from "react";
 import styles from "./SearchResultHeader.module.css";
 import arrowBack from "../../../assets/nav/arrowback.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
-
-interface MarkerData {
-  lat: number;
-  lng: number;
-  title: string;
-  icon: string;
-}
+import { MarkerData } from "../../../../types/mapTypes";
 
 interface SearchResultProps {
   mapSearchResult: string;

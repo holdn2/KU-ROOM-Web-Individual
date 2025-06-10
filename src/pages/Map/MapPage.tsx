@@ -14,13 +14,7 @@ import LocationsBottomSheet from "../../components/Map/LocationsBottomSheet/Loca
 import FocusedLocationBottomSheet from "../../components/Map/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
 import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
 import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
-
-interface MarkerData {
-  lat: number;
-  lng: number;
-  title: string;
-  icon: string;
-}
+import { CategoryPlaces, MarkerData } from "../../../types/mapTypes";
 
 interface LocationData {
   userLat: number;
@@ -33,6 +27,9 @@ const MapPage = () => {
   const [mapSearchResult, setMapSearchResult] = useState("");
   const [isInSchool, setIsInSchool] = useState(false);
   const [isSharedLocation, setIsSharedLocation] = useState(false);
+
+  const [selectedCategoryTitle, setSelectedCategoryTitle] =
+    useState<string>("");
 
   // 위치 공유 상태
   const [modalState, setModalState] = useState(false);
@@ -59,23 +56,40 @@ const MapPage = () => {
   );
 
   // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작. 이부분은 테스트용 로직
-  useEffect(() => {
-    if (!mapSearchResult) {
-      setMarkers([]);
-      setVisibleBottomSheet(false);
-      return;
-    }
-    setVisibleBottomSheet(true);
-    const categoryMatch = KuroomMarkers.find(
-      (item) => item.category === mapSearchResult
-    );
+  // useEffect(() => {
+  //   if (!mapSearchResult) {
+  //     setMarkers([]);
+  //     setVisibleBottomSheet(false);
+  //     return;
+  //   }
+  //   setVisibleBottomSheet(true);
+  //   const categoryMatch = KuroomMarkers.find(
+  //     (item) => item.category === mapSearchResult
+  //   );
 
-    if (categoryMatch) {
-      setMarkers(categoryMatch.markers);
-    } else {
-      setMarkers([]); // 해당 카테고리 없으면 빈 배열로
-    }
-  }, [mapSearchResult]);
+  //   if (categoryMatch) {
+  //     setMarkers(categoryMatch.markers);
+  //   } else {
+  //     setMarkers([]); // 해당 카테고리 없으면 빈 배열로
+  //   }
+  // }, [mapSearchResult]);
+
+  // 카테고리 칩을 눌렀을 때 서버에 title을 이용하여 요청
+  useEffect(() => {
+    // 서버 요청 결과를 저장
+    const categoryPlaces: CategoryPlaces[] = [];
+    // 서버에서 받아오면
+    categoryPlaces.map((item) => {
+      const newMarker: MarkerData = {
+        category: selectedCategoryTitle,
+        name: item.name,
+        latitude: item.latitude,
+        longitude: item.longitude,
+      };
+      setMarkers([...markers, newMarker]);
+    });
+    setVisibleBottomSheet(true);
+  }, [selectedCategoryTitle]);
 
   useEffect(() => {
     console.log("현재 포커된 상태: ", hasFocusedMarker);
@@ -142,7 +156,7 @@ const MapPage = () => {
                 <MapSearchBar />
               </button>
               <MapCategoryChip
-                setMapSearchResult={setMapSearchResult}
+                setSelectedCategoryTitle={setSelectedCategoryTitle}
                 setIsTracking={setIsTracking}
               />
               {/* 내 위치 추적 아이콘 */}

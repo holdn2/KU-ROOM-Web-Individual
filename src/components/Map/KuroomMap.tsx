@@ -4,13 +4,7 @@ import {
   noTracking,
   renderMarkers,
 } from "./kuroomMapUtils";
-
-interface MarkerData {
-  lat: number;
-  lng: number;
-  title: string;
-  icon: string;
-}
+import { MarkerData } from "../../../types/mapTypes";
 
 interface MapProps {
   width?: string;

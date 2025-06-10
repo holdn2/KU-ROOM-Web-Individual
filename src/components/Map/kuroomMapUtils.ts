@@ -1,13 +1,15 @@
 import myMarkerIcon from "../../assets/map/mylocationMarker.svg";
 import focusedMarkerIcon from "../../assets/map/focusedMarker.png";
-
-// 마커 렌더링 로직
-interface MarkerData {
-  lat: number;
-  lng: number;
-  title: string;
-  icon: string;
-}
+import { MarkerData } from "../../../types/mapTypes";
+import collegeMarker from "../../assets/map/markers/collegeMarker.svg";
+import kcubekhubMarker from "../../assets/map/markers/kcubekhubMarker.svg";
+import storeMarker from "../../assets/map/markers/storeMarker.svg";
+import cafeMarker from "../../assets/map/markers/cafeMarker.svg";
+import restaurantMarker from "../../assets/map/markers/restaurantMarker.svg";
+import officeMarker from "../../assets/map/markers/officeMarker.svg";
+import dormitoryMarker from "../../assets/map/markers/dormitoryMarker.svg";
+import bankMarker from "../../assets/map/markers/bankMarker.svg";
+import postMarker from "../../assets/map/markers/postMarker.svg";
 
 interface KuroomMarker {
   marker: naver.maps.Marker;
@@ -19,6 +21,33 @@ let focusedMarker: naver.maps.Marker | null = null;
 let isDraggingMap = false;
 
 export { renderedMarkers, makeFocusMarker };
+
+const makeMarkerIcon = (category: string): string => {
+  switch (category) {
+    case "단과대":
+      return collegeMarker;
+    case "K-Cube":
+    case "K-Hub":
+      return kcubekhubMarker;
+    case "편의점":
+      return storeMarker;
+    case "레스티오":
+      return cafeMarker;
+    case "1847":
+      return cafeMarker;
+    case "학생식당":
+      return restaurantMarker;
+    case "학과사무실":
+      return officeMarker;
+    case "기숙사":
+      return dormitoryMarker;
+    case "은행":
+      return bankMarker;
+    case "우체국":
+      return postMarker;
+  }
+  return myMarkerIcon;
+};
 
 export function renderMarkers(
   map: naver.maps.Map,
@@ -36,14 +65,15 @@ export function renderMarkers(
   map.setCenter(defaultCenter);
   map.setZoom(16);
 
-  markers.forEach(({ lat, lng, title, icon }) => {
+  markers.forEach(({ category, name, latitude, longitude }) => {
+    const markerIcon = makeMarkerIcon(category);
     const marker = new window.naver.maps.Marker({
-      position: new window.naver.maps.LatLng(lat, lng),
+      position: new window.naver.maps.LatLng(latitude, longitude),
       map,
-      title,
+      name,
       icon: {
         // 마커 아이콘 추가
-        url: icon,
+        url: markerIcon,
       },
     });
     window.naver.maps.Event.addListener(marker, "click", () => {
@@ -57,7 +87,7 @@ export function renderMarkers(
     });
 
     setIsTracking(false);
-    renderedMarkers.push({ marker, originalIcon: icon });
+    renderedMarkers.push({ marker, originalIcon: markerIcon });
   });
 
   // 마커가 하나뿐일 경우 자동 포커스 처리
@@ -156,7 +186,7 @@ function makeFocusMarker(
     }
   });
 }
-// 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가는 로직
+// 현재 위치 정보 가져와서 내 위치 마커 추가 및 watchPosition으로 따라가는 로직
 export function myLocationTracking(
   map: naver.maps.Map,
   setCurrentLatLng: any,
@@ -178,7 +208,7 @@ export function myLocationTracking(
         markerRef.current = new window.naver.maps.Marker({
           position: currentLocation,
           map,
-          title: "내 위치",
+          name: "내 위치",
           icon: {
             // 내 위치 마커 아이콘 추가
             url: myMarkerIcon,
