@@ -4,6 +4,7 @@ import mapListIcon from "../../../assets/map/mapListIcon.svg";
 import { dummyLocationInfo } from "../MapData";
 import { makeFocusMarker, renderedMarkers } from "../kuroomMapUtils";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
+import { MapSearchResult } from "../../../../types/mapTypes";
 
 interface LocationInfo {
   title: string;
@@ -17,7 +18,7 @@ interface LocationInfo {
 
 interface LocationsBottomSheetProps {
   visibleBottomSheet: boolean;
-  mapSearchResult: string;
+  mapSearchResult: MapSearchResult | null;
   isExpandedSheet: boolean;
   mapInstance: React.MutableRefObject<naver.maps.Map | null>;
   setIsExpandedSheet: (value: boolean) => void;
@@ -66,10 +67,12 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
 
   // !!서버에 해당 정보들 요청해야함.
   useEffect(() => {
-    const match = dummyLocationInfo.find(
-      (item) => item.category === mapSearchResult
-    );
-    setSelectedLocationInfos(match ? match.infos : []);
+    if (mapSearchResult) {
+      const match = dummyLocationInfo.find(
+        (item) => item.category === mapSearchResult.name
+      );
+      setSelectedLocationInfos(match ? match.infos : []);
+    }
   }, [mapSearchResult]);
 
   // 바텀 시트 올리고 내리는 로직. 좀 더 연구 필요할듯.

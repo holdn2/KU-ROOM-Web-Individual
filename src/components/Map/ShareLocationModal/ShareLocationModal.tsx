@@ -3,15 +3,12 @@ import styles from "./ShareLocationModal.module.css";
 import ReactModal from "react-modal";
 import Button from "../../Button/Button";
 import cautionIcon from "../../../assets/icon/editFriend/cautionIcon.svg";
+import { UserLocationData } from "../../../../types/mapTypes";
 
-interface LocationData {
-  userLat: number;
-  userLng: number;
-}
 interface ShareLocationModalProps {
   modalState: boolean;
   isSharedLocation: boolean;
-  currentLocation: LocationData | null;
+  currentLocation: UserLocationData | null;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSharedLocation: (value: boolean) => void;
 }

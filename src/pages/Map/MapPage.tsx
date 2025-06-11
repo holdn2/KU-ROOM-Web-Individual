@@ -8,23 +8,23 @@ import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
 import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChip";
 import KuroomMap from "../../components/Map/KuroomMap";
 import MapSearch from "../../components/Map/MapSearch/MapSearch";
-import { KuroomMarkers } from "../../components/Map/MapData";
 import SearchResultHeader from "../../components/Map/MapSearch/SearchResultHeader";
 import LocationsBottomSheet from "../../components/Map/LocationsBottomSheet/LocationsBottomSheet";
 import FocusedLocationBottomSheet from "../../components/Map/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
 import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
 import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
-import { CategoryPlaces, MarkerData } from "../../../types/mapTypes";
-
-interface LocationData {
-  userLat: number;
-  userLng: number;
-}
+import {
+  CategoryPlaces,
+  MapSearchResult,
+  MarkerData,
+  UserLocationData,
+} from "../../../types/mapTypes";
 
 const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
   const [searchMode, setSearchMode] = useState(false);
-  const [mapSearchResult, setMapSearchResult] = useState("");
+  const [mapSearchResult, setMapSearchResult] =
+    useState<MapSearchResult | null>(null);
   const [isInSchool, setIsInSchool] = useState(false);
   const [isSharedLocation, setIsSharedLocation] = useState(false);
 
@@ -33,9 +33,8 @@ const MapPage = () => {
 
   // 위치 공유 상태
   const [modalState, setModalState] = useState(false);
-  const [currenLocation, setCurrentLocation] = useState<LocationData | null>(
-    null
-  ); // 현재 위치
+  const [currenLocation, setCurrentLocation] =
+    useState<UserLocationData | null>(null); // 현재 위치
 
   if (isInSchool) {
     // vercel 배포 오류 해결 위해.
@@ -56,26 +55,30 @@ const MapPage = () => {
   );
 
   // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작. 이부분은 테스트용 로직
-  // useEffect(() => {
-  //   if (!mapSearchResult) {
-  //     setMarkers([]);
-  //     setVisibleBottomSheet(false);
-  //     return;
-  //   }
-  //   setVisibleBottomSheet(true);
-  //   const categoryMatch = KuroomMarkers.find(
-  //     (item) => item.category === mapSearchResult
-  //   );
-
-  //   if (categoryMatch) {
-  //     setMarkers(categoryMatch.markers);
-  //   } else {
-  //     setMarkers([]); // 해당 카테고리 없으면 빈 배열로
-  //   }
-  // }, [mapSearchResult]);
+  useEffect(() => {
+    if (!mapSearchResult) {
+      setMarkers([]);
+      setVisibleBottomSheet(false);
+      return;
+    }
+    setVisibleBottomSheet(true);
+    setMarkers([
+      {
+        category: "focus",
+        name: mapSearchResult.name,
+        latitude: mapSearchResult.latitude,
+        longitude: mapSearchResult.longitude,
+      },
+    ]);
+  }, [mapSearchResult]);
 
   // 카테고리 칩을 눌렀을 때 서버에 title을 이용하여 요청
   useEffect(() => {
+    if (!selectedCategoryTitle) {
+      setMarkers([]);
+      setVisibleBottomSheet(false);
+      return;
+    }
     // 서버 요청 결과를 저장
     const categoryPlaces: CategoryPlaces[] = [];
     // 서버에서 받아오면
@@ -110,7 +113,9 @@ const MapPage = () => {
     <div>
       {/* KuroomMap은 항상 렌더링되고 */}
       <KuroomMap
-        height={mapSearchResult === "친구" ? "100vh" : "calc(100vh - 92px)"}
+        height={
+          selectedCategoryTitle === "친구" ? "100vh" : "calc(100vh - 92px)"
+        }
         markers={markers}
         mapRefProp={mapInstanceRef}
         isTracking={isTracking}
@@ -200,7 +205,7 @@ const MapPage = () => {
           )}
         </>
       )}
-      {mapSearchResult !== "친구" && (
+      {selectedCategoryTitle !== "친구" && (
         <>
           <LocationsBottomSheet
             visibleBottomSheet={visibleBottomSheet}

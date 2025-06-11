@@ -2,12 +2,12 @@ import React from "react";
 import styles from "./SearchResultHeader.module.css";
 import arrowBack from "../../../assets/nav/arrowback.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
-import { MarkerData } from "../../../../types/mapTypes";
+import { MapSearchResult, MarkerData } from "../../../../types/mapTypes";
 
 interface SearchResultProps {
-  mapSearchResult: string;
+  mapSearchResult: MapSearchResult;
   setSearchMode: (value: boolean) => void;
-  setMapSearchResult: (value: string) => void;
+  setMapSearchResult: (value: MapSearchResult | null) => void;
   setMarkers: (value: MarkerData[]) => void;
   setIsExpandedSheet: (value: boolean) => void;
   setHasFocusedMarker: (value: boolean) => void;
@@ -32,21 +32,21 @@ const SearchResult: React.FC<SearchResultProps> = ({
           alt="뒤로 가기"
           onClick={() => {
             setSearchMode(false);
-            setMapSearchResult("");
+            setMapSearchResult(null);
             setMarkers([]);
             setIsExpandedSheet(false);
             setHasFocusedMarker(false);
             setIsExpandedFocusedSheet(false);
           }}
         />
-        <span className={styles.ResultTitle}>{mapSearchResult}</span>
+        <span className={styles.ResultTitle}>{mapSearchResult.name}</span>
       </div>
       <img
         className={styles.DeleteIcon}
         src={deleteIcon}
         alt="검색어 지우기"
         onClick={() => {
-          setMapSearchResult("");
+          setMapSearchResult(null);
           setSearchMode(true);
           setMarkers([]);
           setIsExpandedSheet(false);

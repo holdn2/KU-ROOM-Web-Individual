@@ -10,6 +10,7 @@ import officeMarker from "../../assets/map/markers/officeMarker.svg";
 import dormitoryMarker from "../../assets/map/markers/dormitoryMarker.svg";
 import bankMarker from "../../assets/map/markers/bankMarker.svg";
 import postMarker from "../../assets/map/markers/postMarker.svg";
+import defaultMarker from "../../assets/map/defaultMarkerIcon.svg";
 
 interface KuroomMarker {
   marker: naver.maps.Marker;
@@ -46,7 +47,7 @@ const makeMarkerIcon = (category: string): string => {
     case "우체국":
       return postMarker;
   }
-  return myMarkerIcon;
+  return defaultMarker;
 };
 
 export function renderMarkers(

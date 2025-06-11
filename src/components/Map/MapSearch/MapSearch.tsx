@@ -4,18 +4,19 @@ import BottomBar from "../../BottomBar/BottomBar";
 import arrowBack from "../../../assets/nav/arrowback.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
+import { MapSearchResult } from "../../../../types/mapTypes";
 
-const dummyRecentSearchData = [
-  "신공학관",
-  "종강102",
-  "레스티오",
-  "제1학생회관",
-  "1847",
+const dummyRecentSearchData: MapSearchResult[] = [
+  { id: 1, name: "신공학관", latitude: 0, longitude: 0 },
+  { id: 2, name: "종강102", latitude: 0, longitude: 0 },
+  { id: 3, name: "레스티오", latitude: 0, longitude: 0 },
+  { id: 4, name: "제1학생회관", latitude: 0, longitude: 0 },
+  { id: 5, name: "1847", latitude: 0, longitude: 0 },
 ];
-const dummyLocationData = ["레스티오", "1847", "신공학관"];
+// const dummyLocationData = ["레스티오", "1847", "신공학관"];
 interface MapSearchProps {
   setSearchMode: (value: boolean) => void;
-  setMapSearchResult: (value: string) => void;
+  setMapSearchResult: (value: MapSearchResult) => void;
 }
 
 const MapSearch: React.FC<MapSearchProps> = ({
@@ -23,13 +24,16 @@ const MapSearch: React.FC<MapSearchProps> = ({
   setMapSearchResult,
 }) => {
   const [searchText, setSearchText] = useState("");
-  const [recentSearchData, setRecentSearchData] = useState<string[]>([]);
-  const [searchResult, setSearchResult] = useState<string[]>([]);
+  const [recentSearchData, setRecentSearchData] = useState<MapSearchResult[]>(
+    []
+  );
+  const [searchResult, setSearchResult] = useState<MapSearchResult[]>([]);
   const [trySearch, setTrySearch] = useState(false);
 
   useEffect(() => {
+    // 서버에서 최근 검색어 가져오기
     setRecentSearchData(dummyRecentSearchData);
-  }, []);
+  }, [trySearch]);
 
   useEffect(() => {
     setTrySearch(false);
@@ -50,12 +54,13 @@ const MapSearch: React.FC<MapSearchProps> = ({
   const handleSearch = () => {
     // 서버에 검색 요청하기. 내가 볼 때 줄임말 등의 검색어를 보내면 관련된 위치를 검색결과에 뜨도록
     // 검색 기록에 추가하는 요청 추가
-    const trimmedText = searchText.trim();
-    if (trimmedText.length === 0) return;
-    const matchedResults = dummyLocationData.filter((location) =>
-      location.includes(trimmedText)
-    );
-    setSearchResult(matchedResults);
+    // const trimmedText = searchText.trim();
+    // if (trimmedText.length === 0) return;
+    // const matchedResults = dummyLocationData.filter((location) =>
+    //   location.includes(trimmedText)
+    // );
+    // 서버에서 검색 결과를 받아서 아래에 넣어준다.
+    setSearchResult([]);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -65,10 +70,11 @@ const MapSearch: React.FC<MapSearchProps> = ({
     }
   };
 
-  // 버튼 클릭 시 해당하는 위치 배열을 서버에 요청하여 받아야함.
-  const getSelectedLocationArray = (title: string) => {
+  // 버튼 클릭 시 해당하는 위치를 서버에 요청하여 받아야함.
+  const getSelectedLocationArray = (result: MapSearchResult) => {
     // title을 이용하여 요청
-    setMapSearchResult(title);
+    // 서버에 요청 후 아래에 넣기
+    setMapSearchResult(result);
     setSearchMode(false);
   };
 
@@ -101,7 +107,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
           />
         )}
       </div>
-      {!searchText && (
+      {!searchText && recentSearchData.length !== 0 && (
         <>
           <div className={styles.RecentSearchTitleWrapper}>
             <span className={styles.RecentSearchTitle}>최근 검색어</span>
@@ -119,13 +125,13 @@ const MapSearch: React.FC<MapSearchProps> = ({
                 className={styles.RecentSearchContainer}
                 onClick={() => getSelectedLocationArray(item)}
               >
-                <span className={styles.LocationTitle}>{item}</span>
+                <span className={styles.LocationTitle}>{item.name}</span>
                 <img
                   src={deleteIcon}
                   alt="검색어 지우기"
                   onClick={(e) => {
                     e.stopPropagation();
-                    deleteSearchData(item);
+                    deleteSearchData(item.name);
                   }}
                   style={{ padding: "2px 5px" }}
                 />
@@ -143,7 +149,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
                 className={styles.ResultContainer}
                 onClick={() => getSelectedLocationArray(result)}
               >
-                <span className={styles.LocationTitle}>{result}</span>
+                <span className={styles.LocationTitle}>{result.name}</span>
               </div>
             ))}
           </div>

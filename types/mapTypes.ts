@@ -23,3 +23,17 @@ export interface MarkerData {
   latitude: number;
   longitude: number;
 }
+
+// 검색결과에 대한 정보
+export interface MapSearchResult {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+}
+
+// 유저의 위치
+export interface UserLocationData {
+  userLat: number;
+  userLng: number;
+}
