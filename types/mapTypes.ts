@@ -1,39 +1,32 @@
-// 건물 정보
-export interface BuildingData {
-  id: number;
-  name: string;
-  number: number;
+// 좌표
+export interface Coordinate {
   latitude: number;
   longitude: number;
 }
 
+// 건물 정보
+export interface BuildingData extends Coordinate {
+  id: number;
+  name: string;
+  number: number;
+}
+
 // 카테고리 정보. 추후 BuildingCategory[]로 사용할듯
-export interface CategoryPlaces {
+export interface CategoryPlaces extends Coordinate {
   placeId: number;
   name: string;
-  latitude: number;
-  longitude: number;
+
   building: BuildingData;
 }
 
 // 마커에 필요한 정보
-export interface MarkerData {
+export interface MarkerData extends Coordinate {
   category: string;
   name: string;
-  latitude: number;
-  longitude: number;
 }
 
 // 검색결과에 대한 정보
-export interface MapSearchResult {
+export interface MapSearchResult extends Coordinate {
   id: number;
   name: string;
-  latitude: number;
-  longitude: number;
-}
-
-// 유저의 위치
-export interface UserLocationData {
-  userLat: number;
-  userLng: number;
 }

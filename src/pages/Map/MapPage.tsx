@@ -15,9 +15,9 @@ import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
 import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
 import {
   CategoryPlaces,
+  Coordinate,
   MapSearchResult,
   MarkerData,
-  UserLocationData,
 } from "../../../types/mapTypes";
 
 const MapPage = () => {
@@ -33,8 +33,9 @@ const MapPage = () => {
 
   // 위치 공유 상태
   const [modalState, setModalState] = useState(false);
-  const [currenLocation, setCurrentLocation] =
-    useState<UserLocationData | null>(null); // 현재 위치
+  const [currenLocation, setCurrentLocation] = useState<Coordinate | null>(
+    null
+  ); // 현재 위치
 
   if (isInSchool) {
     // vercel 배포 오류 해결 위해.

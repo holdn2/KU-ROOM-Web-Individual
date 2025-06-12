@@ -13,7 +13,7 @@ import HomeNotice from "../../components/HomeContent/HomeNotice/HomeNotice";
 import { useNavigate } from "react-router-dom";
 import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
 import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
-import { UserLocationData } from "../../../types/mapTypes";
+import { Coordinate } from "../../../types/mapTypes";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -28,8 +28,9 @@ const Home = () => {
 
   // 내 위치 공유 버튼 모달 상태
   const [shareModalState, setShareModalState] = useState(false);
-  const [currenLocation, setCurrentLocation] =
-    useState<UserLocationData | null>(null); // 현재 위치
+  const [currenLocation, setCurrentLocation] = useState<Coordinate | null>(
+    null
+  ); // 현재 위치
 
   // api 기다리는 상태 관리도 추후 추가 예정.
   useEffect(() => {
