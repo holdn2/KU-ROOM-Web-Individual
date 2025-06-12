@@ -11,11 +11,10 @@ export interface BuildingData extends Coordinate {
   number: number;
 }
 
-// 카테고리 정보. 추후 BuildingCategory[]로 사용할듯
+// 카테고리 정보. 추후 CategoryPlaces[]로 사용할듯
 export interface CategoryPlaces extends Coordinate {
   placeId: number;
   name: string;
-
   building: BuildingData;
 }
 
