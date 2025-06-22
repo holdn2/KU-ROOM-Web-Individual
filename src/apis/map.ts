@@ -1,0 +1,244 @@
+// 지도 관련 api
+import {
+  DetailPlaceData,
+  PlaceDataWithFriend,
+  SharedFriendData,
+} from "../../types/mapTypes";
+import axiosInstance from "./axiosInstance";
+
+const CHECK_SHARE_STATE_API = "https://kuroomshop.com/api/v1/map";
+const GET_USER_SHARE_LOCATION = "https://kuroomshop.com/api/v1/map/share";
+const SHARE_USER_LOCATION = "https://kuroomshop.com/api/v1/map/shareStart";
+const UNSHARE_LOCATION = "https://kuroomshop.com/api/v1/map/notshare";
+const GET_CATEGORY_LOCATION = "https://kuroomshop.com/api/v1/map/chip/";
+const GET_SHARED_FRIEND_LOCATION =
+  "https://kuroomshop.com/api/v1/map/chip/friends";
+const GET_SEARCH_LOCATION_RESULT = "https://kuroomshop.com/api/v1/map/search";
+const GET_LOCATION_DETAIL_DATA =
+  "https://kuroomshop.com/api/v1/map?search/detail";
+
+interface ApiResponse {
+  code: number;
+  status: string;
+  message: string;
+}
+
+// 현재 위치 공유 상태인지 여부 api
+interface IsSharedApiResponse extends ApiResponse {
+  data: {
+    active: boolean;
+  };
+}
+export const checkIsSharedApi = async () => {
+  try {
+    const response = await axiosInstance.get<IsSharedApiResponse>(
+      CHECK_SHARE_STATE_API
+    );
+    return response.data.data.active; // 성공 응답 반환
+  } catch (error: any) {
+    console.error(
+      "위치 공유 상태 확인 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "위치 공유 상태 확인 중 오류 발생"
+    );
+  }
+};
+
+// 내 위치 공유 클릭 시 가장 가까운 건물명 받아오는 api
+interface GetUserShareLocationApi extends ApiResponse {
+  data: {
+    placePointed: string;
+  };
+}
+export const getUserShareLocation = async (
+  latitude: number,
+  longitude: number
+) => {
+  try {
+    const response = await axiosInstance.post<GetUserShareLocationApi>(
+      GET_USER_SHARE_LOCATION,
+      {
+        latitude: latitude,
+        longitude: longitude,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data.data.placePointed; // 성공 응답 반환
+  } catch (error: any) {
+    console.error(
+      "유저의 가장 가까운 건물명 조회 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message ||
+        "유저의 가장 가까운 건물명 조회 중 오류 발생"
+    );
+  }
+};
+
+// 위치 공유 시작 api
+interface ShareUserLocationApi extends ApiResponse {
+  data: {
+    placePointed: string;
+    active: boolean;
+  };
+}
+export const shareUserLocation = async (placePointed: string) => {
+  try {
+    const response = await axiosInstance.post<ShareUserLocationApi>(
+      SHARE_USER_LOCATION,
+      {
+        placePointed: placePointed,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data.data; // 성공 응답 반환
+  } catch (error: any) {
+    console.error(
+      "유저의 위치 공유 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "유저의 위치 공유 중 오류 발생"
+    );
+  }
+};
+
+// 위치 공유 해제 api
+export const unshareLocation = async () => {
+  try {
+    const response =
+      await axiosInstance.get<IsSharedApiResponse>(UNSHARE_LOCATION);
+    return response.data.data.active; // 성공 응답 반환
+  } catch (error: any) {
+    console.error(
+      "위치 공유 해제 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "위치 공유 해제 중 오류 발생"
+    );
+  }
+};
+
+// 카테고리 칩 클릭 시 위치 정보 받아오는 api
+interface LocationCategoryApiResponse extends ApiResponse {
+  data: PlaceDataWithFriend[];
+}
+export const getCategoryLocations = async (category: string) => {
+  try {
+    const response = await axiosInstance.post<LocationCategoryApiResponse>(
+      GET_CATEGORY_LOCATION + category,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data.data; // 성공 응답 반환
+  } catch (error: any) {
+    console.error(
+      "위치 카테고리 데이터 조회 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "위치 카테고리 데이터 조회 중 오류 발생"
+    );
+  }
+};
+
+// 친구 카테고리 칩 클릭 시 api. 공유한 친구 위치
+interface FriendLocationCategory extends ApiResponse {
+  data: SharedFriendData[];
+}
+export const getSharedFriendLocation = async () => {
+  try {
+    const response = await axiosInstance.post<FriendLocationCategory>(
+      GET_SHARED_FRIEND_LOCATION,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data.data; // 성공 응답 반환
+  } catch (error: any) {
+    console.error(
+      "위치 공유한 친구 위치 조회 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "위치 공유한 친구 위치 조회 중 오류 발생"
+    );
+  }
+};
+
+// 위치 검색 시 결과 api. 타이틀만 반환
+interface SearchResultApiResponse extends ApiResponse {
+  data: {
+    mainTitle: string;
+  }[];
+}
+
+export const getSearchLocationResult = async (search: string) => {
+  try {
+    const response = await axiosInstance.post<SearchResultApiResponse>(
+      GET_SEARCH_LOCATION_RESULT,
+      { search: search },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data.data; // 성공 응답 반환
+  } catch (error: any) {
+    console.error(
+      "검색한 위치 조회 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "검색한 위치 조회 중 오류 발생"
+    );
+  }
+};
+
+// 하나의 위치에 대한 디테일 정보 조회 api
+interface GetLocationDetailData extends ApiResponse {
+  data: DetailPlaceData[];
+}
+export const getLocationDetailData = async (search: string) => {
+  try {
+    const response = await axiosInstance.post<GetLocationDetailData>(
+      GET_LOCATION_DETAIL_DATA,
+      { search: search },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data.data; // 성공 응답 반환
+  } catch (error: any) {
+    console.error(
+      "하나의 위치에 대한 디테일 정보 조회 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message ||
+        "하나의 위치에 대한 디테일 정보 조회 중 오류 발생"
+    );
+  }
+};
