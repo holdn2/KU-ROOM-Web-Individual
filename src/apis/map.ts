@@ -230,7 +230,7 @@ export const getLocationDetailData = async (search: string) => {
         },
       }
     );
-    return response.data.data; // 성공 응답 반환
+    return response.data.data[0]; // 성공 응답 반환
   } catch (error: any) {
     console.error(
       "하나의 위치에 대한 디테일 정보 조회 실패:",

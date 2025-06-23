@@ -1,19 +1,9 @@
 import React from "react";
 import styles from "./FocusedLocationInfo.module.css";
-
-interface LocationDetailInfo {
-  imgs: string[];
-  title: string;
-  subtit: string;
-  friends: {
-    nickname: string;
-    profileImg: string;
-  }[];
-  info: string;
-}
+import { DetailPlaceData } from "../../../../../types/mapTypes";
 
 interface FocusedLocationInfo {
-  detailInfo: LocationDetailInfo | null;
+  detailInfo: DetailPlaceData | null;
   isExpandedFocusedSheet: boolean;
   setIsExpandedFocusedSheet: (value: boolean) => void;
 }
@@ -32,20 +22,20 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
               className={styles.TitleText}
               onClick={() => setIsExpandedFocusedSheet(true)}
             >
-              {detailInfo.title}
+              {detailInfo.mainTitle}
             </span>
-            <span className={styles.SubTitleText}>{detailInfo.subtit}</span>
+            <span className={styles.SubTitleText}>{detailInfo.subTitle}</span>
           </div>
           <div className={styles.ContentWrapper}>
-            {detailInfo.friends.length !== 0 && (
+            {detailInfo.friendList.length !== 0 && (
               <div className={styles.FriendWrapper}>
                 <span className={styles.FriendTitle}>친구</span>
                 <div className={styles.FriendContainer}>
-                  {detailInfo.friends.map((friend, index) => (
+                  {detailInfo.friendList.map((friend, index) => (
                     <img
                       key={index}
                       className={styles.FriendProfileImg}
-                      src={friend.profileImg}
+                      src={friend.profileURL}
                       alt={friend.nickname}
                     />
                   ))}
@@ -59,7 +49,7 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
                   !isExpandedFocusedSheet ? styles.InfoContentClamp : ""
                 }`}
               >
-                {detailInfo.info}
+                {detailInfo.text}
               </span>
             </div>
           </div>

@@ -1,21 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./FocusedLocationBottomSheet.module.css";
-import { dummyDetailInfo } from "../MapData";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
 import LocationInfoTopContent from "./LocationInfoTopContent/LocationInfoTopContent";
 import FocusedLocationInfo from "./FocusedLocationInfo/FocusedLocationInfo";
 import { BeatLoader } from "react-spinners";
+import { DetailPlaceData } from "../../../../types/mapTypes";
+import { getLocationDetailData } from "../../../apis/map";
 
-interface LocationDetailInfo {
-  imgs: string[];
-  title: string;
-  subtit: string;
-  friends: {
-    nickname: string;
-    profileImg: string;
-  }[];
-  info: string;
-}
 interface FocusedLocationBottomSheetProps {
   hasFocusedMarker: boolean;
   isExpandedFocusedSheet: boolean;
@@ -30,15 +21,27 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
   focusedMarkerTitle,
 }) => {
   // 위치 상세 정보 저장할 상태
-  const [detailInfo, setDetailInfo] = useState<LocationDetailInfo | null>(null);
+  const [detailInfo, setDetailInfo] = useState<DetailPlaceData | null>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
 
   // 아직 해당 장소 정보가 안 왔을 때 로딩처리
   const [isLoading, setIsLoading] = useState(true);
 
+  // 서버에 디테일한 하나의 위치에 대한 정보 받아오기
+  const getDetailLocationInfo = async () => {
+    try {
+      const newDetailInfo = await getLocationDetailData(focusedMarkerTitle!);
+      console.log(newDetailInfo);
+      setDetailInfo(newDetailInfo);
+    } catch (error) {
+      console.error("하나의 위치에 대한 정보 받기 실패 : ", error);
+      alert("서버 상태 또는 네트워크에 문제가 있습니다.");
+    }
+  };
+
   // 서버에 해당 장소 정보 요청
   useEffect(() => {
-    setDetailInfo(dummyDetailInfo);
+    getDetailLocationInfo();
     // 여기에 실제 API 로딩 or 이미지 로딩 조건으로 변경해야함.
     setIsLoading(true);
     const timeout = setTimeout(() => {
@@ -91,7 +94,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
             {!isExpandedFocusedSheet && (
               <div className={styles.SheetImgContainer}>
                 {/* 최대 3개까지만 보이도록 */}
-                {detailInfo?.imgs
+                {detailInfo?.imageUrlList
                   .slice(0, 3)
                   .map((item, index) => (
                     <img

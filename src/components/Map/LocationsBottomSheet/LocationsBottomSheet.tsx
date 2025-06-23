@@ -1,24 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import styles from "./LocationsBottomSheet.module.css";
 import mapListIcon from "../../../assets/map/mapListIcon.svg";
-import { dummyLocationInfo } from "../MapData";
 import { makeFocusMarker, renderedMarkers } from "../kuroomMapUtils";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
-import { MapSearchResult } from "../../../../types/mapTypes";
-
-interface LocationInfo {
-  title: string;
-  subtit: string;
-  friends: {
-    nickname: string;
-    profileImg: string;
-  }[];
-  info: string;
-}
+import { PlaceDataWithFriend } from "../../../../types/mapTypes";
 
 interface LocationsBottomSheetProps {
   visibleBottomSheet: boolean;
-  mapSearchResult: MapSearchResult | null;
+  selectedCategoryLocations: PlaceDataWithFriend[];
   isExpandedSheet: boolean;
   mapInstance: React.MutableRefObject<naver.maps.Map | null>;
   setIsExpandedSheet: (value: boolean) => void;
@@ -30,7 +19,7 @@ interface LocationsBottomSheetProps {
 
 const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   visibleBottomSheet,
-  mapSearchResult,
+  selectedCategoryLocations,
   isExpandedSheet,
   mapInstance,
   setIsExpandedSheet,
@@ -39,9 +28,6 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   setHasFocusedMarker,
   setFocusedMarkerTitle,
 }) => {
-  const [selectedLocationInfos, setSelectedLocationInfos] = useState<
-    LocationInfo[]
-  >([]);
   const sheetRef = useRef<HTMLDivElement>(null);
 
   // 시트에서 위치 클릭 시 이동하는 로직
@@ -64,16 +50,6 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
 
     setIsExpandedSheet(false); // 바텀시트 내리기
   };
-
-  // !!서버에 해당 정보들 요청해야함.
-  useEffect(() => {
-    if (mapSearchResult) {
-      const match = dummyLocationInfo.find(
-        (item) => item.category === mapSearchResult.name
-      );
-      setSelectedLocationInfos(match ? match.infos : []);
-    }
-  }, [mapSearchResult]);
 
   // 바텀 시트 올리고 내리는 로직. 좀 더 연구 필요할듯.
   useBottomSheetDrag({
@@ -110,26 +86,26 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
         }}
       >
         <div className={styles.SheetIndicator} />
-        {selectedLocationInfos.map((info, index) => (
+        {selectedCategoryLocations.map((info, index) => (
           <button
             key={index}
             className={styles.LocationInfoWrapper}
             style={isExpandedSheet ? {} : { pointerEvents: "none" }}
-            onClick={() => clickLocation(info.title)}
+            onClick={() => clickLocation(info.mainTitle)}
           >
             <div className={styles.TitleWrapper}>
-              <span className={styles.TitleText}>{info.title}</span>
-              <span className={styles.SubTitleText}>{info.subtit}</span>
+              <span className={styles.TitleText}>{info.mainTitle}</span>
+              <span className={styles.SubTitleText}>{info.subTitle}</span>
             </div>
             <div className={styles.ContentWrapper}>
-              {info.friends.length !== 0 && (
+              {info.friendList.length !== 0 && (
                 <div className={styles.FriendWrapper}>
                   <span className={styles.FriendTitle}>친구</span>
                   <div className={styles.FriendContainer}>
-                    {info.friends.map((friend, index) => (
+                    {info.friendList.map((friend, index) => (
                       <img
                         key={index}
-                        src={friend.profileImg}
+                        src={friend.profileURL}
                         alt={friend.nickname}
                       />
                     ))}
@@ -139,7 +115,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
 
               <div className={styles.InfoWrapper}>
                 <span className={styles.InfoTitle}>정보</span>
-                <span className={styles.InfoContent}>{info.info}</span>
+                <span className={styles.InfoContent}>{info.text}</span>
               </div>
             </div>
           </button>

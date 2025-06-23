@@ -4,6 +4,11 @@ export interface Coordinate {
   longitude: number;
 }
 
+// 검색결과에 대한 정보
+export interface MapSearchResult {
+  mainTitle: string;
+}
+
 // 위치 공유한 친구 정보
 interface FriendData {
   nickname: string;
@@ -35,28 +40,22 @@ export interface DetailPlaceData extends PlaceDataWithFriend {
 
 // *************************************************** //
 
-// 건물 정보
-export interface BuildingData extends Coordinate {
-  id: number;
-  name: string;
-  number: number;
-}
+// // 건물 정보
+// export interface BuildingData extends Coordinate {
+//   id: number;
+//   name: string;
+//   number: number;
+// }
 
-// 카테고리 정보. 추후 CategoryPlaces[]로 사용할듯
-export interface CategoryPlaces extends Coordinate {
-  placeId: number;
-  name: string;
-  building: BuildingData;
-}
+// // 카테고리 정보. 추후 CategoryPlaces[]로 사용할듯
+// export interface CategoryPlaces extends Coordinate {
+//   placeId: number;
+//   name: string;
+//   building: BuildingData;
+// }
 
 // 마커에 필요한 정보
 export interface MarkerData extends Coordinate {
   category: string;
-  name: string;
-}
-
-// 검색결과에 대한 정보
-export interface MapSearchResult extends Coordinate {
-  id: number;
   name: string;
 }

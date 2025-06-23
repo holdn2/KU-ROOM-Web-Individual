@@ -7,11 +7,8 @@ import noResultIcon from "../../../assets/icon/noResultSearch.svg";
 import { MapSearchResult } from "../../../../types/mapTypes";
 
 const dummyRecentSearchData: MapSearchResult[] = [
-  { id: 1, name: "신공학관", latitude: 0, longitude: 0 },
-  { id: 2, name: "종강102", latitude: 0, longitude: 0 },
-  { id: 3, name: "레스티오", latitude: 0, longitude: 0 },
-  { id: 4, name: "제1학생회관", latitude: 0, longitude: 0 },
-  { id: 5, name: "1847", latitude: 0, longitude: 0 },
+  { mainTitle: "예시" },
+  { mainTitle: "예시2" },
 ];
 // const dummyLocationData = ["레스티오", "1847", "신공학관"];
 interface MapSearchProps {
@@ -71,7 +68,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
   };
 
   // 버튼 클릭 시 해당하는 위치를 서버에 요청하여 받아야함.
-  const getSelectedLocationArray = (result: MapSearchResult) => {
+  const onClickSearchLocation = (result: MapSearchResult) => {
     // title을 이용하여 요청
     // 서버에 요청 후 아래에 넣기
     setMapSearchResult(result);
@@ -123,15 +120,15 @@ const MapSearch: React.FC<MapSearchProps> = ({
               <div
                 key={index}
                 className={styles.RecentSearchContainer}
-                onClick={() => getSelectedLocationArray(item)}
+                onClick={() => onClickSearchLocation(item)}
               >
-                <span className={styles.LocationTitle}>{item.name}</span>
+                <span className={styles.LocationTitle}>{item.mainTitle}</span>
                 <img
                   src={deleteIcon}
                   alt="검색어 지우기"
                   onClick={(e) => {
                     e.stopPropagation();
-                    deleteSearchData(item.name);
+                    deleteSearchData(item.mainTitle);
                   }}
                   style={{ padding: "2px 5px" }}
                 />
@@ -147,9 +144,9 @@ const MapSearch: React.FC<MapSearchProps> = ({
               <div
                 key={index}
                 className={styles.ResultContainer}
-                onClick={() => getSelectedLocationArray(result)}
+                onClick={() => onClickSearchLocation(result)}
               >
-                <span className={styles.LocationTitle}>{result.name}</span>
+                <span className={styles.LocationTitle}>{result.mainTitle}</span>
               </div>
             ))}
           </div>

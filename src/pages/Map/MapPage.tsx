@@ -14,11 +14,12 @@ import FocusedLocationBottomSheet from "../../components/Map/FocusedLocationBott
 import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
 import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
 import {
-  CategoryPlaces,
   Coordinate,
   MapSearchResult,
   MarkerData,
+  PlaceDataWithFriend,
 } from "../../../types/mapTypes";
+import { getCategoryLocations } from "../../apis/map";
 
 const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
@@ -30,6 +31,9 @@ const MapPage = () => {
 
   const [selectedCategoryTitle, setSelectedCategoryTitle] =
     useState<string>("");
+  const [selectedCategoryLocations, setSelectedCategoryLocations] = useState<
+    PlaceDataWithFriend[]
+  >([]);
 
   // 위치 공유 상태
   const [modalState, setModalState] = useState(false);
@@ -56,24 +60,34 @@ const MapPage = () => {
   );
 
   // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작. 이부분은 테스트용 로직
-  useEffect(() => {
-    if (!mapSearchResult) {
-      setMarkers([]);
-      setVisibleBottomSheet(false);
-      return;
-    }
-    setVisibleBottomSheet(true);
-    setMarkers([
-      {
-        category: "focus",
-        name: mapSearchResult.name,
-        latitude: mapSearchResult.latitude,
-        longitude: mapSearchResult.longitude,
-      },
-    ]);
-  }, [mapSearchResult]);
+  // useEffect(() => {
+  //   if (!mapSearchResult) {
+  //     setMarkers([]);
+  //     setVisibleBottomSheet(false);
+  //     return;
+  //   }
+  //   setVisibleBottomSheet(true);
+  //   setMarkers([
+  //     {
+  //       category: "focus",
+  //       name: mapSearchResult.name,
+  //       latitude: mapSearchResult.latitude,
+  //       longitude: mapSearchResult.longitude,
+  //     },
+  //   ]);
+  // }, [mapSearchResult]);
 
   // 카테고리 칩을 눌렀을 때 서버에 title을 이용하여 요청
+  const getLocations = async (selectedCategory: string) => {
+    try {
+      const locations = await getCategoryLocations(selectedCategory);
+      console.log(locations);
+      setSelectedCategoryLocations(locations);
+    } catch (error) {
+      console.error();
+      alert("서버 상태 또는 네트워크에 문제가 있습니다.");
+    }
+  };
   useEffect(() => {
     if (!selectedCategoryTitle) {
       setMarkers([]);
@@ -81,19 +95,23 @@ const MapPage = () => {
       return;
     }
     // 서버 요청 결과를 저장
-    const categoryPlaces: CategoryPlaces[] = [];
-    // 서버에서 받아오면
-    categoryPlaces.map((item) => {
+    getLocations(selectedCategoryTitle);
+
+    setVisibleBottomSheet(true);
+  }, [selectedCategoryTitle]);
+
+  useEffect(() => {
+    // 카테고리 칩 클릭 시 데이터가 오면
+    selectedCategoryLocations.map((item) => {
       const newMarker: MarkerData = {
         category: selectedCategoryTitle,
-        name: item.name,
+        name: item.mainTitle,
         latitude: item.latitude,
         longitude: item.longitude,
       };
       setMarkers([...markers, newMarker]);
     });
-    setVisibleBottomSheet(true);
-  }, [selectedCategoryTitle]);
+  }, [selectedCategoryLocations]);
 
   useEffect(() => {
     console.log("현재 포커된 상태: ", hasFocusedMarker);
@@ -210,7 +228,7 @@ const MapPage = () => {
         <>
           <LocationsBottomSheet
             visibleBottomSheet={visibleBottomSheet}
-            mapSearchResult={mapSearchResult}
+            selectedCategoryLocations={selectedCategoryLocations}
             isExpandedSheet={isExpandedSheet}
             mapInstance={mapInstanceRef}
             setIsExpandedSheet={setIsExpandedSheet}

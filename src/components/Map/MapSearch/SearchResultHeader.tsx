@@ -39,7 +39,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
             setIsExpandedFocusedSheet(false);
           }}
         />
-        <span className={styles.ResultTitle}>{mapSearchResult.name}</span>
+        <span className={styles.ResultTitle}>{mapSearchResult.mainTitle}</span>
       </div>
       <img
         className={styles.DeleteIcon}
