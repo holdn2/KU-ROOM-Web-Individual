@@ -5,6 +5,7 @@ import arrowBack from "../../../assets/nav/arrowback.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
 import { MapSearchResult } from "../../../../types/mapTypes";
+import { getSearchLocationResult } from "../../../apis/map";
 
 const dummyRecentSearchData: MapSearchResult[] = [
   { mainTitle: "예시" },
@@ -48,7 +49,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
     console.log(searchData, " 검색 기록 삭제");
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     // 서버에 검색 요청하기. 내가 볼 때 줄임말 등의 검색어를 보내면 관련된 위치를 검색결과에 뜨도록
     // 검색 기록에 추가하는 요청 추가
     // const trimmedText = searchText.trim();
@@ -57,7 +58,14 @@ const MapSearch: React.FC<MapSearchProps> = ({
     //   location.includes(trimmedText)
     // );
     // 서버에서 검색 결과를 받아서 아래에 넣어준다.
-    setSearchResult([]);
+    try {
+      const response = await getSearchLocationResult(searchText);
+      console.log(response);
+      setSearchResult(response);
+    } catch (error) {
+      console.error("위치 검색 중 에러 : ", error);
+      alert("서버 또는 네트워크 에러입니다.");
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

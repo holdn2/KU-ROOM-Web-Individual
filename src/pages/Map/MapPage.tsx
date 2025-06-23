@@ -59,23 +59,34 @@ const MapPage = () => {
     null
   );
 
+  const resetSelectSearch = () => {
+    setSearchMode(false);
+    setMapSearchResult(null);
+    setSelectedCategoryTitle("");
+    setMarkers([]);
+    setIsExpandedSheet(false);
+    setHasFocusedMarker(false);
+    setIsExpandedFocusedSheet(false);
+  };
+
   // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작. 이부분은 테스트용 로직
-  // useEffect(() => {
-  //   if (!mapSearchResult) {
-  //     setMarkers([]);
-  //     setVisibleBottomSheet(false);
-  //     return;
-  //   }
-  //   setVisibleBottomSheet(true);
-  //   setMarkers([
-  //     {
-  //       category: "focus",
-  //       name: mapSearchResult.name,
-  //       latitude: mapSearchResult.latitude,
-  //       longitude: mapSearchResult.longitude,
-  //     },
-  //   ]);
-  // }, [mapSearchResult]);
+  useEffect(() => {
+    if (!mapSearchResult) {
+      setMarkers([]);
+      setVisibleBottomSheet(false);
+      return;
+    }
+    setVisibleBottomSheet(true);
+    setHasFocusedMarker(true);
+    // setMarkers([
+    //   {
+    //     category: "focus",
+    //     name: mapSearchResult.name,
+    //     latitude: mapSearchResult.latitude,
+    //     longitude: mapSearchResult.longitude,
+    //   },
+    // ]);
+  }, [mapSearchResult]);
 
   // 카테고리 칩을 눌렀을 때 서버에 title을 이용하여 요청
   const getLocations = async (selectedCategory: string) => {
@@ -155,18 +166,18 @@ const MapPage = () => {
       ) : (
         // 검색 결과가 있을 때 상단 바, 바텀시트, (2개 이상일 때 목록보기) 보여주기
         <>
-          {mapSearchResult ? (
-            <>
+          {mapSearchResult || selectedCategoryTitle ? (
+            mapSearchResult === null ? (
+              <SearchResultHeader
+                selectedCategoryTitle={selectedCategoryTitle}
+                resetSelectSearch={resetSelectSearch}
+              />
+            ) : (
               <SearchResultHeader
                 mapSearchResult={mapSearchResult}
-                setSearchMode={setSearchMode}
-                setMapSearchResult={setMapSearchResult}
-                setMarkers={setMarkers}
-                setIsExpandedSheet={setIsExpandedSheet}
-                setHasFocusedMarker={setHasFocusedMarker}
-                setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+                resetSelectSearch={resetSelectSearch}
               />
-            </>
+            )
           ) : (
             // 검색 결과 없을 때만 기본 UI 보여주기
             <>

@@ -15,6 +15,7 @@ const MapCategoryChip: React.FC<MapCategoryChip> = ({
   const getSelectedLocationArray = (title: string) => {
     // title을 이용하여 요청
     setSelectedCategoryTitle(title);
+    console.log(title);
     setIsTracking(false);
   };
 
