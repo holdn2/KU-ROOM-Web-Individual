@@ -4,33 +4,41 @@ import BottomBar from "../../BottomBar/BottomBar";
 import arrowBack from "../../../assets/nav/arrowback.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
-import { MapSearchResult } from "../../../../types/mapTypes";
-import { getSearchLocationResult } from "../../../apis/map";
+import { DetailPlaceData, MapSearchResult } from "../../../../types/mapTypes";
+import {
+  getLocationDetailData,
+  getRecentSearchLocation,
+  getSearchLocationResult,
+} from "../../../apis/map";
 
-const dummyRecentSearchData: MapSearchResult[] = [
-  { mainTitle: "예시" },
-  { mainTitle: "예시2" },
-];
 // const dummyLocationData = ["레스티오", "1847", "신공학관"];
 interface MapSearchProps {
   setSearchMode: (value: boolean) => void;
-  setMapSearchResult: (value: MapSearchResult) => void;
+  setDetailLocationData: (value: DetailPlaceData) => void;
 }
 
 const MapSearch: React.FC<MapSearchProps> = ({
   setSearchMode,
-  setMapSearchResult,
+  setDetailLocationData,
 }) => {
   const [searchText, setSearchText] = useState("");
-  const [recentSearchData, setRecentSearchData] = useState<MapSearchResult[]>(
-    []
-  );
+  const [recentSearchData, setRecentSearchData] = useState<string[]>([]);
   const [searchResult, setSearchResult] = useState<MapSearchResult[]>([]);
   const [trySearch, setTrySearch] = useState(false);
 
+  const getRecentSearch = async () => {
+    try {
+      const response = await getRecentSearchLocation();
+      console.log(response);
+      setRecentSearchData(response);
+    } catch (error) {
+      console.error("최근 검색어 가져오기 실패 : ", error);
+    }
+  };
+
   useEffect(() => {
     // 서버에서 최근 검색어 가져오기
-    setRecentSearchData(dummyRecentSearchData);
+    getRecentSearch();
   }, [trySearch]);
 
   useEffect(() => {
@@ -52,11 +60,6 @@ const MapSearch: React.FC<MapSearchProps> = ({
   const handleSearch = async () => {
     // 서버에 검색 요청하기. 내가 볼 때 줄임말 등의 검색어를 보내면 관련된 위치를 검색결과에 뜨도록
     // 검색 기록에 추가하는 요청 추가
-    // const trimmedText = searchText.trim();
-    // if (trimmedText.length === 0) return;
-    // const matchedResults = dummyLocationData.filter((location) =>
-    //   location.includes(trimmedText)
-    // );
     // 서버에서 검색 결과를 받아서 아래에 넣어준다.
     try {
       const response = await getSearchLocationResult(searchText);
@@ -76,11 +79,16 @@ const MapSearch: React.FC<MapSearchProps> = ({
   };
 
   // 버튼 클릭 시 해당하는 위치를 서버에 요청하여 받아야함.
-  const onClickSearchLocation = (result: MapSearchResult) => {
-    // title을 이용하여 요청
-    // 서버에 요청 후 아래에 넣기
-    setMapSearchResult(result);
-    setSearchMode(false);
+  const onClickSearchLocation = async (search: string) => {
+    try {
+      const response = await getLocationDetailData(search);
+      console.log("하나의 위치에 대한 디테일 정보 : ", response);
+      setDetailLocationData(response);
+      setSearchMode(false);
+    } catch (error) {
+      console.error("하나의 위치에 대한 디테일 정보 반환 실패", error);
+      alert("서버 또는 네트워크 오류입니다.");
+    }
   };
 
   return (
@@ -130,13 +138,13 @@ const MapSearch: React.FC<MapSearchProps> = ({
                 className={styles.RecentSearchContainer}
                 onClick={() => onClickSearchLocation(item)}
               >
-                <span className={styles.LocationTitle}>{item.mainTitle}</span>
+                <span className={styles.LocationTitle}>{item}</span>
                 <img
                   src={deleteIcon}
                   alt="검색어 지우기"
                   onClick={(e) => {
                     e.stopPropagation();
-                    deleteSearchData(item.mainTitle);
+                    deleteSearchData(item);
                   }}
                   style={{ padding: "2px 5px" }}
                 />
@@ -152,7 +160,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
               <div
                 key={index}
                 className={styles.ResultContainer}
-                onClick={() => onClickSearchLocation(result)}
+                onClick={() => onClickSearchLocation(result.mainTitle)}
               >
                 <span className={styles.LocationTitle}>{result.mainTitle}</span>
               </div>

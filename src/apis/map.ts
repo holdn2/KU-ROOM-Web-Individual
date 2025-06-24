@@ -6,16 +6,16 @@ import {
 } from "../../types/mapTypes";
 import axiosInstance from "./axiosInstance";
 
-const CHECK_SHARE_STATE_API = "https://kuroomshop.com/api/v1/map";
-const GET_USER_SHARE_LOCATION = "https://kuroomshop.com/api/v1/map/share";
-const SHARE_USER_LOCATION = "https://kuroomshop.com/api/v1/map/shareStart";
-const UNSHARE_LOCATION = "https://kuroomshop.com/api/v1/map/notshare";
-const GET_CATEGORY_LOCATION = "https://kuroomshop.com/api/v1/map/chip/";
-const GET_SHARED_FRIEND_LOCATION =
-  "https://kuroomshop.com/api/v1/map/chip/friends";
-const GET_SEARCH_LOCATION_RESULT = "https://kuroomshop.com/api/v1/map/search";
-const GET_LOCATION_DETAIL_DATA =
-  "https://kuroomshop.com/api/v1/map?search/detail";
+const CHECK_SHARE_STATE_API = "/api/v1/map";
+const GET_USER_SHARE_LOCATION = "/api/v1/map/share";
+const SHARE_USER_LOCATION = "/api/v1/map/shareStart";
+const UNSHARE_LOCATION = "/api/v1/map/notshare";
+const GET_CATEGORY_LOCATION = "/api/v1/map/chip/";
+const GET_SHARED_FRIEND_LOCATION = "/api/v1/map/chip/friends";
+const GET_SEARCH_LOCATION_RESULT = "/api/v1/map/search";
+const GET_LOCATION_DETAIL_DATA = "/api/v1/map?search/detail";
+const GET_RECENT_SEARCH = "/map/search/term";
+// const DELETE_RECENT_SEARCH = "/map/search/term";
 
 interface ApiResponse {
   code: number;
@@ -191,7 +191,6 @@ interface SearchResultApiResponse extends ApiResponse {
     mainTitle: string;
   }[];
 }
-
 export const getSearchLocationResult = async (search: string) => {
   try {
     const response = await axiosInstance.post<SearchResultApiResponse>(
@@ -214,6 +213,28 @@ export const getSearchLocationResult = async (search: string) => {
     );
   }
 };
+
+// 최근 위치 검색어 가져오기 api
+interface RecentSearchReponse extends ApiResponse {
+  data: string[];
+}
+export const getRecentSearchLocation = async () => {
+  try {
+    const response =
+      await axiosInstance.get<RecentSearchReponse>(GET_RECENT_SEARCH);
+    return response.data.data;
+  } catch (error: any) {
+    console.error(
+      "최근 검색어 조회 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "최근 검색어 조회 중 오류 발생"
+    );
+  }
+};
+
+// 최근 검색어 삭제 api
 
 // 하나의 위치에 대한 디테일 정보 조회 api
 interface GetLocationDetailData extends ApiResponse {

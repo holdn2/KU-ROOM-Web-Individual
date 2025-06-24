@@ -3,7 +3,10 @@ import styles from "./LocationsBottomSheet.module.css";
 import mapListIcon from "../../../assets/map/mapListIcon.svg";
 import { makeFocusMarker, renderedMarkers } from "../kuroomMapUtils";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
-import { PlaceDataWithFriend } from "../../../../types/mapTypes";
+import {
+  DetailPlaceData,
+  PlaceDataWithFriend,
+} from "../../../../types/mapTypes";
 
 interface LocationsBottomSheetProps {
   visibleBottomSheet: boolean;
@@ -14,7 +17,7 @@ interface LocationsBottomSheetProps {
   setIsTracking: (value: boolean) => void;
   hasFocusedMarker: boolean;
   setHasFocusedMarker: (value: boolean) => void;
-  setFocusedMarkerTitle: (value: string) => void;
+  setDetailLocationData: (value: DetailPlaceData) => void;
 }
 
 const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
@@ -26,7 +29,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   setIsTracking,
   hasFocusedMarker,
   setHasFocusedMarker,
-  setFocusedMarkerTitle,
+  setDetailLocationData,
 }) => {
   const sheetRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +47,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
         target.marker,
         setIsTracking,
         setHasFocusedMarker,
-        setFocusedMarkerTitle
+        setDetailLocationData
       );
     }
 

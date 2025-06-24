@@ -15,7 +15,7 @@ import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
 import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
 import {
   Coordinate,
-  MapSearchResult,
+  DetailPlaceData,
   MarkerData,
   PlaceDataWithFriend,
 } from "../../../types/mapTypes";
@@ -24,13 +24,16 @@ import { getCategoryLocations } from "../../apis/map";
 const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
   const [searchMode, setSearchMode] = useState(false);
-  const [mapSearchResult, setMapSearchResult] =
-    useState<MapSearchResult | null>(null);
   const [isInSchool, setIsInSchool] = useState(false);
   const [isSharedLocation, setIsSharedLocation] = useState(false);
 
+  // 하나의 위치에 대한 디테일 정보
+  const [detailLocationData, setDetailLocationData] =
+    useState<DetailPlaceData | null>(null);
+  // 선택된 위치 카테고리 명
   const [selectedCategoryTitle, setSelectedCategoryTitle] =
     useState<string>("");
+  // 선택된 위치 카테고리 관련 위치 배열
   const [selectedCategoryLocations, setSelectedCategoryLocations] = useState<
     PlaceDataWithFriend[]
   >([]);
@@ -55,13 +58,10 @@ const MapPage = () => {
   // 클릭 또는 마커가 하나만 있을 때(==마커가 포커스되었을 때) 바텀시트
   const [hasFocusedMarker, setHasFocusedMarker] = useState(false);
   const [isExpandedFocusedSheet, setIsExpandedFocusedSheet] = useState(false);
-  const [focusedMarkerTitle, setFocusedMarkerTitle] = useState<string | null>(
-    null
-  );
 
   const resetSelectSearch = () => {
     setSearchMode(false);
-    setMapSearchResult(null);
+    setDetailLocationData(null);
     setSelectedCategoryTitle("");
     setMarkers([]);
     setIsExpandedSheet(false);
@@ -71,7 +71,7 @@ const MapPage = () => {
 
   // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작. 이부분은 테스트용 로직
   useEffect(() => {
-    if (!mapSearchResult) {
+    if (!detailLocationData) {
       setMarkers([]);
       setVisibleBottomSheet(false);
       return;
@@ -86,7 +86,7 @@ const MapPage = () => {
     //     longitude: mapSearchResult.longitude,
     //   },
     // ]);
-  }, [mapSearchResult]);
+  }, [detailLocationData]);
 
   // 카테고리 칩을 눌렀을 때 서버에 title을 이용하여 요청
   const getLocations = async (selectedCategory: string) => {
@@ -99,6 +99,7 @@ const MapPage = () => {
       alert("서버 상태 또는 네트워크에 문제가 있습니다.");
     }
   };
+
   useEffect(() => {
     if (!selectedCategoryTitle) {
       setMarkers([]);
@@ -107,7 +108,6 @@ const MapPage = () => {
     }
     // 서버 요청 결과를 저장
     getLocations(selectedCategoryTitle);
-
     setVisibleBottomSheet(true);
   }, [selectedCategoryTitle]);
 
@@ -151,7 +151,7 @@ const MapPage = () => {
         isTracking={isTracking}
         setIsTracking={setIsTracking}
         setHasFocusedMarker={setHasFocusedMarker}
-        setFocusedMarkerTitle={setFocusedMarkerTitle}
+        setDetailLocationData={setDetailLocationData}
       />
 
       {/* 검색 모드일 때 MapSearch만 덮어씌우기 */}
@@ -160,21 +160,21 @@ const MapPage = () => {
         <div className={styles.FullScreenOverlay}>
           <MapSearch
             setSearchMode={setSearchMode}
-            setMapSearchResult={setMapSearchResult}
+            setDetailLocationData={setDetailLocationData}
           />
         </div>
       ) : (
         // 검색 결과가 있을 때 상단 바, 바텀시트, (2개 이상일 때 목록보기) 보여주기
         <>
-          {mapSearchResult || selectedCategoryTitle ? (
-            mapSearchResult === null ? (
+          {detailLocationData || selectedCategoryTitle ? (
+            detailLocationData === null ? (
               <SearchResultHeader
                 selectedCategoryTitle={selectedCategoryTitle}
                 resetSelectSearch={resetSelectSearch}
               />
             ) : (
               <SearchResultHeader
-                mapSearchResult={mapSearchResult}
+                detailLocationData={detailLocationData}
                 resetSelectSearch={resetSelectSearch}
               />
             )
@@ -246,7 +246,7 @@ const MapPage = () => {
             setIsTracking={setIsTracking}
             hasFocusedMarker={hasFocusedMarker}
             setHasFocusedMarker={setHasFocusedMarker}
-            setFocusedMarkerTitle={setFocusedMarkerTitle}
+            setDetailLocationData={setDetailLocationData}
           />
           <BottomBar />
         </>
@@ -255,7 +255,7 @@ const MapPage = () => {
         hasFocusedMarker={hasFocusedMarker}
         isExpandedFocusedSheet={isExpandedFocusedSheet}
         setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
-        focusedMarkerTitle={focusedMarkerTitle}
+        detailLocationData={detailLocationData}
       />
       <ShareLocationModal
         modalState={modalState}

@@ -1,6 +1,6 @@
 import myMarkerIcon from "../../assets/map/mylocationMarker.svg";
 import focusedMarkerIcon from "../../assets/map/focusedMarker.png";
-import { MarkerData } from "../../../types/mapTypes";
+import { DetailPlaceData, MarkerData } from "../../../types/mapTypes";
 import collegeMarker from "../../assets/map/markers/collegeMarker.svg";
 import kcubekhubMarker from "../../assets/map/markers/kcubekhubMarker.svg";
 import storeMarker from "../../assets/map/markers/storeMarker.svg";
@@ -11,6 +11,7 @@ import dormitoryMarker from "../../assets/map/markers/dormitoryMarker.svg";
 import bankMarker from "../../assets/map/markers/bankMarker.svg";
 import postMarker from "../../assets/map/markers/postMarker.svg";
 import defaultMarker from "../../assets/map/defaultMarkerIcon.svg";
+import { getLocationDetailData } from "../../apis/map";
 
 interface KuroomMarker {
   marker: naver.maps.Marker;
@@ -54,8 +55,8 @@ export function renderMarkers(
   map: naver.maps.Map,
   markers: MarkerData[],
   setIsTracking: (value: boolean) => void,
-  setHasFocusedMarker?: (value: boolean) => void,
-  setFocusedMarkerTitle?: (value: string | null) => void
+  setHasFocusedMarker: (value: boolean) => void,
+  setDetailLocationData: (value: DetailPlaceData) => void
 ): void {
   // 기존 마커 제거
   renderedMarkers.forEach(({ marker }) => marker.setMap(null));
@@ -83,7 +84,7 @@ export function renderMarkers(
         marker,
         setIsTracking,
         setHasFocusedMarker,
-        setFocusedMarkerTitle
+        setDetailLocationData
       );
     });
 
@@ -100,7 +101,7 @@ export function renderMarkers(
         renderedMarkers[0].marker,
         setIsTracking,
         setHasFocusedMarker,
-        setFocusedMarkerTitle
+        setDetailLocationData
       );
     }, 10);
   }
@@ -125,19 +126,18 @@ export function renderMarkers(
         focusedMarker.setIcon({ url: target.originalIcon }); // ← 여기 수정
       }
       focusedMarker = null;
-      setHasFocusedMarker?.(false);
-      setFocusedMarkerTitle?.(null);
+      setHasFocusedMarker(false);
     }
   });
 }
 
 // 특정 마커 포커스
-function makeFocusMarker(
+async function makeFocusMarker(
   map: naver.maps.Map,
   marker: naver.maps.Marker,
   setIsTracking: (value: boolean) => void,
-  setHasFocusedMarker?: (value: boolean) => void,
-  setFocusedMarkerTitle?: (value: string) => void
+  setHasFocusedMarker: (value: boolean) => void,
+  setDetailLocationData: (value: DetailPlaceData) => void
 ) {
   const position = marker.getPosition();
 
@@ -145,9 +145,16 @@ function makeFocusMarker(
   map.setZoom(17);
   setIsTracking(false);
 
+  try {
+    const response = await getLocationDetailData(marker.getTitle());
+    console.log(response);
+    setDetailLocationData(response);
+  } catch (error) {
+    console.error("디테일 위치 정보 가져오기 mapUtils에서 오류 : ", error);
+  }
+
   focusedMarker = marker; // 현재 포커스 마커 기억
-  setHasFocusedMarker?.(true); // 포커스 되었음을 알림
-  setFocusedMarkerTitle?.(marker.getTitle());
+  setHasFocusedMarker(true); // 포커스 되었음을 알림
 
   // HTMLIcon으로 스타일링 + 라벨링. 텍스트 스트로크 넣기
   marker.setIcon({

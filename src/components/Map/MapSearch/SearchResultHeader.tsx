@@ -5,17 +5,20 @@ import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 import { MapSearchResult } from "../../../../types/mapTypes";
 
 interface SearchResultProps {
-  mapSearchResult?: MapSearchResult;
+  detailLocationData?: MapSearchResult;
   selectedCategoryTitle?: string;
   resetSelectSearch: () => void;
 }
 
 const SearchResult: React.FC<SearchResultProps> = ({
-  mapSearchResult,
+  detailLocationData,
   selectedCategoryTitle,
   resetSelectSearch,
 }) => {
-  console.log("헤더 : ", selectedCategoryTitle || mapSearchResult?.mainTitle);
+  console.log(
+    "헤더 : ",
+    selectedCategoryTitle || detailLocationData?.mainTitle
+  );
   return (
     <header className={styles.SearchResultContainer}>
       <div className={styles.LeftContentWrapper}>
@@ -27,9 +30,9 @@ const SearchResult: React.FC<SearchResultProps> = ({
             resetSelectSearch();
           }}
         />
-        {mapSearchResult ? (
+        {detailLocationData ? (
           <span className={styles.ResultTitle}>
-            {mapSearchResult.mainTitle}
+            {detailLocationData.mainTitle}
           </span>
         ) : (
           <span className={styles.ResultTitle}>{selectedCategoryTitle}</span>

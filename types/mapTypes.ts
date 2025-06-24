@@ -38,22 +38,6 @@ export interface DetailPlaceData extends PlaceDataWithFriend {
   imageUrlList: string[];
 }
 
-// *************************************************** //
-
-// // 건물 정보
-// export interface BuildingData extends Coordinate {
-//   id: number;
-//   name: string;
-//   number: number;
-// }
-
-// // 카테고리 정보. 추후 CategoryPlaces[]로 사용할듯
-// export interface CategoryPlaces extends Coordinate {
-//   placeId: number;
-//   name: string;
-//   building: BuildingData;
-// }
-
 // 마커에 필요한 정보
 export interface MarkerData extends Coordinate {
   category: string;
