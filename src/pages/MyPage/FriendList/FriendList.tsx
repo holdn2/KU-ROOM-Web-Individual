@@ -8,8 +8,6 @@ import { useOutsideClick } from "../../../utils/friendUtils";
 import FriendContainer from "../../../components/Friend/FriendContainer/FriendContainer";
 import { getAllFriends } from "../../../apis/friend";
 import { useNavigate } from "react-router-dom";
-// import PullToRefresh from "../../../components/PullToRefresh/PullToRefresh";
-// import { reissueTokenApi } from "../../../apis/axiosInstance";
 
 interface Friend {
   id: number;
@@ -23,15 +21,6 @@ const FriendList = () => {
   const [searchNickname, setSearchNickname] = useState("");
 
   const [refreshList, setRefreshList] = useState(false);
-
-  // const getNewToken = async () => {
-  //   try {
-  //     await reissueTokenApi();
-  //   } catch (error) {
-  //     console.error("토큰 재발급 실패 : ", error);
-  //     navigate("/login");
-  //   }
-  // };
 
   // 검색어가 포함되어 필터링된 친구 목록
   const filteredFriends = friendList.filter((friend) =>
@@ -58,25 +47,25 @@ const FriendList = () => {
   const [modalState, setModalState] = useState(false);
   const [modalType, setModalType] = useState("");
 
+  const getMyFriends = async () => {
+    try {
+      const response = await getAllFriends();
+      console.log(response);
+      const friends = response ?? [];
+      if (!Array.isArray(friends)) {
+        setFriendList([]);
+        return [];
+      }
+      setFriendList(friends);
+
+      return friends;
+    } catch (error) {
+      console.error("친구 목록 불러오기 실패", error);
+    }
+  };
+
   // 서버에서 친구 목록 가져오기
   useEffect(() => {
-    const getMyFriends = async () => {
-      try {
-        const response = await getAllFriends();
-        console.log(response);
-        const friends = response ?? [];
-        if (!Array.isArray(friends)) {
-          setFriendList([]);
-          return [];
-        }
-        setFriendList(friends);
-
-        return friends;
-      } catch (error) {
-        console.error("친구 목록 불러오기 실패", error);
-      }
-    };
-
     getMyFriends();
   }, [refreshList]);
 
