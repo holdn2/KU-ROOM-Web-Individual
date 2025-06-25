@@ -24,7 +24,7 @@ let isDraggingMap = false;
 
 export { renderedMarkers, makeFocusMarker };
 
-const makeMarkerIcon = (category: string): string => {
+export const makeMarkerIcon = (category: string): string => {
   switch (category) {
     case "단과대":
       return collegeMarker;
@@ -67,8 +67,7 @@ export function renderMarkers(
   map.setCenter(defaultCenter);
   map.setZoom(16);
 
-  markers.forEach(({ category, name, latitude, longitude }) => {
-    const markerIcon = makeMarkerIcon(category);
+  markers.forEach(({ markerIcon, name, latitude, longitude }) => {
     const marker = new window.naver.maps.Marker({
       position: new window.naver.maps.LatLng(latitude, longitude),
       map,

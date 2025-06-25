@@ -40,6 +40,6 @@ export interface DetailPlaceData extends PlaceDataWithFriend {
 
 // 마커에 필요한 정보
 export interface MarkerData extends Coordinate {
-  category: string;
+  markerIcon: string;
   name: string;
 }

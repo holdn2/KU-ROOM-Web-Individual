@@ -20,6 +20,7 @@ import {
   PlaceDataWithFriend,
 } from "../../../types/mapTypes";
 import { getCategoryLocations } from "../../apis/map";
+import { makeMarkerIcon } from "../../components/Map/kuroomMapUtils";
 
 const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
@@ -78,14 +79,16 @@ const MapPage = () => {
     }
     setVisibleBottomSheet(true);
     setHasFocusedMarker(true);
-    // setMarkers([
-    //   {
-    //     category: "focus",
-    //     name: mapSearchResult.name,
-    //     latitude: mapSearchResult.latitude,
-    //     longitude: mapSearchResult.longitude,
-    //   },
-    // ]);
+    // 마커 아이콘 반영
+    const markerIcon = makeMarkerIcon("default");
+    setMarkers([
+      {
+        markerIcon: markerIcon,
+        name: detailLocationData.mainTitle,
+        latitude: detailLocationData.latitude,
+        longitude: detailLocationData.longitude,
+      },
+    ]);
   }, [detailLocationData]);
 
   // 카테고리 칩을 눌렀을 때 서버에 title을 이용하여 요청
@@ -114,8 +117,10 @@ const MapPage = () => {
   useEffect(() => {
     // 카테고리 칩 클릭 시 데이터가 오면
     selectedCategoryLocations.map((item) => {
+      // 선택된 카테고리에 따라 마커아이콘 반영
+      const markerIcon = makeMarkerIcon(selectedCategoryTitle);
       const newMarker: MarkerData = {
-        category: selectedCategoryTitle,
+        markerIcon: markerIcon,
         name: item.mainTitle,
         latitude: item.latitude,
         longitude: item.longitude,
