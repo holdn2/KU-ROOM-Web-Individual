@@ -27,6 +27,8 @@ const MapPage = () => {
   const [searchMode, setSearchMode] = useState(false);
   const [isInSchool, setIsInSchool] = useState(false);
   const [isSharedLocation, setIsSharedLocation] = useState(false);
+  // 공유 상태 확인 트리거 키
+  const [locationSharedRefreshKey, setLocationSharedRefreshKey] = useState(0);
 
   // 하나의 위치에 대한 디테일 정보
   const [detailLocationData, setDetailLocationData] =
@@ -60,6 +62,30 @@ const MapPage = () => {
   const [hasFocusedMarker, setHasFocusedMarker] = useState(false);
   const [isExpandedFocusedSheet, setIsExpandedFocusedSheet] = useState(false);
 
+  // 현재 내 위치 공유 상태 확인 함수
+  const getIsMySharedInfo = async () => {
+    try {
+      const response = await checkIsSharedApi();
+      console.log("현재 내 위치 공유 상태 : ", response);
+      setIsSharedLocation(response);
+    } catch (error) {
+      console.error("위치 공유 상태 확인 실패 : ", error);
+    }
+  };
+  useEffect(() => {
+    console.log("위치공유 상태는?:", isSharedLocation);
+    // 현재 내 위치 공유 상태 확인
+    getIsMySharedInfo();
+  }, [locationSharedRefreshKey]);
+  useEffect(() => {
+    // 현재 내 위치가 학교 내부인지 검증
+    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
+  }, []);
+  // 위치 공유 모달
+  const handleShareLocation = () => {
+    setModalState(true);
+  };
+  // **********************************************************************
   const resetSelectSearch = () => {
     setSearchMode(false);
     setDetailLocationData(null);
@@ -133,27 +159,6 @@ const MapPage = () => {
     console.log("현재 포커된 상태: ", hasFocusedMarker);
   }, [hasFocusedMarker]);
 
-  // 현재 내 위치 공유 상태 확인 함수
-  const getIsMySharedInfo = async () => {
-    try {
-      const response = await checkIsSharedApi();
-      console.log("현재 내 위치 공유 상태 : ", response);
-      setIsSharedLocation(response);
-    } catch (error) {
-      console.error("위치 공유 상태 확인 실패 : ", error);
-    }
-  };
-  useEffect(() => {
-    // 현재 내 위치 공유 상태 확인
-    getIsMySharedInfo();
-    // 현재 내 위치가 학교 내부인지 검증
-    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
-  }, [currenLocation, isSharedLocation]);
-
-  // 위치 공유 모달
-  const handleShareLocation = () => {
-    setModalState(true);
-  };
   return (
     <div>
       {/* KuroomMap은 항상 렌더링되고 */}
@@ -280,7 +285,9 @@ const MapPage = () => {
         isSharedLocation={isSharedLocation}
         currentLocation={currenLocation}
         setModalState={setModalState}
-        getIsMySharedInfo={getIsMySharedInfo}
+        refreshSharedStatus={() =>
+          setLocationSharedRefreshKey((prev) => prev + 1)
+        }
       />
     </div>
   );

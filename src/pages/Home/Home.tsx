@@ -21,11 +21,13 @@ const Home = () => {
   // const [showSplash, setShowSplash] = useState(true);
   const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
   const [hasNewAlarm, setHasNewAlarm] = useState(false); // 새로운 알람이 있는지
+  // 공유 상태 확인 트리거 키
+  const [locationSharedRefreshKey, setLocationSharedRefreshKey] = useState(0);
 
   // 학교 내부에 있는지 상태
   const [isInSchool, setIsInSchool] = useState(false);
   // vercel 배포 시 에러 방지용
-  console.log(isInSchool);
+  console.log("학교 내부인지?:", isInSchool);
 
   // 내 위치 공유 버튼 모달 상태
   const [shareModalState, setShareModalState] = useState(false);
@@ -43,12 +45,18 @@ const Home = () => {
       console.error("위치 공유 상태 확인 실패 : ", error);
     }
   };
+
   useEffect(() => {
+    console.log("위치공유 상태는?:", isSharedLocation);
     // 현재 내 위치 공유 상태 확인
     getIsMySharedInfo();
+  }, [locationSharedRefreshKey]);
+  useEffect(() => {
     // 현재 내 위치가 학교 내부인지 검증
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
-  }, [currenLocation, isSharedLocation]);
+  }, []);
+  // **********************************************************************
+
   // api 기다리는 상태 관리도 추후 추가 예정.
   useEffect(() => {
     // 로그인 여부 확인
@@ -83,10 +91,12 @@ const Home = () => {
             setModalState={setShareModalState}
           />
         )} */}
-        <HomeMiniMap
-          isSharedLocation={isSharedLocation}
-          setModalState={setShareModalState}
-        />
+        {currenLocation !== null && (
+          <HomeMiniMap
+            isSharedLocation={isSharedLocation}
+            setModalState={setShareModalState}
+          />
+        )}
         <FriendLocation isSharedLocation={isSharedLocation} />
         <MyLocationRanking />
         <HomeNotice />
@@ -97,7 +107,9 @@ const Home = () => {
         isSharedLocation={isSharedLocation}
         currentLocation={currenLocation}
         setModalState={setShareModalState}
-        getIsMySharedInfo={getIsMySharedInfo}
+        refreshSharedStatus={() =>
+          setLocationSharedRefreshKey((prev) => prev + 1)
+        }
       />
     </div>
   );
