@@ -108,9 +108,13 @@ function makeFocusMarker(
   setHasFocusedMarker?: (value: boolean) => void,
   setFocusedMarkerTitle?: (value: string) => void
 ) {
-  const position = marker.getPosition();
-
-  map.setCenter(position);
+  const position = marker.getPosition() as naver.maps.LatLng;
+  // 위치를 아래로 조금 내리기 위해 위도를 조정
+  const adjustedPosition = new naver.maps.LatLng(
+    position.lat() - 0.001,
+    position.lng()
+  );
+  map.setCenter(adjustedPosition);
   map.setZoom(17);
   setIsTracking(false);
 
@@ -145,14 +149,14 @@ function makeFocusMarker(
       </span>
     </div>
   `,
-    anchor: new naver.maps.Point(15, 150), // 가운데 정렬
+    anchor: new naver.maps.Point(15, 45), // 가운데 정렬
   });
 
   marker.setZIndex(1000);
 
   renderedMarkers.forEach(({ marker: m, originalIcon }) => {
     if (m !== marker) {
-      m.setIcon({ url: originalIcon }); // ← 여기 수정
+      m.setIcon({ url: originalIcon });
     }
   });
 }
