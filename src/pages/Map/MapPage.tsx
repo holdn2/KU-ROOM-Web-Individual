@@ -109,7 +109,7 @@ const MapPage = () => {
       setVisibleBottomSheet(false);
       return;
     }
-    // 서버 요청 결과를 저장
+    // 칩 클릭 시 서버 요청 하도록 함수 호출
     getLocations(selectedCategoryTitle);
     setVisibleBottomSheet(true);
   }, [selectedCategoryTitle]);

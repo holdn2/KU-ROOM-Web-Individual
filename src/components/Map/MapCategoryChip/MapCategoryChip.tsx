@@ -11,11 +11,9 @@ const MapCategoryChip: React.FC<MapCategoryChip> = ({
   setSelectedCategoryTitle,
   setIsTracking,
 }) => {
-  // 버튼 클릭 시 해당하는 위치 배열을 서버에 요청하여 받아야함.
   const getSelectedLocationArray = (title: string) => {
-    // title을 이용하여 요청
     setSelectedCategoryTitle(title);
-    console.log(title);
+    // console.log(title);
     setIsTracking(false);
   };
 
