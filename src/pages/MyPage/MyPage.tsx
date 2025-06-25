@@ -16,15 +16,21 @@ const MyPage = () => {
   // const [isLoading, setIsLoading] = useState(true);
   const [modalState, setModalState] = useState(false);
   const [modalType, setModalType] = useState("");
+  const [isRefreshed, setIsRefreshed] = useState(0);
 
   const pageRefresh = async () => {
     try {
       await reissueTokenApi();
+      setIsRefreshed((prev) => prev + 1);
     } catch (error) {
       console.error("토큰 재발급 실패 : ", error);
       navigate("/login");
     }
   };
+
+  useEffect(() => {
+    console.log("페이지 리프레쉬");
+  }, [isRefreshed]);
 
   useEffect(() => {
     // 로그인 여부 확인

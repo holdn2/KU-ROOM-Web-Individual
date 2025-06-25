@@ -1,7 +1,6 @@
 .FriendListPageWrapper {
   display: flex;
   flex-direction: column;
-  margin-top: 56px;
 }
 .SearchBarContainer {
   padding: 17px 25px 0 25px;
@@ -18,7 +17,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin: 200px auto;
+  margin-top: 180px;
   align-items: center;
 
   color: #b0bac3;
