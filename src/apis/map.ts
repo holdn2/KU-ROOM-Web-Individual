@@ -15,7 +15,7 @@ const GET_SHARED_FRIEND_LOCATION = "/api/v1/map/chip/friends";
 const GET_SEARCH_LOCATION_RESULT = "/api/v1/map/search";
 const GET_LOCATION_DETAIL_DATA = "/api/v1/map?search/detail";
 const GET_RECENT_SEARCH = "/map/search/term";
-// const DELETE_RECENT_SEARCH = "/map/search/term";
+const DELETE_RECENT_SEARCH = "/map/search/term";
 
 interface ApiResponse {
   code: number;
@@ -234,7 +234,28 @@ export const getRecentSearchLocation = async () => {
   }
 };
 
-// 최근 검색어 삭제 api
+// 최근 검색어 하나 삭제 api
+export const deleteRecentSearchLocation = async (deleteData: string) => {
+  try {
+    const response = await axiosInstance.request({
+      url: DELETE_RECENT_SEARCH,
+      method: "DELETE",
+      data: { term: deleteData },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "최근 검색어 삭제 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "최근 검색어 삭제 중 오류 발생"
+    );
+  }
+};
 
 // 하나의 위치에 대한 디테일 정보 조회 api
 interface GetLocationDetailData extends ApiResponse {

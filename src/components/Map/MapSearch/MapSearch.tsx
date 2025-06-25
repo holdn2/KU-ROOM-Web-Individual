@@ -6,6 +6,7 @@ import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
 import { DetailPlaceData, MapSearchResult } from "../../../../types/mapTypes";
 import {
+  deleteRecentSearchLocation,
   getLocationDetailData,
   getRecentSearchLocation,
   getSearchLocationResult,
@@ -53,8 +54,17 @@ const MapSearch: React.FC<MapSearchProps> = ({
   const deleteAllSearchData = () => {
     console.log("검색어 기록 전체 삭제");
   };
-  const deleteSearchData = (searchData: string) => {
-    console.log(searchData, " 검색 기록 삭제");
+  const deleteSearchData = async (searchData: string) => {
+    try {
+      const response = await deleteRecentSearchLocation(searchData);
+      console.log(response);
+      console.log(searchData, " 검색 기록 삭제");
+
+      // 삭제 후 리렌더링
+      await getRecentSearch();
+    } catch (error) {
+      console.error("최근 검색어 하나 삭제 중 오류 : ", error);
+    }
   };
 
   const handleSearch = async () => {
