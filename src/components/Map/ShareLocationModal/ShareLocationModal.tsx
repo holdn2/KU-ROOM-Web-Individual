@@ -4,13 +4,18 @@ import ReactModal from "react-modal";
 import Button from "../../Button/Button";
 import cautionIcon from "../../../assets/icon/editFriend/cautionIcon.svg";
 import { Coordinate } from "../../../../types/mapTypes";
+import {
+  getUserShareLocation,
+  shareUserLocation,
+  unshareLocation,
+} from "../../../apis/map";
 
 interface ShareLocationModalProps {
   modalState: boolean;
   isSharedLocation: boolean;
   currentLocation: Coordinate | null;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSharedLocation: (value: boolean) => void;
+  getIsMySharedInfo: () => void;
 }
 
 const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
@@ -18,28 +23,52 @@ const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
   isSharedLocation,
   currentLocation,
   setModalState,
-  setIsSharedLocation,
+  getIsMySharedInfo,
 }) => {
   const handleCloseModal = () => setModalState(false);
   const [nearBuilding, setNearBuilding] = useState("");
 
   // 서버에 각각 요청
-  const handleSharingLocation = () => {
-    console.log("서버에 내 위치 공유 요청");
-    console.log("공유하는 현재 위치 : ", currentLocation);
-    setIsSharedLocation(true);
-    setModalState(false);
+  const handleSharingLocation = async () => {
+    try {
+      const response = await shareUserLocation(nearBuilding);
+      console.log("서버에 내 위치 공유 요청");
+      console.log(response);
+
+      getIsMySharedInfo();
+      setModalState(false);
+    } catch (error) {
+      console.error("위치 공유 실패 : ", error);
+    }
   };
-  const handleUnSharingLocation = () => {
-    console.log("서버에 공유 해제 요청");
-    setIsSharedLocation(false);
-    setModalState(false);
+  const handleUnSharingLocation = async () => {
+    try {
+      const response = await unshareLocation();
+      console.log("서버에 공유 해제 요청");
+      console.log(response);
+
+      getIsMySharedInfo();
+      setModalState(false);
+    } catch (error) {
+      console.error("위치 공유 해제 실패 : ", error);
+    }
   };
 
+  // 현재 위치에 따른 가까운 건물 받아오기
+  const getNearBuildingToShare = async () => {
+    try {
+      const response = await getUserShareLocation(
+        currentLocation!.latitude,
+        currentLocation!.longitude
+      );
+      console.log(response);
+      setNearBuilding(response);
+    } catch (error) {
+      console.error("가장 가까운 위치 조회 실패 : ", error);
+    }
+  };
   useEffect(() => {
-    // 현재 위치에 따른 가까운 건물 받아오기. 서버 요청 로직 필요함
-    const response = "상허기념도서관";
-    setNearBuilding(response);
+    getNearBuildingToShare();
   }, []);
 
   return (

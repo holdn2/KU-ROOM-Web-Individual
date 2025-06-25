@@ -15,8 +15,8 @@ interface MapProps {
   setIsTracking?: (value: boolean) => void;
   draggable?: boolean;
   zoomable?: boolean;
-  setHasFocusedMarker: (value: boolean) => void;
-  setDetailLocationData: (value: DetailPlaceData) => void;
+  setHasFocusedMarker?: (value: boolean) => void;
+  setDetailLocationData?: (value: DetailPlaceData) => void;
 }
 
 // React Strict Mode로 인해 두번 마운트 되어서 하단 왼쪽 로고 두개로 보이는데
@@ -97,7 +97,13 @@ const KuroomMap = ({
 
   // 마커 렌더링. 마커 배열이 변경될 때만 실행되도록
   useEffect(() => {
-    if (mapInstance.current && setIsTracking && markers) {
+    if (
+      mapInstance.current &&
+      setIsTracking &&
+      markers &&
+      setHasFocusedMarker &&
+      setDetailLocationData
+    ) {
       renderMarkers(
         mapInstance.current,
         markers,

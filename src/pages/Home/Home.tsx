@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
 import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
 import { Coordinate } from "../../../types/mapTypes";
+import { checkIsSharedApi } from "../../apis/map";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -32,6 +33,22 @@ const Home = () => {
     null
   ); // 현재 위치
 
+  // 현재 내 위치 공유 상태 확인 함수
+  const getIsMySharedInfo = async () => {
+    try {
+      const response = await checkIsSharedApi();
+      console.log("현재 내 위치 공유 상태 : ", response);
+      setIsSharedLocation(response);
+    } catch (error) {
+      console.error("위치 공유 상태 확인 실패 : ", error);
+    }
+  };
+  useEffect(() => {
+    // 현재 내 위치 공유 상태 확인
+    getIsMySharedInfo();
+    // 현재 내 위치가 학교 내부인지 검증
+    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
+  }, [currenLocation, isSharedLocation]);
   // api 기다리는 상태 관리도 추후 추가 예정.
   useEffect(() => {
     // 로그인 여부 확인
@@ -43,11 +60,6 @@ const Home = () => {
     }
     // 서버에 새로운 알람이 있는지 검증. 있다면 true로
     setHasNewAlarm(true);
-
-    // 현재 위치가 학교 내부 인지 검증. 위치도 함께 저장
-    // 서버에서 현재 공유 상태도 받아와야 함.
-    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
-    // setIsSharedLocation()
 
     // const timeout = setTimeout(() => {
     //   setShowSplash(false);
@@ -85,7 +97,7 @@ const Home = () => {
         isSharedLocation={isSharedLocation}
         currentLocation={currenLocation}
         setModalState={setShareModalState}
-        setIsSharedLocation={setIsSharedLocation}
+        getIsMySharedInfo={getIsMySharedInfo}
       />
     </div>
   );

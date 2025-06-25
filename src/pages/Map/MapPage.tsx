@@ -19,7 +19,7 @@ import {
   MarkerData,
   PlaceDataWithFriend,
 } from "../../../types/mapTypes";
-import { getCategoryLocations } from "../../apis/map";
+import { checkIsSharedApi, getCategoryLocationsApi } from "../../apis/map";
 import { makeMarkerIcon } from "../../components/Map/kuroomMapUtils";
 
 const MapPage = () => {
@@ -92,9 +92,9 @@ const MapPage = () => {
   }, [detailLocationData]);
 
   // 카테고리 칩을 눌렀을 때 서버에 title을 이용하여 요청
-  const getLocations = async (selectedCategory: string) => {
+  const getCategoryLocations = async (selectedCategory: string) => {
     try {
-      const locations = await getCategoryLocations(selectedCategory);
+      const locations = await getCategoryLocationsApi(selectedCategory);
       console.log(locations);
       setSelectedCategoryLocations(locations);
     } catch (error) {
@@ -110,7 +110,7 @@ const MapPage = () => {
       return;
     }
     // 칩 클릭 시 서버 요청 하도록 함수 호출
-    getLocations(selectedCategoryTitle);
+    getCategoryLocations(selectedCategoryTitle);
     setVisibleBottomSheet(true);
   }, [selectedCategoryTitle]);
 
@@ -133,10 +133,20 @@ const MapPage = () => {
     console.log("현재 포커된 상태: ", hasFocusedMarker);
   }, [hasFocusedMarker]);
 
-  // 현재 위치가 학교 내부 인지 검증. 내 위치도 함께 저장
-  // 서버에서 공유 상태인지 받아오기
+  // 현재 내 위치 공유 상태 확인 함수
+  const getIsMySharedInfo = async () => {
+    try {
+      const response = await checkIsSharedApi();
+      console.log("현재 내 위치 공유 상태 : ", response);
+      setIsSharedLocation(response);
+    } catch (error) {
+      console.error("위치 공유 상태 확인 실패 : ", error);
+    }
+  };
   useEffect(() => {
-    // setIsSharedLocation()
+    // 현재 내 위치 공유 상태 확인
+    getIsMySharedInfo();
+    // 현재 내 위치가 학교 내부인지 검증
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
   }, [currenLocation, isSharedLocation]);
 
@@ -212,7 +222,7 @@ const MapPage = () => {
               </button>
               {/* 학교 내부에서만 보이도록 하기! */}
               {/* 내 위치 공유 버튼 */}
-              {/* {isInSchool && (
+              {/* {isInSchool && currenLocation !== null && (
                 <button
                   className={styles.SharedLocationButton}
                   onClick={handleShareLocation}
@@ -225,17 +235,20 @@ const MapPage = () => {
                   )}
                 </button>
               )} */}
-              <button
-                className={styles.SharedLocationButton}
-                onClick={handleShareLocation}
-              >
-                <img src={shareLocationIcon} alt="위치 공유 아이콘" />
-                {isSharedLocation ? (
-                  <span className={styles.SharingText}>위치 공유 해제</span>
-                ) : (
-                  <span className={styles.SharingText}>내 위치 공유</span>
-                )}
-              </button>
+              {/* 현재 위치를 가져온 다음에만 렌더링 되도록 */}
+              {currenLocation !== null && (
+                <button
+                  className={styles.SharedLocationButton}
+                  onClick={handleShareLocation}
+                >
+                  <img src={shareLocationIcon} alt="위치 공유 아이콘" />
+                  {isSharedLocation ? (
+                    <span className={styles.SharingText}>위치 공유 해제</span>
+                  ) : (
+                    <span className={styles.SharingText}>내 위치 공유</span>
+                  )}
+                </button>
+              )}
             </>
           )}
         </>
@@ -267,7 +280,7 @@ const MapPage = () => {
         isSharedLocation={isSharedLocation}
         currentLocation={currenLocation}
         setModalState={setModalState}
-        setIsSharedLocation={setIsSharedLocation}
+        getIsMySharedInfo={getIsMySharedInfo}
       />
     </div>
   );

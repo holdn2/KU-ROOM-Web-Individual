@@ -135,7 +135,7 @@ export const unshareLocation = async () => {
 interface LocationCategoryApiResponse extends ApiResponse {
   data: PlaceDataWithFriend[];
 }
-export const getCategoryLocations = async (category: string) => {
+export const getCategoryLocationsApi = async (category: string) => {
   try {
     const response = await axiosInstance.post<LocationCategoryApiResponse>(
       GET_CATEGORY_LOCATION + category,
