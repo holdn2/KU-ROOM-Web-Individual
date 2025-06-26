@@ -19,7 +19,11 @@ import {
   MarkerData,
   PlaceDataWithFriend,
 } from "../../../types/mapTypes";
-import { checkIsSharedApi, getCategoryLocationsApi } from "../../apis/map";
+import {
+  checkIsSharedApi,
+  getCategoryLocationsApi,
+  getUserShareLocation,
+} from "../../apis/map";
 import { makeMarkerIcon } from "../../components/Map/kuroomMapUtils";
 
 const MapPage = () => {
@@ -43,9 +47,11 @@ const MapPage = () => {
 
   // 위치 공유 상태
   const [modalState, setModalState] = useState(false);
-  const [currenLocation, setCurrentLocation] = useState<Coordinate | null>(
+  const [currentLocation, setCurrentLocation] = useState<Coordinate | null>(
     null
   ); // 현재 위치
+  // 유저의 위치와 가장 가까운 위치 저장할 상태
+  const [nearLocation, setNearLocation] = useState("");
 
   if (isInSchool) {
     // vercel 배포 오류 해결 위해.
@@ -81,9 +87,25 @@ const MapPage = () => {
     // 현재 내 위치가 학교 내부인지 검증
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
   }, []);
+
+  // 현재 위치에 따른 가까운 건물 받아오기
+  const getNearBuildingToShare = async () => {
+    try {
+      const response = await getUserShareLocation(
+        currentLocation!.latitude,
+        currentLocation!.longitude
+      );
+      console.log(response);
+      setNearLocation(response);
+      setModalState(true);
+    } catch (error) {
+      console.error("가장 가까운 위치 조회 실패 : ", error);
+    }
+  };
+
   // 위치 공유 모달
   const handleShareLocation = () => {
-    setModalState(true);
+    getNearBuildingToShare();
   };
   // **********************************************************************
   const resetSelectSearch = () => {
@@ -117,7 +139,21 @@ const MapPage = () => {
     ]);
   }, [detailLocationData]);
 
-  // 카테고리 칩을 눌렀을 때 서버에 title을 이용하여 요청
+  useEffect(() => {
+    if (!selectedCategoryTitle) {
+      setMarkers([]);
+      setVisibleBottomSheet(false);
+      return;
+    }
+    // 칩 클릭 시 서버 요청 하도록 함수 호출
+    if (selectedCategoryTitle === "친구") {
+      // 친구 카테고리는 다른 방식이 될 수도 있을듯...
+      return;
+    }
+    getCategoryLocations(selectedCategoryTitle);
+    setVisibleBottomSheet(true);
+  }, [selectedCategoryTitle]);
+  // 친구 제외 카테고리 칩을 눌렀을 때 서버에 title을 이용하여 요청
   const getCategoryLocations = async (selectedCategory: string) => {
     try {
       const locations = await getCategoryLocationsApi(selectedCategory);
@@ -128,17 +164,6 @@ const MapPage = () => {
       alert("서버 상태 또는 네트워크에 문제가 있습니다.");
     }
   };
-
-  useEffect(() => {
-    if (!selectedCategoryTitle) {
-      setMarkers([]);
-      setVisibleBottomSheet(false);
-      return;
-    }
-    // 칩 클릭 시 서버 요청 하도록 함수 호출
-    getCategoryLocations(selectedCategoryTitle);
-    setVisibleBottomSheet(true);
-  }, [selectedCategoryTitle]);
 
   useEffect(() => {
     // 카테고리 칩 클릭 시 데이터가 오면
@@ -227,7 +252,7 @@ const MapPage = () => {
               </button>
               {/* 학교 내부에서만 보이도록 하기! */}
               {/* 내 위치 공유 버튼 */}
-              {/* {isInSchool && currenLocation !== null && (
+              {/* {isInSchool && currentLocation !== null && (
                 <button
                   className={styles.SharedLocationButton}
                   onClick={handleShareLocation}
@@ -241,7 +266,7 @@ const MapPage = () => {
                 </button>
               )} */}
               {/* 현재 위치를 가져온 다음에만 렌더링 되도록 */}
-              {currenLocation !== null && (
+              {currentLocation !== null && (
                 <button
                   className={styles.SharedLocationButton}
                   onClick={handleShareLocation}
@@ -283,7 +308,7 @@ const MapPage = () => {
       <ShareLocationModal
         modalState={modalState}
         isSharedLocation={isSharedLocation}
-        currentLocation={currenLocation}
+        nearLocation={nearLocation}
         setModalState={setModalState}
         refreshSharedStatus={() =>
           setLocationSharedRefreshKey((prev) => prev + 1)

@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./ShareLocationModal.module.css";
 import ReactModal from "react-modal";
 import Button from "../../Button/Button";
 import cautionIcon from "../../../assets/icon/editFriend/cautionIcon.svg";
-import { Coordinate } from "../../../../types/mapTypes";
-import {
-  getUserShareLocation,
-  shareUserLocation,
-  unshareLocation,
-} from "../../../apis/map";
+import { shareUserLocation, unshareLocation } from "../../../apis/map";
 
 interface ShareLocationModalProps {
   modalState: boolean;
   isSharedLocation: boolean;
-  currentLocation: Coordinate | null;
+  nearLocation: string;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
   refreshSharedStatus: () => void;
 }
@@ -21,17 +16,16 @@ interface ShareLocationModalProps {
 const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
   modalState,
   isSharedLocation,
-  currentLocation,
+  nearLocation,
   setModalState,
   refreshSharedStatus,
 }) => {
   const handleCloseModal = () => setModalState(false);
-  const [nearBuilding, setNearBuilding] = useState("");
 
   // 서버에 각각 요청
   const handleSharingLocation = async () => {
     try {
-      const response = await shareUserLocation(nearBuilding);
+      const response = await shareUserLocation(nearLocation);
       console.log("서버에 내 위치 공유 요청");
       console.log(response);
 
@@ -53,23 +47,6 @@ const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
       console.error("위치 공유 해제 실패 : ", error);
     }
   };
-
-  // 현재 위치에 따른 가까운 건물 받아오기
-  const getNearBuildingToShare = async () => {
-    try {
-      const response = await getUserShareLocation(
-        currentLocation!.latitude,
-        currentLocation!.longitude
-      );
-      console.log(response);
-      setNearBuilding(response);
-    } catch (error) {
-      console.error("가장 가까운 위치 조회 실패 : ", error);
-    }
-  };
-  useEffect(() => {
-    getNearBuildingToShare();
-  }, []);
 
   return (
     <ReactModal
@@ -93,7 +70,7 @@ const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
         ) : (
           <>
             <span className={styles.InformText}>
-              <span className={styles.BoldText}>{nearBuilding}</span>(으)로
+              <span className={styles.BoldText}>{nearLocation}</span>(으)로
               <br />
               <span className={styles.BoldText}>위치를 공유</span>
               하시겠습니까?

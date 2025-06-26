@@ -3,24 +3,45 @@ import styles from "./HomeMiniMap.module.css";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import KuroomMap from "../../Map/KuroomMap";
+import { getUserShareLocation } from "../../../apis/map";
+import { Coordinate } from "../../../../types/mapTypes";
 
 interface HomeMiniMapProps {
   isSharedLocation: boolean;
   setModalState: (value: boolean) => void;
+  currentLocation: Coordinate;
+  setNearLocation: (value: string) => void;
 }
 
 const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
   isSharedLocation,
   setModalState,
+  currentLocation,
+  setNearLocation,
 }) => {
   const navigate = useNavigate();
+
+  // 현재 위치에 따른 가까운 건물 받아오기
+  const getNearBuildingToShare = async () => {
+    try {
+      const response = await getUserShareLocation(
+        currentLocation!.latitude,
+        currentLocation!.longitude
+      );
+      console.log(response);
+      setNearLocation(response);
+      setModalState(true);
+    } catch (error) {
+      console.error("가장 가까운 위치 조회 실패 : ", error);
+    }
+  };
 
   const handleSeeMap = () => {
     navigate("/map");
   };
   const handleOpenModal = () => {
-    setModalState(true);
     // 서버에 현재 위치 보내기, 공유 상태 보내기
+    getNearBuildingToShare();
   };
 
   return (
