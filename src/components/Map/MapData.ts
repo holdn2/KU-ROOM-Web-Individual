@@ -15,6 +15,10 @@ const CategoryChips = [
     icon: friendChip,
   },
   {
+    title: "건물",
+    icon: collegeChip,
+  },
+  {
     title: "단과대",
     icon: collegeChip,
   },

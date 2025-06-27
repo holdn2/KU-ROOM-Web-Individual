@@ -27,6 +27,7 @@ export { renderedMarkers, makeFocusMarker };
 export const makeMarkerIcon = (category: string): string => {
   switch (category) {
     case "단과대":
+    case "건물":
       return collegeMarker;
     case "K-Cube":
     case "K-Hub":
