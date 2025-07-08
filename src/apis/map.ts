@@ -6,14 +6,14 @@ import {
 } from "../../types/mapTypes";
 import axiosInstance from "./axiosInstance";
 
-const CHECK_SHARE_STATE_API = "/api/v1/map";
-const GET_USER_SHARE_LOCATION = "/api/v1/map/share";
-const SHARE_USER_LOCATION = "/api/v1/map/shareStart";
-const UNSHARE_LOCATION = "/api/v1/map/notshare";
-const GET_CATEGORY_LOCATION = "/api/v1/map/chip/";
-const GET_SHARED_FRIEND_LOCATION = "/api/v1/map/chip/friends";
-const GET_SEARCH_LOCATION_RESULT = "/api/v1/map/search";
-const GET_LOCATION_DETAIL_DATA = "/api/v1/map?search/detail";
+const CHECK_SHARE_STATE_API = "/places/sharing/status";
+const GET_USER_SHARE_LOCATION = "/places/sharing";
+const SHARE_USER_LOCATION = "/places/sharing/confirm";
+const UNSHARE_LOCATION = "/places/sharing/confirm";
+const GET_CATEGORY_LOCATION = "/map/chip/";
+const GET_SHARED_FRIEND_LOCATION = "/map/chip/friends";
+const GET_SEARCH_LOCATION_RESULT = "/map/search";
+const GET_LOCATION_DETAIL_DATA = "/map?search/detail";
 const GET_RECENT_SEARCH = "/map/search/term";
 const DELETE_RECENT_SEARCH = "/map/search/term";
 
@@ -26,7 +26,7 @@ interface ApiResponse {
 // 현재 위치 공유 상태인지 여부 api
 interface IsSharedApiResponse extends ApiResponse {
   data: {
-    active: boolean;
+    isActive: boolean;
   };
 }
 export const checkIsSharedApi = async () => {
@@ -34,7 +34,7 @@ export const checkIsSharedApi = async () => {
     const response = await axiosInstance.get<IsSharedApiResponse>(
       CHECK_SHARE_STATE_API
     );
-    return response.data.data.active; // 성공 응답 반환
+    return response.data.data.isActive; // 성공 응답 반환
   } catch (error: any) {
     console.error(
       "위치 공유 상태 확인 실패:",
@@ -49,7 +49,7 @@ export const checkIsSharedApi = async () => {
 // 내 위치 공유 클릭 시 가장 가까운 건물명 받아오는 api
 interface GetUserShareLocationApi extends ApiResponse {
   data: {
-    placePointed: string;
+    placeName: string;
   };
 }
 export const getUserShareLocation = async (
@@ -69,7 +69,7 @@ export const getUserShareLocation = async (
         },
       }
     );
-    return response.data.data.placePointed; // 성공 응답 반환
+    return response.data.data.placeName; // 성공 응답 반환
   } catch (error: any) {
     console.error(
       "유저의 가장 가까운 건물명 조회 실패:",
@@ -85,16 +85,15 @@ export const getUserShareLocation = async (
 // 위치 공유 시작 api
 interface ShareUserLocationApi extends ApiResponse {
   data: {
-    placePointed: string;
-    active: boolean;
+    placeName: string;
   };
 }
-export const shareUserLocation = async (placePointed: string) => {
+export const shareUserLocation = async (placeName: string) => {
   try {
     const response = await axiosInstance.post<ShareUserLocationApi>(
       SHARE_USER_LOCATION,
       {
-        placePointed: placePointed,
+        placeName: placeName,
       },
       {
         headers: {
@@ -118,8 +117,8 @@ export const shareUserLocation = async (placePointed: string) => {
 export const unshareLocation = async () => {
   try {
     const response =
-      await axiosInstance.get<IsSharedApiResponse>(UNSHARE_LOCATION);
-    return response.data.data.active; // 성공 응답 반환
+      await axiosInstance.delete<IsSharedApiResponse>(UNSHARE_LOCATION);
+    return response.data.status; // 성공 응답 반환
   } catch (error: any) {
     console.error(
       "위치 공유 해제 실패:",

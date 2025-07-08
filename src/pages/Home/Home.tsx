@@ -15,9 +15,10 @@ import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLoc
 import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
 import { Coordinate } from "../../../types/mapTypes";
 import { checkIsSharedApi } from "../../apis/map";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // const [showSplash, setShowSplash] = useState(true);
   const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
   const [hasNewAlarm, setHasNewAlarm] = useState(false); // 새로운 알람이 있는지
@@ -63,10 +64,11 @@ const Home = () => {
   // api 기다리는 상태 관리도 추후 추가 예정.
   useEffect(() => {
     // 로그인 여부 확인
+    console.log("로그인 여부 확인");
     const token = localStorage.getItem("accessToken");
     if (!token) {
       localStorage.clear();
-      // navigate("/login");
+      navigate("/login");
       return;
     }
     // 서버에 새로운 알람이 있는지 검증. 있다면 true로
@@ -99,6 +101,7 @@ const Home = () => {
             isSharedLocation={isSharedLocation}
             setModalState={setShareModalState}
             currentLocation={currentLocation}
+            nearLocation={nearLocation}
             setNearLocation={setNearLocation}
           />
         )}

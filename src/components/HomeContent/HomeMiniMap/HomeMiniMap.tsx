@@ -10,6 +10,7 @@ interface HomeMiniMapProps {
   isSharedLocation: boolean;
   setModalState: (value: boolean) => void;
   currentLocation: Coordinate;
+  nearLocation: string;
   setNearLocation: (value: string) => void;
 }
 
@@ -17,6 +18,7 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
   isSharedLocation,
   setModalState,
   currentLocation,
+  nearLocation,
   setNearLocation,
 }) => {
   const navigate = useNavigate();
@@ -51,7 +53,7 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
         <div className={styles.HomeMiniMapWrapper}>
           <div className={styles.MiniMapTextContainer}>
             <h1 className={styles.MiniMapBoldText}>
-              현재 상허기념박물관에 계시네요!
+              현재 {nearLocation}에 계시네요!
             </h1>
             <span className={styles.MiniMapNormalText}>
               장소를 이동할 땐 위치 공유를 해제해주세요 :)
