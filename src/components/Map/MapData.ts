@@ -1,10 +1,10 @@
 import friendChip from "../../assets/map/chips/friendChip.svg";
-import collegeChip from "../../assets/map/chips/collegeChip.svg";
+import buildingChip from "../../assets/map/chips/buildingChip.svg";
 import kcubehubChip from "../../assets/map/chips/kcubehubChip.svg";
 import storeChip from "../../assets/map/chips/storeChip.svg";
 import cafeChip from "../../assets/map/chips/cafeChip.svg";
 import restaurantChip from "../../assets/map/chips/restaurantChip.svg";
-import officeChip from "../../assets/map/chips/officeChip.svg";
+import collegeChip from "../../assets/map/chips/collegeChip.svg";
 import dormitoryChip from "../../assets/map/chips/dormitoryChip.svg";
 import bankChip from "../../assets/map/chips/bankChip.svg";
 import postChip from "../../assets/map/chips/postChip.svg";
@@ -16,7 +16,7 @@ const CategoryChips = [
   },
   {
     title: "건물",
-    icon: collegeChip,
+    icon: buildingChip,
   },
   {
     title: "단과대",
@@ -45,10 +45,6 @@ const CategoryChips = [
   {
     title: "학생식당",
     icon: restaurantChip,
-  },
-  {
-    title: "학과사무실",
-    icon: officeChip,
   },
   {
     title: "기숙사",

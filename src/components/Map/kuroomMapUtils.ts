@@ -2,11 +2,11 @@ import myMarkerIcon from "../../assets/map/mylocationMarker.svg";
 import focusedMarkerIcon from "../../assets/map/focusedMarker.png";
 import { DetailPlaceData, MarkerData } from "../../../types/mapTypes";
 import collegeMarker from "../../assets/map/markers/collegeMarker.svg";
+import buildingMarker from "../../assets/map/markers/buildingMarker.svg";
 import kcubekhubMarker from "../../assets/map/markers/kcubekhubMarker.svg";
 import storeMarker from "../../assets/map/markers/storeMarker.svg";
 import cafeMarker from "../../assets/map/markers/cafeMarker.svg";
 import restaurantMarker from "../../assets/map/markers/restaurantMarker.svg";
-import officeMarker from "../../assets/map/markers/officeMarker.svg";
 import dormitoryMarker from "../../assets/map/markers/dormitoryMarker.svg";
 import bankMarker from "../../assets/map/markers/bankMarker.svg";
 import postMarker from "../../assets/map/markers/postMarker.svg";
@@ -27,8 +27,9 @@ export { renderedMarkers, makeFocusMarker };
 export const makeMarkerIcon = (category: string): string => {
   switch (category) {
     case "단과대":
-    case "건물":
       return collegeMarker;
+    case "건물":
+      return buildingMarker;
     case "K-Cube":
     case "K-Hub":
       return kcubekhubMarker;
@@ -40,8 +41,6 @@ export const makeMarkerIcon = (category: string): string => {
       return cafeMarker;
     case "학생식당":
       return restaurantMarker;
-    case "학과사무실":
-      return officeMarker;
     case "기숙사":
       return dormitoryMarker;
     case "은행":
