@@ -79,7 +79,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
             {!isExpandedFocusedSheet && (
               <div className={styles.SheetImgContainer}>
                 {/* 최대 3개까지만 보이도록 */}
-                {detailLocationData?.imageUrlList
+                {detailLocationData?.imageUrls
                   .slice(0, 3)
                   .map((item, index) => (
                     <img

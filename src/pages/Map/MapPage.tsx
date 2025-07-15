@@ -17,7 +17,7 @@ import {
   Coordinate,
   DetailPlaceData,
   MarkerData,
-  PlaceDataWithFriend,
+  PlaceData,
 } from "../../../types/mapTypes";
 import {
   checkIsSharedApi,
@@ -40,10 +40,12 @@ const MapPage = () => {
   // 선택된 위치 카테고리 명
   const [selectedCategoryTitle, setSelectedCategoryTitle] =
     useState<string>("");
+  const [selectedCategoryEnum, setSelectedCategoryEnum] = useState<string>("");
   // 선택된 위치 카테고리 관련 위치 배열
   const [selectedCategoryLocations, setSelectedCategoryLocations] = useState<
-    PlaceDataWithFriend[]
+    PlaceData[]
   >([]);
+  const [markerFlag, setMarkerFlag] = useState<number>(0);
 
   // 위치 공유 상태
   const [modalState, setModalState] = useState(false);
@@ -112,10 +114,21 @@ const MapPage = () => {
     setSearchMode(false);
     setDetailLocationData(null);
     setSelectedCategoryTitle("");
+    setSelectedCategoryEnum("");
+    setMarkerFlag(0);
     setMarkers([]);
     setIsExpandedSheet(false);
     setHasFocusedMarker(false);
     setIsExpandedFocusedSheet(false);
+  };
+
+  const onClickGoBackButton = () => {
+    if (isExpandedSheet) {
+      setIsExpandedSheet(false);
+      setIsExpandedFocusedSheet(false);
+    } else {
+      resetSelectSearch();
+    }
   };
 
   // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작. 이부분은 테스트용 로직
@@ -131,8 +144,9 @@ const MapPage = () => {
     const markerIcon = makeMarkerIcon("default");
     setMarkers([
       {
+        placeId: detailLocationData.placeId,
         markerIcon: markerIcon,
-        name: detailLocationData.mainTitle,
+        name: detailLocationData.name,
         latitude: detailLocationData.latitude,
         longitude: detailLocationData.longitude,
       },
@@ -150,14 +164,14 @@ const MapPage = () => {
       // 친구 카테고리는 다른 방식이 될 수도 있을듯...
       return;
     }
-    getCategoryLocations(selectedCategoryTitle);
+    getCategoryLocations(selectedCategoryEnum);
     setVisibleBottomSheet(true);
-  }, [selectedCategoryTitle]);
-  // 친구 제외 카테고리 칩을 눌렀을 때 서버에 title을 이용하여 요청
+  }, [selectedCategoryEnum]);
+
+  // 친구 제외 카테고리 칩을 눌렀을 때 서버에 카테고리 ENUM 을 이용하여 요청
   const getCategoryLocations = async (selectedCategory: string) => {
     try {
       const locations = await getCategoryLocationsApi(selectedCategory);
-      console.log(locations);
       setSelectedCategoryLocations(locations);
     } catch (error) {
       console.error();
@@ -166,19 +180,24 @@ const MapPage = () => {
   };
 
   useEffect(() => {
-    // 카테고리 칩 클릭 시 데이터가 오면
-    selectedCategoryLocations.map((item) => {
-      // 선택된 카테고리에 따라 마커아이콘 반영
-      const markerIcon = makeMarkerIcon(selectedCategoryTitle);
-      const newMarker: MarkerData = {
-        markerIcon: markerIcon,
-        name: item.mainTitle,
-        latitude: item.latitude,
-        longitude: item.longitude,
-      };
-      setMarkers([...markers, newMarker]);
-    });
+    if (selectedCategoryLocations.length === 0) return;
+
+    const markerIcon = makeMarkerIcon(selectedCategoryTitle);
+    const newMarkers: MarkerData[] = selectedCategoryLocations.map((item) => ({
+      placeId: item.placeId,
+      markerIcon,
+      name: item.name,
+      latitude: item.latitude,
+      longitude: item.longitude,
+    }));
+
+    setMarkers(newMarkers);
+    setMarkerFlag((prev) => prev + 1);
   }, [selectedCategoryLocations]);
+
+  useEffect(() => {
+    console.log("마커 데이터: ", markers);
+  }, [markers]);
 
   useEffect(() => {
     console.log("현재 포커된 상태: ", hasFocusedMarker);
@@ -186,12 +205,12 @@ const MapPage = () => {
 
   return (
     <div>
-      {/* KuroomMap은 항상 렌더링되고 */}
       <KuroomMap
         height={
           selectedCategoryTitle === "친구" ? "100vh" : "calc(100vh - 92px)"
         }
         markers={markers}
+        markerFlag={markerFlag}
         mapRefProp={mapInstanceRef}
         isTracking={isTracking}
         setIsTracking={setIsTracking}
@@ -211,17 +230,21 @@ const MapPage = () => {
       ) : (
         // 검색 결과가 있을 때 상단 바, 바텀시트, (2개 이상일 때 목록보기) 보여주기
         <>
-          {detailLocationData || selectedCategoryTitle ? (
-            detailLocationData === null ? (
+          {hasFocusedMarker || selectedCategoryTitle ? (
+            !hasFocusedMarker ? (
               <SearchResultHeader
                 selectedCategoryTitle={selectedCategoryTitle}
                 resetSelectSearch={resetSelectSearch}
+                onClickGoBackButton={onClickGoBackButton}
               />
             ) : (
-              <SearchResultHeader
-                detailLocationData={detailLocationData}
-                resetSelectSearch={resetSelectSearch}
-              />
+              detailLocationData && (
+                <SearchResultHeader
+                  detailLocationData={detailLocationData}
+                  resetSelectSearch={resetSelectSearch}
+                  onClickGoBackButton={onClickGoBackButton}
+                />
+              )
             )
           ) : (
             // 검색 결과 없을 때만 기본 UI 보여주기
@@ -237,6 +260,7 @@ const MapPage = () => {
               </button>
               <MapCategoryChip
                 setSelectedCategoryTitle={setSelectedCategoryTitle}
+                setSelectedCategoryEnum={setSelectedCategoryEnum}
                 setIsTracking={setIsTracking}
               />
               {/* 내 위치 추적 아이콘 */}

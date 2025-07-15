@@ -8,17 +8,15 @@ interface SearchResultProps {
   detailLocationData?: MapSearchResult;
   selectedCategoryTitle?: string;
   resetSelectSearch: () => void;
+  onClickGoBackButton: () => void;
 }
 
 const SearchResult: React.FC<SearchResultProps> = ({
   detailLocationData,
   selectedCategoryTitle,
   resetSelectSearch,
+  onClickGoBackButton,
 }) => {
-  console.log(
-    "헤더 : ",
-    selectedCategoryTitle || detailLocationData?.mainTitle
-  );
   return (
     <header className={styles.SearchResultContainer}>
       <div className={styles.LeftContentWrapper}>
@@ -26,14 +24,10 @@ const SearchResult: React.FC<SearchResultProps> = ({
           className={styles.ArrowIcon}
           src={arrowBack}
           alt="뒤로 가기"
-          onClick={() => {
-            resetSelectSearch();
-          }}
+          onClick={onClickGoBackButton}
         />
         {detailLocationData ? (
-          <span className={styles.ResultTitle}>
-            {detailLocationData.mainTitle}
-          </span>
+          <span className={styles.ResultTitle}>{detailLocationData.name}</span>
         ) : (
           <span className={styles.ResultTitle}>{selectedCategoryTitle}</span>
         )}

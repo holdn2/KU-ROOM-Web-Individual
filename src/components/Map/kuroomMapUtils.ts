@@ -63,33 +63,40 @@ export function renderMarkers(
   renderedMarkers = [];
 
   // 마커가 변경될 때마다 건대 중심을 center로 변경하고 줌도 16으로 되게 설정.
-  const defaultCenter = new window.naver.maps.LatLng(37.5423, 127.0759);
+  const defaultCenter = new window.naver.maps.LatLng(37.5423, 127.0765);
   map.setCenter(defaultCenter);
   map.setZoom(16);
 
-  markers.forEach(({ markerIcon, name, latitude, longitude }) => {
-    const marker = new window.naver.maps.Marker({
-      position: new window.naver.maps.LatLng(latitude, longitude),
-      map,
-      name,
-      icon: {
-        // 마커 아이콘 추가
-        url: markerIcon,
-      },
-    });
-    window.naver.maps.Event.addListener(marker, "click", () => {
-      makeFocusMarker(
+  markers.forEach(
+    ({ markerIcon, placeId, name: title, latitude, longitude }) => {
+      const marker = new window.naver.maps.Marker({
+        position: new window.naver.maps.LatLng(latitude, longitude),
         map,
-        marker,
-        setIsTracking,
-        setHasFocusedMarker,
-        setDetailLocationData
-      );
-    });
+        placeId,
+        title,
+        icon: {
+          // 마커 아이콘 추가
+          url: markerIcon,
+        },
+      });
 
-    setIsTracking(false);
-    renderedMarkers.push({ marker, originalIcon: markerIcon });
-  });
+      // 💡 커스텀 프로퍼티 추가
+      (marker as any).placeId = placeId;
+
+      window.naver.maps.Event.addListener(marker, "click", () => {
+        makeFocusMarker(
+          map,
+          marker,
+          setIsTracking,
+          setHasFocusedMarker,
+          setDetailLocationData
+        );
+      });
+
+      setIsTracking(false);
+      renderedMarkers.push({ marker, originalIcon: markerIcon });
+    }
+  );
 
   // 마커가 하나뿐일 경우 자동 포커스 처리
   if (renderedMarkers.length === 1) {
@@ -149,8 +156,10 @@ async function makeFocusMarker(
   map.setZoom(17);
   setIsTracking(false);
 
+  const placeId = (marker as any).placeId;
+
   try {
-    const response = await getLocationDetailData(marker.getTitle());
+    const response = await getLocationDetailData(placeId);
     console.log(response);
     setDetailLocationData(response);
   } catch (error) {

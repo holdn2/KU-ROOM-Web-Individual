@@ -1,7 +1,7 @@
 // 지도 관련 api
 import {
   DetailPlaceData,
-  PlaceDataWithFriend,
+  PlaceData,
   SharedFriendData,
 } from "../../types/mapTypes";
 import axiosInstance from "./axiosInstance";
@@ -10,10 +10,10 @@ const CHECK_SHARE_STATE_API = "/places/sharing/status";
 const GET_USER_SHARE_LOCATION = "/places/sharing";
 const SHARE_USER_LOCATION = "/places/sharing/confirm";
 const UNSHARE_LOCATION = "/places/sharing/confirm";
-const GET_CATEGORY_LOCATION = "/map/chip/";
+const GET_CHIP_LOCATION = "/places?chip=";
+const GET_LOCATION_DETAIL_DATA = "/places/";
 const GET_SHARED_FRIEND_LOCATION = "/map/chip/friends";
 const GET_SEARCH_LOCATION_RESULT = "/map/search";
-const GET_LOCATION_DETAIL_DATA = "/map?search/detail";
 const GET_RECENT_SEARCH = "/map/search/term";
 const DELETE_RECENT_SEARCH = "/map/search/term";
 
@@ -82,7 +82,7 @@ export const getUserShareLocation = async (
   }
 };
 
-// 위치 공유 시작 api
+// 위치 공유 시작(확정) api
 interface ShareUserLocationApi extends ApiResponse {
   data: {
     placeName: string;
@@ -113,7 +113,7 @@ export const shareUserLocation = async (placeName: string) => {
   }
 };
 
-// 위치 공유 해제 api
+// 위치 공유 해제(취소) api
 export const unshareLocation = async () => {
   try {
     const response =
@@ -130,21 +130,16 @@ export const unshareLocation = async () => {
   }
 };
 
-// 카테고리 칩 클릭 시 위치 정보 받아오는 api
-interface LocationCategoryApiResponse extends ApiResponse {
-  data: PlaceDataWithFriend[];
+// 카테고리 칩(핀) 클릭 시 위치 정보 조회 api
+interface LocationChipApiResponse extends ApiResponse {
+  data: PlaceData[];
 }
 export const getCategoryLocationsApi = async (category: string) => {
   try {
-    const response = await axiosInstance.post<LocationCategoryApiResponse>(
-      GET_CATEGORY_LOCATION + category,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+    const response = await axiosInstance.get<LocationChipApiResponse>(
+      GET_CHIP_LOCATION + category
     );
+
     return response.data.data; // 성공 응답 반환
   } catch (error: any) {
     console.error(
@@ -180,6 +175,28 @@ export const getSharedFriendLocation = async () => {
     );
     throw new Error(
       error.response?.data?.message || "위치 공유한 친구 위치 조회 중 오류 발생"
+    );
+  }
+};
+
+// 하나의 위치에 대한 디테일 정보 조회 api
+interface GetLocationDetailData extends ApiResponse {
+  data: DetailPlaceData;
+}
+export const getLocationDetailData = async (placeId: number) => {
+  try {
+    const response = await axiosInstance.get<GetLocationDetailData>(
+      GET_LOCATION_DETAIL_DATA + placeId
+    );
+    return response.data.data; // 성공 응답 반환
+  } catch (error: any) {
+    console.error(
+      "하나의 위치에 대한 디테일 정보 조회 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message ||
+        "하나의 위치에 대한 디테일 정보 조회 중 오류 발생"
     );
   }
 };
@@ -252,34 +269,6 @@ export const deleteRecentSearchLocation = async (deleteData: string) => {
     );
     throw new Error(
       error.response?.data?.message || "최근 검색어 삭제 중 오류 발생"
-    );
-  }
-};
-
-// 하나의 위치에 대한 디테일 정보 조회 api
-interface GetLocationDetailData extends ApiResponse {
-  data: DetailPlaceData[];
-}
-export const getLocationDetailData = async (search: string) => {
-  try {
-    const response = await axiosInstance.post<GetLocationDetailData>(
-      GET_LOCATION_DETAIL_DATA,
-      { search: search },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data.data[0]; // 성공 응답 반환
-  } catch (error: any) {
-    console.error(
-      "하나의 위치에 대한 디테일 정보 조회 실패:",
-      error.response?.data || error.message
-    );
-    throw new Error(
-      error.response?.data?.message ||
-        "하나의 위치에 대한 디테일 정보 조회 중 오류 발생"
     );
   }
 };

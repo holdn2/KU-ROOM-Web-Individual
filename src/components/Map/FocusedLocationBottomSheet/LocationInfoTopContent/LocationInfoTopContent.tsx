@@ -16,16 +16,16 @@ const LocationInfoTopContent: React.FC<LocationInfoTopContentProps> = ({
     <div className={styles.TopContentContainer}>
       <div className={styles.ImgGridContainer}>
         <img
-          src={detailInfo?.imageUrlList[0]}
+          src={detailInfo?.imageUrls[0]}
           className={styles.MainImg}
           alt="대표 이미지"
         />
         <div className={styles.SubImgGrid}>
           {[1, 2, 3, 4].map((i, index) =>
-            detailInfo?.imageUrlList[i] ? (
+            detailInfo?.imageUrls[i] ? (
               <img
                 key={index}
-                src={detailInfo.imageUrlList[i]}
+                src={detailInfo.imageUrls[i]}
                 className={styles.SubImg}
                 alt={`서브 이미지 ${i}`}
               />

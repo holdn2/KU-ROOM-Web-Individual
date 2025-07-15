@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./FocusedLocationInfo.module.css";
 import { DetailPlaceData } from "../../../../../types/mapTypes";
+import DefaultProfileImg from "../../../../assets/defaultProfileImg.svg";
 
 interface FocusedLocationInfo {
   detailInfo: DetailPlaceData | null;
@@ -22,20 +23,24 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
               className={styles.TitleText}
               onClick={() => setIsExpandedFocusedSheet(true)}
             >
-              {detailInfo.mainTitle}
+              {detailInfo.name}
             </span>
-            <span className={styles.SubTitleText}>{detailInfo.subTitle}</span>
+            <span className={styles.SubTitleText}>{detailInfo.subName}</span>
           </div>
           <div className={styles.ContentWrapper}>
-            {detailInfo.friendList.length !== 0 && (
+            {detailInfo.friends.length !== 0 && (
               <div className={styles.FriendWrapper}>
                 <span className={styles.FriendTitle}>친구</span>
                 <div className={styles.FriendContainer}>
-                  {detailInfo.friendList.map((friend, index) => (
+                  {detailInfo.friends.map((friend, index) => (
                     <img
                       key={index}
                       className={styles.FriendProfileImg}
-                      src={friend.profileURL}
+                      src={
+                        friend.profileURL
+                          ? friend.profileURL
+                          : DefaultProfileImg
+                      }
                       alt={friend.nickname}
                     />
                   ))}
@@ -49,7 +54,7 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
                   !isExpandedFocusedSheet ? styles.InfoContentClamp : ""
                 }`}
               >
-                {detailInfo.text}
+                {detailInfo.content}
               </span>
             </div>
           </div>

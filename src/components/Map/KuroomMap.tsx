@@ -10,13 +10,14 @@ interface MapProps {
   width?: string;
   height?: string;
   markers?: MarkerData[];
+  markerFlag: number;
   mapRefProp?: React.MutableRefObject<naver.maps.Map | null>;
   isTracking?: boolean;
   setIsTracking?: (value: boolean) => void;
   draggable?: boolean;
   zoomable?: boolean;
   setHasFocusedMarker?: (value: boolean) => void;
-  setDetailLocationData?: (value: DetailPlaceData) => void;
+  setDetailLocationData?: (value: DetailPlaceData | null) => void;
 }
 
 // React Strict Mode로 인해 두번 마운트 되어서 하단 왼쪽 로고 두개로 보이는데
@@ -26,6 +27,7 @@ const KuroomMap = ({
   width = "100%",
   height = "100%",
   markers,
+  markerFlag,
   mapRefProp,
   isTracking = true,
   setIsTracking,
@@ -44,7 +46,7 @@ const KuroomMap = ({
     if (!window.naver) return;
 
     const mapOptions = {
-      center: new naver.maps.LatLng(37.5423, 127.0759), // 건국대학교 중심
+      center: new naver.maps.LatLng(37.5423, 127.0765), // 건국대학교 중심
       zoom: 17,
       draggable: draggable,
       scrollWheel: zoomable,
@@ -112,7 +114,7 @@ const KuroomMap = ({
         setDetailLocationData
       );
     }
-  }, [markers]);
+  }, [markerFlag]);
 
   // 추적 모드 활성화 시 현재 위치 중심으로 지도 이동
   useEffect(() => {
