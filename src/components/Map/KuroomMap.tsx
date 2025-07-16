@@ -10,7 +10,7 @@ interface MapProps {
   width?: string;
   height?: string;
   markers?: MarkerData[];
-  markerFlag: number;
+  markerFlag?: number;
   mapRefProp?: React.MutableRefObject<naver.maps.Map | null>;
   isTracking?: boolean;
   selectedCategoryTitle?: string;
