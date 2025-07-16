@@ -8,6 +8,8 @@ import { useOutsideClick } from "../../../utils/friendUtils";
 import FriendContainer from "../../../components/Friend/FriendContainer/FriendContainer";
 import { getAllFriends } from "../../../apis/friend";
 import { useNavigate } from "react-router-dom";
+import PullToRefresh from "../../../components/PullToRefresh/PullToRefresh";
+import { reissueTokenApi } from "../../../apis/axiosInstance";
 
 interface Friend {
   id: number;
