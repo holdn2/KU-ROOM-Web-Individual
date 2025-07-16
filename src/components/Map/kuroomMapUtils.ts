@@ -264,6 +264,7 @@ async function makeFocusMarker(
     anchor: isFriendMarker
       ? new naver.maps.Point(42, 45)
       : new naver.maps.Point(15, 45),
+
   });
 
   marker.setZIndex(1000);
