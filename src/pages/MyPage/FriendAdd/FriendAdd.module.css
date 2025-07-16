@@ -1,8 +1,7 @@
 .FriendAddPageWrapper {
   display: flex;
   flex-direction: column;
-  /* min-height: 500px; */
-  margin-top: 56px;
+  min-height: 500px;
 }
 .SearchBarContainer {
   padding: 17px 25px 0 25px;

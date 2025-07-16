@@ -21,7 +21,6 @@
   height: 40px;
   color: var(--error, #ff4a4a);
   text-align: start;
-  font-family: Pretendard;
   font-size: 12px;
   font-style: normal;
   font-weight: 700;
@@ -30,7 +29,6 @@
 .FindStepTitle,
 .Retransmit {
   color: var(--gray-black, #1d2228);
-  font-family: Pretendard;
   font-size: 30px;
   font-style: normal;
   font-weight: 700;
