@@ -32,10 +32,12 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
               <div className={styles.FriendSectionWrapper}>
                 <span className={styles.FriendTitle}>친구</span>
                 <div className={styles.FriendContainerWrapper}>
-                  {detailInfo.friends.map((friend, index) => (
-                    <div className={styles.FriendContainer}>
+                  {detailInfo.friends.map((friend) => (
+                    <div
+                      key={friend.nickname}
+                      className={styles.FriendContainer}
+                    >
                       <img
-                        key={index}
                         className={styles.FriendProfileImg}
                         src={friend.profileURL ?? DefaultProfileImg}
                         alt={friend.nickname}
