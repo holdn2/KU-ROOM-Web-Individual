@@ -7,7 +7,7 @@ import noResultIcon from "../../../assets/icon/noResultSearch.svg";
 import { DetailPlaceData, MapSearchResult } from "../../../../types/mapTypes";
 import {
   deleteRecentSearchLocation,
-  getLocationDetailData,
+  // getLocationDetailData,
   getRecentSearchLocation,
   getSearchLocationResult,
 } from "../../../apis/map";
@@ -20,7 +20,7 @@ interface MapSearchProps {
 
 const MapSearch: React.FC<MapSearchProps> = ({
   setSearchMode,
-  setDetailLocationData,
+  // setDetailLocationData,
 }) => {
   const [searchText, setSearchText] = useState("");
   const [recentSearchData, setRecentSearchData] = useState<string[]>([]);
@@ -74,7 +74,8 @@ const MapSearch: React.FC<MapSearchProps> = ({
     try {
       const response = await getSearchLocationResult(searchText);
       console.log(response);
-      setSearchResult(response);
+      setSearchResult([]);
+      // setSearchResult(response);
     } catch (error) {
       console.error("위치 검색 중 에러 : ", error);
       alert("서버 또는 네트워크 에러입니다.");
@@ -90,15 +91,17 @@ const MapSearch: React.FC<MapSearchProps> = ({
 
   // 버튼 클릭 시 해당하는 위치를 서버에 요청하여 받아야함.
   const onClickSearchLocation = async (search: string) => {
-    try {
-      const response = await getLocationDetailData(search);
-      console.log("하나의 위치에 대한 디테일 정보 : ", response);
-      setDetailLocationData(response);
-      setSearchMode(false);
-    } catch (error) {
-      console.error("하나의 위치에 대한 디테일 정보 반환 실패", error);
-      alert("서버 또는 네트워크 오류입니다.");
-    }
+    // 배포 시 실패 방지용
+    console.log(search);
+    // try {
+    //   const response = await getLocationDetailData(search);
+    //   console.log("하나의 위치에 대한 디테일 정보 : ", response);
+    //   setDetailLocationData(response);
+    //   setSearchMode(false);
+    // } catch (error) {
+    //   console.error("하나의 위치에 대한 디테일 정보 반환 실패", error);
+    //   alert("서버 또는 네트워크 오류입니다.");
+    // }
   };
 
   return (
@@ -170,9 +173,9 @@ const MapSearch: React.FC<MapSearchProps> = ({
               <div
                 key={index}
                 className={styles.ResultContainer}
-                onClick={() => onClickSearchLocation(result.mainTitle)}
+                onClick={() => onClickSearchLocation(result.name)}
               >
-                <span className={styles.LocationTitle}>{result.mainTitle}</span>
+                <span className={styles.LocationTitle}>{result.name}</span>
               </div>
             ))}
           </div>
