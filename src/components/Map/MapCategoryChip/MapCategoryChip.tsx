@@ -5,6 +5,8 @@ import { CategoryEnum } from "../../../../types/mapTypes";
 
 const getCategoryEnum = (title: string): CategoryEnum | undefined => {
   switch (title) {
+    case "친구":
+      return "FRIEND";
     case "건물":
       return "BUILDING";
     case "단과대":

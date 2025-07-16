@@ -17,6 +17,7 @@ interface FriendData {
 
 // 카테고리 ENUM 정보
 export type CategoryEnum =
+  | "FRIEND"
   | "BUILDING"
   | "COLLEGE"
   | "K_CUBE"
@@ -54,4 +55,6 @@ export interface MarkerData extends Coordinate {
   placeId: number;
   markerIcon: string;
   name: string;
+  isFriendMarker?: boolean;
+  numOfFriends?: number;
 }

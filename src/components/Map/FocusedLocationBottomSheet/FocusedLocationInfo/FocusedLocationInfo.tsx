@@ -29,20 +29,21 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
           </div>
           <div className={styles.ContentWrapper}>
             {detailInfo.friends.length !== 0 && (
-              <div className={styles.FriendWrapper}>
+              <div className={styles.FriendSectionWrapper}>
                 <span className={styles.FriendTitle}>친구</span>
-                <div className={styles.FriendContainer}>
+                <div className={styles.FriendContainerWrapper}>
                   {detailInfo.friends.map((friend, index) => (
-                    <img
-                      key={index}
-                      className={styles.FriendProfileImg}
-                      src={
-                        friend.profileURL
-                          ? friend.profileURL
-                          : DefaultProfileImg
-                      }
-                      alt={friend.nickname}
-                    />
+                    <div className={styles.FriendContainer}>
+                      <img
+                        key={index}
+                        className={styles.FriendProfileImg}
+                        src={friend.profileURL ?? DefaultProfileImg}
+                        alt={friend.nickname}
+                      />
+                      <span className={styles.FriendNickname}>
+                        {friend.nickname}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>

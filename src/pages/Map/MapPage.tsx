@@ -4,6 +4,7 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import styles from "./MapPage.module.css";
 import myTrackingIcon from "../../assets/map/tomylocation.svg";
 import shareLocationIcon from "../../assets/map/shareLocation.svg";
+import unshareLocationIcon from "../../assets/map/shareLocationWhite.svg";
 import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
 import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChip";
 import KuroomMap from "../../components/Map/KuroomMap";
@@ -25,6 +26,7 @@ import {
   getUserShareLocation,
 } from "../../apis/map";
 import { makeMarkerIcon } from "../../components/Map/kuroomMapUtils";
+import DefaultProfileImg from "../../assets/defaultProfileImg.svg";
 
 const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
@@ -159,13 +161,11 @@ const MapPage = () => {
       setVisibleBottomSheet(false);
       return;
     }
-    // 칩 클릭 시 서버 요청 하도록 함수 호출
-    if (selectedCategoryTitle === "친구") {
-      // 친구 카테고리는 다른 방식이 될 수도 있을듯...
-      return;
-    }
+
     getCategoryLocations(selectedCategoryEnum);
-    setVisibleBottomSheet(true);
+    if (selectedCategoryTitle !== "친구") {
+      setVisibleBottomSheet(true);
+    }
   }, [selectedCategoryEnum]);
 
   // 친구 제외 카테고리 칩을 눌렀을 때 서버에 카테고리 ENUM 을 이용하여 요청
@@ -181,23 +181,39 @@ const MapPage = () => {
 
   useEffect(() => {
     if (selectedCategoryLocations.length === 0) return;
-
-    const markerIcon = makeMarkerIcon(selectedCategoryTitle);
-    const newMarkers: MarkerData[] = selectedCategoryLocations.map((item) => ({
-      placeId: item.placeId,
-      markerIcon,
-      name: item.name,
-      latitude: item.latitude,
-      longitude: item.longitude,
-    }));
-
-    setMarkers(newMarkers);
-    setMarkerFlag((prev) => prev + 1);
+    if (selectedCategoryTitle === "친구") {
+      const placeMarkers: MarkerData[] = selectedCategoryLocations.map(
+        (item) => ({
+          placeId: item.placeId,
+          markerIcon: item.friends[0].profileURL || DefaultProfileImg,
+          name: item.name,
+          latitude: item.latitude,
+          longitude: item.longitude,
+          isFriendMarker: true,
+          numOfFriends: item.friends.length,
+        })
+      );
+      setMarkers(placeMarkers);
+      setMarkerFlag((prev) => prev + 1);
+    } else {
+      const markerIcon = makeMarkerIcon(selectedCategoryTitle);
+      const placeMarkers: MarkerData[] = selectedCategoryLocations.map(
+        (item) => ({
+          placeId: item.placeId,
+          markerIcon,
+          name: item.name,
+          latitude: item.latitude,
+          longitude: item.longitude,
+        })
+      );
+      setMarkers(placeMarkers);
+      setMarkerFlag((prev) => prev + 1);
+    }
   }, [selectedCategoryLocations]);
 
-  useEffect(() => {
-    console.log("마커 데이터: ", markers);
-  }, [markers]);
+  // useEffect(() => {
+  //   console.log("마커 데이터: ", markers);
+  // }, [markers]);
 
   useEffect(() => {
     console.log("현재 포커된 상태: ", hasFocusedMarker);
@@ -213,6 +229,7 @@ const MapPage = () => {
         markerFlag={markerFlag}
         mapRefProp={mapInstanceRef}
         isTracking={isTracking}
+        selectedCategoryTitle={selectedCategoryTitle}
         setIsTracking={setIsTracking}
         setHasFocusedMarker={setHasFocusedMarker}
         setDetailLocationData={setDetailLocationData}
@@ -283,26 +300,34 @@ const MapPage = () => {
                 >
                   <img src={shareLocationIcon} alt="위치 공유 아이콘" />
                   {isSharedLocation ? (
-                    <span className={styles.SharingText}>위치 공유 해제</span>
+                    <span className={styles.SharingText}>내 위치 공유 중</span>
                   ) : (
                     <span className={styles.SharingText}>내 위치 공유</span>
                   )}
                 </button>
               )} */}
               {/* 현재 위치를 가져온 다음에만 렌더링 되도록 */}
-              {currentLocation !== null && (
-                <button
-                  className={styles.SharedLocationButton}
-                  onClick={handleShareLocation}
-                >
-                  <img src={shareLocationIcon} alt="위치 공유 아이콘" />
-                  {isSharedLocation ? (
-                    <span className={styles.SharingText}>위치 공유 해제</span>
-                  ) : (
-                    <span className={styles.SharingText}>내 위치 공유</span>
-                  )}
-                </button>
-              )}
+              {currentLocation !== null &&
+                (isSharedLocation ? (
+                  <button
+                    className={styles.UnsharedLocationButton}
+                    onClick={handleShareLocation}
+                  >
+                    <img
+                      src={unshareLocationIcon}
+                      alt="위치 공유 해제 아이콘"
+                    />
+                    <span>내 위치 공유 중</span>
+                  </button>
+                ) : (
+                  <button
+                    className={styles.SharedLocationButton}
+                    onClick={handleShareLocation}
+                  >
+                    <img src={shareLocationIcon} alt="위치 공유 아이콘" />
+                    <span>내 위치 공유</span>
+                  </button>
+                ))}
             </>
           )}
         </>

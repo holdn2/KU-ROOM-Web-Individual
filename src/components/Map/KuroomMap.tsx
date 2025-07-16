@@ -13,6 +13,7 @@ interface MapProps {
   markerFlag: number;
   mapRefProp?: React.MutableRefObject<naver.maps.Map | null>;
   isTracking?: boolean;
+  selectedCategoryTitle?: string;
   setIsTracking?: (value: boolean) => void;
   draggable?: boolean;
   zoomable?: boolean;
@@ -30,6 +31,7 @@ const KuroomMap = ({
   markerFlag,
   mapRefProp,
   isTracking = true,
+  selectedCategoryTitle,
   setIsTracking,
   draggable = true,
   zoomable = true,
@@ -109,6 +111,7 @@ const KuroomMap = ({
       renderMarkers(
         mapInstance.current,
         markers,
+        selectedCategoryTitle!,
         setIsTracking,
         setHasFocusedMarker,
         setDetailLocationData

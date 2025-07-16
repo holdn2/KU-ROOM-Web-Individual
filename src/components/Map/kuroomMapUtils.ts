@@ -16,6 +16,8 @@ import { getLocationDetailData } from "../../apis/map";
 interface KuroomMarker {
   marker: naver.maps.Marker;
   originalIcon: string;
+  isFriendMarker?: boolean;
+  numOfFriends?: number;
 }
 
 let renderedMarkers: KuroomMarker[] = []; // 전역 배열로 기존 마커 저장
@@ -54,6 +56,7 @@ export const makeMarkerIcon = (category: string): string => {
 export function renderMarkers(
   map: naver.maps.Map,
   markers: MarkerData[],
+  selectedCategoryTitle: string,
   setIsTracking: (value: boolean) => void,
   setHasFocusedMarker: (value: boolean) => void,
   setDetailLocationData: (value: DetailPlaceData) => void
@@ -68,19 +71,51 @@ export function renderMarkers(
   map.setZoom(16);
 
   markers.forEach(
-    ({ markerIcon, placeId, name: title, latitude, longitude }) => {
-      const marker = new window.naver.maps.Marker({
-        position: new window.naver.maps.LatLng(latitude, longitude),
-        map,
-        placeId,
-        title,
-        icon: {
-          // 마커 아이콘 추가
-          url: markerIcon,
-        },
-      });
+    ({
+      markerIcon,
+      placeId,
+      name: title,
+      latitude,
+      longitude,
+      isFriendMarker,
+      numOfFriends,
+    }) => {
+      const position = new window.naver.maps.LatLng(latitude, longitude);
 
-      // 💡 커스텀 프로퍼티 추가
+      const markerOptions: naver.maps.MarkerOptions = {
+        position,
+        map,
+        title,
+      };
+
+      if (isFriendMarker && numOfFriends !== undefined) {
+        markerOptions.icon = {
+          content: `
+          <div style="
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #fff;
+            border-radius: 50px;
+            box-shadow: 0 0 4px rgba(0,0,0,0.25);
+          ">
+            <img src="${markerIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
+            <div style="
+              position: absolute; top: -10px; right: -10px; display: flex; 
+              width: 25px; height: 25px; justify-content: center;
+              align-items: center; border-radius: 50px; border: 3px solid #FFF; background: #F2FAF5; color: #009733; font-size: 14px; font-weight: 700;
+            ">${numOfFriends}</div>
+          </div>
+        `,
+          anchor: new naver.maps.Point(20, 20),
+        };
+      } else {
+        markerOptions.icon = {
+          url: markerIcon,
+        };
+      }
+
+      const marker = new window.naver.maps.Marker(markerOptions);
       (marker as any).placeId = placeId;
 
       window.naver.maps.Event.addListener(marker, "click", () => {
@@ -89,17 +124,23 @@ export function renderMarkers(
           marker,
           setIsTracking,
           setHasFocusedMarker,
-          setDetailLocationData
+          setDetailLocationData,
+          isFriendMarker
         );
       });
 
       setIsTracking(false);
-      renderedMarkers.push({ marker, originalIcon: markerIcon });
+      renderedMarkers.push({
+        marker,
+        originalIcon: markerIcon,
+        isFriendMarker,
+        numOfFriends,
+      });
     }
   );
 
   // 마커가 하나뿐일 경우 자동 포커스 처리
-  if (renderedMarkers.length === 1) {
+  if (renderedMarkers.length === 1 && selectedCategoryTitle !== "친구") {
     // 강제로 delay를 주어 렌더링이 보장된 후 중심 이동되게 함.
     setTimeout(() => {
       makeFocusMarker(
@@ -129,7 +170,30 @@ export function renderMarkers(
         ({ marker }) => marker === focusedMarker
       );
       if (target) {
-        focusedMarker.setIcon({ url: target.originalIcon }); // ← 여기 수정
+        if (target.isFriendMarker) {
+          focusedMarker.setIcon({
+            content: `
+        <div style="
+          position: relative;
+          width: 50px;
+          height: 50px;
+          border: 3px solid #fff;
+          border-radius: 50px;
+          box-shadow: 0 0 4px rgba(0,0,0,0.25);
+        ">
+          <img src="${target.originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
+          <div style="
+            position: absolute; top: -10px; right: -10px; display: flex; 
+            width: 25px; height: 25px; justify-content: center;
+            align-items: center; border-radius: 50px; border: 3px solid #FFF; background: #F2FAF5; color: #009733; font-size: 14px; font-weight: 700;
+          ">${target.numOfFriends ?? ""}</div>
+        </div>
+      `,
+            anchor: new naver.maps.Point(20, 20),
+          });
+        } else {
+          focusedMarker.setIcon({ url: target.originalIcon });
+        }
       }
       focusedMarker = null;
       setHasFocusedMarker(false);
@@ -143,7 +207,8 @@ async function makeFocusMarker(
   marker: naver.maps.Marker,
   setIsTracking: (value: boolean) => void,
   setHasFocusedMarker: (value: boolean) => void,
-  setDetailLocationData: (value: DetailPlaceData) => void
+  setDetailLocationData: (value: DetailPlaceData) => void,
+  isFriendMarker?: boolean
 ) {
   const position = marker.getPosition() as naver.maps.LatLng;
   // 위치를 아래로 조금 내리기 위해 위도를 조정
@@ -196,16 +261,43 @@ async function makeFocusMarker(
       </span>
     </div>
   `,
-    anchor: new naver.maps.Point(15, 45), // 가운데 정렬
+    anchor: isFriendMarker
+      ? new naver.maps.Point(42, 45)
+      : new naver.maps.Point(15, 45),
   });
 
   marker.setZIndex(1000);
 
-  renderedMarkers.forEach(({ marker: m, originalIcon }) => {
-    if (m !== marker) {
-      m.setIcon({ url: originalIcon }); // ← 여기 수정
+  renderedMarkers.forEach(
+    ({ marker: m, originalIcon, isFriendMarker, numOfFriends }) => {
+      if (m !== marker) {
+        if (isFriendMarker) {
+          m.setIcon({
+            content: `
+        <div style="
+          position: relative;
+          width: 50px;
+          height: 50px;
+          border: 3px solid #fff;
+          border-radius: 50px;
+          box-shadow: 0 0 4px rgba(0,0,0,0.25);
+        ">
+          <img src="${originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
+          <div style="
+            position: absolute; top: -10px; right: -10px; display: flex; 
+            width: 25px; height: 25px; justify-content: center;
+            align-items: center; border-radius: 50px; border: 3px solid #FFF; background: #F2FAF5; color: #009733; font-size: 14px; font-weight: 700;
+          ">${numOfFriends ?? ""}</div>
+        </div>
+      `,
+            anchor: new naver.maps.Point(20, 20),
+          });
+        } else {
+          m.setIcon({ url: originalIcon });
+        }
+      }
     }
-  });
+  );
 }
 // 현재 위치 정보 가져와서 내 위치 마커 추가 및 watchPosition으로 따라가는 로직
 export function myLocationTracking(

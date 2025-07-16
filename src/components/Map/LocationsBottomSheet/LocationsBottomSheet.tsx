@@ -104,19 +104,23 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
             </div>
             <div className={styles.ContentWrapper}>
               {info.friends.length !== 0 && (
-                <div className={styles.FriendWrapper}>
+                <div className={styles.FriendSectionWrapper}>
                   <span className={styles.FriendTitle}>친구</span>
-                  <div className={styles.FriendContainer}>
-                    {info.friends.map((friend, index) => (
-                      <img
-                        key={index}
-                        src={
-                          friend.profileURL
-                            ? friend.profileURL
-                            : DefaultProfileImg
-                        }
-                        alt={friend.nickname}
-                      />
+                  <div className={styles.FriendContainerWrapper}>
+                    {info.friends.map((friend) => (
+                      <div
+                        key={friend.nickname}
+                        className={styles.FriendContainer}
+                      >
+                        <img
+                          className={styles.FriendProfileImg}
+                          src={friend.profileURL ?? DefaultProfileImg}
+                          alt={friend.nickname}
+                        />
+                        <span className={styles.FriendNickname}>
+                          {friend.nickname}
+                        </span>
+                      </div>
                     ))}
                   </div>
                 </div>

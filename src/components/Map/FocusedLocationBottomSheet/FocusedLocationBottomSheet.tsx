@@ -94,6 +94,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
           </>
         )}
       </div>
+      {!isExpandedFocusedSheet && <div className={styles.BottomSheetGrad} />}
     </div>
   );
 };
