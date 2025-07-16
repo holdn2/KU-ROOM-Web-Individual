@@ -1,36 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./FocusedLocationBottomSheet.module.css";
-import { dummyDetailInfo } from "../MapData";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
 import LocationInfoTopContent from "./LocationInfoTopContent/LocationInfoTopContent";
 import FocusedLocationInfo from "./FocusedLocationInfo/FocusedLocationInfo";
 import { BeatLoader } from "react-spinners";
+import { DetailPlaceData } from "../../../../types/mapTypes";
 
-interface LocationDetailInfo {
-  imgs: string[];
-  title: string;
-  subtit: string;
-  friends: {
-    nickname: string;
-    profileImg: string;
-  }[];
-  info: string;
-}
 interface FocusedLocationBottomSheetProps {
   hasFocusedMarker: boolean;
   isExpandedFocusedSheet: boolean;
   setIsExpandedFocusedSheet: (value: boolean) => void;
-  focusedMarkerTitle: string | null;
+  detailLocationData: DetailPlaceData | null;
 }
 
 const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
   hasFocusedMarker,
   isExpandedFocusedSheet,
   setIsExpandedFocusedSheet,
-  focusedMarkerTitle,
+  detailLocationData,
 }) => {
   // 위치 상세 정보 저장할 상태
-  const [detailInfo, setDetailInfo] = useState<LocationDetailInfo | null>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
 
   // 아직 해당 장소 정보가 안 왔을 때 로딩처리
@@ -38,14 +27,13 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
 
   // 서버에 해당 장소 정보 요청
   useEffect(() => {
-    setDetailInfo(dummyDetailInfo);
     // 여기에 실제 API 로딩 or 이미지 로딩 조건으로 변경해야함.
     setIsLoading(true);
     const timeout = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timeout);
-  }, [focusedMarkerTitle]);
+  }, [detailLocationData]);
 
   // 바텀 시트 올리고 내리는 로직.
   useBottomSheetDrag({
@@ -79,19 +67,19 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
           <>
             {isExpandedFocusedSheet && (
               <LocationInfoTopContent
-                detailInfo={detailInfo}
+                detailInfo={detailLocationData}
                 setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
               />
             )}
             <FocusedLocationInfo
-              detailInfo={detailInfo}
+              detailInfo={detailLocationData}
               isExpandedFocusedSheet={isExpandedFocusedSheet}
               setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
             />
             {!isExpandedFocusedSheet && (
               <div className={styles.SheetImgContainer}>
                 {/* 최대 3개까지만 보이도록 */}
-                {detailInfo?.imgs
+                {detailLocationData?.imageUrls
                   .slice(0, 3)
                   .map((item, index) => (
                     <img
@@ -106,6 +94,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
           </>
         )}
       </div>
+      {!isExpandedFocusedSheet && <div className={styles.BottomSheetGrad} />}
     </div>
   );
 };

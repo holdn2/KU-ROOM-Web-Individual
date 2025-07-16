@@ -1,3 +1,5 @@
+import { Coordinate } from "../../types/mapTypes";
+
 // 건국대 범위 사각형으로 지정
 const schoolRange = [
   [127.070767, 37.540034],
@@ -40,18 +42,18 @@ let errorShown = false;
 // 내 위치를 추적하여 학교 내부인지 검증하는 로직
 export function isMyLocationInSchool(
   setIsInSchool: (value: boolean) => void,
-  setCurrentLocation: (location: { userLat: number; userLng: number }) => void
+  setCurrentLocation: (location: Coordinate) => void
 ) {
   if (!navigator.geolocation) return;
 
   // watchPosition으로 이동할 때마다 검증
   const watchId = navigator.geolocation.watchPosition(
     (position) => {
-      const userLat = position.coords.latitude;
-      const userLng = position.coords.longitude;
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
 
-      setCurrentLocation({ userLat, userLng });
-      const inside = isPointInSchool(userLng, userLat, schoolRange);
+      setCurrentLocation({ latitude, longitude });
+      const inside = isPointInSchool(longitude, latitude, schoolRange);
       setIsInSchool(inside); // 밖으로 나가면 false 처리됨
     },
     (err) => {

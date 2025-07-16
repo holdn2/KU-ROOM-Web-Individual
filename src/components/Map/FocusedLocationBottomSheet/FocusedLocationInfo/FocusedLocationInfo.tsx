@@ -1,19 +1,10 @@
 import React from "react";
 import styles from "./FocusedLocationInfo.module.css";
-
-interface LocationDetailInfo {
-  imgs: string[];
-  title: string;
-  subtit: string;
-  friends: {
-    nickname: string;
-    profileImg: string;
-  }[];
-  info: string;
-}
+import { DetailPlaceData } from "../../../../../types/mapTypes";
+import DefaultProfileImg from "../../../../assets/defaultProfileImg.svg";
 
 interface FocusedLocationInfo {
-  detailInfo: LocationDetailInfo | null;
+  detailInfo: DetailPlaceData | null;
   isExpandedFocusedSheet: boolean;
   setIsExpandedFocusedSheet: (value: boolean) => void;
 }
@@ -32,22 +23,29 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
               className={styles.TitleText}
               onClick={() => setIsExpandedFocusedSheet(true)}
             >
-              {detailInfo.title}
+              {detailInfo.name}
             </span>
-            <span className={styles.SubTitleText}>{detailInfo.subtit}</span>
+            <span className={styles.SubTitleText}>{detailInfo.subName}</span>
           </div>
           <div className={styles.ContentWrapper}>
             {detailInfo.friends.length !== 0 && (
-              <div className={styles.FriendWrapper}>
+              <div className={styles.FriendSectionWrapper}>
                 <span className={styles.FriendTitle}>친구</span>
-                <div className={styles.FriendContainer}>
-                  {detailInfo.friends.map((friend, index) => (
-                    <img
-                      key={index}
-                      className={styles.FriendProfileImg}
-                      src={friend.profileImg}
-                      alt={friend.nickname}
-                    />
+                <div className={styles.FriendContainerWrapper}>
+                  {detailInfo.friends.map((friend) => (
+                    <div
+                      key={friend.nickname}
+                      className={styles.FriendContainer}
+                    >
+                      <img
+                        className={styles.FriendProfileImg}
+                        src={friend.profileURL ?? DefaultProfileImg}
+                        alt={friend.nickname}
+                      />
+                      <span className={styles.FriendNickname}>
+                        {friend.nickname}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -59,7 +57,7 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
                   !isExpandedFocusedSheet ? styles.InfoContentClamp : ""
                 }`}
               >
-                {detailInfo.info}
+                {detailInfo.content}
               </span>
             </div>
           </div>

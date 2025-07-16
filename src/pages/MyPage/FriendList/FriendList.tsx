@@ -8,8 +8,8 @@ import { useOutsideClick } from "../../../utils/friendUtils";
 import FriendContainer from "../../../components/Friend/FriendContainer/FriendContainer";
 import { getAllFriends } from "../../../apis/friend";
 import { useNavigate } from "react-router-dom";
-import { reissueTokenApi } from "../../../apis/axiosInstance";
 import PullToRefresh from "../../../components/PullToRefresh/PullToRefresh";
+import { reissueTokenApi } from "../../../apis/axiosInstance";
 
 interface Friend {
   id: number;
@@ -25,6 +25,7 @@ const FriendList = () => {
   const [isRefreshed, setIsRefreshed] = useState(0);
 
   const [refreshList, setRefreshList] = useState(false);
+
   // 검색어가 포함되어 필터링된 친구 목록
   const filteredFriends = friendList.filter((friend) =>
     friend.nickname.includes(searchNickname)
@@ -50,7 +51,6 @@ const FriendList = () => {
   const [modalState, setModalState] = useState(false);
   const [modalType, setModalType] = useState("");
 
-  // 서버에서 친구 목록 가져오기
   const getMyFriends = async () => {
     try {
       const response = await getAllFriends();

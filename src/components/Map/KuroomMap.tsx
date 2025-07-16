@@ -4,25 +4,21 @@ import {
   noTracking,
   renderMarkers,
 } from "./kuroomMapUtils";
-
-interface MarkerData {
-  lat: number;
-  lng: number;
-  title: string;
-  icon: string;
-}
+import { DetailPlaceData, MarkerData } from "../../../types/mapTypes";
 
 interface MapProps {
   width?: string;
   height?: string;
   markers?: MarkerData[];
+  markerFlag?: number;
   mapRefProp?: React.MutableRefObject<naver.maps.Map | null>;
   isTracking?: boolean;
+  selectedCategoryTitle?: string;
   setIsTracking?: (value: boolean) => void;
   draggable?: boolean;
   zoomable?: boolean;
   setHasFocusedMarker?: (value: boolean) => void;
-  setFocusedMarkerTitle?: (value: string | null) => void;
+  setDetailLocationData?: (value: DetailPlaceData | null) => void;
 }
 
 // React Strict Mode로 인해 두번 마운트 되어서 하단 왼쪽 로고 두개로 보이는데
@@ -32,13 +28,15 @@ const KuroomMap = ({
   width = "100%",
   height = "100%",
   markers,
+  markerFlag,
   mapRefProp,
   isTracking = true,
+  selectedCategoryTitle,
   setIsTracking,
   draggable = true,
   zoomable = true,
   setHasFocusedMarker,
-  setFocusedMarkerTitle,
+  setDetailLocationData,
 }: MapProps) => {
   const mapRef = useRef(null);
   const markerRef = useRef<naver.maps.Marker | null>(null);
@@ -50,7 +48,7 @@ const KuroomMap = ({
     if (!window.naver) return;
 
     const mapOptions = {
-      center: new naver.maps.LatLng(37.5423, 127.0759), // 건국대학교 중심
+      center: new naver.maps.LatLng(37.5423, 127.0765), // 건국대학교 중심
       zoom: 17,
       draggable: draggable,
       scrollWheel: zoomable,
@@ -103,16 +101,23 @@ const KuroomMap = ({
 
   // 마커 렌더링. 마커 배열이 변경될 때만 실행되도록
   useEffect(() => {
-    if (mapInstance.current && setIsTracking && markers) {
+    if (
+      mapInstance.current &&
+      setIsTracking &&
+      markers &&
+      setHasFocusedMarker &&
+      setDetailLocationData
+    ) {
       renderMarkers(
         mapInstance.current,
         markers,
+        selectedCategoryTitle!,
         setIsTracking,
         setHasFocusedMarker,
-        setFocusedMarkerTitle
+        setDetailLocationData
       );
     }
-  }, [markers]);
+  }, [markerFlag]);
 
   // 추적 모드 활성화 시 현재 위치 중심으로 지도 이동
   useEffect(() => {

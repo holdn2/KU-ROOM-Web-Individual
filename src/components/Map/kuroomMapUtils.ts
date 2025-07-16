@@ -1,17 +1,23 @@
 import myMarkerIcon from "../../assets/map/mylocationMarker.svg";
 import focusedMarkerIcon from "../../assets/map/focusedMarker.png";
-
-// 마커 렌더링 로직
-interface MarkerData {
-  lat: number;
-  lng: number;
-  title: string;
-  icon: string;
-}
+import { DetailPlaceData, MarkerData } from "../../../types/mapTypes";
+import collegeMarker from "../../assets/map/markers/collegeMarker.svg";
+import buildingMarker from "../../assets/map/markers/buildingMarker.svg";
+import kcubekhubMarker from "../../assets/map/markers/kcubekhubMarker.svg";
+import storeMarker from "../../assets/map/markers/storeMarker.svg";
+import cafeMarker from "../../assets/map/markers/cafeMarker.svg";
+import restaurantMarker from "../../assets/map/markers/restaurantMarker.svg";
+import dormitoryMarker from "../../assets/map/markers/dormitoryMarker.svg";
+import bankMarker from "../../assets/map/markers/bankMarker.svg";
+import postMarker from "../../assets/map/markers/postMarker.svg";
+import defaultMarker from "../../assets/map/defaultMarkerIcon.svg";
+import { getLocationDetailData } from "../../apis/map";
 
 interface KuroomMarker {
   marker: naver.maps.Marker;
   originalIcon: string;
+  isFriendMarker?: boolean;
+  numOfFriends?: number;
 }
 
 let renderedMarkers: KuroomMarker[] = []; // 전역 배열로 기존 마커 저장
@@ -20,48 +26,121 @@ let isDraggingMap = false;
 
 export { renderedMarkers, makeFocusMarker };
 
+export const makeMarkerIcon = (category: string): string => {
+  switch (category) {
+    case "단과대":
+      return collegeMarker;
+    case "건물":
+      return buildingMarker;
+    case "K-Cube":
+    case "K-Hub":
+      return kcubekhubMarker;
+    case "편의점":
+      return storeMarker;
+    case "레스티오":
+      return cafeMarker;
+    case "1847":
+      return cafeMarker;
+    case "학생식당":
+      return restaurantMarker;
+    case "기숙사":
+      return dormitoryMarker;
+    case "은행":
+      return bankMarker;
+    case "우체국":
+      return postMarker;
+  }
+  return defaultMarker;
+};
+
 export function renderMarkers(
   map: naver.maps.Map,
   markers: MarkerData[],
+  selectedCategoryTitle: string,
   setIsTracking: (value: boolean) => void,
-  setHasFocusedMarker?: (value: boolean) => void,
-  setFocusedMarkerTitle?: (value: string | null) => void
+  setHasFocusedMarker: (value: boolean) => void,
+  setDetailLocationData: (value: DetailPlaceData) => void
 ): void {
   // 기존 마커 제거
   renderedMarkers.forEach(({ marker }) => marker.setMap(null));
   renderedMarkers = [];
 
   // 마커가 변경될 때마다 건대 중심을 center로 변경하고 줌도 16으로 되게 설정.
-  const defaultCenter = new window.naver.maps.LatLng(37.5423, 127.0759);
+  const defaultCenter = new window.naver.maps.LatLng(37.5423, 127.0765);
   map.setCenter(defaultCenter);
   map.setZoom(16);
 
-  markers.forEach(({ lat, lng, title, icon }) => {
-    const marker = new window.naver.maps.Marker({
-      position: new window.naver.maps.LatLng(lat, lng),
-      map,
-      title,
-      icon: {
-        // 마커 아이콘 추가
-        url: icon,
-      },
-    });
-    window.naver.maps.Event.addListener(marker, "click", () => {
-      makeFocusMarker(
-        map,
-        marker,
-        setIsTracking,
-        setHasFocusedMarker,
-        setFocusedMarkerTitle
-      );
-    });
+  markers.forEach(
+    ({
+      markerIcon,
+      placeId,
+      name: title,
+      latitude,
+      longitude,
+      isFriendMarker,
+      numOfFriends,
+    }) => {
+      const position = new window.naver.maps.LatLng(latitude, longitude);
 
-    setIsTracking(false);
-    renderedMarkers.push({ marker, originalIcon: icon });
-  });
+      const markerOptions: naver.maps.MarkerOptions = {
+        position,
+        map,
+        title,
+      };
+
+      if (isFriendMarker && numOfFriends !== undefined) {
+        markerOptions.icon = {
+          content: `
+          <div style="
+            position: relative;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #fff;
+            border-radius: 50px;
+            box-shadow: 0 0 4px rgba(0,0,0,0.25);
+          ">
+            <img src="${markerIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
+            <div style="
+              position: absolute; top: -10px; right: -10px; display: flex; 
+              width: 25px; height: 25px; justify-content: center;
+              align-items: center; border-radius: 50px; border: 3px solid #FFF; background: #F2FAF5; color: #009733; font-size: 14px; font-weight: 700;
+            ">${numOfFriends}</div>
+          </div>
+        `,
+          anchor: new naver.maps.Point(20, 20),
+        };
+      } else {
+        markerOptions.icon = {
+          url: markerIcon,
+        };
+      }
+
+      const marker = new window.naver.maps.Marker(markerOptions);
+      (marker as any).placeId = placeId;
+
+      window.naver.maps.Event.addListener(marker, "click", () => {
+        makeFocusMarker(
+          map,
+          marker,
+          setIsTracking,
+          setHasFocusedMarker,
+          setDetailLocationData,
+          isFriendMarker
+        );
+      });
+
+      setIsTracking(false);
+      renderedMarkers.push({
+        marker,
+        originalIcon: markerIcon,
+        isFriendMarker,
+        numOfFriends,
+      });
+    }
+  );
 
   // 마커가 하나뿐일 경우 자동 포커스 처리
-  if (renderedMarkers.length === 1) {
+  if (renderedMarkers.length === 1 && selectedCategoryTitle !== "친구") {
     // 강제로 delay를 주어 렌더링이 보장된 후 중심 이동되게 함.
     setTimeout(() => {
       makeFocusMarker(
@@ -69,7 +148,7 @@ export function renderMarkers(
         renderedMarkers[0].marker,
         setIsTracking,
         setHasFocusedMarker,
-        setFocusedMarkerTitle
+        setDetailLocationData
       );
     }, 10);
   }
@@ -91,22 +170,45 @@ export function renderMarkers(
         ({ marker }) => marker === focusedMarker
       );
       if (target) {
-        focusedMarker.setIcon({ url: target.originalIcon }); // ← 여기 수정
+        if (target.isFriendMarker) {
+          focusedMarker.setIcon({
+            content: `
+        <div style="
+          position: relative;
+          width: 50px;
+          height: 50px;
+          border: 3px solid #fff;
+          border-radius: 50px;
+          box-shadow: 0 0 4px rgba(0,0,0,0.25);
+        ">
+          <img src="${target.originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
+          <div style="
+            position: absolute; top: -10px; right: -10px; display: flex; 
+            width: 25px; height: 25px; justify-content: center;
+            align-items: center; border-radius: 50px; border: 3px solid #FFF; background: #F2FAF5; color: #009733; font-size: 14px; font-weight: 700;
+          ">${target.numOfFriends ?? ""}</div>
+        </div>
+      `,
+            anchor: new naver.maps.Point(20, 20),
+          });
+        } else {
+          focusedMarker.setIcon({ url: target.originalIcon });
+        }
       }
       focusedMarker = null;
-      setHasFocusedMarker?.(false);
-      setFocusedMarkerTitle?.(null);
+      setHasFocusedMarker(false);
     }
   });
 }
 
 // 특정 마커 포커스
-function makeFocusMarker(
+async function makeFocusMarker(
   map: naver.maps.Map,
   marker: naver.maps.Marker,
   setIsTracking: (value: boolean) => void,
-  setHasFocusedMarker?: (value: boolean) => void,
-  setFocusedMarkerTitle?: (value: string) => void
+  setHasFocusedMarker: (value: boolean) => void,
+  setDetailLocationData: (value: DetailPlaceData) => void,
+  isFriendMarker?: boolean
 ) {
   const position = marker.getPosition() as naver.maps.LatLng;
   // 위치를 아래로 조금 내리기 위해 위도를 조정
@@ -114,13 +216,23 @@ function makeFocusMarker(
     position.lat() - 0.001,
     position.lng()
   );
+
   map.setCenter(adjustedPosition);
   map.setZoom(17);
   setIsTracking(false);
 
+  const placeId = (marker as any).placeId;
+
+  try {
+    const response = await getLocationDetailData(placeId);
+    console.log(response);
+    setDetailLocationData(response);
+  } catch (error) {
+    console.error("디테일 위치 정보 가져오기 mapUtils에서 오류 : ", error);
+  }
+
   focusedMarker = marker; // 현재 포커스 마커 기억
-  setHasFocusedMarker?.(true); // 포커스 되었음을 알림
-  setFocusedMarkerTitle?.(marker.getTitle());
+  setHasFocusedMarker(true); // 포커스 되었음을 알림
 
   // HTMLIcon으로 스타일링 + 라벨링. 텍스트 스트로크 넣기
   marker.setIcon({
@@ -149,18 +261,46 @@ function makeFocusMarker(
       </span>
     </div>
   `,
-    anchor: new naver.maps.Point(15, 45), // 가운데 정렬
+    anchor: isFriendMarker
+      ? new naver.maps.Point(42, 45)
+      : new naver.maps.Point(15, 45),
+
   });
 
   marker.setZIndex(1000);
 
-  renderedMarkers.forEach(({ marker: m, originalIcon }) => {
-    if (m !== marker) {
-      m.setIcon({ url: originalIcon });
+  renderedMarkers.forEach(
+    ({ marker: m, originalIcon, isFriendMarker, numOfFriends }) => {
+      if (m !== marker) {
+        if (isFriendMarker) {
+          m.setIcon({
+            content: `
+        <div style="
+          position: relative;
+          width: 50px;
+          height: 50px;
+          border: 3px solid #fff;
+          border-radius: 50px;
+          box-shadow: 0 0 4px rgba(0,0,0,0.25);
+        ">
+          <img src="${originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
+          <div style="
+            position: absolute; top: -10px; right: -10px; display: flex; 
+            width: 25px; height: 25px; justify-content: center;
+            align-items: center; border-radius: 50px; border: 3px solid #FFF; background: #F2FAF5; color: #009733; font-size: 14px; font-weight: 700;
+          ">${numOfFriends ?? ""}</div>
+        </div>
+      `,
+            anchor: new naver.maps.Point(20, 20),
+          });
+        } else {
+          m.setIcon({ url: originalIcon });
+        }
+      }
     }
-  });
+  );
 }
-// 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가는 로직
+// 현재 위치 정보 가져와서 내 위치 마커 추가 및 watchPosition으로 따라가는 로직
 export function myLocationTracking(
   map: naver.maps.Map,
   setCurrentLatLng: any,
@@ -182,7 +322,7 @@ export function myLocationTracking(
         markerRef.current = new window.naver.maps.Marker({
           position: currentLocation,
           map,
-          title: "내 위치",
+          name: "내 위치",
           icon: {
             // 내 위치 마커 아이콘 추가
             url: myMarkerIcon,

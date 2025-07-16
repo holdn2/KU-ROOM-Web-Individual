@@ -1,46 +1,38 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import styles from "./LocationsBottomSheet.module.css";
 import mapListIcon from "../../../assets/map/mapListIcon.svg";
-import { dummyLocationInfo } from "../MapData";
 import { makeFocusMarker, renderedMarkers } from "../kuroomMapUtils";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
-
-interface LocationInfo {
-  title: string;
-  subtit: string;
-  friends: {
-    nickname: string;
-    profileImg: string;
-  }[];
-  info: string;
-}
+import {
+  DetailPlaceData,
+  PlaceData,
+  // PlaceDataWithFriend,
+} from "../../../../types/mapTypes";
+import DefaultProfileImg from "../../../assets/defaultProfileImg.svg";
 
 interface LocationsBottomSheetProps {
   visibleBottomSheet: boolean;
-  mapSearchResult: string;
+  selectedCategoryLocations: PlaceData[];
   isExpandedSheet: boolean;
   mapInstance: React.MutableRefObject<naver.maps.Map | null>;
   setIsExpandedSheet: (value: boolean) => void;
   setIsTracking: (value: boolean) => void;
   hasFocusedMarker: boolean;
   setHasFocusedMarker: (value: boolean) => void;
-  setFocusedMarkerTitle: (value: string) => void;
+  setDetailLocationData: (value: DetailPlaceData) => void;
 }
 
 const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   visibleBottomSheet,
-  mapSearchResult,
+  selectedCategoryLocations,
   isExpandedSheet,
   mapInstance,
   setIsExpandedSheet,
   setIsTracking,
   hasFocusedMarker,
   setHasFocusedMarker,
-  setFocusedMarkerTitle,
+  setDetailLocationData,
 }) => {
-  const [selectedLocationInfos, setSelectedLocationInfos] = useState<
-    LocationInfo[]
-  >([]);
   const sheetRef = useRef<HTMLDivElement>(null);
 
   // 시트에서 위치 클릭 시 이동하는 로직
@@ -57,20 +49,12 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
         target.marker,
         setIsTracking,
         setHasFocusedMarker,
-        setFocusedMarkerTitle
+        setDetailLocationData
       );
     }
 
     setIsExpandedSheet(false); // 바텀시트 내리기
   };
-
-  // !!서버에 해당 정보들 요청해야함.
-  useEffect(() => {
-    const match = dummyLocationInfo.find(
-      (item) => item.category === mapSearchResult
-    );
-    setSelectedLocationInfos(match ? match.infos : []);
-  }, [mapSearchResult]);
 
   // 바텀 시트 올리고 내리는 로직. 좀 더 연구 필요할듯.
   useBottomSheetDrag({
@@ -107,28 +91,36 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
         }}
       >
         <div className={styles.SheetIndicator} />
-        {selectedLocationInfos.map((info, index) => (
+        {selectedCategoryLocations.map((info) => (
           <button
-            key={index}
+            key={info.placeId}
             className={styles.LocationInfoWrapper}
             style={isExpandedSheet ? {} : { pointerEvents: "none" }}
-            onClick={() => clickLocation(info.title)}
+            onClick={() => clickLocation(info.name)}
           >
             <div className={styles.TitleWrapper}>
-              <span className={styles.TitleText}>{info.title}</span>
-              <span className={styles.SubTitleText}>{info.subtit}</span>
+              <span className={styles.TitleText}>{info.name}</span>
+              <span className={styles.SubTitleText}>{info.subName}</span>
             </div>
             <div className={styles.ContentWrapper}>
               {info.friends.length !== 0 && (
-                <div className={styles.FriendWrapper}>
+                <div className={styles.FriendSectionWrapper}>
                   <span className={styles.FriendTitle}>친구</span>
-                  <div className={styles.FriendContainer}>
-                    {info.friends.map((friend, index) => (
-                      <img
-                        key={index}
-                        src={friend.profileImg}
-                        alt={friend.nickname}
-                      />
+                  <div className={styles.FriendContainerWrapper}>
+                    {info.friends.map((friend) => (
+                      <div
+                        key={friend.nickname}
+                        className={styles.FriendContainer}
+                      >
+                        <img
+                          className={styles.FriendProfileImg}
+                          src={friend.profileURL ?? DefaultProfileImg}
+                          alt={friend.nickname}
+                        />
+                        <span className={styles.FriendNickname}>
+                          {friend.nickname}
+                        </span>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -136,7 +128,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
 
               <div className={styles.InfoWrapper}>
                 <span className={styles.InfoTitle}>정보</span>
-                <span className={styles.InfoContent}>{info.info}</span>
+                <span className={styles.InfoContent}>{info.content}</span>
               </div>
             </div>
           </button>

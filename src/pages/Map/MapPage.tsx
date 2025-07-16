@@ -4,41 +4,58 @@ import BottomBar from "../../components/BottomBar/BottomBar";
 import styles from "./MapPage.module.css";
 import myTrackingIcon from "../../assets/map/tomylocation.svg";
 import shareLocationIcon from "../../assets/map/shareLocation.svg";
+import unshareLocationIcon from "../../assets/map/shareLocationWhite.svg";
 import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
 import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChip";
 import KuroomMap from "../../components/Map/KuroomMap";
 import MapSearch from "../../components/Map/MapSearch/MapSearch";
-import { KuroomMarkers } from "../../components/Map/MapData";
 import SearchResultHeader from "../../components/Map/MapSearch/SearchResultHeader";
 import LocationsBottomSheet from "../../components/Map/LocationsBottomSheet/LocationsBottomSheet";
 import FocusedLocationBottomSheet from "../../components/Map/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
 import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
 import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
-
-interface MarkerData {
-  lat: number;
-  lng: number;
-  title: string;
-  icon: string;
-}
-
-interface LocationData {
-  userLat: number;
-  userLng: number;
-}
+import {
+  Coordinate,
+  DetailPlaceData,
+  MarkerData,
+  PlaceData,
+} from "../../../types/mapTypes";
+import {
+  checkIsSharedApi,
+  getCategoryLocationsApi,
+  getUserShareLocation,
+} from "../../apis/map";
+import { makeMarkerIcon } from "../../components/Map/kuroomMapUtils";
+import DefaultProfileImg from "../../assets/defaultProfileImg.svg";
 
 const MapPage = () => {
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
   const [searchMode, setSearchMode] = useState(false);
-  const [mapSearchResult, setMapSearchResult] = useState("");
   const [isInSchool, setIsInSchool] = useState(false);
   const [isSharedLocation, setIsSharedLocation] = useState(false);
+  // 공유 상태 확인 트리거 키
+  const [locationSharedRefreshKey, setLocationSharedRefreshKey] = useState(0);
+
+  // 하나의 위치에 대한 디테일 정보
+  const [detailLocationData, setDetailLocationData] =
+    useState<DetailPlaceData | null>(null);
+  // 선택된 위치 카테고리 명
+  const [selectedCategoryTitle, setSelectedCategoryTitle] =
+    useState<string>("");
+  const [selectedCategoryEnum, setSelectedCategoryEnum] = useState<string>("");
+  // 선택된 위치 카테고리 관련 위치 배열
+  const [selectedCategoryLocations, setSelectedCategoryLocations] = useState<
+    PlaceData[]
+  >([]);
+  const [markerFlag, setMarkerFlag] = useState<number>(0);
 
   // 위치 공유 상태
   const [modalState, setModalState] = useState(false);
-  const [currenLocation, setCurrentLocation] = useState<LocationData | null>(
+  const [currentLocation, setCurrentLocation] = useState<Coordinate | null>(
     null
   ); // 현재 위치
+  // 유저의 위치와 가장 가까운 위치 저장할 상태
+  const [nearLocation, setNearLocation] = useState("");
 
   if (isInSchool) {
     // vercel 배포 오류 해결 위해.
@@ -54,55 +71,168 @@ const MapPage = () => {
   // 클릭 또는 마커가 하나만 있을 때(==마커가 포커스되었을 때) 바텀시트
   const [hasFocusedMarker, setHasFocusedMarker] = useState(false);
   const [isExpandedFocusedSheet, setIsExpandedFocusedSheet] = useState(false);
-  const [focusedMarkerTitle, setFocusedMarkerTitle] = useState<string | null>(
-    null
-  );
+
+  // 현재 내 위치 공유 상태 확인 함수
+  const getIsMySharedInfo = async () => {
+    try {
+      const response = await checkIsSharedApi();
+      console.log("현재 내 위치 공유 상태 : ", response);
+      setIsSharedLocation(response);
+    } catch (error) {
+      console.error("위치 공유 상태 확인 실패 : ", error);
+    }
+  };
+  useEffect(() => {
+    console.log("위치공유 상태는?:", isSharedLocation);
+    // 현재 내 위치 공유 상태 확인
+    getIsMySharedInfo();
+  }, [locationSharedRefreshKey]);
+  useEffect(() => {
+    // 현재 내 위치가 학교 내부인지 검증
+    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
+  }, []);
+
+  // 현재 위치에 따른 가까운 건물 받아오기
+  const getNearBuildingToShare = async () => {
+    try {
+      const response = await getUserShareLocation(
+        currentLocation!.latitude,
+        currentLocation!.longitude
+      );
+      console.log(response);
+      setNearLocation(response);
+      setModalState(true);
+    } catch (error) {
+      console.error("가장 가까운 위치 조회 실패 : ", error);
+    }
+  };
+
+  // 위치 공유 모달
+  const handleShareLocation = () => {
+    getNearBuildingToShare();
+  };
+  // **********************************************************************
+  const resetSelectSearch = () => {
+    setSearchMode(false);
+    setDetailLocationData(null);
+    setSelectedCategoryTitle("");
+    setSelectedCategoryEnum("");
+    setMarkerFlag(0);
+    setMarkers([]);
+    setIsExpandedSheet(false);
+    setHasFocusedMarker(false);
+    setIsExpandedFocusedSheet(false);
+  };
+
+  const onClickGoBackButton = () => {
+    if (isExpandedSheet) {
+      setIsExpandedSheet(false);
+      setIsExpandedFocusedSheet(false);
+    } else {
+      resetSelectSearch();
+    }
+  };
 
   // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작. 이부분은 테스트용 로직
   useEffect(() => {
-    if (!mapSearchResult) {
+    if (!detailLocationData) {
       setMarkers([]);
       setVisibleBottomSheet(false);
       return;
     }
     setVisibleBottomSheet(true);
-    const categoryMatch = KuroomMarkers.find(
-      (item) => item.category === mapSearchResult
-    );
+    setHasFocusedMarker(true);
+    // 마커 아이콘 반영
+    const markerIcon = makeMarkerIcon("default");
+    setMarkers([
+      {
+        placeId: detailLocationData.placeId,
+        markerIcon: markerIcon,
+        name: detailLocationData.name,
+        latitude: detailLocationData.latitude,
+        longitude: detailLocationData.longitude,
+      },
+    ]);
+  }, [detailLocationData]);
 
-    if (categoryMatch) {
-      setMarkers(categoryMatch.markers);
-    } else {
-      setMarkers([]); // 해당 카테고리 없으면 빈 배열로
+  useEffect(() => {
+    if (!selectedCategoryTitle) {
+      setMarkers([]);
+      setVisibleBottomSheet(false);
+      return;
     }
-  }, [mapSearchResult]);
+
+    getCategoryLocations(selectedCategoryEnum);
+    if (selectedCategoryTitle !== "친구") {
+      setVisibleBottomSheet(true);
+    }
+  }, [selectedCategoryEnum]);
+
+  // 친구 제외 카테고리 칩을 눌렀을 때 서버에 카테고리 ENUM 을 이용하여 요청
+  const getCategoryLocations = async (selectedCategory: string) => {
+    try {
+      const locations = await getCategoryLocationsApi(selectedCategory);
+      setSelectedCategoryLocations(locations);
+    } catch (error) {
+      console.error();
+      alert("서버 상태 또는 네트워크에 문제가 있습니다.");
+    }
+  };
+
+  useEffect(() => {
+    if (selectedCategoryLocations.length === 0) return;
+    if (selectedCategoryTitle === "친구") {
+      const placeMarkers: MarkerData[] = selectedCategoryLocations.map(
+        (item) => ({
+          placeId: item.placeId,
+          markerIcon: item.friends[0].profileURL || DefaultProfileImg,
+          name: item.name,
+          latitude: item.latitude,
+          longitude: item.longitude,
+          isFriendMarker: true,
+          numOfFriends: item.friends.length,
+        })
+      );
+      setMarkers(placeMarkers);
+      setMarkerFlag((prev) => prev + 1);
+    } else {
+      const markerIcon = makeMarkerIcon(selectedCategoryTitle);
+      const placeMarkers: MarkerData[] = selectedCategoryLocations.map(
+        (item) => ({
+          placeId: item.placeId,
+          markerIcon,
+          name: item.name,
+          latitude: item.latitude,
+          longitude: item.longitude,
+        })
+      );
+      setMarkers(placeMarkers);
+      setMarkerFlag((prev) => prev + 1);
+    }
+  }, [selectedCategoryLocations]);
+
+  // useEffect(() => {
+  //   console.log("마커 데이터: ", markers);
+  // }, [markers]);
 
   useEffect(() => {
     console.log("현재 포커된 상태: ", hasFocusedMarker);
   }, [hasFocusedMarker]);
 
-  // 현재 위치가 학교 내부 인지 검증. 내 위치도 함께 저장
-  // 서버에서 공유 상태인지 받아오기
-  useEffect(() => {
-    // setIsSharedLocation()
-    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
-  }, [currenLocation, isSharedLocation]);
-
-  // 위치 공유 모달
-  const handleShareLocation = () => {
-    setModalState(true);
-  };
   return (
     <div>
-      {/* KuroomMap은 항상 렌더링되고 */}
       <KuroomMap
-        height={mapSearchResult === "친구" ? "100vh" : "calc(100vh - 92px)"}
+        height={
+          selectedCategoryTitle === "친구" ? "100vh" : "calc(100vh - 92px)"
+        }
         markers={markers}
+        markerFlag={markerFlag}
         mapRefProp={mapInstanceRef}
         isTracking={isTracking}
+        selectedCategoryTitle={selectedCategoryTitle}
         setIsTracking={setIsTracking}
         setHasFocusedMarker={setHasFocusedMarker}
-        setFocusedMarkerTitle={setFocusedMarkerTitle}
+        setDetailLocationData={setDetailLocationData}
       />
 
       {/* 검색 모드일 때 MapSearch만 덮어씌우기 */}
@@ -111,24 +241,28 @@ const MapPage = () => {
         <div className={styles.FullScreenOverlay}>
           <MapSearch
             setSearchMode={setSearchMode}
-            setMapSearchResult={setMapSearchResult}
+            setDetailLocationData={setDetailLocationData}
           />
         </div>
       ) : (
         // 검색 결과가 있을 때 상단 바, 바텀시트, (2개 이상일 때 목록보기) 보여주기
         <>
-          {mapSearchResult ? (
-            <>
+          {hasFocusedMarker || selectedCategoryTitle ? (
+            !hasFocusedMarker ? (
               <SearchResultHeader
-                mapSearchResult={mapSearchResult}
-                setSearchMode={setSearchMode}
-                setMapSearchResult={setMapSearchResult}
-                setMarkers={setMarkers}
-                setIsExpandedSheet={setIsExpandedSheet}
-                setHasFocusedMarker={setHasFocusedMarker}
-                setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+                selectedCategoryTitle={selectedCategoryTitle}
+                resetSelectSearch={resetSelectSearch}
+                onClickGoBackButton={onClickGoBackButton}
               />
-            </>
+            ) : (
+              detailLocationData && (
+                <SearchResultHeader
+                  detailLocationData={detailLocationData}
+                  resetSelectSearch={resetSelectSearch}
+                  onClickGoBackButton={onClickGoBackButton}
+                />
+              )
+            )
           ) : (
             // 검색 결과 없을 때만 기본 UI 보여주기
             <>
@@ -142,7 +276,8 @@ const MapPage = () => {
                 <MapSearchBar />
               </button>
               <MapCategoryChip
-                setMapSearchResult={setMapSearchResult}
+                setSelectedCategoryTitle={setSelectedCategoryTitle}
+                setSelectedCategoryEnum={setSelectedCategoryEnum}
                 setIsTracking={setIsTracking}
               />
               {/* 내 위치 추적 아이콘 */}
@@ -158,46 +293,57 @@ const MapPage = () => {
               </button>
               {/* 학교 내부에서만 보이도록 하기! */}
               {/* 내 위치 공유 버튼 */}
-              {/* {isInSchool && (
+              {/* {isInSchool && currentLocation !== null && (
                 <button
                   className={styles.SharedLocationButton}
                   onClick={handleShareLocation}
                 >
                   <img src={shareLocationIcon} alt="위치 공유 아이콘" />
                   {isSharedLocation ? (
-                    <span className={styles.SharingText}>위치 공유 해제</span>
+                    <span className={styles.SharingText}>내 위치 공유 중</span>
                   ) : (
                     <span className={styles.SharingText}>내 위치 공유</span>
                   )}
                 </button>
               )} */}
-              <button
-                className={styles.SharedLocationButton}
-                onClick={handleShareLocation}
-              >
-                <img src={shareLocationIcon} alt="위치 공유 아이콘" />
-                {isSharedLocation ? (
-                  <span className={styles.SharingText}>위치 공유 해제</span>
+              {/* 현재 위치를 가져온 다음에만 렌더링 되도록 */}
+              {currentLocation !== null &&
+                (isSharedLocation ? (
+                  <button
+                    className={styles.UnsharedLocationButton}
+                    onClick={handleShareLocation}
+                  >
+                    <img
+                      src={unshareLocationIcon}
+                      alt="위치 공유 해제 아이콘"
+                    />
+                    <span>내 위치 공유 중</span>
+                  </button>
                 ) : (
-                  <span className={styles.SharingText}>내 위치 공유</span>
-                )}
-              </button>
+                  <button
+                    className={styles.SharedLocationButton}
+                    onClick={handleShareLocation}
+                  >
+                    <img src={shareLocationIcon} alt="위치 공유 아이콘" />
+                    <span>내 위치 공유</span>
+                  </button>
+                ))}
             </>
           )}
         </>
       )}
-      {mapSearchResult !== "친구" && (
+      {selectedCategoryTitle !== "친구" && (
         <>
           <LocationsBottomSheet
             visibleBottomSheet={visibleBottomSheet}
-            mapSearchResult={mapSearchResult}
+            selectedCategoryLocations={selectedCategoryLocations}
             isExpandedSheet={isExpandedSheet}
             mapInstance={mapInstanceRef}
             setIsExpandedSheet={setIsExpandedSheet}
             setIsTracking={setIsTracking}
             hasFocusedMarker={hasFocusedMarker}
             setHasFocusedMarker={setHasFocusedMarker}
-            setFocusedMarkerTitle={setFocusedMarkerTitle}
+            setDetailLocationData={setDetailLocationData}
           />
           <BottomBar />
         </>
@@ -206,14 +352,16 @@ const MapPage = () => {
         hasFocusedMarker={hasFocusedMarker}
         isExpandedFocusedSheet={isExpandedFocusedSheet}
         setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
-        focusedMarkerTitle={focusedMarkerTitle}
+        detailLocationData={detailLocationData}
       />
       <ShareLocationModal
         modalState={modalState}
         isSharedLocation={isSharedLocation}
-        currentLocation={currenLocation}
+        nearLocation={nearLocation}
         setModalState={setModalState}
-        setIsSharedLocation={setIsSharedLocation}
+        refreshSharedStatus={() =>
+          setLocationSharedRefreshKey((prev) => prev + 1)
+        }
       />
     </div>
   );

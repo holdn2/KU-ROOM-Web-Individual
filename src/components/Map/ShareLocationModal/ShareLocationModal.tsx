@@ -1,49 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./ShareLocationModal.module.css";
 import ReactModal from "react-modal";
 import Button from "../../Button/Button";
 import cautionIcon from "../../../assets/icon/editFriend/cautionIcon.svg";
+import { shareUserLocation, unshareLocation } from "../../../apis/map";
 
-interface LocationData {
-  userLat: number;
-  userLng: number;
-}
 interface ShareLocationModalProps {
   modalState: boolean;
   isSharedLocation: boolean;
-  currentLocation: LocationData | null;
+  nearLocation: string;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSharedLocation: (value: boolean) => void;
+  refreshSharedStatus: () => void;
 }
 
 const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
   modalState,
   isSharedLocation,
-  currentLocation,
+  nearLocation,
   setModalState,
-  setIsSharedLocation,
+  refreshSharedStatus,
 }) => {
   const handleCloseModal = () => setModalState(false);
-  const [nearBuilding, setNearBuilding] = useState("");
 
   // 서버에 각각 요청
-  const handleSharingLocation = () => {
-    console.log("서버에 내 위치 공유 요청");
-    console.log("공유하는 현재 위치 : ", currentLocation);
-    setIsSharedLocation(true);
-    setModalState(false);
-  };
-  const handleUnSharingLocation = () => {
-    console.log("서버에 공유 해제 요청");
-    setIsSharedLocation(false);
-    setModalState(false);
-  };
+  const handleSharingLocation = async () => {
+    try {
+      const response = await shareUserLocation(nearLocation);
+      console.log("서버에 내 위치 공유 요청");
+      console.log(response);
 
-  useEffect(() => {
-    // 현재 위치에 따른 가까운 건물 받아오기. 서버 요청 로직 필요함
-    const response = "상허기념도서관";
-    setNearBuilding(response);
-  }, []);
+      refreshSharedStatus();
+      setModalState(false);
+    } catch (error) {
+      console.error("위치 공유 실패 : ", error);
+    }
+  };
+  const handleUnSharingLocation = async () => {
+    try {
+      const response = await unshareLocation();
+      console.log("서버에 공유 해제 요청");
+      console.log(response);
+
+      refreshSharedStatus();
+      setModalState(false);
+    } catch (error) {
+      console.error("위치 공유 해제 실패 : ", error);
+    }
+  };
 
   return (
     <ReactModal
@@ -67,7 +70,7 @@ const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
         ) : (
           <>
             <span className={styles.InformText}>
-              <span className={styles.BoldText}>{nearBuilding}</span>(으)로
+              <span className={styles.BoldText}>{nearLocation}</span>(으)로
               <br />
               <span className={styles.BoldText}>위치를 공유</span>
               하시겠습니까?
