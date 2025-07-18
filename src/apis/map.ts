@@ -1,6 +1,7 @@
 // 지도 관련 api
 import {
   DetailPlaceData,
+  MapSearchResult,
   PlaceData,
   SharedFriendData,
 } from "../../types/mapTypes";
@@ -13,9 +14,9 @@ const UNSHARE_LOCATION = "/places/sharing/confirm";
 const GET_CHIP_LOCATION = "/places?chip=";
 const GET_LOCATION_DETAIL_DATA = "/places/";
 const GET_SHARED_FRIEND_LOCATION = "/map/chip/friends";
-const GET_SEARCH_LOCATION_RESULT = "/map/search";
-const GET_RECENT_SEARCH = "/map/search/term";
-const DELETE_RECENT_SEARCH = "/map/search/term";
+const GET_SEARCH_LOCATION_RESULT = "/places/search?query=";
+const GET_RECENT_SEARCH = "/places/search/history"; // 최근 검색어 5개
+const DELETE_RECENT_SEARCH = "/map/search/term"; // 이 api는 아직 서버 측에서 구현 전임
 
 interface ApiResponse {
   code: number;
@@ -203,20 +204,12 @@ export const getLocationDetailData = async (placeId: number) => {
 
 // 위치 검색 시 결과 api. 타이틀만 반환
 interface SearchResultApiResponse extends ApiResponse {
-  data: {
-    mainTitle: string;
-  }[];
+  data: MapSearchResult[];
 }
 export const getSearchLocationResult = async (search: string) => {
   try {
-    const response = await axiosInstance.post<SearchResultApiResponse>(
-      GET_SEARCH_LOCATION_RESULT,
-      { search: search },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+    const response = await axiosInstance.get<SearchResultApiResponse>(
+      GET_SEARCH_LOCATION_RESULT + search
     );
     return response.data.data; // 성공 응답 반환
   } catch (error: any) {
@@ -232,7 +225,7 @@ export const getSearchLocationResult = async (search: string) => {
 
 // 최근 위치 검색어 가져오기 api
 interface RecentSearchReponse extends ApiResponse {
-  data: string[];
+  data: MapSearchResult[];
 }
 export const getRecentSearchLocation = async () => {
   try {

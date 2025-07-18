@@ -17,6 +17,7 @@ import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLoc
 import {
   Coordinate,
   DetailPlaceData,
+  MapSearchResult,
   MarkerData,
   PlaceData,
 } from "../../../types/mapTypes";
@@ -25,10 +26,31 @@ import {
   getCategoryLocationsApi,
   getUserShareLocation,
 } from "../../apis/map";
-import { makeMarkerIcon } from "../../components/Map/kuroomMapUtils";
+import {
+  clearAllMarkers,
+  makeFocusMarker,
+  makeMarkerIcon,
+  renderedMarkers,
+  renderMarkers,
+} from "../../components/Map/kuroomMapUtils";
 import DefaultProfileImg from "../../assets/defaultProfileImg.svg";
 
+const includeBottomSheetList = [
+  "건물",
+  "단과대",
+  "K-Cube",
+  "K-Hub",
+  "편의점",
+  "레스티오",
+  "1847",
+  "학생식당",
+  "기숙사",
+  "은행",
+  "우체국",
+];
+
 const MapPage = () => {
+  // 로컬 상태 ***************************************************************
   const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
   const [searchMode, setSearchMode] = useState(false);
   const [isInSchool, setIsInSchool] = useState(false);
@@ -47,22 +69,19 @@ const MapPage = () => {
   const [selectedCategoryLocations, setSelectedCategoryLocations] = useState<
     PlaceData[]
   >([]);
-  const [markerFlag, setMarkerFlag] = useState<number>(0);
 
   // 위치 공유 상태
   const [modalState, setModalState] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<Coordinate | null>(
     null
   ); // 현재 위치
-  // 유저의 위치와 가장 가까운 위치 저장할 상태
+  // 유저의 위치와 가장 가까운 위치 타이틀
   const [nearLocation, setNearLocation] = useState("");
-
-  if (isInSchool) {
-    // vercel 배포 오류 해결 위해.
-  }
 
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
+  // 마커가 변경될 때마다 플래그 설정. 마커 렌더링 트리거
+  const [markerFlag, setMarkerFlag] = useState<number>(0);
 
   // 검색 또는 칩 클릭 시 바텀 시트
   const [visibleBottomSheet, setVisibleBottomSheet] = useState(false);
@@ -72,6 +91,7 @@ const MapPage = () => {
   const [hasFocusedMarker, setHasFocusedMarker] = useState(false);
   const [isExpandedFocusedSheet, setIsExpandedFocusedSheet] = useState(false);
 
+  // 서버로부터 데이터 fetching ***********************************************
   // 현재 내 위치 공유 상태 확인 함수
   const getIsMySharedInfo = async () => {
     try {
@@ -82,15 +102,6 @@ const MapPage = () => {
       console.error("위치 공유 상태 확인 실패 : ", error);
     }
   };
-  useEffect(() => {
-    console.log("위치공유 상태는?:", isSharedLocation);
-    // 현재 내 위치 공유 상태 확인
-    getIsMySharedInfo();
-  }, [locationSharedRefreshKey]);
-  useEffect(() => {
-    // 현재 내 위치가 학교 내부인지 검증
-    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
-  }, []);
 
   // 현재 위치에 따른 가까운 건물 받아오기
   const getNearBuildingToShare = async () => {
@@ -101,17 +112,23 @@ const MapPage = () => {
       );
       console.log(response);
       setNearLocation(response);
-      setModalState(true);
     } catch (error) {
       console.error("가장 가까운 위치 조회 실패 : ", error);
     }
   };
 
-  // 위치 공유 모달
-  const handleShareLocation = () => {
-    getNearBuildingToShare();
+  // 친구 제외 카테고리 칩을 눌렀을 때 서버에 카테고리 ENUM 을 이용하여 요청
+  const getCategoryLocations = async (selectedCategory: string) => {
+    try {
+      const locations = await getCategoryLocationsApi(selectedCategory);
+      setSelectedCategoryLocations(locations);
+    } catch (error) {
+      console.error();
+      alert("서버 상태 또는 네트워크에 문제가 있습니다.");
+    }
   };
-  // **********************************************************************
+
+  // 이벤트 핸들러 함수 *******************************************************
   const resetSelectSearch = () => {
     setSearchMode(false);
     setDetailLocationData(null);
@@ -122,6 +139,7 @@ const MapPage = () => {
     setIsExpandedSheet(false);
     setHasFocusedMarker(false);
     setIsExpandedFocusedSheet(false);
+    clearAllMarkers();
   };
 
   const onClickGoBackButton = () => {
@@ -133,7 +151,73 @@ const MapPage = () => {
     }
   };
 
-  // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작. 이부분은 테스트용 로직
+  // 위치 공유 모달에 사용할 가까운 위치 타이틀 받아오기
+  const handleShareLocation = () => {
+    getNearBuildingToShare();
+    setModalState(true);
+  };
+  // 시트에서 위치 클릭 시 이동하는 로직
+  const clickToLocationMarker = (location: string) => {
+    if (!isExpandedSheet) return;
+    // 다음 frame에 마커 포커스하기
+    const target = renderedMarkers.find(
+      ({ marker }) => marker.getTitle() === location
+    );
+    if (target && mapInstanceRef.current) {
+      setHasFocusedMarker(true);
+      makeFocusMarker(
+        mapInstanceRef.current,
+        target.marker,
+        setIsTracking,
+        setHasFocusedMarker,
+        setDetailLocationData
+      );
+    }
+
+    setIsExpandedSheet(false); // 바텀시트 내리기
+  };
+  // 검색 결과를 클릭 시에 마커 찍기
+  const clickSearchResultToMarker = (searchResult: MapSearchResult) => {
+    setSelectedCategoryTitle(searchResult.name);
+    const markerIcon = makeMarkerIcon("default");
+    if (
+      mapInstanceRef.current &&
+      setIsTracking &&
+      setHasFocusedMarker &&
+      setDetailLocationData
+    ) {
+      renderMarkers(
+        mapInstanceRef.current,
+        [
+          {
+            placeId: searchResult.placeId,
+            markerIcon: markerIcon,
+            name: searchResult.name,
+            latitude: searchResult.latitude,
+            longitude: searchResult.longitude,
+          },
+        ],
+        searchResult.name,
+        setIsTracking,
+        setHasFocusedMarker,
+        setDetailLocationData
+      );
+    }
+  };
+  // 컴포넌트 초기화 로직 ***********************************************
+  useEffect(() => {
+    // 현재 내 위치가 학교 내부인지 검증
+    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
+  }, []);
+
+  // 사이드 이펙트 (useEffect) *********************************************
+  useEffect(() => {
+    console.log("위치공유 상태는?:", isSharedLocation);
+    // 현재 내 위치 공유 상태 확인
+    getIsMySharedInfo();
+  }, [locationSharedRefreshKey]);
+
+  // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작.
   useEffect(() => {
     if (!detailLocationData) {
       setMarkers([]);
@@ -168,17 +252,6 @@ const MapPage = () => {
     }
   }, [selectedCategoryEnum]);
 
-  // 친구 제외 카테고리 칩을 눌렀을 때 서버에 카테고리 ENUM 을 이용하여 요청
-  const getCategoryLocations = async (selectedCategory: string) => {
-    try {
-      const locations = await getCategoryLocationsApi(selectedCategory);
-      setSelectedCategoryLocations(locations);
-    } catch (error) {
-      console.error();
-      alert("서버 상태 또는 네트워크에 문제가 있습니다.");
-    }
-  };
-
   useEffect(() => {
     if (selectedCategoryLocations.length === 0) return;
     if (selectedCategoryTitle === "친구") {
@@ -211,19 +284,18 @@ const MapPage = () => {
     }
   }, [selectedCategoryLocations]);
 
-  // useEffect(() => {
-  //   console.log("마커 데이터: ", markers);
-  // }, [markers]);
-
-  useEffect(() => {
-    console.log("현재 포커된 상태: ", hasFocusedMarker);
-  }, [hasFocusedMarker]);
+  if (isInSchool) {
+    // vercel 배포 오류 해결 위해.
+  }
 
   return (
     <div>
       <KuroomMap
         height={
-          selectedCategoryTitle === "친구" ? "100vh" : "calc(100vh - 92px)"
+          includeBottomSheetList.includes(selectedCategoryTitle) ||
+          selectedCategoryTitle === ""
+            ? "calc(100vh - 92px)"
+            : "100vh"
         }
         markers={markers}
         markerFlag={markerFlag}
@@ -241,7 +313,7 @@ const MapPage = () => {
         <div className={styles.FullScreenOverlay}>
           <MapSearch
             setSearchMode={setSearchMode}
-            setDetailLocationData={setDetailLocationData}
+            clickSearchResultToMarker={clickSearchResultToMarker}
           />
         </div>
       ) : (
@@ -332,18 +404,16 @@ const MapPage = () => {
           )}
         </>
       )}
-      {selectedCategoryTitle !== "친구" && (
+      {(includeBottomSheetList.includes(selectedCategoryTitle) ||
+        selectedCategoryTitle === "") && (
         <>
           <LocationsBottomSheet
             visibleBottomSheet={visibleBottomSheet}
             selectedCategoryLocations={selectedCategoryLocations}
             isExpandedSheet={isExpandedSheet}
-            mapInstance={mapInstanceRef}
-            setIsExpandedSheet={setIsExpandedSheet}
-            setIsTracking={setIsTracking}
             hasFocusedMarker={hasFocusedMarker}
-            setHasFocusedMarker={setHasFocusedMarker}
-            setDetailLocationData={setDetailLocationData}
+            setIsExpandedSheet={setIsExpandedSheet}
+            clickToLocationMarker={clickToLocationMarker}
           />
           <BottomBar />
         </>
