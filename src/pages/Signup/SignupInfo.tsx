@@ -124,7 +124,8 @@ const SignupInfo = () => {
             />
             {!allowedPw && isAttemptReset && (
               <span className={styles.ErrorMsg}>
-                영문, 숫자, 특수문자 포함 8자 이상 20자 이내
+                영문, 숫자, 특수문자(@, $, !, %, *, ?, &) 포함 8자 이상 20자
+                이내
               </span>
             )}
 
