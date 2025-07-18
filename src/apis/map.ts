@@ -1,6 +1,7 @@
 // 지도 관련 api
 import {
   DetailPlaceData,
+  MapRecentSearchData,
   MapSearchResult,
   PlaceData,
   SharedFriendData,
@@ -16,7 +17,8 @@ const GET_LOCATION_DETAIL_DATA = "/places/";
 const GET_SHARED_FRIEND_LOCATION = "/map/chip/friends";
 const GET_SEARCH_LOCATION_RESULT = "/places/search?query=";
 const GET_RECENT_SEARCH = "/places/search/history"; // 최근 검색어 5개
-const DELETE_RECENT_SEARCH = "/map/search/term"; // 이 api는 아직 서버 측에서 구현 전임
+const DELETE_RECENT_ALL_SEARCH = "/places/search/history"; // 최근 검색어 모두 삭제
+const DELETE_RECENT_SEARCH = "/places/search/history/"; // 최근 검색어 하나 삭제
 
 interface ApiResponse {
   code: number;
@@ -225,7 +227,7 @@ export const getSearchLocationResult = async (search: string) => {
 
 // 최근 위치 검색어 가져오기 api
 interface RecentSearchReponse extends ApiResponse {
-  data: MapSearchResult[];
+  data: MapRecentSearchData[];
 }
 export const getRecentSearchLocation = async () => {
   try {
@@ -243,13 +245,12 @@ export const getRecentSearchLocation = async () => {
   }
 };
 
-// 최근 검색어 하나 삭제 api
-export const deleteRecentSearchLocation = async (deleteData: string) => {
+// 최근 검색어 모두 삭제 api
+export const deleteAllRecentData = async () => {
   try {
     const response = await axiosInstance.request({
-      url: DELETE_RECENT_SEARCH,
+      url: DELETE_RECENT_ALL_SEARCH,
       method: "DELETE",
-      data: { term: deleteData },
       headers: {
         "Content-Type": "application/json",
       },
@@ -257,11 +258,33 @@ export const deleteRecentSearchLocation = async (deleteData: string) => {
     return response.data;
   } catch (error: any) {
     console.error(
-      "최근 검색어 삭제 실패:",
+      "최근 검색어 모두 삭제 실패:",
       error.response?.data || error.message
     );
     throw new Error(
-      error.response?.data?.message || "최근 검색어 삭제 중 오류 발생"
+      error.response?.data?.message || "최근 검색어 모두 삭제 중 오류 발생"
+    );
+  }
+};
+
+// 최근 검색어 하나 삭제 api
+export const deleteRecentSearchLocation = async (deleteData: number) => {
+  try {
+    const response = await axiosInstance.request({
+      url: DELETE_RECENT_SEARCH + deleteData,
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "최근 검색어 하나 삭제 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "최근 검색어 하나 삭제 중 오류 발생"
     );
   }
 };

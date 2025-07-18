@@ -16,6 +16,12 @@ export interface MapSearchResult extends Coordinate {
   placeId: number;
 }
 
+// 최근 검색어 관련 정보
+export interface MapRecentSearchData {
+  name: string;
+  placeHistoryId: number;
+}
+
 // 카테고리 ENUM 정보
 export type CategoryEnum =
   | "FRIEND"

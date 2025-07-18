@@ -4,8 +4,12 @@ import BottomBar from "../../BottomBar/BottomBar";
 import arrowBack from "../../../assets/nav/arrowback.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
-import { MapSearchResult } from "../../../../types/mapTypes";
 import {
+  MapRecentSearchData,
+  MapSearchResult,
+} from "../../../../types/mapTypes";
+import {
+  deleteAllRecentData,
   deleteRecentSearchLocation,
   getRecentSearchLocation,
   getSearchLocationResult,
@@ -22,9 +26,9 @@ const MapSearch: React.FC<MapSearchProps> = ({
   clickSearchResultToMarker,
 }) => {
   const [searchText, setSearchText] = useState("");
-  const [recentSearchData, setRecentSearchData] = useState<MapSearchResult[]>(
-    []
-  );
+  const [recentSearchData, setRecentSearchData] = useState<
+    MapRecentSearchData[]
+  >([]);
   const [searchResult, setSearchResult] = useState<MapSearchResult[]>([]);
 
   const getRecentSearch = async () => {
@@ -44,13 +48,22 @@ const MapSearch: React.FC<MapSearchProps> = ({
 
   const onClickDeleteSearchText = () => {
     setSearchText("");
+    getRecentSearch();
   };
 
-  // 서버에 요청
-  const deleteAllSearchData = () => {
-    console.log("검색어 기록 전체 삭제");
+  const deleteAllSearchData = async () => {
+    try {
+      const response = await deleteAllRecentData();
+      console.log(response);
+
+      // 삭제 후 리렌더링
+      await getRecentSearch();
+    } catch (error) {
+      console.error("최근 검색어 모두 삭제 중 오류 : ", error);
+    }
   };
-  const deleteSearchData = async (searchData: string) => {
+
+  const deleteSearchData = async (searchData: number) => {
     try {
       const response = await deleteRecentSearchLocation(searchData);
       console.log(response);
@@ -129,7 +142,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
           <div className={styles.RecentSearchDataWrapper}>
             {recentSearchData.map((item) => (
               <div
-                key={item.placeId}
+                key={item.placeHistoryId}
                 className={styles.RecentSearchContainer}
                 onClick={() => doAgainRecentSearch(item.name)}
               >
@@ -139,7 +152,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
                   alt="검색어 지우기"
                   onClick={(e) => {
                     e.stopPropagation();
-                    deleteSearchData(item.name);
+                    deleteSearchData(item.placeHistoryId);
                   }}
                   style={{ padding: "2px 5px" }}
                 />
