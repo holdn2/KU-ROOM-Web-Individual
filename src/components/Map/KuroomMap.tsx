@@ -38,12 +38,14 @@ const KuroomMap = ({
   setHasFocusedMarker,
   setDetailLocationData,
 }: MapProps) => {
+  // 로컬 상태 ***************************************************************
   const mapRef = useRef(null);
   const markerRef = useRef<naver.maps.Marker | null>(null);
   const mapInstance = useRef<naver.maps.Map | null>(null); // 지도 객체를 저장할 ref
   const [currentLatLng, setCurrentLatLng] = useState<any>(null); // 현재 위치를 기억
   const isTrackingRef = useRef(true); // 추적 상태 최신값을 유지할 ref
 
+  // 컴포넌트 초기화 로직 ***********************************************
   useEffect(() => {
     if (!window.naver) return;
 
@@ -99,6 +101,7 @@ const KuroomMap = ({
     }
   }, []);
 
+  // 사이드 이펙트 (useEffect) *********************************************
   // 마커 렌더링. 마커 배열이 변경될 때만 실행되도록
   useEffect(() => {
     if (

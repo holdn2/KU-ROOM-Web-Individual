@@ -4,10 +4,9 @@ import BottomBar from "../../BottomBar/BottomBar";
 import arrowBack from "../../../assets/nav/arrowback.svg";
 import deleteIcon from "../../../assets/icon/deleteIcon.svg";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
-import { DetailPlaceData, MapSearchResult } from "../../../../types/mapTypes";
+import { MapSearchResult } from "../../../../types/mapTypes";
 import {
   deleteRecentSearchLocation,
-  // getLocationDetailData,
   getRecentSearchLocation,
   getSearchLocationResult,
 } from "../../../apis/map";
@@ -15,17 +14,18 @@ import {
 // const dummyLocationData = ["레스티오", "1847", "신공학관"];
 interface MapSearchProps {
   setSearchMode: (value: boolean) => void;
-  setDetailLocationData: (value: DetailPlaceData) => void;
+  clickSearchResultToMarker: (value: MapSearchResult) => void;
 }
 
 const MapSearch: React.FC<MapSearchProps> = ({
   setSearchMode,
-  // setDetailLocationData,
+  clickSearchResultToMarker,
 }) => {
   const [searchText, setSearchText] = useState("");
-  const [recentSearchData, setRecentSearchData] = useState<string[]>([]);
+  const [recentSearchData, setRecentSearchData] = useState<MapSearchResult[]>(
+    []
+  );
   const [searchResult, setSearchResult] = useState<MapSearchResult[]>([]);
-  const [trySearch, setTrySearch] = useState(false);
 
   const getRecentSearch = async () => {
     try {
@@ -40,13 +40,9 @@ const MapSearch: React.FC<MapSearchProps> = ({
   useEffect(() => {
     // 서버에서 최근 검색어 가져오기
     getRecentSearch();
-  }, [trySearch]);
+  }, []);
 
-  useEffect(() => {
-    setTrySearch(false);
-  }, [searchText]);
-
-  const deleteSearchText = () => {
+  const onClickDeleteSearchText = () => {
     setSearchText("");
   };
 
@@ -67,15 +63,11 @@ const MapSearch: React.FC<MapSearchProps> = ({
     }
   };
 
-  const handleSearch = async () => {
-    // 서버에 검색 요청하기. 내가 볼 때 줄임말 등의 검색어를 보내면 관련된 위치를 검색결과에 뜨도록
-    // 검색 기록에 추가하는 요청 추가
-    // 서버에서 검색 결과를 받아서 아래에 넣어준다.
+  const handleSearch = async (name: string) => {
     try {
-      const response = await getSearchLocationResult(searchText);
+      const response = await getSearchLocationResult(name);
       console.log(response);
-      setSearchResult([]);
-      // setSearchResult(response);
+      setSearchResult(response);
     } catch (error) {
       console.error("위치 검색 중 에러 : ", error);
       alert("서버 또는 네트워크 에러입니다.");
@@ -83,25 +75,15 @@ const MapSearch: React.FC<MapSearchProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && searchText) {
-      setTrySearch(true);
-      handleSearch();
+    if (searchText.trim() === "") setSearchText("");
+    if (e.key === "Enter" && searchText.trim() !== "") {
+      handleSearch(searchText);
     }
   };
 
-  // 버튼 클릭 시 해당하는 위치를 서버에 요청하여 받아야함.
-  const onClickSearchLocation = async (search: string) => {
-    // 배포 시 실패 방지용
-    console.log(search);
-    // try {
-    //   const response = await getLocationDetailData(search);
-    //   console.log("하나의 위치에 대한 디테일 정보 : ", response);
-    //   setDetailLocationData(response);
-    //   setSearchMode(false);
-    // } catch (error) {
-    //   console.error("하나의 위치에 대한 디테일 정보 반환 실패", error);
-    //   alert("서버 또는 네트워크 오류입니다.");
-    // }
+  const doAgainRecentSearch = (name: string) => {
+    setSearchText(name);
+    handleSearch(name);
   };
 
   return (
@@ -129,7 +111,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
             className={styles.DeleteIcon}
             src={deleteIcon}
             alt="검색어 지우기"
-            onClick={deleteSearchText}
+            onClick={onClickDeleteSearchText}
           />
         )}
       </div>
@@ -145,19 +127,19 @@ const MapSearch: React.FC<MapSearchProps> = ({
             </button>
           </div>
           <div className={styles.RecentSearchDataWrapper}>
-            {recentSearchData.map((item, index) => (
+            {recentSearchData.map((item) => (
               <div
-                key={index}
+                key={item.placeId}
                 className={styles.RecentSearchContainer}
-                onClick={() => onClickSearchLocation(item)}
+                onClick={() => doAgainRecentSearch(item.name)}
               >
-                <span className={styles.LocationTitle}>{item}</span>
+                <span className={styles.LocationTitle}>{item.name}</span>
                 <img
                   src={deleteIcon}
                   alt="검색어 지우기"
                   onClick={(e) => {
                     e.stopPropagation();
-                    deleteSearchData(item);
+                    deleteSearchData(item.name);
                   }}
                   style={{ padding: "2px 5px" }}
                 />
@@ -166,14 +148,17 @@ const MapSearch: React.FC<MapSearchProps> = ({
           </div>
         </>
       )}
-      {trySearch &&
+      {searchText.trim() &&
         (searchResult.length !== 0 ? (
           <div className={styles.ResultWrapper}>
-            {searchResult.map((result, index) => (
+            {searchResult.map((result) => (
               <div
-                key={index}
+                key={result.placeId}
                 className={styles.ResultContainer}
-                onClick={() => onClickSearchLocation(result.name)}
+                onClick={() => {
+                  setSearchMode(false);
+                  clickSearchResultToMarker(result);
+                }}
               >
                 <span className={styles.LocationTitle}>{result.name}</span>
               </div>

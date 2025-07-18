@@ -4,15 +4,16 @@ export interface Coordinate {
   longitude: number;
 }
 
-// 검색결과에 대한 정보
-export interface MapSearchResult {
-  name: string;
-}
-
 // 위치 공유한 친구 정보
 interface FriendData {
   nickname: string;
   profileURL: string | null;
+}
+
+//  검색결과에 대한 정보
+export interface MapSearchResult extends Coordinate {
+  name: string;
+  placeId: number;
 }
 
 // 카테고리 ENUM 정보
