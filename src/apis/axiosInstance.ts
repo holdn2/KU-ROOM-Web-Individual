@@ -96,6 +96,7 @@ export const reissueTokenApi = async (): Promise<string> => {
     return tokenData.accessToken;
   } catch (err: any) {
     console.warn("재발급 실패 (기타 이유)", err.response?.data || err.message);
+    localStorage.clear();
     throw err;
   }
 };
