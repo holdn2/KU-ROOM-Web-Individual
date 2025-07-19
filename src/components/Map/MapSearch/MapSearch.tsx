@@ -29,6 +29,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
   const [recentSearchData, setRecentSearchData] = useState<
     MapRecentSearchData[]
   >([]);
+  const [tryToSearch, setTryToSearch] = useState(false);
   const [searchResult, setSearchResult] = useState<MapSearchResult[]>([]);
 
   const getRecentSearch = async () => {
@@ -46,8 +47,10 @@ const MapSearch: React.FC<MapSearchProps> = ({
     getRecentSearch();
   }, []);
 
-  const onClickDeleteSearchText = () => {
+  const resetSearchText = () => {
     setSearchText("");
+    setSearchResult([]);
+    setTryToSearch(false);
     getRecentSearch();
   };
 
@@ -80,6 +83,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
     try {
       const response = await getSearchLocationResult(name);
       console.log(response);
+      setTryToSearch(true);
       setSearchResult(response);
     } catch (error) {
       console.error("위치 검색 중 에러 : ", error);
@@ -98,6 +102,13 @@ const MapSearch: React.FC<MapSearchProps> = ({
     setSearchText(name);
     handleSearch(name);
   };
+
+  useEffect(() => {
+    if (searchText === "") {
+      resetSearchText();
+      getRecentSearch();
+    }
+  }, [searchText]);
 
   return (
     <div className={styles.SearchModeContainer}>
@@ -124,7 +135,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
             className={styles.DeleteIcon}
             src={deleteIcon}
             alt="검색어 지우기"
-            onClick={onClickDeleteSearchText}
+            onClick={resetSearchText}
           />
         )}
       </div>
@@ -162,6 +173,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
         </>
       )}
       {searchText.trim() &&
+        tryToSearch &&
         (searchResult.length !== 0 ? (
           <div className={styles.ResultWrapper}>
             {searchResult.map((result) => (
