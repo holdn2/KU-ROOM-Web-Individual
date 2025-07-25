@@ -39,6 +39,8 @@
 }
 .ResultWrapper {
   margin: 0 16px;
+  overflow-y: auto;
+  height: calc(100vh - 168px);
 }
 .ResultContainer {
   padding: 17px 19px;
