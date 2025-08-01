@@ -1,4 +1,6 @@
 // 지도 관련 api
+import axiosInstance from "./axiosInstance";
+import { ApiResponse } from "../../types/apiResponse";
 import {
   DetailPlaceData,
   MapRecentSearchData,
@@ -6,7 +8,6 @@ import {
   PlaceData,
   SharedFriendData,
 } from "../../types/mapTypes";
-import axiosInstance from "./axiosInstance";
 
 const CHECK_SHARE_STATE_API = "/places/sharing/status";
 const GET_USER_SHARE_LOCATION = "/places/sharing";
@@ -19,12 +20,6 @@ const GET_SEARCH_LOCATION_RESULT = "/places/search?query=";
 const GET_RECENT_SEARCH = "/places/search/history"; // 최근 검색어 5개
 const DELETE_RECENT_ALL_SEARCH = "/places/search/history"; // 최근 검색어 모두 삭제
 const DELETE_RECENT_SEARCH = "/places/search/history/"; // 최근 검색어 하나 삭제
-
-interface ApiResponse {
-  code: number;
-  status: string;
-  message: string;
-}
 
 // 현재 위치 공유 상태인지 여부 api
 interface IsSharedApiResponse extends ApiResponse {
