@@ -39,6 +39,8 @@ const Home = () => {
     null
   ); // 현재 위치
 
+  const [tryToRerender, setTryToRerender] = useState(false);
+
   // 현재 내 위치 공유 상태 확인 함수
   const getIsMySharedInfo = async () => {
     try {
@@ -106,7 +108,7 @@ const Home = () => {
           />
         )}
         <FriendLocation isSharedLocation={isSharedLocation} />
-        <MyLocationRanking />
+        <MyLocationRanking updateTrigger={tryToRerender} />
         <HomeNotice />
       </div>
       <BottomBar />
@@ -118,6 +120,7 @@ const Home = () => {
         refreshSharedStatus={() =>
           setLocationSharedRefreshKey((prev) => prev + 1)
         }
+        tryRerendering={() => setTryToRerender(!tryToRerender)}
       />
     </div>
   );
