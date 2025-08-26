@@ -9,6 +9,8 @@
   box-sizing: border-box;
   overflow: hidden;
   background: var(--gray-BG, #f8f9fc);
+  overflow-x: hidden;
+  overscroll-behavior: none;
 }
 .MainArea {
   display: flex;
