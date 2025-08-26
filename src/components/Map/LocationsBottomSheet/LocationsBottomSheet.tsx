@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "./LocationsBottomSheet.module.css";
 import mapListIcon from "../../../assets/map/mapListIcon.svg";
 import useBottomSheetDrag from "../../../hooks/useBottomSheetDrag";
@@ -23,6 +23,13 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
   clickToLocationMarker,
 }) => {
   const sheetRef = useRef<HTMLDivElement>(null);
+
+  // 카테고리가 변경될 때 스크롤 리셋
+  useEffect(() => {
+    if (sheetRef.current) {
+      sheetRef.current.scrollTop = 0;
+    }
+  }, [selectedCategoryLocations]);
 
   // 바텀 시트 올리고 내리는 로직. 좀 더 연구 필요할듯.
   useBottomSheetDrag({
