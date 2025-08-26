@@ -20,6 +20,24 @@ const Login = () => {
   // 로그인 버튼을 눌렀는지 여부
   const [isLoginAttempted, setIsLoginAttempted] = useState(false);
 
+  // Login 컴포넌트 안
+  useEffect(() => {
+    const preventGoBack = () => {
+      // 현재 주소로 다시 push 해서 '뒤로가기'를 무효화
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    // 진입 시 한 번 밀어두고
+    preventGoBack();
+    // 뒤로가기(popstate) 시마다 다시 밀기
+    window.addEventListener("popstate", preventGoBack);
+
+    return () => {
+      // 로그인 화면 벗어나면 원복 (다른 화면에선 뒤로가기 정상 동작)
+      window.removeEventListener("popstate", preventGoBack);
+    };
+  }, []);
+
   // 상태 변경 함수
   const handleInputIdChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/[^a-zA-Z0-9]/g, ""); //영어와 숫자만 허용
@@ -29,7 +47,7 @@ const Login = () => {
     setInputPw(e.target.value);
   };
 
-  const handleLoginTest = async () => {
+  const handleLogin = async () => {
     const loginData = { loginId: inputId, password: inputPw };
     try {
       const response = await loginApi(loginData); // `await` 추가
@@ -52,7 +70,7 @@ const Login = () => {
 
       // 전역 상태관리 zustand 사용해서 저장
       setUser(userResponse);
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (error: any) {
       console.error("로그인 중 오류 발생:", error.message); // 서버 오류(500) 같은 경우
       setIsLoginAttempted(true);
@@ -140,7 +158,7 @@ const Login = () => {
           </span>
         )}
         <div style={{ marginTop: "47px", marginBottom: "12px" }}>
-          <Button onClick={handleLoginTest}>로그인하기</Button>
+          <Button onClick={handleLogin}>로그인하기</Button>
         </div>
         <div style={{ display: "flex", gap: "14px", alignSelf: "center" }}>
           <Link to="/signup" className={styles.LinkText}>
