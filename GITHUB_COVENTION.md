@@ -1,6 +1,6 @@
 ### issue title 컨벤션
 
-[MyPage] ~~
+feat: [MyPage] ~~
 
 ```jsx
 <!-- 작성시에는 템플릿 내 주석을 삭제해주세요. -->
