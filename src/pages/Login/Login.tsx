@@ -116,12 +116,6 @@ const Login = () => {
     };
   }, [isLoginAttempted]);
 
-  document.addEventListener("touchstart", function (e: TouchEvent) {
-    if (e.touches[0].pageX < 100) {
-      e.preventDefault();
-    }
-  });
-
   return (
     <div className={styles.PageWrapper}>
       <div className={styles.MainArea}>

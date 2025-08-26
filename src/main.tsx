@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import { EdgeGuard } from "./EdgeGuard.tsx";
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -20,6 +21,7 @@ if ("serviceWorker" in navigator) {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <EdgeGuard />
     <App />
   </StrictMode>
 );
