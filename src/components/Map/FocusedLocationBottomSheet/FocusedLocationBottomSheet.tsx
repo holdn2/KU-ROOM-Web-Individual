@@ -9,6 +9,7 @@ import { DetailPlaceData } from "../../../../types/mapTypes";
 interface FocusedLocationBottomSheetProps {
   hasFocusedMarker: boolean;
   isExpandedFocusedSheet: boolean;
+  setHasFocusedMarker: (value: boolean) => void;
   setIsExpandedFocusedSheet: (value: boolean) => void;
   detailLocationData: DetailPlaceData | null;
 }
@@ -16,6 +17,7 @@ interface FocusedLocationBottomSheetProps {
 const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
   hasFocusedMarker,
   isExpandedFocusedSheet,
+  setHasFocusedMarker,
   setIsExpandedFocusedSheet,
   detailLocationData,
 }) => {
@@ -45,7 +47,9 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
   useBottomSheetDrag({
     sheetRef,
     isExpanded: isExpandedFocusedSheet,
+    hasFocusedMarker: hasFocusedMarker,
     setIsExpanded: setIsExpandedFocusedSheet,
+    setHasFocusedMarker: setHasFocusedMarker,
     minHeight: 450,
   });
 

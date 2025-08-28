@@ -3,14 +3,18 @@ import { useEffect, useRef } from "react";
 interface UseBottomSheetDragProps {
   sheetRef: React.RefObject<HTMLDivElement | null>;
   isExpanded: boolean;
+  hasFocusedMarker?: boolean;
   setIsExpanded: (value: boolean) => void;
+  setHasFocusedMarker?: (value: boolean) => void;
   minHeight: number; // 예: 150, 380 등
 }
 
 export default function useBottomSheetDrag({
   sheetRef,
   isExpanded,
+  hasFocusedMarker,
   setIsExpanded,
+  setHasFocusedMarker,
   minHeight,
 }: UseBottomSheetDragProps) {
   const startY = useRef(0);
@@ -86,6 +90,10 @@ export default function useBottomSheetDrag({
         sheet.style.transform = isExpanded
           ? "translateY(0)"
           : `translateY(calc(100% - ${minHeight}px))`;
+      }
+
+      if (!isExpanded && hasFocusedMarker && setHasFocusedMarker && diff > 80) {
+        setHasFocusedMarker(false);
       }
 
       isDragging.current = false;
