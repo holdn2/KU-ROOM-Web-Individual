@@ -29,6 +29,12 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
   useEffect(() => {
     // 여기에 실제 API 로딩 or 이미지 로딩 조건으로 변경해야함.
     setIsLoading(true);
+
+    // 새로운 데이터가 로드될 때 스크롤을 최상단으로 리셋
+    if (sheetRef.current) {
+      sheetRef.current.scrollTop = 0;
+    }
+
     const timeout = setTimeout(() => {
       setIsLoading(false);
     }, 500);
