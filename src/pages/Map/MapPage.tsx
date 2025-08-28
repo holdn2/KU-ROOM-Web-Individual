@@ -421,6 +421,7 @@ const MapPage = () => {
       <FocusedLocationBottomSheet
         hasFocusedMarker={hasFocusedMarker}
         isExpandedFocusedSheet={isExpandedFocusedSheet}
+        setHasFocusedMarker={setHasFocusedMarker}
         setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
         detailLocationData={detailLocationData}
       />
