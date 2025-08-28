@@ -1,5 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
+import { EdgeGuard } from "../../EdgeGuard";
+
 import styles from "./Login.module.css";
 import InputBar from "../../components/InputBar/InputBar";
 import Button from "../../components/Button/Button";
@@ -117,89 +119,92 @@ const Login = () => {
   }, [isLoginAttempted]);
 
   return (
-    <div className={styles.PageWrapper}>
-      <div className={styles.MainArea}>
-        <TopIcon />
-        <h1 className={styles.PageTitle}>
-          반가워요
-          <br />
-          <span className={styles.KUROOMTITLE}>쿠룸</span>
-          입니다.
-        </h1>
-        <div
-          style={{
-            marginTop: "30px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-          }}
-        >
-          <div>
-            <InputBar
-              label="아이디"
-              type="text"
-              value={inputId}
-              placeholder="아이디를 입력해주세요."
-              onChange={handleInputIdChange}
-            />
+    <>
+      <EdgeGuard />
+      <div className={styles.PageWrapper}>
+        <div className={styles.MainArea}>
+          <TopIcon />
+          <h1 className={styles.PageTitle}>
+            반가워요
+            <br />
+            <span className={styles.KUROOMTITLE}>쿠룸</span>
+            입니다.
+          </h1>
+          <div
+            style={{
+              marginTop: "30px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+            }}
+          >
+            <div>
+              <InputBar
+                label="아이디"
+                type="text"
+                value={inputId}
+                placeholder="아이디를 입력해주세요."
+                onChange={handleInputIdChange}
+              />
 
-            <InputBar
-              label="비밀번호"
-              type="password"
-              value={inputPw}
-              placeholder="비밀번호를 입력해주세요."
-              onChange={handleInputPwChange}
+              <InputBar
+                label="비밀번호"
+                type="password"
+                value={inputPw}
+                placeholder="비밀번호를 입력해주세요."
+                onChange={handleInputPwChange}
+              />
+            </div>
+          </div>
+          {isLoginAttempted && (
+            <span className={styles.WrongLogin}>
+              아이디 또는 비밀번호를 잘못 입력했습니다.
+            </span>
+          )}
+          <div style={{ marginTop: "47px", marginBottom: "12px" }}>
+            <Button onClick={handleLogin}>로그인하기</Button>
+          </div>
+          <div style={{ display: "flex", gap: "14px", alignSelf: "center" }}>
+            <Link to="/signup" className={styles.LinkText}>
+              회원가입
+            </Link>
+            <div
+              style={{ width: "4px", height: "17px", background: "#E6EBEF" }}
+            />
+            <Link to="/findidpw" className={styles.LinkText}>
+              아이디/비밀번호 찾기
+            </Link>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: "47px",
+              alignSelf: "center",
+              marginTop: "67px",
+            }}
+          >
+            <img
+              src={kakaoIcon}
+              alt="카카오로 로그인"
+              onClick={handleKakaoLogin}
+              style={{ cursor: "pointer" }}
+            />
+            <img
+              src={naverIcon}
+              alt="네이버로 로그인"
+              onClick={handleNaverLogin}
+              style={{ cursor: "pointer" }}
+            />
+            <img
+              src={googleIcon}
+              alt="구글로 로그인"
+              onClick={handleGoogleLogin}
+              style={{ cursor: "pointer" }}
             />
           </div>
         </div>
-        {isLoginAttempted && (
-          <span className={styles.WrongLogin}>
-            아이디 또는 비밀번호를 잘못 입력했습니다.
-          </span>
-        )}
-        <div style={{ marginTop: "47px", marginBottom: "12px" }}>
-          <Button onClick={handleLogin}>로그인하기</Button>
-        </div>
-        <div style={{ display: "flex", gap: "14px", alignSelf: "center" }}>
-          <Link to="/signup" className={styles.LinkText}>
-            회원가입
-          </Link>
-          <div
-            style={{ width: "4px", height: "17px", background: "#E6EBEF" }}
-          />
-          <Link to="/findidpw" className={styles.LinkText}>
-            아이디/비밀번호 찾기
-          </Link>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            gap: "47px",
-            alignSelf: "center",
-            marginTop: "67px",
-          }}
-        >
-          <img
-            src={kakaoIcon}
-            alt="카카오로 로그인"
-            onClick={handleKakaoLogin}
-            style={{ cursor: "pointer" }}
-          />
-          <img
-            src={naverIcon}
-            alt="네이버로 로그인"
-            onClick={handleNaverLogin}
-            style={{ cursor: "pointer" }}
-          />
-          <img
-            src={googleIcon}
-            alt="구글로 로그인"
-            onClick={handleGoogleLogin}
-            style={{ cursor: "pointer" }}
-          />
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 
