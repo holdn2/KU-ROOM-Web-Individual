@@ -111,5 +111,12 @@ export default function useBottomSheetDrag({
       sheet.removeEventListener("touchmove", handleTouchMove);
       sheet.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [isExpanded, minHeight, setIsExpanded, sheetRef]);
+  }, [
+    isExpanded,
+    minHeight,
+    setIsExpanded,
+    sheetRef,
+    hasFocusedMarker,
+    setHasFocusedMarker,
+  ]);
 }
