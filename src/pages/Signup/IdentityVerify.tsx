@@ -1,15 +1,15 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import TopIcon from "../../components/TopIcon";
 import styles from "./IdentityVerify.module.css";
-import InputBar from "../../components/InputBar/InputBar";
-import Button from "../../components/Button/Button";
+import InputBar from "../../shared/components/InputBar/InputBar";
+import Button from "../../shared/components/Button/Button";
 import checkedIcon from "../../assets/icon/roundcheck.svg";
 import uncheckedIcon from "../../assets/icon/roundUncheck.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../utils/validations";
 import { checkValidationEmailApi } from "../../apis/signup";
 import { sendEmailApi, verifyCodeApi } from "../../apis/mails";
-import InformModal from "../../components/InformModal/InformModal";
+import InformModal from "../../shared/components/InformModal/InformModal";
 
 const IdentityVerify = () => {
   const navigate = useNavigate();

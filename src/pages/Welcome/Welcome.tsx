@@ -1,6 +1,6 @@
 import React from "react";
 import "./Welcome.css";
-import Button from "../../components/Button/Button";
+import Button from "../../shared/components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import fanfareIcon from "../../assets/icon/폭죽.png";
 

@@ -1,7 +1,7 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../../components/Header/Header";
+import Header from "../../../shared/components/Header/Header";
 import SearchInput from "./Components/SearchInput/SearchInput";
 import SearchHistory from "./Components/SearchHistory/SearchHistory";
 import TagButtons from "./Components/TagButtons/TagButtons";

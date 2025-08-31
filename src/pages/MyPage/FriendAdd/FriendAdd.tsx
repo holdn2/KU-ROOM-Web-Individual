@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./FriendAdd.module.css";
-import Header from "../../../components/Header/Header";
+import Header from "../../../shared/components/Header/Header";
 import FriendSearch from "../../../components/Friend/FriendSearch/FriendSearch";
 import FriendModal from "../../../components/Friend/FriendModal/FriendModal";
 import RequestedFriend from "../../../components/Friend/RequestedFriend/RequestedFriend";
@@ -11,7 +11,7 @@ import {
   getSearchedNewFriends,
   requestFriend,
 } from "../../../apis/friend";
-import PullToRefresh from "../../../components/PullToRefresh/PullToRefresh";
+import PullToRefresh from "../../../shared/components/PullToRefresh/PullToRefresh";
 import { reissueTokenApi } from "../../../apis/axiosInstance";
 import { useNavigate } from "react-router-dom";
 

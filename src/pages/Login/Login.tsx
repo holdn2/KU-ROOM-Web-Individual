@@ -1,10 +1,10 @@
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
-import { EdgeGuard } from "../../EdgeGuard";
+import { EdgeGuard } from "../../shared/components/EdgeGuard";
 
 import styles from "./Login.module.css";
-import InputBar from "../../components/InputBar/InputBar";
-import Button from "../../components/Button/Button";
+import InputBar from "../../shared/components/InputBar/InputBar";
+import Button from "../../shared/components/Button/Button";
 import kakaoIcon from "../../assets/socialLoginIcon/kakaoLogin.svg";
 import naverIcon from "../../assets/socialLoginIcon/naverLogin.svg";
 import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";

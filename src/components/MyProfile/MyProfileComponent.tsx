@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./MyProfileComponent.module.css";
-import Button from "../Button/Button";
+import Button from "../../shared/components/Button/Button";
 import defaultProfileImg from "../../assets/defaultProfileImg.svg";
 import { useNavigate } from "react-router-dom";
 import editIcon from "../../assets/icon/editpencil.svg";

@@ -1,15 +1,15 @@
 // 마이페이지
 import styles from "./MyPage.module.css";
-import BottomBar from "../../components/BottomBar/BottomBar";
-import Header from "../../components/Header/Header";
+import BottomBar from "../../shared/components/BottomBar/BottomBar";
+import Header from "../../shared/components/Header/Header";
 import MyProfileComponent from "../../components/MyProfile/MyProfileComponent";
 import ProfileSection from "../../components/MyProfile/ProfileSection";
-import { MyPageSectionData } from "../../constants/sectionDatas";
+import { MyPageSectionData } from "../../shared/constant/sectionDatas";
 import { useEffect, useState } from "react";
 import ProfileModal from "../../components/MyProfile/ProfileModal/ProfileModal";
 import { useNavigate } from "react-router-dom";
 import { reissueTokenApi } from "../../apis/axiosInstance";
-import PullToRefresh from "../../components/PullToRefresh/PullToRefresh";
+import PullToRefresh from "../../shared/components/PullToRefresh/PullToRefresh";
 
 const MyPage = () => {
   const navigate = useNavigate();

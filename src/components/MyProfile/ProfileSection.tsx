@@ -3,7 +3,7 @@ import styles from "./ProfileSection.module.css";
 import arrowRight from "../../assets/nav/arrowRight.svg";
 import ToggleAlarmButton from "../ToggleAlarmButton";
 import KeywordButton from "../KeywordButton/KeywordButton";
-import { AppVersion } from "../../constants/appInfo";
+import { AppVersion } from "../../shared/constant/appInfo";
 import { useHandleSectionClick } from "./hooks/profileSectionClickUtil";
 import { useUserStore } from "../../stores/userStore";
 interface ProfileSectionProps {

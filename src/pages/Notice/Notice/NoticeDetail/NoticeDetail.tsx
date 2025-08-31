@@ -1,7 +1,7 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "../../../../components/Header/Header";
+import Header from "../../../../shared/components/Header/Header";
 import styles from "./NoticeDetail.module.css";
 import bookmarkIcon from "../../../../assets/headericon/bookmark.svg";
 import bookmarkFillIcon from "../../../../assets/headericon/bookmark-fill.svg";

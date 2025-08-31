@@ -1,7 +1,7 @@
 // 홈 페이지
-import BottomBar from "../../components/BottomBar/BottomBar";
+import BottomBar from "../../shared/components/BottomBar/BottomBar";
 import styles from "./Home.module.css";
-import Header from "../../components/Header/Header";
+import Header from "../../shared/components/Header/Header";
 import HomeMenu from "../../components/HomeContent/HomeMenu/HomeMenu";
 import HomeMiniMap from "../../components/HomeContent/HomeMiniMap/HomeMiniMap";
 import HomeSildeBanner from "../../components/HomeContent/HomeSlideBanner/HomeSildeBanner";
@@ -11,9 +11,9 @@ import FriendLocation from "../../components/HomeContent/FriendLocation/FriendLo
 import MyLocationRanking from "../../components/HomeContent/MyLocationRanking/MyLocationRanking";
 import HomeNotice from "../../components/HomeContent/HomeNotice/HomeNotice";
 // import { useNavigate } from "react-router-dom";
-import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
+import ShareLocationModal from "../Map/components/ShareLocationModal/ShareLocationModal";
 import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
-import { Coordinate } from "../../../types/mapTypes";
+import { Coordinate } from "../Map/types/mapTypes";
 import { checkIsSharedApi } from "../../apis/map";
 import { useNavigate } from "react-router-dom";
 

@@ -1,6 +1,6 @@
 // 홈에서의 api
 import axiosInstance from "./axiosInstance";
-import { ApiResponse } from "../../types/apiResponse";
+import { ApiResponse } from "@shared/types/apiResponse";
 import { RankListType } from "../../types/rankTypes";
 
 const GET_USER_SHARING_RANKING = "places/users/ranks";

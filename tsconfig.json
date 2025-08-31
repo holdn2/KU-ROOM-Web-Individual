@@ -5,6 +5,17 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@apis/*": ["src/apis/*"],
+      "@pages/*": ["src/pages/*"],
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/shared/components/*"],
+      "@hooks/*": ["src/shared/hooks/*"],
+      "@utils/*": ["src/shared/utils/*"],
+      "@types/*": ["src/shared/types/*"]
+    }
   }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ReceivedFriend.module.css";
-import Button from "../../Button/Button";
+import Button from "../../../shared/components/Button/Button";
 import defaultImg from "../../../assets/defaultProfileImg.svg";
 import { getReceivedRequests } from "../../../apis/friend";
 interface Friend {

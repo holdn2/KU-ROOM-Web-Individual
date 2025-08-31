@@ -3,7 +3,7 @@ import {
   PrivacyPolicyLink,
   ServiceCenterLink,
   TermsAndPoliciesLink,
-} from "../../../constants/appInfo";
+} from "../../../shared/constant/appInfo";
 
 // 마이페이지 섹션 별 클릭 시 이벤트 처리
 export const useHandleSectionClick = (

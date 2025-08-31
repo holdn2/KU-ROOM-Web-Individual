@@ -1,4 +1,4 @@
-import Header from "../../../components/Header/Header";
+import Header from "../../../shared/components/Header/Header";
 import styles from "./FriendList.module.css";
 import { useEffect, useRef, useState } from "react";
 import FriendEdit from "../../../components/Friend/FriendEdit/FriendEdit";
@@ -8,7 +8,7 @@ import { useOutsideClick } from "../../../utils/friendUtils";
 import FriendContainer from "../../../components/Friend/FriendContainer/FriendContainer";
 import { getAllFriends } from "../../../apis/friend";
 import { useNavigate } from "react-router-dom";
-import PullToRefresh from "../../../components/PullToRefresh/PullToRefresh";
+import PullToRefresh from "../../../shared/components/PullToRefresh/PullToRefresh";
 import { reissueTokenApi } from "../../../apis/axiosInstance";
 
 interface Friend {

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ProfileModal.module.css";
 import ReactModal from "react-modal";
-import Button from "../../Button/Button";
+import Button from "../../../shared/components/Button/Button";
 import cautionIcon from "../../../assets/icon/editFriend/cautionIcon.svg";
 import { logoutApi, withdrawApi } from "../../../apis/auth";
 import { useNavigate } from "react-router-dom";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./DepartmentSetting.module.css";
-import Header from "../../../components/Header/Header";
+import Header from "../../../shared/components/Header/Header";
 import DepartmentSearch from "../../../components/MyProfile/DepartmentSearchBar/DepartmentSearchBar";
 import UserDepartmentList from "../../../components/DepartmentList/UserDepartmentList";
 import SearchDepartmentList from "../../../components/DepartmentList/SearchDepartmentList";

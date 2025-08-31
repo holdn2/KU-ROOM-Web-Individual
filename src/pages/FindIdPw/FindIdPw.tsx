@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState, useReducer } from "react";
 import styles from "./FindIdPw.module.css";
-import InformModal from "../../components/InformModal/InformModal";
+import InformModal from "../../shared/components/InformModal/InformModal";
 import TopIcon from "../../components/TopIcon";
 import { isValidPassword } from "../../utils/validations";
 import FindStep0 from "./FindStep0";

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Agreement.module.css";
 import TopIcon from "../../components/TopIcon";
 import AgreementLabel from "../../components/agreement/AgreementLabel";
-import Button from "../../components/Button/Button";
+import Button from "../../shared/components/Button/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Agreement: React.FC = () => {

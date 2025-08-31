@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./SearchAddFriend.module.css";
-import Button from "../../../components/Button/Button";
+import Button from "../../../shared/components/Button/Button";
 import noResultIcon from "../../../assets/icon/noResultSearch.svg";
 import defaultImg from "../../../assets/defaultProfileImg.svg";
 

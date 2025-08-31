@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./MyLocationRanking.module.css";
-import Header from "../../components/Header/Header";
-import Button from "../../components/Button/Button";
+import Header from "../../shared/components/Header/Header";
+import Button from "../../shared/components/Button/Button";
 import rank1Icon from "../../assets/icon/ranking/rank1.png";
 import rank2Icon from "../../assets/icon/ranking/rank2.png";
 import rank3Icon from "../../assets/icon/ranking/rank3.png";

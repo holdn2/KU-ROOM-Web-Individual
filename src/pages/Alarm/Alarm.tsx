@@ -1,4 +1,4 @@
-import Header from "../../components/Header/Header";
+import Header from "../../shared/components/Header/Header";
 import styles from "./Alarm.module.css";
 import friendPlusIcon from "../../assets/homemenuicon/homeicon_plus_friend.png";
 import noticeIcon from "../../assets/homemenuicon/homeicon_kcube_reserve.png";

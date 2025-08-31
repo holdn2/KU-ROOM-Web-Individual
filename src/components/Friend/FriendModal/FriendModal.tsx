@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./FriendModal.module.css";
 import ReactModal from "react-modal";
 import cautionIcon from "../../../assets/icon/editFriend/cautionIcon.svg";
-import Button from "../../Button/Button";
+import Button from "../../../shared/components/Button/Button";
 import {
   acceptRequest,
   friendBlock,
