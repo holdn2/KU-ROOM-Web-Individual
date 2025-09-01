@@ -1,15 +1,16 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./ProfileSetting.css";
+
+import { signupApi } from "@apis/signup";
+import { getAllColleges, getDepartments } from "@apis/department";
+import Button from "@components/Button/Button";
+import InputBar from "@components/InputBar/InputBar";
+import { isValidStudentId } from "@utils/validations";
 
 import Select from "../../components/profilesetting/Select/Select";
-import Button from "../../shared/components/Button/Button";
 import BottomSheet from "../../components/profilesetting/BottomSheet/BottomSheet";
 import SelectItem from "../../components/profilesetting/SelectItem/SelectItem";
-import InputBar from "../../shared/components/InputBar/InputBar";
-import { isValidStudentId } from "../../utils/validations";
-import { signupApi } from "../../apis/signup";
-import { getAllColleges, getDepartments } from "../../apis/department";
+import "./ProfileSetting.css";
 
 const ProfileSetting: React.FC = () => {
   const navigate = useNavigate();

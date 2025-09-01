@@ -1,12 +1,14 @@
 import { ChangeEvent, useState } from "react";
-import styles from "./ChangePw.module.css";
-import InputBar from "../../../shared/components/InputBar/InputBar";
-import Button from "../../../shared/components/Button/Button";
-import { isValidPassword } from "../../../utils/validations";
-import InformModal from "../../../shared/components/InformModal/InformModal";
 import { Link } from "react-router-dom";
-import Header from "../../../shared/components/Header/Header";
-import { changePwAfterLogin } from "../../../apis/changePw";
+
+import { changePwAfterLogin } from "@apis/changePw";
+import InputBar from "@components/InputBar/InputBar";
+import Button from "@components/Button/Button";
+import InformModal from "@components/InformModal/InformModal";
+import Header from "@components/Header/Header";
+import { isValidPassword } from "@utils/validations";
+
+import styles from "./ChangePw.module.css";
 
 const ChangePw = () => {
   const [originalPw, setOriginalPw] = useState("");

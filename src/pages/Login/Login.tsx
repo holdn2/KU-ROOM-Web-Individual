@@ -10,9 +10,9 @@ import naverIcon from "../../assets/socialLoginIcon/naverLogin.svg";
 import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import TopIcon from "../../components/TopIcon";
+import TopIcon from "@components/TopIcon";
 import { loginApi } from "../../apis/auth";
-import { useUserStore } from "../../stores/userStore";
+import { useUserStore } from "../../shared/stores/userStore";
 
 const Login = () => {
   const navigate = useNavigate();

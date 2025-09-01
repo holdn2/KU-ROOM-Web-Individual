@@ -10,7 +10,7 @@ import IdentityVerify from "./pages/Signup/IdentityVerify";
 import ProfileSetting from "./pages/ProfileSetting/ProfileSetting";
 import Welcome from "./pages/Welcome/Welcome";
 import Agreement from "./pages/Signup/Agreement";
-import MyPage from "./pages/MyPage/MyPage";
+import MyPage from "./pages/MyPage/MyPageMain/MyPage";
 import ProfileChange from "./pages/MyPage/ProfileChange/ProfileChange";
 import ChangePw from "./pages/MyPage/ChangePw/ChangePw";
 import ChangeNickname from "./pages/MyPage/ChangeNickname/ChangeNickname";

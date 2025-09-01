@@ -1,15 +1,14 @@
 // 회원가입 페이지
 import { ChangeEvent, useEffect, useState } from "react";
-import styles from "./Signup.module.css";
-import classNames from "classnames"; // 조건부 스타일링을 위해서
-import TopIcon from "../../components/TopIcon";
-import InputBar from "../../shared/components/InputBar/InputBar";
-import Button from "../../shared/components/Button/Button";
 import { useNavigate } from "react-router-dom";
-import {
-  checkAvailableId,
-  handleSettingPassword,
-} from "../../utils/validations";
+import classNames from "classnames"; // 조건부 스타일링을 위해서
+
+import TopIcon from "@components/TopIcon";
+import InputBar from "@components/InputBar/InputBar";
+import Button from "@components/Button/Button";
+import { checkAvailableId, handleSettingPassword } from "@utils/validations";
+
+import styles from "./Signup.module.css";
 
 const SignupInfo = () => {
   const navigate = useNavigate();

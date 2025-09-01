@@ -1,15 +1,17 @@
-import Header from "../../../shared/components/Header/Header";
-import styles from "./FriendList.module.css";
 import { useEffect, useRef, useState } from "react";
-import FriendEdit from "../../../components/Friend/FriendEdit/FriendEdit";
-import FriendSearch from "../../../components/Friend/FriendSearch/FriendSearch";
-import FriendModal from "../../../components/Friend/FriendModal/FriendModal";
-import { useOutsideClick } from "../../../utils/friendUtils";
-import FriendContainer from "../../../components/Friend/FriendContainer/FriendContainer";
-import { getAllFriends } from "../../../apis/friend";
 import { useNavigate } from "react-router-dom";
-import PullToRefresh from "../../../shared/components/PullToRefresh/PullToRefresh";
-import { reissueTokenApi } from "../../../apis/axiosInstance";
+
+import { getAllFriends } from "@apis/friend";
+import { reissueTokenApi } from "@apis/axiosInstance";
+import Header from "@components/Header/Header";
+import FriendContainer from "@components/FriendContainer/FriendContainer";
+import PullToRefresh from "@components/PullToRefresh/PullToRefresh";
+import { handleOutsideClick } from "@utils/friendUtils";
+
+import FriendEdit from "./components/FriendEdit/FriendEdit";
+import FriendSearch from "../components/FriendSearch/FriendSearch";
+import FriendModal from "../components/FriendModal/FriendModal";
+import styles from "./FriendList.module.css";
 
 interface Friend {
   id: number;
@@ -89,7 +91,7 @@ const FriendList = () => {
 
   // 팝업 외부 클릭 시 닫기
   useEffect(() => {
-    useOutsideClick(popupRef, editPopupState.isPopupOpen, () => {
+    handleOutsideClick(popupRef, editPopupState.isPopupOpen, () => {
       setEditPopupState((prev) => ({
         ...prev,
         isPopupOpen: false,

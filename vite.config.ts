@@ -61,9 +61,11 @@ export default defineConfig({
       "@pages": path.resolve(__dirname, "./src/pages"),
       "@assets": path.resolve(__dirname, "./src/assets"),
       "@components": path.resolve(__dirname, "./src/shared/components"),
+      "@constant": path.resolve(__dirname, "./src/shared/constant"),
       "@hooks": path.resolve(__dirname, "./src/shared/hooks"),
       "@utils": path.resolve(__dirname, "./src/shared/utils"),
       "@types": path.resolve(__dirname, "./src/shared/types"),
+      "@stores": path.resolve(__dirname, "./src/shared/stores"),
     },
   },
 });

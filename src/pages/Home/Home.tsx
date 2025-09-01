@@ -6,7 +6,7 @@ import HomeMenu from "../../components/HomeContent/HomeMenu/HomeMenu";
 import HomeMiniMap from "../../components/HomeContent/HomeMiniMap/HomeMiniMap";
 import HomeSildeBanner from "../../components/HomeContent/HomeSlideBanner/HomeSildeBanner";
 import { useEffect, useState } from "react";
-// import Splash from "../../components/Splash";
+// import Splash from "@components/Splash";
 import FriendLocation from "../../components/HomeContent/FriendLocation/FriendLocation";
 import MyLocationRanking from "../../components/HomeContent/MyLocationRanking/MyLocationRanking";
 import HomeNotice from "../../components/HomeContent/HomeNotice/HomeNotice";

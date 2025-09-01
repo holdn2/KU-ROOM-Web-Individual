@@ -1,14 +1,13 @@
-import styles from "./ChangeNickname.module.css";
-import InputBar from "../../../shared/components/InputBar/InputBar";
-import Button from "../../../shared/components/Button/Button";
 import { ChangeEvent, useEffect, useState } from "react";
-import {
-  changeNicknameApi,
-  checkDuplictedNickname,
-} from "../../../apis/nickname";
-import InformModal from "../../../shared/components/InformModal/InformModal";
-import Header from "../../../shared/components/Header/Header";
-import { useUserStore } from "../../../stores/userStore";
+
+import { changeNicknameApi, checkDuplictedNickname } from "@apis/nickname";
+import InputBar from "@components/InputBar/InputBar";
+import Button from "@components/Button/Button";
+import InformModal from "@components/InformModal/InformModal";
+import Header from "@components/Header/Header";
+import { useUserStore } from "@stores/userStore";
+
+import styles from "./ChangeNickname.module.css";
 
 const ChangeNickname = () => {
   const { setUser } = useUserStore();

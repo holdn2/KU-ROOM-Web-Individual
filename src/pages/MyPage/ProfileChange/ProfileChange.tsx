@@ -1,8 +1,9 @@
-import Header from "../../../shared/components/Header/Header";
-import MyProfileComponent from "../../../components/MyProfile/MyProfileComponent";
-import ProfileSection from "../../../components/MyProfile/ProfileSection";
+import Header from "@components/Header/Header";
+import { ProfileChangeSectionData } from "@constant/sectionDatas";
+
+import MyProfileComponent from "../components/MyProfileComponent/MyProfileComponent";
+import ProfileSection from "../components/ProfileSection/ProfileSection";
 import styles from "./ProfileChange.module.css";
-import { ProfileChangeSectionData } from "../../../shared/constant/sectionDatas";
 
 const ProfileChange = () => {
   return (

@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import styles from "./FriendAdd.module.css";
-import Header from "../../../shared/components/Header/Header";
-import FriendSearch from "../../../components/Friend/FriendSearch/FriendSearch";
-import FriendModal from "../../../components/Friend/FriendModal/FriendModal";
-import RequestedFriend from "../../../components/Friend/RequestedFriend/RequestedFriend";
-import ReceivedFriend from "../../../components/Friend/ReceivedFriend/ReceivedFriend";
-import SearchAddFriend from "../../../components/Friend/SearchAddFriend/SearchAddFriend";
+import { useNavigate } from "react-router-dom";
+
 import {
   cancelRequest,
   getSearchedNewFriends,
   requestFriend,
-} from "../../../apis/friend";
-import PullToRefresh from "../../../shared/components/PullToRefresh/PullToRefresh";
-import { reissueTokenApi } from "../../../apis/axiosInstance";
-import { useNavigate } from "react-router-dom";
+} from "@apis/friend";
+import { reissueTokenApi } from "@apis/axiosInstance";
+import PullToRefresh from "@components/PullToRefresh/PullToRefresh";
+import Header from "@components/Header/Header";
+
+import FriendSearch from "../components/FriendSearch/FriendSearch";
+import FriendModal from "../components/FriendModal/FriendModal";
+import RequestedFriend from "./components/RequestedFriend/RequestedFriend";
+import ReceivedFriend from "./components/ReceivedFriend/ReceivedFriend";
+import SearchAddFriend from "./components/SearchAddFriend/SearchAddFriend";
+import styles from "./FriendAdd.module.css";
 
 interface SearchedFriend {
   userId: number;

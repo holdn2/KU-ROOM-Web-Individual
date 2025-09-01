@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from "react";
 import styles from "./FindIdPw.module.css";
 import InputBar from "../../shared/components/InputBar/InputBar";
-import { isValidEmail } from "../../utils/validations";
+import { isValidEmail } from "@utils/validations";
 import Button from "../../shared/components/Button/Button";
 
 interface Step0Props {

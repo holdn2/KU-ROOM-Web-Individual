@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+
+import Header from "@components/Header/Header";
+
+import DepartmentSearch from "./components/DepartmentSearchBar/DepartmentSearchBar";
+import UserDepartmentList from "./components/UserDepartmentList/UserDepartmentList";
+import SearchDepartmentList from "./components/SearchDepartmentList/SearchDepartmentList";
 import styles from "./DepartmentSetting.module.css";
-import Header from "../../../shared/components/Header/Header";
-import DepartmentSearch from "../../../components/MyProfile/DepartmentSearchBar/DepartmentSearchBar";
-import UserDepartmentList from "../../../components/DepartmentList/UserDepartmentList";
-import SearchDepartmentList from "../../../components/DepartmentList/SearchDepartmentList";
 
 const dummyUserDepartmentData = [
   { department: "융합생명공학과", college: "KU융합과학기술원" },
