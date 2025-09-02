@@ -3,7 +3,7 @@ import type React from "react";
 import searchresultIcon from "@assets/icon/notice/search/searchresult.svg";
 
 import type { NoticeItem } from "../../../types/noticeTypes";
-import NoticeList from "../NoticeList/NoticeList";
+import { NoticeList } from "../NoticeList";
 import styles from "./SearchResult.module.css";
 
 interface SearchResultProps {
@@ -11,7 +11,7 @@ interface SearchResultProps {
   onItemClick: (noticeId: string) => void;
 }
 
-const SearchResult: React.FC<SearchResultProps> = ({
+export const SearchResult: React.FC<SearchResultProps> = ({
   filteredNotices,
   onItemClick,
 }) => {
@@ -30,5 +30,3 @@ const SearchResult: React.FC<SearchResultProps> = ({
     </div>
   );
 };
-
-export default SearchResult;

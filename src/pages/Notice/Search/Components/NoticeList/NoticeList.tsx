@@ -8,7 +8,10 @@ interface NoticeListProps {
   onItemClick?: (noticeId: string) => void;
 }
 
-const NoticeList: React.FC<NoticeListProps> = ({ notices, onItemClick }) => {
+export const NoticeList: React.FC<NoticeListProps> = ({
+  notices,
+  onItemClick,
+}) => {
   return (
     <div className={styles.noticeList}>
       {notices.map((notice, index) => (
@@ -31,5 +34,3 @@ const NoticeList: React.FC<NoticeListProps> = ({ notices, onItemClick }) => {
     </div>
   );
 };
-
-export default NoticeList;

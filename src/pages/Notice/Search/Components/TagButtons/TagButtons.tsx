@@ -7,7 +7,7 @@ interface TagButtonsProps {
   onTagClick: (tag: string) => void;
 }
 
-const TagButtons: React.FC<TagButtonsProps> = ({
+export const TagButtons: React.FC<TagButtonsProps> = ({
   tags,
   selectedTags,
   onTagClick,
@@ -27,5 +27,3 @@ const TagButtons: React.FC<TagButtonsProps> = ({
     </div>
   );
 };
-
-export default TagButtons;

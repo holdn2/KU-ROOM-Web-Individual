@@ -8,7 +8,7 @@ interface SearchSuggestionsProps {
   onSuggestionClick: (suggestion: string) => void;
 }
 
-const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
+export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
   searchText,
   suggestions,
   onSuggestionClick,
@@ -42,5 +42,3 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
     </div>
   );
 };
-
-export default SearchSuggestions;

@@ -2,8 +2,8 @@ import React from "react";
 
 import kebabIcon from "@assets/icon/notice/search/kebab.svg";
 
-import SearchTag from "../SearchTag/SearchTag";
-import SearchHistoryMenu from "../SearchHistoryMenu/SearchHistoryMenu";
+import { SearchTag } from "../SearchTag";
+import { SearchHistoryMenu } from "../SearchHistoryMenu";
 import styles from "./SearchHistory.module.css";
 
 interface SearchHistoryProps {
@@ -15,7 +15,7 @@ interface SearchHistoryProps {
   onClearHistory: () => void;
 }
 
-const SearchHistory: React.FC<SearchHistoryProps> = ({
+export const SearchHistory: React.FC<SearchHistoryProps> = ({
   searchTerms,
   onRemoveTerm,
   onSelectTerm,
@@ -75,5 +75,3 @@ const SearchHistory: React.FC<SearchHistoryProps> = ({
     </div>
   );
 };
-
-export default SearchHistory;

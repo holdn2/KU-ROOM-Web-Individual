@@ -2,7 +2,7 @@ import type React from "react";
 
 import trashIcon from "@assets/icon/notice/search/trash.svg";
 
-import ToggleButton from "../ToggleButton/ToggleButton";
+import { ToggleButton } from "../ToggleButton";
 import styles from "./SearchHistoryMenu.module.css";
 
 interface SearchHistoryMenuProps {
@@ -12,7 +12,7 @@ interface SearchHistoryMenuProps {
   onClose: () => void;
 }
 
-const SearchHistoryMenu: React.FC<SearchHistoryMenuProps> = ({
+export const SearchHistoryMenu: React.FC<SearchHistoryMenuProps> = ({
   isHistoryEnabled,
   onToggleHistory,
   onClearHistory,
@@ -71,5 +71,3 @@ const SearchHistoryMenu: React.FC<SearchHistoryMenuProps> = ({
     </div>
   );
 };
-
-export default SearchHistoryMenu;

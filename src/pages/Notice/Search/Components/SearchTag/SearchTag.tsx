@@ -9,7 +9,7 @@ interface SearchTagProps {
   onRemove: () => void;
 }
 
-const SearchTag: React.FC<SearchTagProps> = ({ text, onRemove }) => {
+export const SearchTag: React.FC<SearchTagProps> = ({ text, onRemove }) => {
   const handleRemoveClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onRemove();
@@ -35,5 +35,3 @@ const SearchTag: React.FC<SearchTagProps> = ({ text, onRemove }) => {
     </div>
   );
 };
-
-export default SearchTag;

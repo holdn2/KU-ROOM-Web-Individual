@@ -10,7 +10,7 @@ interface NotificationBadgeProps {
   onToggle: () => void;
 }
 
-const NotificationBadge: React.FC<NotificationBadgeProps> = ({
+export const NotificationBadge: React.FC<NotificationBadgeProps> = ({
   keyword,
   isSubscribed,
   onToggle,
@@ -39,5 +39,3 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({
     </div>
   );
 };
-
-export default NotificationBadge;

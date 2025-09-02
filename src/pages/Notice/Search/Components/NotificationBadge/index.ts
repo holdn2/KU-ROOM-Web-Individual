@@ -1,1 +1,1 @@
-export { default } from './NotificationBadge';
+export { NotificationBadge } from "./NotificationBadge";

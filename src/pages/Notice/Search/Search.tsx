@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 import Header from "@components/Header/Header";
 
-import SearchInput from "./components/SearchInput";
-import SearchHistory from "./components/SearchHistory";
-import TagButtons from "./components/TagButtons";
-import NoticeList from "./components/NoticeList";
-import SearchResult from "./components/SearchResult";
-import NotificationBadge from "./components/NotificationBadge";
+import { SearchInput } from "./components/SearchInput";
+import { SearchHistory } from "./components/SearchHistory";
+import { TagButtons } from "./components/TagButtons";
+import { NoticeList } from "./components/NoticeList";
+import { SearchResult } from "./components/SearchResult";
+import { NotificationBadge } from "./components/NotificationBadge";
 import { getAllNotices } from "../utils/noticeUtils";
 import type { NoticeItem } from "../types/noticeTypes";
 import styles from "./Search.module.css";

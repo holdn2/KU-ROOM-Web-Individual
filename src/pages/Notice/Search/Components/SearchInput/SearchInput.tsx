@@ -11,7 +11,7 @@ interface SearchInputProps {
   onSearch?: (value: string) => void;
 }
 
-const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
+export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   ({ value, onChange, onSearch }, ref) => {
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter" && onSearch) {
@@ -51,7 +51,3 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     );
   }
 );
-
-SearchInput.displayName = "SearchInput";
-
-export default SearchInput;
