@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import { reissueTokenApi } from "@apis/axiosInstance";
 import Home from "@pages/Home/Home";
 import Notice from "@pages/Notice/Notice/Notice";
 import NoticeDetail from "@pages/Notice/NoticeDetail/NoticeDetail";
@@ -24,8 +27,6 @@ import DepartmentSetting from "@pages/MyPage/DepartmentSetting/DepartmentSetting
 import Bookmark from "@pages/Notice/Bookmark/Bookmark";
 import Search from "@pages/Notice/Search/Search";
 import OAuthCallback from "@pages/OAuthCallback/OAuthCallback";
-import { useEffect } from "react";
-import { reissueTokenApi } from "@apis/axiosInstance";
 
 import "@/shared/styles/global.css";
 
