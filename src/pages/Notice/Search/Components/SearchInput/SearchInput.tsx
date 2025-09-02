@@ -1,8 +1,9 @@
-import type React from "react";
-import { forwardRef } from "react";
+import React, { forwardRef } from "react";
+
+import searchIcon from "@assets/icon/search.svg";
+import closeIcon from "@assets/icon/notice/search/searchremove.svg";
+
 import styles from "./SearchInput.module.css";
-import searchIcon from "../../../../../assets/icon/search.svg";
-import closeIcon from "../../../../../assets/icon/notice/search/searchremove.svg";
 
 interface SearchInputProps {
   value: string;
@@ -10,7 +11,7 @@ interface SearchInputProps {
   onSearch?: (value: string) => void;
 }
 
-const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
+export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   ({ value, onChange, onSearch }, ref) => {
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter" && onSearch) {
@@ -50,7 +51,3 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     );
   }
 );
-
-SearchInput.displayName = "SearchInput";
-
-export default SearchInput;

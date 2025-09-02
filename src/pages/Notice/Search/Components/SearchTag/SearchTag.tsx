@@ -1,13 +1,15 @@
-import type React from "react";
+import React from "react";
+
+import closeIcon from "@assets/icon/notice/search/remove.svg";
+
 import styles from "./SearchTag.module.css";
-import closeIcon from "../../../../../assets/icon/notice/search/remove.svg";
 
 interface SearchTagProps {
   text: string;
   onRemove: () => void;
 }
 
-const SearchTag: React.FC<SearchTagProps> = ({ text, onRemove }) => {
+export const SearchTag: React.FC<SearchTagProps> = ({ text, onRemove }) => {
   const handleRemoveClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onRemove();
@@ -33,5 +35,3 @@ const SearchTag: React.FC<SearchTagProps> = ({ text, onRemove }) => {
     </div>
   );
 };
-
-export default SearchTag;

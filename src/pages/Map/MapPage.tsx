@@ -1,39 +1,41 @@
 // 지도 페이지
 import { useEffect, useRef, useState } from "react";
-import BottomBar from "../../components/BottomBar/BottomBar";
+
+import {
+  checkIsSharedApi,
+  getCategoryLocationsApi,
+  getUserShareLocation,
+} from "@apis/map";
+import DefaultProfileImg from "@assets/defaultProfileImg.svg";
+import myTrackingIcon from "@assets/map/tomylocation.svg";
+import shareLocationIcon from "@assets/map/shareLocation.svg";
+import unshareLocationIcon from "@assets/map/shareLocationWhite.svg";
+import BottomBar from "@components/BottomBar/BottomBar";
+import ShareLocationModal from "@components/ShareLocationModal/ShareLocationModal";
+
 import styles from "./MapPage.module.css";
-import myTrackingIcon from "../../assets/map/tomylocation.svg";
-import shareLocationIcon from "../../assets/map/shareLocation.svg";
-import unshareLocationIcon from "../../assets/map/shareLocationWhite.svg";
-import MapSearchBar from "../../components/Map/MapSearchBar/MapSearchBar";
-import MapCategoryChip from "../../components/Map/MapCategoryChip/MapCategoryChip";
-import KuroomMap from "../../components/Map/KuroomMap";
-import MapSearch from "../../components/Map/MapSearch/MapSearch";
-import SearchResultHeader from "../../components/Map/MapSearch/SearchResultHeader";
-import LocationsBottomSheet from "../../components/Map/LocationsBottomSheet/LocationsBottomSheet";
-import FocusedLocationBottomSheet from "../../components/Map/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
-import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
-import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
+import MapSearchBar from "./components/MapSearchBar/MapSearchBar";
+import MapCategoryChip from "./components/MapCategoryChip/MapCategoryChip";
+import KuroomMap from "./components/KuroomMap";
+import MapSearch from "./components/MapSearch/MapSearch";
+import LocationsBottomSheet from "./components/LocationsBottomSheet/LocationsBottomSheet";
+import FocusedLocationBottomSheet from "./components/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
+import { isMyLocationInSchool } from "@utils/mapRangeUtils";
 import {
   Coordinate,
   DetailPlaceData,
   MapSearchResult,
   MarkerData,
   PlaceData,
-} from "../../../types/mapTypes";
-import {
-  checkIsSharedApi,
-  getCategoryLocationsApi,
-  getUserShareLocation,
-} from "../../apis/map";
+} from "@/shared/types/mapTypes";
 import {
   clearAllMarkers,
   makeFocusMarker,
   makeMarkerIcon,
   renderedMarkers,
   renderMarkers,
-} from "../../components/Map/kuroomMapUtils";
-import DefaultProfileImg from "../../assets/defaultProfileImg.svg";
+} from "./utils/kuroomMapUtils";
+import SearchResultHeader from "./components/MapSearch/SearchResultHeader";
 
 const includeBottomSheetList = [
   "건물",

@@ -1,7 +1,10 @@
 import React, { ChangeEvent } from "react";
+
+import InputBar from "@components/InputBar/InputBar";
+import Button from "@components/Button/Button";
+
 import styles from "./FindIdPw.module.css";
-import InputBar from "../../components/InputBar/InputBar";
-import Button from "../../components/Button/Button";
+
 interface Step2Props {
   userId: string;
   informEmail: string;

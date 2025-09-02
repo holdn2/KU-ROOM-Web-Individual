@@ -1,6 +1,8 @@
-import type React from "react";
+import React from "react";
+
+import notificationIcon from "@assets/icon/notice/search/bell.svg";
+
 import styles from "./NotificationBadge.module.css";
-import notificationIcon from "../../../../../assets/icon/notice/search/bell.svg";
 
 interface NotificationBadgeProps {
   keyword: string;
@@ -8,7 +10,7 @@ interface NotificationBadgeProps {
   onToggle: () => void;
 }
 
-const NotificationBadge: React.FC<NotificationBadgeProps> = ({
+export const NotificationBadge: React.FC<NotificationBadgeProps> = ({
   keyword,
   isSubscribed,
   onToggle,
@@ -37,5 +39,3 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({
     </div>
   );
 };
-
-export default NotificationBadge;

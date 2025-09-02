@@ -1,8 +1,10 @@
 import React, { ChangeEvent } from "react";
+
+import InputBar from "@components/InputBar/InputBar";
+import Button from "@components/Button/Button";
+import { isValidEmail } from "@utils/validations";
+
 import styles from "./FindIdPw.module.css";
-import InputBar from "../../components/InputBar/InputBar";
-import { isValidEmail } from "../../utils/validations";
-import Button from "../../components/Button/Button";
 
 interface Step0Props {
   informEmail: string;

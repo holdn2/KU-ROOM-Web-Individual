@@ -1,14 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import styles from "./MyLocationRanking.module.css";
-import Header from "../../components/Header/Header";
-import Button from "../../components/Button/Button";
-import rank1Icon from "../../assets/icon/ranking/rank1.png";
-import rank2Icon from "../../assets/icon/ranking/rank2.png";
-import rank3Icon from "../../assets/icon/ranking/rank3.png";
 import { useEffect, useState } from "react";
-import ShareBottomSheet from "../../components/ShareBottomSheet/ShareBottomSheet";
-import { RankListType } from "../../../types/rankTypes";
-import { getSharingRanking } from "../../apis/home";
+import { useNavigate } from "react-router-dom";
+
+import rank1Icon from "@assets/icon/ranking/rank1.png";
+import rank2Icon from "@assets/icon/ranking/rank2.png";
+import rank3Icon from "@assets/icon/ranking/rank3.png";
+import { getSharingRanking } from "@apis/home";
+import Header from "@components/Header/Header";
+import Button from "@components/Button/Button";
+import { RankListType } from "@/shared/types";
+
+import ShareBottomSheet from "./components/ShareBottomSheet/ShareBottomSheet";
+import styles from "./MyLocationRanking.module.css";
 
 const dummyFriendRanking = [
   {

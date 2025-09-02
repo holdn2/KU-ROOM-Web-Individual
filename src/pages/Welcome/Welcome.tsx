@@ -1,8 +1,10 @@
 import React from "react";
-import "./Welcome.css";
-import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
-import fanfareIcon from "../../assets/icon/폭죽.png";
+
+import fanfareIcon from "@assets/icon/firecracker.png";
+import Button from "@components/Button/Button";
+
+import "./Welcome.css";
 
 const WelcomePage: React.FC = () => {
   const navigate = useNavigate();

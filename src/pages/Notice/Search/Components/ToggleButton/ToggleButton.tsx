@@ -1,11 +1,14 @@
-import type React from "react";
+import React from "react";
 
 interface ToggleButtonProps {
   isOn: boolean;
   onToggle: () => void;
 }
 
-const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn, onToggle }) => {
+export const ToggleButton: React.FC<ToggleButtonProps> = ({
+  isOn,
+  onToggle,
+}) => {
   return (
     <svg
       width="48"
@@ -125,5 +128,3 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ isOn, onToggle }) => {
     </svg>
   );
 };
-
-export default ToggleButton;

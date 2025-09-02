@@ -1,15 +1,17 @@
-import type React from "react";
+import React from "react";
+
+import searchresultIcon from "@assets/icon/notice/search/searchresult.svg";
+
+import type { NoticeItem } from "../../../types/noticeTypes";
+import { NoticeList } from "../NoticeList";
 import styles from "./SearchResult.module.css";
-import type { NoticeItem } from "../../../../../services/NoticeService";
-import NoticeList from "../../../Notice/NoticeList/NoticeList";
-import searchresultIcon from "../../../../../assets/icon/notice/search/searchresult.svg";
 
 interface SearchResultProps {
   filteredNotices: NoticeItem[];
   onItemClick: (noticeId: string) => void;
 }
 
-const SearchResult: React.FC<SearchResultProps> = ({
+export const SearchResult: React.FC<SearchResultProps> = ({
   filteredNotices,
   onItemClick,
 }) => {
@@ -28,5 +30,3 @@ const SearchResult: React.FC<SearchResultProps> = ({
     </div>
   );
 };
-
-export default SearchResult;

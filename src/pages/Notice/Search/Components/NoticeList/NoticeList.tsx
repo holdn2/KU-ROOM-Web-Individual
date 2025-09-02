@@ -1,5 +1,6 @@
-import type React from "react";
-import type { NoticeItem } from "../../../../../services/NoticeService";
+import React from "react";
+
+import type { NoticeItem } from "../../../types/noticeTypes";
 import styles from "./NoticeList.module.css";
 
 interface NoticeListProps {
@@ -7,7 +8,10 @@ interface NoticeListProps {
   onItemClick?: (noticeId: string) => void;
 }
 
-const NoticeList: React.FC<NoticeListProps> = ({ notices, onItemClick }) => {
+export const NoticeList: React.FC<NoticeListProps> = ({
+  notices,
+  onItemClick,
+}) => {
   return (
     <div className={styles.noticeList}>
       {notices.map((notice, index) => (
@@ -30,5 +34,3 @@ const NoticeList: React.FC<NoticeListProps> = ({ notices, onItemClick }) => {
     </div>
   );
 };
-
-export default NoticeList;

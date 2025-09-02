@@ -1,0 +1,1 @@
+export { SearchTag } from "./SearchTag";

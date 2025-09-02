@@ -1,4 +1,5 @@
-import type React from "react";
+import React from "react";
+
 import styles from "./SearchSuggestions.module.css";
 
 interface SearchSuggestionsProps {
@@ -7,7 +8,7 @@ interface SearchSuggestionsProps {
   onSuggestionClick: (suggestion: string) => void;
 }
 
-const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
+export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
   searchText,
   suggestions,
   onSuggestionClick,
@@ -41,5 +42,3 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
     </div>
   );
 };
-
-export default SearchSuggestions;

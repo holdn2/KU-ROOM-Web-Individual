@@ -1,32 +1,34 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./styles/global.css";
-import Home from "./pages/Home/Home";
-import Notice from "./pages/Notice/Notice/Notice";
-import NoticeDetail from "./pages/Notice/Notice/NoticeDetail/NoticeDetail";
-import Login from "./pages/Login/Login";
-import FindIdPw from "./pages/FindIdPw/FindIdPw";
-import SignupInfo from "./pages/Signup/SignupInfo";
-import IdentityVerify from "./pages/Signup/IdentityVerify";
-import ProfileSetting from "./pages/ProfileSetting/ProfileSetting";
-import Welcome from "./pages/Welcome/Welcome";
-import Agreement from "./pages/Signup/Agreement";
-import MyPage from "./pages/MyPage/MyPage";
-import ProfileChange from "./pages/MyPage/ProfileChange/ProfileChange";
-import ChangePw from "./pages/MyPage/ChangePw/ChangePw";
-import ChangeNickname from "./pages/MyPage/ChangeNickname/ChangeNickname";
-import AlarmSetting from "./pages/MyPage/AlarmSetting/AlarmSetting";
-import Alarm from "./pages/Alarm/Alarm";
-import MyLocationRanking from "./pages/MyLocationRanking/MyLocationRanking";
-import FriendList from "./pages/MyPage/FriendList/FriendList";
-import FriendAdd from "./pages/MyPage/FriendAdd/FriendAdd";
-import FriendLocationRanking from "./pages/MyLocationRanking/FriendLocationRanking/FriendLocationRanking";
-import MapPage from "./pages/Map/MapPage";
-import DepartmentSetting from "./pages/MyPage/DepartmentSetting/DepartmentSetting";
-import Bookmark from "./pages/Notice/Bookmark/Bookmark";
-import Search from "./pages/Notice/Search/Search";
-import OAuthCallback from "./pages/OAuthCallback/OAuthCallback";
 import { useEffect } from "react";
-import { reissueTokenApi } from "./apis/axiosInstance";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import { reissueTokenApi } from "@apis/axiosInstance";
+import Home from "@pages/Home/Home";
+import Notice from "@pages/Notice/Notice/Notice";
+import NoticeDetail from "@pages/Notice/NoticeDetail/NoticeDetail";
+import Login from "@pages/Login/Login";
+import FindIdPw from "@pages/FindIdPw/FindIdPw";
+import SignupInfo from "@pages/Signup/SignupInfo";
+import IdentityVerify from "@pages/Signup/IdentityVerify";
+import ProfileSetting from "@pages/ProfileSetting/ProfileSetting";
+import Welcome from "@pages/Welcome/Welcome";
+import Agreement from "@pages/Signup/Agreement";
+import MyPage from "@pages/MyPage/MyPageMain/MyPage";
+import ProfileChange from "@pages/MyPage/ProfileChange/ProfileChange";
+import ChangePw from "@pages/MyPage/ChangePw/ChangePw";
+import ChangeNickname from "@pages/MyPage/ChangeNickname/ChangeNickname";
+import AlarmSetting from "@pages/MyPage/AlarmSetting/AlarmSetting";
+import Alarm from "@pages/Alarm/Alarm";
+import MyLocationRanking from "@pages/MyLocationRanking/MyLocationRanking";
+import FriendList from "@pages/MyPage/FriendList/FriendList";
+import FriendAdd from "@pages/MyPage/FriendAdd/FriendAdd";
+import FriendLocationRanking from "@pages/MyLocationRanking/FriendLocationRanking/FriendLocationRanking";
+import MapPage from "@pages/Map/MapPage";
+import DepartmentSetting from "@pages/MyPage/DepartmentSetting/DepartmentSetting";
+import Bookmark from "@pages/Notice/Bookmark/Bookmark";
+import Search from "@pages/Notice/Search/Search";
+import OAuthCallback from "@pages/OAuthCallback/OAuthCallback";
+
+import "@/shared/styles/global.css";
 
 function App() {
   useEffect(() => {

@@ -1,21 +1,22 @@
 // 홈 페이지
-import BottomBar from "../../components/BottomBar/BottomBar";
-import styles from "./Home.module.css";
-import Header from "../../components/Header/Header";
-import HomeMenu from "../../components/HomeContent/HomeMenu/HomeMenu";
-import HomeMiniMap from "../../components/HomeContent/HomeMiniMap/HomeMiniMap";
-import HomeSildeBanner from "../../components/HomeContent/HomeSlideBanner/HomeSildeBanner";
 import { useEffect, useState } from "react";
-// import Splash from "../../components/Splash";
-import FriendLocation from "../../components/HomeContent/FriendLocation/FriendLocation";
-import MyLocationRanking from "../../components/HomeContent/MyLocationRanking/MyLocationRanking";
-import HomeNotice from "../../components/HomeContent/HomeNotice/HomeNotice";
-// import { useNavigate } from "react-router-dom";
-import ShareLocationModal from "../../components/Map/ShareLocationModal/ShareLocationModal";
-import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
-import { Coordinate } from "../../../types/mapTypes";
-import { checkIsSharedApi } from "../../apis/map";
 import { useNavigate } from "react-router-dom";
+
+import { checkIsSharedApi } from "@apis/map";
+// import Splash from "@components/Splash";
+import BottomBar from "@components/BottomBar/BottomBar";
+import Header from "@components/Header/Header";
+import ShareLocationModal from "@components/ShareLocationModal/ShareLocationModal";
+import { isMyLocationInSchool } from "@utils/mapRangeUtils";
+import { Coordinate } from "@/shared/types";
+
+import HomeMenu from "./components/HomeMenu/HomeMenu";
+import HomeMiniMap from "./components/HomeMiniMap/HomeMiniMap";
+import HomeSildeBanner from "./components/HomeSlideBanner/HomeSildeBanner";
+import FriendLocation from "./components/FriendLocation/FriendLocation";
+import MyLocationRanking from "./components/MyLocationRanking/MyLocationRanking";
+import HomeNotice from "./components/HomeNotice/HomeNotice";
+import styles from "./Home.module.css";
 
 const Home = () => {
   const navigate = useNavigate();

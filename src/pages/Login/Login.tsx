@@ -1,18 +1,17 @@
-import type { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
-import { EdgeGuard } from "../../EdgeGuard";
+import { useEffect, useState, type ChangeEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import { loginApi } from "@apis/auth";
+import googleIcon from "@assets/socialLoginIcon/googleLogin.svg";
+import kakaoIcon from "@assets/socialLoginIcon/kakaoLogin.svg";
+import naverIcon from "@assets/socialLoginIcon/naverLogin.svg";
+import Button from "@components/Button/Button";
+import { EdgeGuard } from "@components/EdgeGuard";
+import InputBar from "@components/InputBar/InputBar";
+import TopIcon from "@components/TopIcon";
+import { useUserStore } from "@stores/userStore";
 
 import styles from "./Login.module.css";
-import InputBar from "../../components/InputBar/InputBar";
-import Button from "../../components/Button/Button";
-import kakaoIcon from "../../assets/socialLoginIcon/kakaoLogin.svg";
-import naverIcon from "../../assets/socialLoginIcon/naverLogin.svg";
-import googleIcon from "../../assets/socialLoginIcon/googleLogin.svg";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import TopIcon from "../../components/TopIcon";
-import { loginApi } from "../../apis/auth";
-import { useUserStore } from "../../stores/userStore";
 
 const Login = () => {
   const navigate = useNavigate();

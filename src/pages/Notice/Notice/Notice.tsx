@@ -1,16 +1,21 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./Notice.module.css";
-import Select from "../../../components/profilesetting/Select/Select";
-import BottomSheet from "../../../components/profilesetting/BottomSheet/BottomSheet";
-import Header from "../../../components/Header/Header";
-import BottomBar from "../../../components/BottomBar/BottomBar";
-import chatbot from "../../../assets/icon/chat-bot.svg";
-import { departments, colleges } from "../../../constants/dummyData";
-import NoticeService, {
+
+import chatbot from "@assets/icon/chat-bot.svg";
+import Header from "@components/Header/Header";
+import BottomBar from "@components/BottomBar/BottomBar";
+import { departments, colleges } from "@constant/dummyData";
+
+import Select from "../../ProfileSetting/components/Select/Select";
+import BottomSheet from "../../ProfileSetting/components/BottomSheet/BottomSheet";
+import {
+  getNoticesByCategory,
+  getNoticesByDepartment,
+  getNoticesByExternalSource,
   initializeBookmarks,
-} from "../../../services/NoticeService";
-import type { NoticeItem } from "../../../services/NoticeService";
+} from "../utils/noticeUtils";
+import { NoticeItem } from "../types/noticeTypes";
+import styles from "./Notice.module.css";
 
 type DepartmentsType = {
   [key: string]: string[];
@@ -76,18 +81,17 @@ const Notice = () => {
   const loadNoticesByCategory = useCallback(() => {
     if (activeTab === "학과") {
       // 학과 공지사항은 선택된 학과에 맞게 필터링
-      const departmentNotices =
-        NoticeService.getNoticesByDepartment(selectedDepartment);
+      const departmentNotices = getNoticesByDepartment(selectedDepartment);
       setNotices(departmentNotices.length > 0 ? departmentNotices : []);
     } else if (activeTab === "외부") {
       // 외부 공지사항은 선택된 카테고리에 맞게 필터링
-      const externalNotices = NoticeService.getNoticesByExternalSource(
+      const externalNotices = getNoticesByExternalSource(
         selectedExternalCategory
       );
       setNotices(externalNotices.length > 0 ? externalNotices : []);
     } else {
       // 해당 카테고리 공지사항 필터링
-      const categoryNotices = NoticeService.getNoticesByCategory(activeTab);
+      const categoryNotices = getNoticesByCategory(activeTab);
       setNotices(categoryNotices);
     }
   }, [activeTab, selectedDepartment, selectedExternalCategory]);

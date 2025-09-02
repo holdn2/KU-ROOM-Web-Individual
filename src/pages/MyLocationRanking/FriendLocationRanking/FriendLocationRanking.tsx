@@ -1,9 +1,11 @@
 import { useLocation } from "react-router-dom";
-import Header from "../../../components/Header/Header";
+
+import rank1Icon from "@assets/icon/ranking/rank1.png";
+import rank2Icon from "@assets/icon/ranking/rank2.png";
+import rank3Icon from "@assets/icon/ranking/rank3.png";
+import Header from "@components/Header/Header";
+
 import styles from "./FriendLocationRankin.module.css";
-import rank1Icon from "../../../assets/icon/ranking/rank1.png";
-import rank2Icon from "../../../assets/icon/ranking/rank2.png";
-import rank3Icon from "../../../assets/icon/ranking/rank3.png";
 
 const dummyFriendRankingData = [
   {

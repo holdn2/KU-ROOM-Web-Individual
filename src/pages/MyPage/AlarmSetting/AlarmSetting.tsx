@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import Header from "../../../components/Header/Header";
-import ProfileSection from "../../../components/MyProfile/ProfileSection";
-import { AlarmSectionData } from "../../../constants/sectionDatas";
+
+import Header from "@components/Header/Header";
+import { AlarmSectionData } from "@constant/sectionDatas";
+
+import ProfileSection from "../components/ProfileSection/ProfileSection";
 
 const AlarmSetting = () => {
   // 키워드 더미 데이터

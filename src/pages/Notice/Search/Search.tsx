@@ -1,15 +1,16 @@
-import type React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../../components/Header/Header";
-import SearchInput from "./Components/SearchInput/SearchInput";
-import SearchHistory from "./Components/SearchHistory/SearchHistory";
-import TagButtons from "./Components/TagButtons/TagButtons";
-import SearchNoticeList from "./Components/NoticeList/NoticeList";
-import SearchResult from "./Components/SearchResult/SearchResult";
-import NotificationBadge from "./Components/NotificationBadge/NotificationBadge";
-import { getAllNotices } from "../../../services/NoticeService";
-import type { NoticeItem } from "../../../services/NoticeService";
+
+import Header from "@components/Header/Header";
+
+import { SearchInput } from "./Components/SearchInput";
+import { SearchHistory } from "./Components/SearchHistory";
+import { TagButtons } from "./Components/TagButtons";
+import { NoticeList } from "./Components/NoticeList";
+import { SearchResult } from "./Components/SearchResult";
+import { NotificationBadge } from "./Components/NotificationBadge";
+import { getAllNotices } from "../utils/noticeUtils";
+import type { NoticeItem } from "../types/noticeTypes";
 import styles from "./Search.module.css";
 
 const Search: React.FC = () => {
@@ -135,15 +136,15 @@ const Search: React.FC = () => {
           />
 
           <h2 className={styles.sectionTitle}>인기 공지</h2>
-          <SearchNoticeList
+          <NoticeList
             notices={notices.slice(0, 3)}
-            onItemClick={(noticeId) => navigateToNoticeDetail(noticeId)}
+            onItemClick={(noticeId: string) => navigateToNoticeDetail(noticeId)}
           />
 
           <h2 className={styles.sectionTitle}>주요 공지</h2>
-          <SearchNoticeList
+          <NoticeList
             notices={notices.slice(5, 8)}
-            onItemClick={(noticeId) => navigateToNoticeDetail(noticeId)}
+            onItemClick={(noticeId: string) => navigateToNoticeDetail(noticeId)}
           />
         </>
       ) : (

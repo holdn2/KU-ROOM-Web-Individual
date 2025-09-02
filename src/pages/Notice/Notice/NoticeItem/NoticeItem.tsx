@@ -1,9 +1,10 @@
 import type React from "react";
+
+import type { NoticeItem } from "../../types/noticeTypes";
 import styles from "./NoticeItem.module.css";
-import type { NoticeItem as NoticeItemType } from "../../../../services/NoticeService";
 
 interface NoticeItemProps {
-  notice: NoticeItemType;
+  notice: NoticeItem;
   onItemClick: (noticeId: string) => void;
 }
 

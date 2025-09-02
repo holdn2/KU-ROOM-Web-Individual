@@ -1,12 +1,13 @@
-import type React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../../components/Header/Header";
-import BottomBar from "../../../components/BottomBar/BottomBar";
+
+import ArrowIcon from "@assets/icon/notice/search/sevrondown.svg";
+import Header from "@components/Header/Header";
+import BottomBar from "@components/BottomBar/BottomBar";
+
+import type { BookmarkItem } from "../types/noticeTypes";
+import { getBookmarks } from "../utils/noticeUtils";
 import styles from "./Bookmark.module.css";
-import type { BookmarkItem } from "../../../services/NoticeService";
-import NoticeService from "../../../services/NoticeService";
-import ArrowIcon from "../../../assets/icon/notice/search/sevrondown.svg";
 
 const Bookmark: React.FC = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Bookmark: React.FC = () => {
   const sortOptionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const storedBookmarks = NoticeService.getBookmarks();
+    const storedBookmarks = getBookmarks();
     sortAndSetBookmarks(storedBookmarks, sortOrder);
   }, [sortOrder]);
 
