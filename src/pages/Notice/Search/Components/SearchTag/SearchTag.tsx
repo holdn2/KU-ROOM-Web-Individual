@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 
 import closeIcon from "@assets/icon/notice/search/remove.svg";
 

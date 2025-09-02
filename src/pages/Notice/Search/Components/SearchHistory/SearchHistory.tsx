@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import kebabIcon from "@assets/icon/notice/search/kebab.svg";
 
@@ -23,7 +23,7 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({
   onToggleHistory,
   onClearHistory,
 }) => {
-  const [showMenu, setShowMenu] = React.useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleKebabClick = () => {
     setShowMenu(true);

@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import React, { forwardRef } from "react";
 
 import searchIcon from "@assets/icon/search.svg";
 import closeIcon from "@assets/icon/notice/search/searchremove.svg";

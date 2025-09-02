@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 
 import notificationIcon from "@assets/icon/notice/search/bell.svg";
 
