@@ -1,109 +1,109 @@
-// import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Header from "@components/Header/Header";
 
-// import SearchInput from "./components/SearchInput/SearchInput";
-// import SearchHistory from "./components/SearchHistory/SearchHistory";
-// import TagButtons from "./components/TagButtons/TagButtons";
-// import NoticeList from "./components/NoticeList/NoticeList";
-// import SearchResult from "./components/SearchResult/SearchResult";
-// import NotificationBadge from "./components/NotificationBadge/NotificationBadge";
-// import { getAllNotices } from "../utils/noticeUtils";
-// import type { NoticeItem } from "../types/noticeTypes";
+import SearchInput from "./components/SearchInput";
+import SearchHistory from "./components/SearchHistory";
+import TagButtons from "./components/TagButtons";
+import NoticeList from "./components/NoticeList";
+import SearchResult from "./components/SearchResult";
+import NotificationBadge from "./components/NotificationBadge";
+import { getAllNotices } from "../utils/noticeUtils";
+import type { NoticeItem } from "../types/noticeTypes";
 import styles from "./Search.module.css";
 
 const Search: React.FC = () => {
-  // const navigate = useNavigate();
-  // const [searchText, setSearchText] = useState("");
-  // const [notices, setNotices] = useState<NoticeItem[]>([]);
-  // const [filteredNotices, setFilteredNotices] = useState<NoticeItem[]>([]);
-  // const [searchHistory, setSearchHistory] = useState<string[]>([
-  //   "입학식",
-  //   "수강 신청",
-  //   "장학금",
-  // ]);
-  // const [subscribedKeywords, setSubscribedKeywords] = useState<string[]>([]);
-  // const [isHistoryEnabled, setIsHistoryEnabled] = useState(true);
+  const navigate = useNavigate();
+  const [searchText, setSearchText] = useState("");
+  const [notices, setNotices] = useState<NoticeItem[]>([]);
+  const [filteredNotices, setFilteredNotices] = useState<NoticeItem[]>([]);
+  const [searchHistory, setSearchHistory] = useState<string[]>([
+    "입학식",
+    "수강 신청",
+    "장학금",
+  ]);
+  const [subscribedKeywords, setSubscribedKeywords] = useState<string[]>([]);
+  const [isHistoryEnabled, setIsHistoryEnabled] = useState(true);
 
-  // useEffect(() => {
-  //   // 모든 공지사항 가져오기
-  //   const allNotices = getAllNotices();
-  //   setNotices(allNotices);
-  //   setFilteredNotices(allNotices);
-  // }, []);
+  useEffect(() => {
+    // 모든 공지사항 가져오기
+    const allNotices = getAllNotices();
+    setNotices(allNotices);
+    setFilteredNotices(allNotices);
+  }, []);
 
-  // useEffect(() => {
-  //   // 검색어에 따라 공지사항 필터링
-  //   let filtered = notices;
+  useEffect(() => {
+    // 검색어에 따라 공지사항 필터링
+    let filtered = notices;
 
-  //   if (searchText) {
-  //     filtered = filtered.filter((notice) =>
-  //       notice.title.toLowerCase().includes(searchText.toLowerCase())
-  //     );
-  //   }
+    if (searchText) {
+      filtered = filtered.filter((notice) =>
+        notice.title.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
 
-  //   setFilteredNotices(filtered);
-  // }, [searchText, notices]);
+    setFilteredNotices(filtered);
+  }, [searchText, notices]);
 
-  // const handleTagClick = (tag: string) => {
-  //   setSearchText(tag);
+  const handleTagClick = (tag: string) => {
+    setSearchText(tag);
 
-  //   // 검색 히스토리에 추가
-  //   if (isHistoryEnabled && !searchHistory.includes(tag)) {
-  //     setSearchHistory((prev) => [tag, ...prev].slice(0, 10));
-  //   }
-  // };
+    // 검색 히스토리에 추가
+    if (isHistoryEnabled && !searchHistory.includes(tag)) {
+      setSearchHistory((prev) => [tag, ...prev].slice(0, 10));
+    }
+  };
 
-  // const handleRemoveSearchTerm = (term: string) => {
-  //   setSearchHistory((prev) => prev.filter((t) => t !== term));
-  // };
+  const handleRemoveSearchTerm = (term: string) => {
+    setSearchHistory((prev) => prev.filter((t) => t !== term));
+  };
 
-  // const handleSelectSearchTerm = (term: string) => {
-  //   // 최근 검색어 태그 클릭 시 검색창에 입력하고 검색 실행
-  //   setSearchText(term);
-  // };
+  const handleSelectSearchTerm = (term: string) => {
+    // 최근 검색어 태그 클릭 시 검색창에 입력하고 검색 실행
+    setSearchText(term);
+  };
 
-  // const handleSearch = (text: string) => {
-  //   setSearchText(text);
+  const handleSearch = (text: string) => {
+    setSearchText(text);
 
-  //   // 검색어가 있고, 엔터 등의 검색 이벤트가 발생했을 때 히스토리에 추가
-  //   if (text && isHistoryEnabled && !searchHistory.includes(text)) {
-  //     setSearchHistory((prev) => [text, ...prev].slice(0, 10)); // 최대 10개 유지
-  //   }
-  // };
+    // 검색어가 있고, 엔터 등의 검색 이벤트가 발생했을 때 히스토리에 추가
+    if (text && isHistoryEnabled && !searchHistory.includes(text)) {
+      setSearchHistory((prev) => [text, ...prev].slice(0, 10)); // 최대 10개 유지
+    }
+  };
 
-  // const navigateToNoticeDetail = (noticeId: string) => {
-  //   // 검색 결과에서 어떤 카테고리로 이동할지 결정
-  //   const notice = notices.find((n) => n.id === noticeId);
-  //   const category = notice?.category || "학사";
-  //   navigate(`/notice/${category}/${noticeId}`);
-  // };
+  const navigateToNoticeDetail = (noticeId: string) => {
+    // 검색 결과에서 어떤 카테고리로 이동할지 결정
+    const notice = notices.find((n) => n.id === noticeId);
+    const category = notice?.category || "학사";
+    navigate(`/notice/${category}/${noticeId}`);
+  };
 
-  // const handleToggleNotification = (keyword: string) => {
-  //   setSubscribedKeywords((prev) => {
-  //     if (prev.includes(keyword)) {
-  //       return prev.filter((k) => k !== keyword);
-  //     }
-  //     return [...prev, keyword];
-  //   });
-  // };
+  const handleToggleNotification = (keyword: string) => {
+    setSubscribedKeywords((prev) => {
+      if (prev.includes(keyword)) {
+        return prev.filter((k) => k !== keyword);
+      }
+      return [...prev, keyword];
+    });
+  };
 
-  // const handleToggleHistory = () => {
-  //   setIsHistoryEnabled((prev) => !prev);
-  // };
+  const handleToggleHistory = () => {
+    setIsHistoryEnabled((prev) => !prev);
+  };
 
-  // const handleClearHistory = () => {
-  //   setSearchHistory([]);
-  // };
+  const handleClearHistory = () => {
+    setSearchHistory([]);
+  };
 
   // 검색어가 있으면 검색 결과만 표시
-  // const isSearching = searchText.length > 0;
+  const isSearching = searchText.length > 0;
 
   return (
     <div className={styles.container}>
       <Header>검색</Header>
-      {/* 
+
       <SearchInput
         value={searchText}
         onChange={setSearchText}
@@ -159,7 +159,7 @@ const Search: React.FC = () => {
             onItemClick={navigateToNoticeDetail}
           />
         </>
-      )} */}
+      )}
     </div>
   );
 };
