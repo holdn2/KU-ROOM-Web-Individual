@@ -1,10 +1,12 @@
-import Button from "../../../shared/components/Button/Button";
-import styles from "./HomeMiniMap.module.css";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import KuroomMap from "@/pages/Map/components/KuroomMap";
-import { getUserShareLocation } from "../../../apis/map";
-import { Coordinate } from "@/pages/Map/types/mapTypes";
+
+import { getUserShareLocation } from "@apis/map";
+import Button from "@components/Button/Button";
+import KuroomMap from "@pages/Map/components/KuroomMap";
+import { Coordinate } from "@/shared/types";
+
+import styles from "./HomeMiniMap.module.css";
 
 interface HomeMiniMapProps {
   isSharedLocation: boolean;

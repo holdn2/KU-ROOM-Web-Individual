@@ -1,6 +1,8 @@
 import type React from "react";
+
+import closeIcon from "@assets/icon/notice/search/remove.svg";
+
 import styles from "./SearchTag.module.css";
-import closeIcon from "../../../../../assets/icon/notice/search/remove.svg";
 
 interface SearchTagProps {
   text: string;

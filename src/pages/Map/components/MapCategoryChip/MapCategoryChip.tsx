@@ -1,8 +1,9 @@
 import React from "react";
 
+import { CategoryEnum } from "@/shared/types";
+
 import styles from "./MapCategoryChip.module.css";
 import { CategoryChips } from "../../constant/MapData";
-import { CategoryEnum } from "../../types/mapTypes";
 
 const getCategoryEnum = (title: string): CategoryEnum | undefined => {
   switch (title) {
@@ -53,7 +54,7 @@ const MapCategoryChip: React.FC<MapCategoryChip> = ({
       return console.error("잘못된 칩 클릭");
     }
     setSelectedCategoryEnum(name);
-    // console.log(title);
+    console.log(title);
     setIsTracking(false);
   };
 

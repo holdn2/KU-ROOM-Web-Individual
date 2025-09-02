@@ -1,8 +1,10 @@
 import React from "react";
+
+import kebabIcon from "@assets/icon/notice/search/kebab.svg";
+
 import SearchTag from "../SearchTag/SearchTag";
 import SearchHistoryMenu from "../SearchHistoryMenu/SearchHistoryMenu";
 import styles from "./SearchHistory.module.css";
-import kebabIcon from "../../../../../assets/icon/notice/search/kebab.svg";
 
 interface SearchHistoryProps {
   searchTerms: string[];

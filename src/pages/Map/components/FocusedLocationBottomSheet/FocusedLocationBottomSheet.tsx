@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { BeatLoader } from "react-spinners";
 
 import useBottomSheetDrag from "@pages/Map/hooks/useBottomSheetDrag";
+import { DetailPlaceData } from "@/shared/types";
 
 import styles from "./FocusedLocationBottomSheet.module.css";
 import LocationInfoTopContent from "./LocationInfoTopContent/LocationInfoTopContent";
 import FocusedLocationInfo from "./FocusedLocationInfo/FocusedLocationInfo";
-import { DetailPlaceData } from "../../types/mapTypes";
 
 interface FocusedLocationBottomSheetProps {
   hasFocusedMarker: boolean;

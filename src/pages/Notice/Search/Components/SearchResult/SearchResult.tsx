@@ -1,8 +1,10 @@
 import type React from "react";
+
+import searchresultIcon from "@assets/icon/notice/search/searchresult.svg";
+
+import type { NoticeItem } from "../../../types/noticeTypes";
+import NoticeList from "../NoticeList/NoticeList";
 import styles from "./SearchResult.module.css";
-import type { NoticeItem } from "../../../../../services/NoticeService";
-import NoticeList from "../../../Notice/NoticeList/NoticeList";
-import searchresultIcon from "../../../../../assets/icon/notice/search/searchresult.svg";
 
 interface SearchResultProps {
   filteredNotices: NoticeItem[];

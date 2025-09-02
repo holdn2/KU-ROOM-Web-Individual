@@ -7,9 +7,9 @@ import Button from "@components/Button/Button";
 import InputBar from "@components/InputBar/InputBar";
 import { isValidStudentId } from "@utils/validations";
 
-import Select from "../../components/profilesetting/Select/Select";
-import BottomSheet from "../../components/profilesetting/BottomSheet/BottomSheet";
-import SelectItem from "../../components/profilesetting/SelectItem/SelectItem";
+import Select from "./components/Select/Select";
+import BottomSheet from "./components/BottomSheet/BottomSheet";
+import SelectItem from "./components/SelectItem/SelectItem";
 import "./ProfileSetting.css";
 
 const ProfileSetting: React.FC = () => {

@@ -7,10 +7,11 @@ import {
   getUserShareLocation,
 } from "@apis/map";
 import DefaultProfileImg from "@assets/defaultProfileImg.svg";
-import BottomBar from "@components/BottomBar/BottomBar";
 import myTrackingIcon from "@assets/map/tomylocation.svg";
 import shareLocationIcon from "@assets/map/shareLocation.svg";
 import unshareLocationIcon from "@assets/map/shareLocationWhite.svg";
+import BottomBar from "@components/BottomBar/BottomBar";
+import ShareLocationModal from "@components/ShareLocationModal/ShareLocationModal";
 
 import styles from "./MapPage.module.css";
 import MapSearchBar from "./components/MapSearchBar/MapSearchBar";
@@ -19,15 +20,14 @@ import KuroomMap from "./components/KuroomMap";
 import MapSearch from "./components/MapSearch/MapSearch";
 import LocationsBottomSheet from "./components/LocationsBottomSheet/LocationsBottomSheet";
 import FocusedLocationBottomSheet from "./components/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
-import { isMyLocationInSchool } from "../../utils/mapRangeUtils";
-import ShareLocationModal from "./components/ShareLocationModal/ShareLocationModal";
+import { isMyLocationInSchool } from "@utils/mapRangeUtils";
 import {
   Coordinate,
   DetailPlaceData,
   MapSearchResult,
   MarkerData,
   PlaceData,
-} from "./types/mapTypes";
+} from "@/shared/types/mapTypes";
 import {
   clearAllMarkers,
   makeFocusMarker,

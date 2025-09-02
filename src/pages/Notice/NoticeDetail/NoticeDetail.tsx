@@ -1,11 +1,17 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "../../../../shared/components/Header/Header";
+
+import bookmarkIcon from "@assets/headericon/bookmark.svg";
+import bookmarkFillIcon from "@assets/headericon/bookmark-fill.svg";
+import Header from "@components/Header/Header";
+
+import {
+  getNoticeById,
+  isBookmarked as isBookmarkedUtil,
+  toggleBookmark as toggleBookmarkUtil,
+} from "../utils/noticeUtils";
 import styles from "./NoticeDetail.module.css";
-import bookmarkIcon from "../../../../assets/headericon/bookmark.svg";
-import bookmarkFillIcon from "../../../../assets/headericon/bookmark-fill.svg";
-import NoticeService from "../../../../services/NoticeService";
 
 const NoticeDetail: React.FC = () => {
   const { category, id } = useParams<{ category: string; id: string }>();
@@ -29,7 +35,7 @@ const NoticeDetail: React.FC = () => {
   useEffect(() => {
     if (id) {
       // 공지사항 데이터 가져오기
-      const notice = NoticeService.getNoticeById(id);
+      const notice = getNoticeById(id);
       if (notice) {
         setNoticeData({
           title: notice.title,
@@ -38,7 +44,7 @@ const NoticeDetail: React.FC = () => {
       }
 
       // 북마크 상태 확인
-      setIsBookmarked(NoticeService.isBookmarked(id));
+      setIsBookmarked(isBookmarkedUtil(id));
 
       // iframe 로딩 상태 초기화
       setIsLoading(true);
@@ -52,7 +58,7 @@ const NoticeDetail: React.FC = () => {
   const toggleBookmark = () => {
     if (id) {
       // 북마크 상태 토글 처리
-      const newBookmarkState = NoticeService.toggleBookmark(id);
+      const newBookmarkState = toggleBookmarkUtil(id);
       setIsBookmarked(newBookmarkState);
     }
   };

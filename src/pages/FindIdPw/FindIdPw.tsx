@@ -1,13 +1,15 @@
 import { ChangeEvent, useEffect, useState, useReducer } from "react";
-import styles from "./FindIdPw.module.css";
-import InformModal from "../../shared/components/InformModal/InformModal";
+
+import { findIdFromEmail, sendEmailApi, verifyCodeApi } from "@apis/mails";
+import { changePwBeforeLogin } from "@apis/changePw";
+import InformModal from "@components/InformModal/InformModal";
 import TopIcon from "@components/TopIcon";
 import { isValidPassword } from "@utils/validations";
+
 import FindStep0 from "./FindStep0";
 import FindStep1 from "./FindStep1";
 import FindStep2 from "./FindStep2";
-import { findIdFromEmail, sendEmailApi, verifyCodeApi } from "../../apis/mails";
-import { changePwBeforeLogin } from "../../apis/changePw";
+import styles from "./FindIdPw.module.css";
 
 // 상태 정의
 type State = {

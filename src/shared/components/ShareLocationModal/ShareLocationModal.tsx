@@ -2,8 +2,8 @@ import React from "react";
 import ReactModal from "react-modal";
 
 import { shareUserLocation, unshareLocation } from "@apis/map";
-import Button from "@components/Button/Button";
 import cautionIcon from "@assets/icon/editFriend/cautionIcon.svg";
+import Button from "@components/Button/Button";
 
 import styles from "./ShareLocationModal.module.css";
 

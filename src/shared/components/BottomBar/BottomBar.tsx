@@ -1,9 +1,11 @@
-import "./BottomBar.css";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import homenav from "@/assets/nav/homenav.svg";
 import noticenav from "@/assets/nav/announcenav.svg";
 import mapnav from "@/assets/nav/mapnav.svg";
 import myinfonav from "@/assets/nav/myinfonav.svg";
-import { useNavigate, useLocation } from "react-router-dom";
+
+import "./BottomBar.css";
 
 const BottomBar = () => {
   const navigate = useNavigate();

@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
+import { DetailPlaceData, MarkerData } from "@/shared/types";
+
 import {
   myLocationTracking,
   noTracking,
   renderMarkers,
 } from "../utils/kuroomMapUtils";
-import { DetailPlaceData, MarkerData } from "../types/mapTypes";
 
 interface MapProps {
   width?: string;

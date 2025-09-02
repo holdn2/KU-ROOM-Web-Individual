@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
+import { getSentRequests } from "@apis/friend";
 import defaultImg from "@assets/defaultProfileImg.svg";
 import deleteIcon from "@assets/icon/deleteIcon.svg";
-import { getSentRequests } from "@apis/friend";
 
 import styles from "./RequestedFriend.module.css";
 

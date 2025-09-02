@@ -1,14 +1,14 @@
 // 지도 관련 api
-import { ApiResponse } from "@/shared/types/apiResponse";
 import axiosInstance from "./axiosInstance";
 
 import {
+  ApiResponse,
   DetailPlaceData,
   MapRecentSearchData,
   MapSearchResult,
   PlaceData,
   SharedFriendData,
-} from "@pages/Map/types/mapTypes";
+} from "@/shared/types";
 
 const CHECK_SHARE_STATE_API = "/places/sharing/status";
 const GET_USER_SHARE_LOCATION = "/places/sharing";

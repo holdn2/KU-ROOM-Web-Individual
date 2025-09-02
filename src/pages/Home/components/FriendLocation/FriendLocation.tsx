@@ -1,12 +1,14 @@
-import styles from "./FriendLocation.module.css";
-import arrowRight from "../../../assets/nav/arrowRight.svg";
-import locationIcon from "../../../assets/icon/locationIcon.png";
-import defaulProfileImg from "../../../assets/defaultProfileImg.svg";
-import exampleProfileImg1 from "../../../assets/exampleProfileImg1.png";
-import exampleProfileImg2 from "../../../assets/exampleProfileImg2.png";
-import exampleProfileImg3 from "../../../assets/exampleProfileImg3.png";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import arrowRight from "@assets/nav/arrowRight.svg";
+import locationIcon from "@assets/icon/locationIcon.png";
+import defaulProfileImg from "@assets/defaultProfileImg.svg";
+import exampleProfileImg1 from "@assets/exampleProfileImg1.png";
+import exampleProfileImg2 from "@assets/exampleProfileImg2.png";
+import exampleProfileImg3 from "@assets/exampleProfileImg3.png";
+
+import styles from "./FriendLocation.module.css";
 
 const dummyFriendLocationData = [
   {

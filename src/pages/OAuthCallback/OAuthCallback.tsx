@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getTokenByAuthCode } from "../../apis/auth";
-import { useUserStore } from "../../shared/stores/userStore";
+
+import { getTokenByAuthCode } from "@apis/auth";
+import { useUserStore } from "@stores/userStore";
 
 const OAuthCallback = () => {
   const navigate = useNavigate();

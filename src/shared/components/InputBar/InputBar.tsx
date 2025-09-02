@@ -1,7 +1,9 @@
 import React, { ChangeEvent, useState } from "react";
-import "./InputBar.css";
+
 import visibilityOffIcon from "@/assets/icon/visibility_off.svg";
 import visibilityOnIcon from "@/assets/icon/visibility_on.svg";
+
+import "./InputBar.css";
 
 interface InputProps {
   label: string;

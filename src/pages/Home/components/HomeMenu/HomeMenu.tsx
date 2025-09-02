@@ -1,9 +1,11 @@
-import styles from "./HomeMenu.module.css";
-import searchLocationIcon from "../../../assets/homemenuicon/homeicon_search_location.png";
-import plusFriendIcon from "../../../assets/homemenuicon/homeicon_plus_friend.png";
-import kcubeIcon from "../../../assets/homemenuicon/homeicon_kcube_reserve.png";
-import readingRoomIcon from "../../../assets/homemenuicon/homeicon_readingroom.png";
 import { useNavigate } from "react-router-dom";
+
+import searchLocationIcon from "@assets/homemenuicon/homeicon_search_location.png";
+import plusFriendIcon from "@assets/homemenuicon/homeicon_plus_friend.png";
+import kcubeIcon from "@assets/homemenuicon/homeicon_kcube_reserve.png";
+import readingRoomIcon from "@assets/homemenuicon/homeicon_readingroom.png";
+
+import styles from "./HomeMenu.module.css";
 
 const HomeMenu = () => {
   const navigate = useNavigate();

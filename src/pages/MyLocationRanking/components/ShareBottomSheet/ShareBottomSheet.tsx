@@ -1,8 +1,10 @@
-import styles from "./ShareBottomSheet.module.css";
-import kakaoIcon from "../../assets/ShareIcon/Kakaotalk.png";
-import facebookIcon from "../../assets/ShareIcon/Facebook.png";
-import linkIcon from "../../assets/ShareIcon/linkIcon.svg";
 import React from "react";
+
+import kakaoIcon from "@assets/ShareIcon/Kakaotalk.png";
+import facebookIcon from "@assets/ShareIcon/Facebook.png";
+import linkIcon from "@assets/ShareIcon/linkIcon.svg";
+
+import styles from "./ShareBottomSheet.module.css";
 
 interface ShareBottomSheetProps {
   isSharedSheetOpen: boolean;

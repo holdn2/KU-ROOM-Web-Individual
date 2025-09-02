@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   deleteAllRecentData,
@@ -10,9 +10,9 @@ import BottomBar from "@components/BottomBar/BottomBar";
 import arrowBack from "@assets/nav/arrowback.svg";
 import deleteIcon from "@assets/icon/deleteIcon.svg";
 import noResultIcon from "@assets/icon/noResultSearch.svg";
+import { MapRecentSearchData, MapSearchResult } from "@/shared/types";
 
 import styles from "./MapSearch.module.css";
-import { MapRecentSearchData, MapSearchResult } from "../../types/mapTypes";
 
 // const dummyLocationData = ["레스티오", "1847", "신공학관"];
 interface MapSearchProps {
@@ -30,6 +30,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
   >([]);
   const [tryToSearch, setTryToSearch] = useState(false);
   const [searchResult, setSearchResult] = useState<MapSearchResult[]>([]);
+  const searchFocusRef = useRef<HTMLInputElement>(null);
 
   const getRecentSearch = async () => {
     try {
@@ -44,6 +45,8 @@ const MapSearch: React.FC<MapSearchProps> = ({
   useEffect(() => {
     // 서버에서 최근 검색어 가져오기
     getRecentSearch();
+    const id = requestAnimationFrame(() => searchFocusRef.current?.focus());
+    return () => cancelAnimationFrame(id);
   }, []);
 
   const resetSearchText = () => {
@@ -51,6 +54,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
     setSearchResult([]);
     setTryToSearch(false);
     getRecentSearch();
+    searchFocusRef.current?.focus();
   };
 
   const deleteAllSearchData = async () => {
@@ -121,12 +125,14 @@ const MapSearch: React.FC<MapSearchProps> = ({
           />
           <input
             className={styles.SearchText}
+            ref={searchFocusRef}
             type="search"
             enterKeyHint="search"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="건물명, 강의실명, 건물 번호 검색"
+            autoFocus
           />
         </div>
         {searchText && (

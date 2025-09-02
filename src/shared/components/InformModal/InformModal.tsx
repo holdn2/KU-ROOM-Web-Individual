@@ -1,10 +1,12 @@
 import React from "react";
-import ReactModal from "react-modal";
-import styles from "./InformModal.module.css";
-import cloudIcon from "../../../assets/icon/cloud.svg";
-import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
-import { logoutApi } from "../../../apis/auth";
+import ReactModal from "react-modal";
+
+import { logoutApi } from "@apis/auth";
+import cloudIcon from "@assets/icon/cloud.svg";
+
+import Button from "../Button/Button";
+import styles from "./InformModal.module.css";
 
 type Props = {
   modalType: string;

@@ -1,8 +1,9 @@
-import Header from "../../shared/components/Header/Header";
+import friendPlusIcon from "@assets/homemenuicon/homeicon_plus_friend.png";
+import noticeIcon from "@assets/homemenuicon/homeicon_kcube_reserve.png";
+import rankingIcon from "@assets/homemenuicon/homeicon_search_location.png";
+import Header from "@components/Header/Header";
+
 import styles from "./Alarm.module.css";
-import friendPlusIcon from "../../assets/homemenuicon/homeicon_plus_friend.png";
-import noticeIcon from "../../assets/homemenuicon/homeicon_kcube_reserve.png";
-import rankingIcon from "../../assets/homemenuicon/homeicon_search_location.png";
 
 const dummyAlarmData = [
   {

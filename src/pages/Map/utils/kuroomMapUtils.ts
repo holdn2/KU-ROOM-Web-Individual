@@ -12,8 +12,7 @@ import dormitoryMarker from "@assets/map/markers/dormitoryMarker.svg";
 import bankMarker from "@assets/map/markers/bankMarker.svg";
 import postMarker from "@assets/map/markers/postMarker.svg";
 import defaultMarker from "@assets/map/defaultMarkerIcon.svg";
-
-import { DetailPlaceData, MarkerData } from "../types/mapTypes";
+import { DetailPlaceData, MarkerData } from "@/shared/types";
 
 interface KuroomMarker {
   marker: naver.maps.Marker;

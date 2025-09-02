@@ -3,7 +3,7 @@ import React from "react";
 import arrowBackIcon from "@assets/nav/arrowBackWhite.svg";
 
 import styles from "./LocationInfoTopContent.module.css";
-import { DetailPlaceData } from "../../../types/mapTypes";
+import { DetailPlaceData } from "@/shared/types";
 
 interface LocationInfoTopContentProps {
   detailInfo: DetailPlaceData | null;

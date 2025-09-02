@@ -1,12 +1,14 @@
-import styles from "./MyLocationRanking.module.css";
-import arrowRight from "../../../assets/nav/arrowRight.svg";
-import rank1Icon from "../../../assets/icon/ranking/rank1.png";
-import rank2Icon from "../../../assets/icon/ranking/rank2.png";
-import rank3Icon from "../../../assets/icon/ranking/rank3.png";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getSharingRanking } from "../../../apis/home";
-import { RankListType } from "../../../../types/rankTypes";
+import { useNavigate } from "react-router-dom";
+
+import arrowRight from "@assets/nav/arrowRight.svg";
+import rank1Icon from "@assets/icon/ranking/rank1.png";
+import rank2Icon from "@assets/icon/ranking/rank2.png";
+import rank3Icon from "@assets/icon/ranking/rank3.png";
+import { getSharingRanking } from "@apis/home";
+import { RankListType } from "@/shared/types";
+
+import styles from "./MyLocationRanking.module.css";
 
 type Props = {
   updateTrigger: boolean;

@@ -1,6 +1,8 @@
-import styles from "./HomeSlideBanner.module.css";
-import exBannerImg from "../../../assets/ExampleImg/slidebannerImg/exBanner1.svg";
 import { useEffect, useRef, useState } from "react";
+
+import exBannerImg from "@assets/ExampleImg/slidebannerImg/exBanner1.svg";
+
+import styles from "./HomeSlideBanner.module.css";
 
 const exampleImg = [
   { title: "EX1", img: exBannerImg },

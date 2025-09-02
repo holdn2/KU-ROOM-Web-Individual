@@ -1,7 +1,6 @@
 import React from "react";
 import ReactModal from "react-modal";
 
-import cautionIcon from "@assets/icon/editFriend/cautionIcon.svg";
 import {
   acceptRequest,
   friendBlock,
@@ -9,6 +8,7 @@ import {
   friendReport,
   rejectRequest,
 } from "@apis/friend";
+import cautionIcon from "@assets/icon/editFriend/cautionIcon.svg";
 import Button from "@components/Button/Button";
 
 import styles from "./FriendModal.module.css";

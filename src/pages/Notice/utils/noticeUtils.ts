@@ -1,12 +1,4 @@
-export interface NoticeItem {
-  id: string;
-  category: string;
-  title: string;
-  date: string;
-  content?: string; // 상세 내용은 선택적으로 포함
-  department?: string; // 학과 정보는 선택적으로 포함
-  externalSource?: string; // 외부 소스 정보는 선택적으로 포함
-}
+import { BookmarkItem, NoticeItem } from "../types/noticeTypes";
 
 // 모든 공지사항 더미 데이터 - 각 카테고리별 데이터 추가
 const dummyNotices: NoticeItem[] = [
@@ -184,11 +176,6 @@ const dummyNotices: NoticeItem[] = [
   },
 ];
 
-// 북마크 인터페이스 정의
-export interface BookmarkItem extends NoticeItem {
-  timestamp: string; // 북마크 추가 시간
-}
-
 // 초기 북마크 데이터 설정 함수
 export const initializeBookmarks = (): void => {
   // 기존 북마크 데이터가 없는 경우에만 초기화
@@ -274,16 +261,4 @@ export const getBookmarks = (): Record<string, BookmarkItem> => {
 export const isBookmarked = (noticeId: string): boolean => {
   const bookmarks = getBookmarks();
   return !!bookmarks[noticeId];
-};
-
-export default {
-  getNoticeById,
-  getNoticesByCategory,
-  getNoticesByDepartment,
-  getNoticesByExternalSource,
-  getAllNotices,
-  toggleBookmark,
-  getBookmarks,
-  isBookmarked,
-  initializeBookmarks,
 };

@@ -1,6 +1,8 @@
 import type React from "react";
+
+import notificationIcon from "@assets/icon/notice/search/bell.svg";
+
 import styles from "./NotificationBadge.module.css";
-import notificationIcon from "../../../../../assets/icon/notice/search/bell.svg";
 
 interface NotificationBadgeProps {
   keyword: string;

@@ -1,4 +1,4 @@
-import { Coordinate } from "../../types/mapTypes";
+import { Coordinate } from "../types/mapTypes";
 
 // 건국대 범위 사각형으로 지정
 const schoolRange = [

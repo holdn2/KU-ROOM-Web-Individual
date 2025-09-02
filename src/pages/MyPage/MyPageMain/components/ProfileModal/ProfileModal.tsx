@@ -2,9 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import ReactModal from "react-modal";
 
-import Button from "@components/Button/Button";
-import cautionIcon from "@assets/icon/editFriend/cautionIcon.svg";
 import { logoutApi, withdrawApi } from "@apis/auth";
+import cautionIcon from "@assets/icon/editFriend/cautionIcon.svg";
+import Button from "@components/Button/Button";
 
 import styles from "./ProfileModal.module.css";
 

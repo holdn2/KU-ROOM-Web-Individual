@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import defaultImg from "@assets/defaultProfileImg.svg";
 import { getReceivedRequests } from "@apis/friend";
+import defaultImg from "@assets/defaultProfileImg.svg";
 import Button from "@components/Button/Button";
 
 import styles from "./ReceivedFriend.module.css";

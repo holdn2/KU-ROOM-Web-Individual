@@ -1,9 +1,9 @@
 import React from "react";
 
 import DefaultProfileImg from "@assets/defaultProfileImg.svg";
+import { DetailPlaceData } from "@/shared/types";
 
 import styles from "./FocusedLocationInfo.module.css";
-import { DetailPlaceData } from "../../../types/mapTypes";
 
 interface FocusedLocationInfo {
   detailInfo: DetailPlaceData | null;

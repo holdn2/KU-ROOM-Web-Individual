@@ -1,4 +1,4 @@
-import kurumIcon from "../assets/icon/cloud.svg";
+import kurumIcon from "@assets/icon/cloud.svg";
 
 const Splash = () => {
   return (

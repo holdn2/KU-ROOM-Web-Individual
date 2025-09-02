@@ -5,7 +5,7 @@ import DefaultProfileImg from "@assets/defaultProfileImg.svg";
 import mapListIcon from "@assets/map/mapListIcon.svg";
 
 import styles from "./LocationsBottomSheet.module.css";
-import { PlaceData } from "../../types/mapTypes";
+import { PlaceData } from "@/shared/types";
 
 interface LocationsBottomSheetProps {
   visibleBottomSheet: boolean;

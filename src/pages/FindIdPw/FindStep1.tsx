@@ -1,7 +1,9 @@
 import React, { ChangeEvent } from "react";
+
+import InputBar from "@components/InputBar/InputBar";
+import Button from "@components/Button/Button";
+
 import styles from "./FindIdPw.module.css";
-import InputBar from "../../shared/components/InputBar/InputBar";
-import Button from "../../shared/components/Button/Button";
 
 interface Step1Props {
   verifyCode: string;
