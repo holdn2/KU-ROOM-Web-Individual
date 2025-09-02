@@ -6,7 +6,7 @@ import Header from "@components/Header/Header";
 import SearchInput from "./components/SearchInput/SearchInput";
 import SearchHistory from "./components/SearchHistory/SearchHistory";
 import TagButtons from "./components/TagButtons/TagButtons";
-import SearchNoticeList from "./components/NoticeList/NoticeList";
+import NoticeList from "./components/NoticeList/NoticeList";
 import SearchResult from "./components/SearchResult/SearchResult";
 import NotificationBadge from "./components/NotificationBadge/NotificationBadge";
 import { getAllNotices } from "../utils/noticeUtils";
@@ -136,15 +136,15 @@ const Search: React.FC = () => {
           />
 
           <h2 className={styles.sectionTitle}>인기 공지</h2>
-          <SearchNoticeList
+          <NoticeList
             notices={notices.slice(0, 3)}
-            onItemClick={(noticeId) => navigateToNoticeDetail(noticeId)}
+            onItemClick={(noticeId: string) => navigateToNoticeDetail(noticeId)}
           />
 
           <h2 className={styles.sectionTitle}>주요 공지</h2>
-          <SearchNoticeList
+          <NoticeList
             notices={notices.slice(5, 8)}
-            onItemClick={(noticeId) => navigateToNoticeDetail(noticeId)}
+            onItemClick={(noticeId: string) => navigateToNoticeDetail(noticeId)}
           />
         </>
       ) : (
