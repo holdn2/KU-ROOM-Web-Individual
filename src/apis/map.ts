@@ -7,7 +7,6 @@ import {
   MapRecentSearchData,
   MapSearchResult,
   PlaceData,
-  SharedFriendData,
 } from "@/shared/types";
 
 const CHECK_SHARE_STATE_API = "/places/sharing/status";
@@ -16,7 +15,6 @@ const SHARE_USER_LOCATION = "/places/sharing/confirm";
 const UNSHARE_LOCATION = "/places/sharing/confirm";
 const GET_CHIP_LOCATION = "/places?chip=";
 const GET_LOCATION_DETAIL_DATA = "/places/";
-const GET_SHARED_FRIEND_LOCATION = "/map/chip/friends";
 const GET_SEARCH_LOCATION_RESULT = "/places/search?query=";
 const GET_RECENT_SEARCH = "/places/search/history"; // 최근 검색어 5개
 const DELETE_RECENT_ALL_SEARCH = "/places/search/history"; // 최근 검색어 모두 삭제
@@ -129,7 +127,7 @@ export const unshareLocation = async () => {
   }
 };
 
-// 카테고리 칩(핀) 클릭 시 위치 정보 조회 api
+// 카테고리 칩(핀) 클릭 시 위치 정보 조회 api / 홈에서 친구 위치 조회에서도 사용
 interface LocationChipApiResponse extends ApiResponse {
   data: PlaceData[];
 }
@@ -147,33 +145,6 @@ export const getCategoryLocationsApi = async (category: string) => {
     );
     throw new Error(
       error.response?.data?.message || "위치 카테고리 데이터 조회 중 오류 발생"
-    );
-  }
-};
-
-// 친구 카테고리 칩 클릭 시 api. 공유한 친구 위치
-interface FriendLocationCategory extends ApiResponse {
-  data: SharedFriendData[];
-}
-export const getSharedFriendLocation = async () => {
-  try {
-    const response = await axiosInstance.post<FriendLocationCategory>(
-      GET_SHARED_FRIEND_LOCATION,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data.data; // 성공 응답 반환
-  } catch (error: any) {
-    console.error(
-      "위치 공유한 친구 위치 조회 실패:",
-      error.response?.data || error.message
-    );
-    throw new Error(
-      error.response?.data?.message || "위치 공유한 친구 위치 조회 중 오류 발생"
     );
   }
 };

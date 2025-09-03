@@ -9,6 +9,7 @@ import exampleProfileImg2 from "@assets/exampleProfileImg2.png";
 import exampleProfileImg3 from "@assets/exampleProfileImg3.png";
 
 import styles from "./FriendLocation.module.css";
+import { getCategoryLocationsApi } from "@/apis/map";
 
 const dummyFriendLocationData = [
   {
@@ -75,6 +76,15 @@ const FriendLocation: React.FC<FriendLocationProps> = ({
   // 화면 너비에 따라 개수 다르게 보이기. 크기에 따라 최대 3 혹은 4개
   const [maxVisibleFriends, setMaxVisibleFriends] = useState(4);
 
+  const getFriendLocation = async () => {
+    try {
+      const response = await getCategoryLocationsApi("FRIEND");
+      console.log("위치 공유한 친구 배열 : ", response);
+    } catch (error) {
+      console.error("위치 공유한 친구 배열 조회 중 오류 : ", error);
+    }
+  };
+
   useEffect(() => {
     const updateVisibleFriends = () => {
       setMaxVisibleFriends(window.innerWidth < 410 ? 3 : 4);
@@ -82,6 +92,9 @@ const FriendLocation: React.FC<FriendLocationProps> = ({
 
     updateVisibleFriends(); // 초기 실행
     window.addEventListener("resize", updateVisibleFriends);
+
+    getFriendLocation();
+
     return () => window.removeEventListener("resize", updateVisibleFriends);
   }, []);
 
