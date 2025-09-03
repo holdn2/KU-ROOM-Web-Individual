@@ -136,7 +136,7 @@ const Notice = () => {
                   <h3 className={styles["notice-item-title"]}>
                     {notice.title}
                   </h3>
-                  <p className={styles["notice-item-date"]}>{notice.pubDate}</p>
+                  <p className={styles["notice-item-date"]}>{notice.pubDate.split(' ')[0]}</p>
                 </div>
               </button>
             ))
