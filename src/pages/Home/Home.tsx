@@ -22,6 +22,9 @@ const Home = () => {
   const navigate = useNavigate();
   // const [showSplash, setShowSplash] = useState(true);
   const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
+  const [sharedLocationName, setSharedLocationName] = useState<string | null>(
+    null
+  );
   const [hasNewAlarm, setHasNewAlarm] = useState(false); // 새로운 알람이 있는지
   // 공유 상태 확인 트리거 키
   const [locationSharedRefreshKey, setLocationSharedRefreshKey] = useState(0);
@@ -47,7 +50,8 @@ const Home = () => {
     try {
       const response = await checkIsSharedApi();
       console.log("현재 내 위치 공유 상태 : ", response);
-      setIsSharedLocation(response);
+      setIsSharedLocation(response.isActive);
+      setSharedLocationName(response.placeName);
     } catch (error) {
       console.error("위치 공유 상태 확인 실패 : ", error);
     }
@@ -104,11 +108,11 @@ const Home = () => {
             isSharedLocation={isSharedLocation}
             setModalState={setShareModalState}
             currentLocation={currentLocation}
-            nearLocation={nearLocation}
+            sharedLocationName={sharedLocationName}
             setNearLocation={setNearLocation}
           />
         )}
-        <FriendLocation isSharedLocation={isSharedLocation} />
+        <FriendLocation userSharedLocation={sharedLocationName} />
         <MyLocationRanking updateTrigger={tryToRerender} />
         <HomeNotice />
       </div>

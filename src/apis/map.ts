@@ -24,6 +24,7 @@ const DELETE_RECENT_SEARCH = "/places/search/history/"; // 최근 검색어 하�
 interface IsSharedApiResponse extends ApiResponse {
   data: {
     isActive: boolean;
+    placeName: string | null;
   };
 }
 export const checkIsSharedApi = async () => {
@@ -31,7 +32,7 @@ export const checkIsSharedApi = async () => {
     const response = await axiosInstance.get<IsSharedApiResponse>(
       CHECK_SHARE_STATE_API
     );
-    return response.data.data.isActive; // 성공 응답 반환
+    return response.data.data; // 성공 응답 반환
   } catch (error: any) {
     console.error(
       "위치 공유 상태 확인 실패:",

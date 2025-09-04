@@ -99,7 +99,7 @@ const MapPage = () => {
     try {
       const response = await checkIsSharedApi();
       console.log("현재 내 위치 공유 상태 : ", response);
-      setIsSharedLocation(response);
+      setIsSharedLocation(response.isActive);
     } catch (error) {
       console.error("위치 공유 상태 확인 실패 : ", error);
     }
