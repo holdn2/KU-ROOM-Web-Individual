@@ -12,7 +12,7 @@ interface HomeMiniMapProps {
   isSharedLocation: boolean;
   setModalState: (value: boolean) => void;
   currentLocation: Coordinate;
-  nearLocation: string;
+  sharedLocationName: string | null;
   setNearLocation: (value: string) => void;
 }
 
@@ -20,7 +20,7 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
   isSharedLocation,
   setModalState,
   currentLocation,
-  nearLocation,
+  sharedLocationName,
   setNearLocation,
 }) => {
   const navigate = useNavigate();
@@ -51,27 +51,29 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
   return (
     // 내 위치 불러오기 전에 렌더링 안되게. 로딩 표시라도 추가
     isSharedLocation ? (
-      <div className={styles.HomeMiniMapBackground}>
-        <div className={styles.HomeMiniMapWrapper}>
-          <div className={styles.MiniMapTextContainer}>
-            <h1 className={styles.MiniMapBoldText}>
-              현재 {nearLocation}에 계시네요!
-            </h1>
-            <span className={styles.MiniMapNormalText}>
-              장소를 이동할 땐 위치 공유를 해제해주세요 :)
-            </span>
+      sharedLocationName !== null && (
+        <div className={styles.HomeMiniMapBackground}>
+          <div className={styles.HomeMiniMapWrapper}>
+            <div className={styles.MiniMapTextContainer}>
+              <h1 className={styles.MiniMapBoldText}>
+                현재 {sharedLocationName}(으)로 공유 중입니다!
+              </h1>
+              <span className={styles.MiniMapNormalText}>
+                장소를 이동할 땐 위치 공유를 해제해주세요 :)
+              </span>
+            </div>
+            <div className={styles.HomeMiniMap} onClick={handleSeeMap}>
+              <KuroomMap
+                height="180px"
+                isTracking={true}
+                draggable={false}
+                zoomable={false}
+              />
+            </div>
+            <Button onClick={handleOpenModal}>위치 공유 해제하기</Button>
           </div>
-          <div className={styles.HomeMiniMap} onClick={handleSeeMap}>
-            <KuroomMap
-              height="180px"
-              isTracking={true}
-              draggable={false}
-              zoomable={false}
-            />
-          </div>
-          <Button onClick={handleOpenModal}>위치 공유 해제하기</Button>
         </div>
-      </div>
+      )
     ) : (
       <div className={styles.HomeMiniMapBackground}>
         <div className={styles.HomeMiniMapWrapper}>
