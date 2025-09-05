@@ -29,6 +29,28 @@ export interface NoticeListParams {
   sort?: string[];
 }
 
+export interface BookmarkResponse {
+  id: number;
+  title: string;
+  pubDate: string;
+  bookmarked: boolean;
+}
+
+export interface BookmarkListResponse {
+  content: BookmarkResponse[];
+  pageNumber: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
+}
+
+export interface BookmarkListParams {
+  page?: number;
+  size?: number;
+  sort?: string[];
+}
+
 const noticeAxiosInstance = axios.create({
   baseURL: "https://kuis.shop",
   headers: {
@@ -41,6 +63,17 @@ export const getNotices = async (params: NoticeListParams = {}): Promise<NoticeR
     params: {
       categoryId: params.categoryId,
       keyword: params.keyword,
+      page: params.page || 0,
+      size: params.size || 20,
+      sort: params.sort,
+    },
+  });
+  return response.data.content;
+};
+
+export const getBookmarks = async (params: BookmarkListParams = {}): Promise<BookmarkResponse[]> => {
+  const response = await noticeAxiosInstance.get<BookmarkListResponse>("/api/v1/notices/bookmarks", {
+    params: {
       page: params.page || 0,
       size: params.size || 20,
       sort: params.sort,

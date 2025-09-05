@@ -6,19 +6,56 @@ import Header from "@components/Header/Header";
 import BottomBar from "@components/BottomBar/BottomBar";
 
 import type { BookmarkItem } from "../types/noticeTypes";
-import { getBookmarks } from "../utils/noticeUtils";
+import { getBookmarks as getBookmarksAPI, type BookmarkResponse } from "@apis/notice";
 import styles from "./Bookmark.module.css";
 
-const Bookmark: React.FC = () => {
+const Bookmark = () => {
   const navigate = useNavigate();
   const [sortedBookmarks, setSortedBookmarks] = useState<BookmarkItem[]>([]);
   const [sortOrder, setSortOrder] = useState("북마크 등록순");
   const [showSortOptions, setShowSortOptions] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const sortOptionsRef = useRef<HTMLDivElement>(null);
 
+  const transformBookmarkData = (apiData: BookmarkResponse[]): BookmarkItem[] => {
+    return apiData.map((item) => ({
+      id: item.id,
+      categoryId: 0,
+      categoryName: "",
+      title: item.title,
+      link: "",
+      pubDate: item.pubDate,
+      author: "",
+      description: "",
+      isBookMarked: item.bookmarked,
+      timestamp: item.pubDate,
+    }));
+  };
+
+  const fetchBookmarks = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const apiBookmarks = await getBookmarksAPI();
+      const transformedBookmarks = transformBookmarkData(apiBookmarks);
+      setSortedBookmarks(transformedBookmarks);
+    } catch (err) {
+      setError("북마크 데이터를 불러오는데 실패했습니다.");
+      console.error("Failed to fetch bookmarks:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const storedBookmarks = getBookmarks();
-    sortAndSetBookmarks(storedBookmarks, sortOrder);
+    fetchBookmarks();
+  }, []);
+
+  useEffect(() => {
+    if (sortedBookmarks.length > 0) {
+      sortAndSetBookmarks([...sortedBookmarks], sortOrder);
+    }
   }, [sortOrder]);
 
   useEffect(() => {
@@ -39,40 +76,30 @@ const Bookmark: React.FC = () => {
   }, []);
 
   const sortAndSetBookmarks = (
-    bookmarkData: Record<string, BookmarkItem>,
+    bookmarkArray: BookmarkItem[],
     order: string
   ): void => {
-    const bookmarkArray = Object.values(bookmarkData);
     let sorted: BookmarkItem[];
 
     if (order === "최신순") {
-      // 공지사항 날짜 기준 최신순
       sorted = bookmarkArray.sort((a, b) => {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
+        return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
       });
     } else if (order === "오래된 순") {
-      // 공지사항 날짜 기준 오래된순
       sorted = bookmarkArray.sort((a, b) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
+        return new Date(a.pubDate).getTime() - new Date(b.pubDate).getTime();
       });
     } else if (order === "북마크 등록순") {
-      // 북마크 등록 시간(timestamp) 기준
       sorted = bookmarkArray.sort((a, b) => {
-        return (
-          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-        );
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
       });
     } else if (order === "가나다 순") {
-      // 제목 기준 가나다순
       sorted = bookmarkArray.sort((a, b) => {
         return a.title.localeCompare(b.title, "ko");
       });
     } else {
-      // 기본값: 북마크 등록순
       sorted = bookmarkArray.sort((a, b) => {
-        return (
-          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-        );
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
       });
     }
 
@@ -172,14 +199,25 @@ const Bookmark: React.FC = () => {
       </div>
 
       <div className={styles["bookmark-content"]}>
-        {sortedBookmarks.length > 0 ? (
+        {loading ? (
+          <div className={styles["loading"]}>
+            <p>북마크를 불러오는 중...</p>
+          </div>
+        ) : error ? (
+          <div className={styles["error"]}>
+            <p>{error}</p>
+            <button onClick={fetchBookmarks} type="button">
+              다시 시도
+            </button>
+          </div>
+        ) : sortedBookmarks.length > 0 ? (
           <div className={styles["bookmark-list"]}>
             {sortedBookmarks.map((bookmark) => (
               <button
                 key={bookmark.id}
                 className={styles["bookmark-item"]}
-                onClick={() => handleItemClick(bookmark.category, bookmark.id)}
-                aria-label={`${bookmark.title}, ${bookmark.date} 공지사항 보기`}
+                onClick={() => handleItemClick(bookmark.categoryName, bookmark.id.toString())}
+                aria-label={`${bookmark.title}, ${bookmark.pubDate} 공지사항 보기`}
                 type="button"
               >
                 <div className={styles["bookmark-item-content"]}>
@@ -187,7 +225,7 @@ const Bookmark: React.FC = () => {
                     {bookmark.title}
                   </h3>
                   <p className={styles["bookmark-item-date"]}>
-                    {bookmark.date}
+                    {bookmark.pubDate.split(' ')[0]}
                   </p>
                 </div>
               </button>
