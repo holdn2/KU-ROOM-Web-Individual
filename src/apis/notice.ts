@@ -82,3 +82,11 @@ export const getBookmarks = async (params: BookmarkListParams = {}): Promise<Boo
   });
   return response.data.content;
 };
+
+export const addBookmark = async (noticeId: number): Promise<void> => {
+  await noticeAxiosInstance.post(`/api/v1/notices/${noticeId}/bookmark`);
+};
+
+export const removeBookmark = async (noticeId: number): Promise<void> => {
+  await noticeAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
+};

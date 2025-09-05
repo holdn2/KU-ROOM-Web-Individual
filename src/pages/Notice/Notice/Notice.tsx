@@ -3,10 +3,10 @@ import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import chatbot from "@assets/icon/chat-bot.svg";
 import Header from "@components/Header/Header";
 import BottomBar from "@components/BottomBar/BottomBar";
+import NoticeList from "../components/NoticeList/NoticeList";
 import { getCategoryId } from "@constant/categoryMapping";
 
-import { getNotices } from "../../../apis/notice";
-import { NoticeItem } from "../types/noticeTypes";
+import { getNotices, type NoticeResponse } from "../../../apis/notice";
 import styles from "./Notice.module.css";
 
 const Notice = () => {
@@ -24,7 +24,7 @@ const Notice = () => {
     []
   );
   const [activeTab, setActiveTab] = useState("학사");
-  const [notices, setNotices] = useState<NoticeItem[]>([]);
+  const [notices, setNotices] = useState<NoticeResponse[]>([]);
   const [loading, setLoading] = useState(false);
 
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
@@ -71,13 +71,6 @@ const Notice = () => {
     }
   }, [activeTab, tabs]);
 
-  const navigateToNoticeDetail = (noticeId: number) => {
-    const notice = notices.find(n => n.id === noticeId);
-    if (notice?.link) {
-      window.open(notice.link, '_blank');
-    }
-  };
-
   useEffect(() => {
     tabsRef.current = Array(tabs.length).fill(null);
   }, [tabs]);
@@ -118,34 +111,13 @@ const Notice = () => {
       </div>
 
       <div className={styles["scrollable-content"]}>
-        <div className={styles["notice-list"]}>
-          {loading ? (
-            <div className={styles["loading"]}>
-              <p>로딩 중...</p>
-            </div>
-          ) : notices.length > 0 ? (
-            notices.map((notice) => (
-              <button
-                key={notice.id}
-                className={styles["notice-item"]}
-                onClick={() => navigateToNoticeDetail(notice.id)}
-                type="button"
-                aria-label={`공지사항: ${notice.title}, 날짜: ${notice.pubDate}`}
-              >
-                <div className={styles["notice-content"]}>
-                  <h3 className={styles["notice-item-title"]}>
-                    {notice.title}
-                  </h3>
-                  <p className={styles["notice-item-date"]}>{notice.pubDate.split(' ')[0]}</p>
-                </div>
-              </button>
-            ))
-          ) : (
-            <div className={styles["empty-notices"]}>
-              <p>공지사항이 없습니다.</p>
-            </div>
-          )}
-        </div>
+        <NoticeList
+          notices={notices}
+          loading={loading}
+          showBookmarkButton={false}
+          showSortOptions={false}
+          emptyMessage="공지사항이 없습니다."
+        />
       </div>
 
       <button
