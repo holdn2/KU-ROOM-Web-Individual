@@ -6,7 +6,10 @@ import Header from "@components/Header/Header";
 import BottomBar from "@components/BottomBar/BottomBar";
 
 import type { BookmarkItem } from "../types/noticeTypes";
-import { getBookmarks as getBookmarksAPI, type BookmarkResponse } from "@apis/notice";
+import {
+  getBookmarks as getBookmarksAPI,
+  type BookmarkResponse,
+} from "@apis/notice";
 import styles from "./Bookmark.module.css";
 
 const Bookmark = () => {
@@ -18,13 +21,15 @@ const Bookmark = () => {
   const [error, setError] = useState<string | null>(null);
   const sortOptionsRef = useRef<HTMLDivElement>(null);
 
-  const transformBookmarkData = (apiData: BookmarkResponse[]): BookmarkItem[] => {
+  const transformBookmarkData = (
+    apiData: BookmarkResponse[]
+  ): BookmarkItem[] => {
     return apiData.map((item) => ({
       id: item.id,
       categoryId: 0,
       categoryName: "",
       title: item.title,
-      link: "",
+      link: item.link || "",
       pubDate: item.pubDate,
       author: "",
       description: "",
@@ -91,7 +96,9 @@ const Bookmark = () => {
       });
     } else if (order === "북마크 등록순") {
       sorted = bookmarkArray.sort((a, b) => {
-        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+        return (
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        );
       });
     } else if (order === "가나다 순") {
       sorted = bookmarkArray.sort((a, b) => {
@@ -99,7 +106,9 @@ const Bookmark = () => {
       });
     } else {
       sorted = bookmarkArray.sort((a, b) => {
-        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+        return (
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        );
       });
     }
 
@@ -119,12 +128,11 @@ const Bookmark = () => {
     setShowSortOptions(false);
   };
 
-  const navigateToNoticeDetail = (category: string, id: string): void => {
-    navigate(`/notice/${category}/${id}`);
-  };
-
-  const handleItemClick = (category: string, id: string): void => {
-    navigateToNoticeDetail(category, id);
+  const navigateToNoticeDetail = (bookmarkId: number) => {
+    const bookmark = sortedBookmarks.find((b) => b.id === bookmarkId);
+    if (bookmark?.link) {
+      window.open(bookmark.link, "_blank");
+    }
   };
 
   return (
@@ -216,7 +224,7 @@ const Bookmark = () => {
               <button
                 key={bookmark.id}
                 className={styles["bookmark-item"]}
-                onClick={() => handleItemClick(bookmark.categoryName, bookmark.id.toString())}
+                onClick={() => navigateToNoticeDetail(bookmark.id)}
                 aria-label={`${bookmark.title}, ${bookmark.pubDate} 공지사항 보기`}
                 type="button"
               >
@@ -225,7 +233,7 @@ const Bookmark = () => {
                     {bookmark.title}
                   </h3>
                   <p className={styles["bookmark-item-date"]}>
-                    {bookmark.pubDate.split(' ')[0]}
+                    {bookmark.pubDate.split(" ")[0]}
                   </p>
                 </div>
               </button>

@@ -34,6 +34,7 @@ export interface BookmarkResponse {
   title: string;
   pubDate: string;
   bookmarked: boolean;
+  link?: string;
 }
 
 export interface BookmarkListResponse {
