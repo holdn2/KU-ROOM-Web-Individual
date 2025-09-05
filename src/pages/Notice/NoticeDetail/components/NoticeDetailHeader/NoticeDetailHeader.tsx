@@ -32,19 +32,18 @@ export const NoticeDetailHeader = ({
         aria-label="뒤로가기"
         type="button"
       />
-      {notice && (
-        <button
-          className={styles["bookmark-button"]}
-          onClick={onBookmarkToggle}
-          aria-label={`북마크 ${notice.isBookMarked ? '해제' : '추가'}`}
-          type="button"
-        >
-          <img
-            src={notice.isBookMarked ? BookmarkFillIcon : BookmarkIcon}
-            alt={notice.isBookMarked ? "북마크됨" : "북마크"}
-          />
-        </button>
-      )}
+      <button
+        className={styles["bookmark-button"]}
+        onClick={onBookmarkToggle}
+        aria-label={`북마크 ${notice?.isBookMarked ? '해제' : '추가'}`}
+        type="button"
+        disabled={!notice}
+      >
+        <img
+          src={notice?.isBookMarked ? BookmarkFillIcon : BookmarkIcon}
+          alt={notice?.isBookMarked ? "북마크됨" : "북마크"}
+        />
+      </button>
     </div>
   );
 };
