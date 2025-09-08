@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import bookmarkIcon from "@/assets/headericon/bookmark.svg";
+import bookmarkFillIcon from "@/assets/headericon/bookmark-fill.svg";
 import searchIcon from "@/assets/headericon/search.svg";
 import arrowBackIcon from "@/assets/nav/arrowback.svg";
 import kuroomIcon from "@/assets/icon/cloud.svg";
@@ -12,13 +13,17 @@ import "./Header.css";
 interface HeaderProps {
   children?: React.ReactNode;
   hasNewAlarm?: boolean;
+  onBookmarkClick?: () => void;
+  isBookmarked?: boolean;
 }
 
 const renderHeaderContent = (
   children: React.ReactNode,
-  newAlarmState: boolean
+  newAlarmState: boolean,
+  navigate: ReturnType<typeof useNavigate>,
+  onBookmarkClick?: () => void,
+  isBookmarked?: boolean
 ) => {
-  const navigate = useNavigate();
 
   switch (children) {
     case "홈":
@@ -67,6 +72,26 @@ const renderHeaderContent = (
         </>
       );
     default:
+      // 공지사항 상세보기 등 북마크 기능이 필요한 경우
+      if (onBookmarkClick) {
+        return (
+          <>
+            <img
+              className="profilechange-header-content"
+              src={arrowBackIcon}
+              alt="뒤로가기"
+              onClick={() => navigate(-1)}
+            />
+            <img
+              className="notice-detail-bookmark-icon"
+              src={isBookmarked ? bookmarkFillIcon : bookmarkIcon}
+              alt={isBookmarked ? "북마크됨" : "북마크"}
+              onClick={onBookmarkClick}
+            />
+          </>
+        );
+      }
+      
       return (
         <img
           className="profilechange-header-content"
@@ -78,7 +103,13 @@ const renderHeaderContent = (
   }
 };
 
-const Header: React.FC<HeaderProps> = ({ children = "", hasNewAlarm }) => {
+const Header: React.FC<HeaderProps> = ({ 
+  children = "", 
+  hasNewAlarm, 
+  onBookmarkClick, 
+  isBookmarked 
+}) => {
+  const navigate = useNavigate();
   const newAlarmState = children === "홈" && hasNewAlarm === true;
 
   return (
@@ -89,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({ children = "", hasNewAlarm }) => {
         ) : (
           <span className="header-title">{children}</span>
         )}
-        {renderHeaderContent(children, newAlarmState)}
+        {renderHeaderContent(children, newAlarmState, navigate, onBookmarkClick, isBookmarked)}
       </header>
     </>
   );

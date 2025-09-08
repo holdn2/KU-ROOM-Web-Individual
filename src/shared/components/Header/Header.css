@@ -61,3 +61,10 @@
   border-radius: 50%;
   border: 2px solid #fff;
 }
+.notice-detail-bookmark-icon {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  padding: 5px;
+  cursor: pointer;
+}
