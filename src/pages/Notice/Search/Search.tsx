@@ -9,13 +9,13 @@ import { NoticeList } from "./Components/NoticeList";
 import { SearchResult } from "./Components/SearchResult";
 import { NotificationBadge } from "./Components/NotificationBadge";
 import { getNotices } from "../../../apis/notice";
-import type { NoticeItem } from "../types/noticeTypes";
+import type { NoticeResponse } from "@apis/notice";
 import styles from "./Search.module.css";
 
 const Search: React.FC = () => {
   const [searchText, setSearchText] = useState("");
-  const [notices, setNotices] = useState<NoticeItem[]>([]);
-  const [filteredNotices, setFilteredNotices] = useState<NoticeItem[]>([]);
+  const [notices, setNotices] = useState<NoticeResponse[]>([]);
+  const [filteredNotices, setFilteredNotices] = useState<NoticeResponse[]>([]);
   const [searchHistory, setSearchHistory] = useState<string[]>([
     "입학식",
     "수강 신청",
