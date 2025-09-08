@@ -40,7 +40,7 @@ reviews:
   auto_review:
     enabled: true # 자동 리뷰 활성화
     auto_incremental_review: false # 증분 리뷰 비활성화 (PR 이후 커밋/변경에 대해서는 리뷰하지 않도록 비활성화)
-    base_branches: ["develop", "main", "be"]
+    base_branches: [".*"]
 
   # 코드 분석 도구(Tools)
   tools:
