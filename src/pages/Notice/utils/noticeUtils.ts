@@ -119,11 +119,11 @@ const dummyNotices: NoticeItem[] = [
     date: "2025.03.08",
   },
 
-  // 신학 공지
+  // 산학 공지
   {
     id: "16",
-    category: "신학",
-    title: "신학과 특별 세미나 개최 안내",
+    category: "산학",
+    title: "산학과 특별 세미나 개최 안내",
     date: "2025.03.09",
   },
 
