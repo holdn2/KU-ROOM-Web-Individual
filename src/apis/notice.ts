@@ -52,6 +52,7 @@ export interface BookmarkListParams {
   sort?: string[];
 }
 
+// kuis.shop 서버용 별도 인스턴스 (공지사항 조회용)
 const noticeAxiosInstance = axios.create({
   baseURL: "https://kuis.shop",
   headers: {
@@ -59,30 +60,54 @@ const noticeAxiosInstance = axios.create({
   },
 });
 
-export const getNotices = async (params: NoticeListParams = {}): Promise<NoticeResponse[]> => {
-  const response = await noticeAxiosInstance.get<NoticeListResponse>("/api/v1/notices", {
-    params: {
-      categoryId: params.categoryId,
-      keyword: params.keyword,
-      page: params.page || 0,
-      size: params.size || 20,
-      sort: params.sort,
-    },
-  });
+// 북마크 API를 위한 토큰 인터셉터 추가
+noticeAxiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      if (!config.headers) config.headers = {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export const getNotices = async (
+  params: NoticeListParams = {}
+): Promise<NoticeResponse[]> => {
+  const response = await noticeAxiosInstance.get<NoticeListResponse>(
+    "/api/v1/notices",
+    {
+      params: {
+        categoryId: params.categoryId,
+        keyword: params.keyword,
+        page: params.page || 0,
+        size: params.size || 20,
+        sort: params.sort,
+      },
+    }
+  );
   return response.data.content;
 };
 
-export const getBookmarks = async (params: BookmarkListParams = {}): Promise<BookmarkResponse[]> => {
-  const response = await noticeAxiosInstance.get<BookmarkListResponse>("/api/v1/notices/bookmarks", {
-    params: {
-      page: params.page || 0,
-      size: params.size || 20,
-      sort: params.sort,
-    },
-  });
+export const getBookmarks = async (
+  params: BookmarkListParams = {}
+): Promise<BookmarkResponse[]> => {
+  const response = await noticeAxiosInstance.get<BookmarkListResponse>(
+    "/api/v1/notices/bookmarks",
+    {
+      params: {
+        page: params.page || 0,
+        size: params.size || 20,
+        sort: params.sort,
+      },
+    }
+  );
   return response.data.content;
 };
 
+// kuis.shop 서버용 북마크 API (토큰 인증 필요)
 export const addBookmark = async (noticeId: number): Promise<void> => {
   await noticeAxiosInstance.post(`/api/v1/notices/${noticeId}/bookmark`);
 };
