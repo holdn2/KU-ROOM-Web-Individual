@@ -19,7 +19,7 @@ const Notice = () => {
   return (
     <div className={styles["notice-container"]}>
       <NoticeHeader />
-      <NoticeTabs 
+      <NoticeTabs
         tabs={NOTICE_TABS}
         activeTab={activeTab}
         onTabChange={setActiveTab}
