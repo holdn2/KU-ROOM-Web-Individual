@@ -52,18 +52,23 @@ export interface BookmarkListParams {
   sort?: string[];
 }
 
-// kuis.shop 서버용 별도 인스턴스 (공지사항 조회용)
+const NOTICE_BASE_URL = 
+  import.meta.env.VITE_NOTICE_API_BASE_URL ?? "https://kuis.shop";
+
 const noticeAxiosInstance = axios.create({
-  baseURL: "https://kuis.shop",
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL: NOTICE_BASE_URL,
+  timeout: 8000,
+  headers: { "Content-Type": "application/json" },
 });
 
-// 북마크 API를 위한 토큰 인터셉터 추가
 noticeAxiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
+    let token: string | null = null;
+    if (typeof window !== "undefined") {
+      try {
+        token = localStorage.getItem("accessToken");
+      } catch (_) {}
+    }
     if (token) {
       if (!config.headers) config.headers = {};
       config.headers.Authorization = `Bearer ${token}`;

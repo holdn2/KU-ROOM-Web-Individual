@@ -35,14 +35,18 @@ export const NoticeItem = ({
           {notice.title}
         </h3>
         <p className={styles["notice-item-date"]}>
-          {notice.pubDate.split(' ')[0]}
+          {new Date(notice.pubDate).toLocaleDateString('ko-KR')}
         </p>
       </div>
       {showBookmarkButton && onBookmarkClick && (
         <button
           className={styles["bookmark-button"]}
-          onClick={onBookmarkClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            onBookmarkClick?.(e);
+          }}
           aria-label={`북마크 ${notice.isBookMarked ? NOTICE_LIST_MESSAGES.BOOKMARK_REMOVE : NOTICE_LIST_MESSAGES.BOOKMARK_ADD}`}
+          aria-pressed={Boolean(notice.isBookMarked)}
           type="button"
         >
           <img

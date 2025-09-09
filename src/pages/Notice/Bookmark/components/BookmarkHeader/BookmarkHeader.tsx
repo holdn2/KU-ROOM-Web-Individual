@@ -10,7 +10,11 @@ export const BookmarkHeader = ({ title = "북마크" }: BookmarkHeaderProps) => 
   const navigate = useNavigate();
 
   const handleGoBack = (): void => {
-    navigate(-1);
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate("/");
+    }
   };
 
   return (

@@ -8,10 +8,17 @@ interface ErrorStateProps {
 
 export const ErrorState = ({ error, onRetry }: ErrorStateProps) => {
   return (
-    <div className={styles["error"]}>
+    <div className={styles["error"]} role="alert" aria-live="assertive">
       <p>{error}</p>
       {onRetry && (
-        <button onClick={onRetry} type="button">
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            onRetry?.();
+          }}
+          type="button" 
+          aria-label={NOTICE_LIST_MESSAGES.RETRY_BUTTON}
+        >
           {NOTICE_LIST_MESSAGES.RETRY_BUTTON}
         </button>
       )}

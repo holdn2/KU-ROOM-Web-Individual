@@ -1,4 +1,5 @@
 import type { NoticeResponse } from "@apis/notice";
+import { useMemo } from "react";
 import { formatDescription } from "../../utils/textFormatter";
 import { NOTICE_DETAIL_MESSAGES } from "../../constants";
 import styles from "./NoticeContent.module.css";
@@ -9,13 +10,19 @@ interface NoticeContentProps {
 }
 
 export const NoticeContent = ({ notice, onOriginalLinkClick }: NoticeContentProps) => {
-  const formattedParagraphs = formatDescription(notice.description);
+  const formattedParagraphs = useMemo(() => formatDescription(notice.description), [notice.description]);
+  const dateText = useMemo(() => {
+    const d = new Date(notice.pubDate);
+    return Number.isNaN(d.getTime())
+      ? notice.pubDate
+      : d.toLocaleDateString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" });
+  }, [notice.pubDate]);
 
   return (
     <div className={styles["notice-content-wrapper"]}>
       <div className={styles["notice-header"]}>
         <h1 className={styles["notice-title"]}>{notice.title}</h1>
-        <p className={styles["notice-date"]}>{notice.pubDate.split(' ')[0]}</p>
+        <p className={styles["notice-date"]}>{dateText}</p>
       </div>
 
       <div className={styles["notice-content"]}>

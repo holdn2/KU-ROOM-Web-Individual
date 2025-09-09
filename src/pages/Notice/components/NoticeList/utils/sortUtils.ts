@@ -17,6 +17,9 @@ export const sortNotices = (notices: NoticeResponse[], sortOrder: SortOption): N
       
     case "북마크 등록순":
       return sortedArray.sort((a, b) => {
+        // 1) 북마크된 항목을 먼저, 2) 동일하면 최신순
+        const bm = Number(b.isBookMarked) - Number(a.isBookMarked);
+        if (bm !== 0) return bm;
         return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
       });
       
