@@ -29,6 +29,7 @@ import Search from "@pages/Notice/Search/Search";
 import OAuthCallback from "@pages/OAuthCallback/OAuthCallback";
 
 import "@/shared/styles/global.css";
+import ChatbotMain from "./pages/Chatbot/ChatbotMain";
 
 function App() {
   useEffect(() => {
@@ -85,6 +86,10 @@ function App() {
         {
           path: "notice/:category/:id",
           element: <NoticeDetail />,
+        },
+        {
+          path:"chatbot-main",
+          element:<ChatbotMain/>
         },
         {
           path: "signup",
