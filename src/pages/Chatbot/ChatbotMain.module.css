@@ -1,0 +1,82 @@
+.ChatbotMainWrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+  padding: 0 26px;
+  justify-content: center;
+}
+.SearchSection {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+.ChatbotDescription {
+  color: #1d2228;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 150%;
+  margin-left: 12px;
+}
+.DescriptionHighlight {
+  color: #009733;
+  font-size: 22px;
+  font-weight: 700;
+}
+.InputContainer {
+  position: relative;
+  width: 100%;
+}
+.InputTextArea {
+  display: flex;
+  width: 100%;
+  background: var(--Gray-500, rgba(227, 231, 235, 0.3));
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-sizing: border-box;
+
+  color: #1d2228;
+  font-size: 16px;
+  font-weight: 600;
+}
+.InputTextArea::placeholder {
+  color: #9eaab5;
+  font-weight: 500;
+}
+.SendIcon {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+}
+.RecommendationSection {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.RecommendationContainer {
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  border: 1px solid #009733;
+  border-radius: 10px;
+  align-items: flex-start;
+}
+.RecommendationText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.QuestionDesc {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #9eaab5;
+}
+.RecommendationQuestion {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 30px;
+  color: #1d2228;
+}
