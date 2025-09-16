@@ -112,7 +112,8 @@ export const checkValidationEmailApi = async (
     if (error.response.data.code === 305) {
       setIsDuplicatedEmail(true);
     } else if (error.response.data.code === 900) {
-      setModalType("EmailFailed"), setModalState(true);
+      setModalType("EmailFailed");
+      setModalState(true);
     }
     throw new Error(
       error.response?.data?.message || "이메일 확인 중 오류 발생"

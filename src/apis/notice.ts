@@ -52,7 +52,7 @@ export interface BookmarkListParams {
   sort?: string[];
 }
 
-const NOTICE_BASE_URL = 
+const NOTICE_BASE_URL =
   import.meta.env.VITE_NOTICE_API_BASE_URL ?? "https://kuis.shop";
 
 const noticeAxiosInstance = axios.create({
@@ -67,7 +67,9 @@ noticeAxiosInstance.interceptors.request.use(
     if (typeof window !== "undefined") {
       try {
         token = localStorage.getItem("accessToken");
-      } catch (_) {}
+      } catch (_) {
+        throw Error;
+      }
     }
     if (token) {
       if (!config.headers) config.headers = {};
