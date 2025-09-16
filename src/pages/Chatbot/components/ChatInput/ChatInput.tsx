@@ -7,6 +7,7 @@ import styles from "./ChatInput.module.css";
 
 interface ChatInputProps {
   inputText: string;
+  isAnswerLoading?: boolean;
   placeholder?: string;
   handleChangeInputText: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   handleSendQuestion: () => void;
@@ -14,12 +15,15 @@ interface ChatInputProps {
 
 const ChatInput = ({
   inputText,
+  isAnswerLoading = false,
   placeholder = "",
   handleChangeInputText,
   handleSendQuestion,
 }: ChatInputProps) => {
+  const isDisabled = !inputText || isAnswerLoading;
+
   const handleEnterToSend = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !isDisabled) {
       e.preventDefault();
       handleSendQuestion();
     }
@@ -34,13 +38,14 @@ const ChatInput = ({
         placeholder={placeholder}
         onKeyDown={handleEnterToSend}
         rows={1}
+        disabled={isAnswerLoading}
       />
       <button
         className={styles.SendIcon}
         onClick={handleSendQuestion}
-        disabled={!inputText}
+        disabled={isDisabled}
       >
-        <img src={inputText ? SendIcon : DisabledSendIcon} alt="보내기" />
+        <img src={isDisabled ? DisabledSendIcon : SendIcon} alt="보내기" />
       </button>
     </div>
   );

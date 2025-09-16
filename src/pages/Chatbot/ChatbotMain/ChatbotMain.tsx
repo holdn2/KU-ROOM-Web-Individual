@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import ChatIcon from "@assets/icon/chat.svg";
@@ -13,26 +13,29 @@ const ChatbotMain = () => {
 
   const [inputText, setInputText] = useState("");
 
-  const handleChangeInputText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputText(e.target.value);
-  };
+  const handleChangeInputText = useCallback(
+    (e: ChangeEvent<HTMLTextAreaElement>) => {
+      setInputText(e.target.value);
+    },
+    []
+  );
 
-  const handleSendQuestion = () => {
-    // TODO : 서버에 메시지 보내기
+  const handleSendQuestion = useCallback(() => {
     const trimmedText = inputText.trim();
-
     if (!trimmedText) {
       setInputText("");
       return;
     }
-
     setInputText("");
     navigate("/chat", { state: { question: trimmedText } });
-  };
+  }, [inputText, navigate]);
 
-  const handleClickRecommendation = (question: string) => {
-    navigate("/chat", { state: { question } });
-  };
+  const handleClickRecommendation = useCallback(
+    (question: string) => {
+      navigate("/chat", { state: { question } });
+    },
+    [navigate]
+  );
 
   return (
     <div>
