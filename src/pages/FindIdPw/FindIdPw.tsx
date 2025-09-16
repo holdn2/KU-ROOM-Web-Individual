@@ -154,6 +154,7 @@ const FindIdPw = () => {
       setFindStep(2);
     } catch (error) {
       dispatch({ type: "SET_VERIFY_ATTEMPTED", payload: true });
+      console.error(error);
     }
   };
   // 인증코드 실패 시 2초 간 보여줌

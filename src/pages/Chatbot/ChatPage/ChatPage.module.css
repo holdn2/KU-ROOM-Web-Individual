@@ -1,0 +1,40 @@
+.ChatArea {
+  padding: 70px 20px 100px 20px;
+  height: 100dvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+.ChatCaution {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 30px;
+  color: #9eaab5;
+}
+.ChatContianer {
+  width: fit-content;
+  max-width: 80%;
+  padding: 15px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: white;
+  background: #009733;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.InputSection {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 18px 25px;
+  box-sizing: border-box;
+  background: #fff;
+}
