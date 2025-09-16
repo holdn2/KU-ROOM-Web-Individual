@@ -141,6 +141,7 @@ button {
 }
 
 /* input태그 스타일 초기화 */
-input {
+input,
+textarea {
   all: unset; /* 모든 기본 스타일 제거 */
 }

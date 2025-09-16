@@ -1,22 +1,37 @@
 import { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import SendIcon from "@assets/icon/send.svg";
 import ChatIcon from "@assets/icon/chat.svg";
-import DisabledSendIcon from "@assets/icon/send_disabled.svg";
 import Header from "@components/Header/Header";
 
+import { mockRecommendation } from "../constant/mock-recommendation";
+import ChatInput from "../components/ChatInput/ChatInput";
 import styles from "./ChatbotMain.module.css";
-import { mockRecommendation } from "./constant/mock-recommendation";
 
 const ChatbotMain = () => {
+  const navigate = useNavigate();
+
   const [inputText, setInputText] = useState("");
 
-  const handleChangeInputText = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInputText = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
   };
 
-  const handleSendMessage = () => {
-    console.log(inputText);
+  const handleSendQuestion = () => {
+    // TODO : 서버에 메시지 보내기
+    const trimmedText = inputText.trim();
+
+    if (!trimmedText) {
+      setInputText("");
+      return;
+    }
+
+    setInputText("");
+    navigate("/chat", { state: { question: trimmedText } });
+  };
+
+  const handleClickRecommendation = (question: string) => {
+    navigate("/chat", { state: { question } });
   };
 
   return (
@@ -30,26 +45,20 @@ const ChatbotMain = () => {
             <span className={styles.DescriptionHighlight}>AI 챗봇</span>
             으로 쉽게 확인해보세요!
           </span>
-          <div className={styles.InputContainer}>
-            <input
-              className={styles.InputTextArea}
-              type="text"
-              value={inputText}
-              onChange={(e) => handleChangeInputText(e)}
-              placeholder="무엇이든 물어보세요"
-            />
-            <button
-              className={styles.SendIcon}
-              onClick={handleSendMessage}
-              disabled={!inputText}
-            >
-              <img src={inputText ? SendIcon : DisabledSendIcon} alt="보내기" />
-            </button>
-          </div>
+          <ChatInput
+            inputText={inputText}
+            placeholder="무엇이든 물어보세요"
+            handleChangeInputText={handleChangeInputText}
+            handleSendQuestion={handleSendQuestion}
+          />
         </div>
         <div className={styles.RecommendationSection}>
           {mockRecommendation.map((item) => (
-            <button key={item.id} className={styles.RecommendationContainer}>
+            <button
+              key={item.id}
+              className={styles.RecommendationContainer}
+              onClick={() => handleClickRecommendation(item.question)}
+            >
               <img src={ChatIcon} />
               <div className={styles.RecommendationText}>
                 <span className={styles.QuestionDesc}>{item.description}</span>
