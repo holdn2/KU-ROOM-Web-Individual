@@ -95,9 +95,9 @@ const ChatPage = () => {
         {isAnswerLoading && (
           <div
             className={styles.ChatContianer}
-            style={{ color: "black", background: "white" }}
+            style={{ color: "#9EAAB5", background: "white" }}
           >
-            로딩 중...
+            답변을 작성하는 중...
           </div>
         )}
         <div ref={bottomRef} />

@@ -34,7 +34,7 @@ const ChatInput = ({
       <textarea
         className={styles.InputTextArea}
         value={inputText}
-        onChange={(e) => handleChangeInputText(e)}
+        onChange={handleChangeInputText}
         placeholder={placeholder}
         onKeyDown={handleEnterToSend}
         rows={1}
