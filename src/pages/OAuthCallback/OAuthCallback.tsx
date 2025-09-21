@@ -19,7 +19,8 @@ const OAuthCallback = () => {
       const authCode =
         searchParams.get("token") ||
         searchParams.get("authCode") ||
-        searchParams.get("code");
+        searchParams.get("code") ||
+        searchParams.get("state");
 
       console.log("받은 authCode:", authCode);
 
