@@ -82,8 +82,13 @@ const MyLocationRanking = ({ updateTrigger }: Props) => {
                 />
                 <div className={styles.RankingTextWrapper}>
                   <span className={styles.RankingLocationText}>
-                    {item.name}
+                    {item.name[0]}
                   </span>
+                  {item.name.length > 1 && (
+                    <span className={styles.MoreLocation}>
+                      외 {item.name.length - 1}곳
+                    </span>
+                  )}
                   <span className={styles.RankingCountText}>
                     {item.sharingCount}회
                   </span>

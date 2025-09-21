@@ -28,12 +28,19 @@
 .EachRankLocation,
 .EachRankCount,
 .FriendRankingTitle,
-.FriendNickname {
+.FriendNickname,
+.MoreLocation {
   color: #000;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
   line-height: 140%; /* 25.2px */
+}
+.MoreLocation {
+  font-size: 16px;
+  font-weight: 400;
+  text-decoration-line: underline;
+  text-underline-offset: 2.5px;
 }
 .EachRankCount {
   color: #9eaab5;
