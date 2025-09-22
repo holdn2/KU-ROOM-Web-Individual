@@ -81,7 +81,7 @@ const Agreement: React.FC = () => {
             onClick={handleCompleteSignup}
             disabled={!age14 || !privacyInfo}
           >
-            가입하기
+            프로필 설정하기
           </Button>
         </div>
       </div>
