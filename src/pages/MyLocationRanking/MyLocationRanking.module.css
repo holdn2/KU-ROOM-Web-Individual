@@ -13,6 +13,7 @@
 .EachRankingContainer {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 13px;
 }
 .RankIcon {
@@ -24,10 +25,6 @@
   flex-direction: column;
   gap: 4px;
 }
-.EachRankLocationNameWrapper {
-  display: flex;
-  flex-direction: column;
-}
 .EachRankLocation,
 .EachRankCount,
 .FriendRankingTitle,
@@ -38,7 +35,6 @@
   font-weight: 600;
   line-height: 140%; /* 25.2px */
 }
-
 .EachRankCount {
   color: #9eaab5;
   font-size: 16px;

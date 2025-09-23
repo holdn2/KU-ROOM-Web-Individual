@@ -27,53 +27,51 @@ export default function ImageDetails({
     setCurrentIndex(currentIndex + 1);
   };
 
-  if (!imageUrls || imageUrls.length === 0) {
-    return null;
-  }
-
   return (
-    <div className={styles.ImageDetailsPage}>
-      <header className={styles.Header}>
-        <img
-          src={ArrowBackIcon}
-          alt="내리기"
-          onClick={handleCloseImageDetail}
-        />
-        <span className={styles.StepIndicator}>
-          {currentIndex + 1} / {imageUrls.length}
-        </span>
-      </header>
-      <div className={styles.ImageWrapper}>
-        {currentIndex !== 0 && (
+    imageUrls && (
+      <div className={styles.ImageDetailsPage}>
+        <header className={styles.Header}>
           <img
-            className={styles.PrevButton}
-            src={ImagePrev}
-            onClick={handlePrev}
+            src={ArrowBackIcon}
+            alt="내리기"
+            onClick={handleCloseImageDetail}
           />
-        )}
-        <div
-          className={styles.Slider}
-          style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
-          }}
-        >
-          {imageUrls.map((img, idx) => (
+          <span className={styles.StepIndicator}>
+            {currentIndex + 1} / {imageUrls.length}
+          </span>
+        </header>
+        <div className={styles.ImageWrapper}>
+          {currentIndex !== 0 && (
             <img
-              key={`${img}/${idx}`}
-              className={styles.Image}
-              src={img}
-              alt={`상세 이미지 ${idx + 1}`}
+              className={styles.PrevButton}
+              src={ImagePrev}
+              onClick={handlePrev}
             />
-          ))}
+          )}
+          <div
+            className={styles.Slider}
+            style={{
+              transform: `translateX(-${currentIndex * 100}%)`,
+            }}
+          >
+            {imageUrls.map((img, idx) => (
+              <img
+                key={idx}
+                className={styles.Image}
+                src={img}
+                alt={`상세 이미지 ${idx + 1}`}
+              />
+            ))}
+          </div>
+          {currentIndex + 1 !== imageUrls.length && (
+            <img
+              className={styles.NextButton}
+              src={ImageNext}
+              onClick={handleNext}
+            />
+          )}
         </div>
-        {currentIndex + 1 !== imageUrls.length && (
-          <img
-            className={styles.NextButton}
-            src={ImageNext}
-            onClick={handleNext}
-          />
-        )}
       </div>
-    </div>
+    )
   );
 }

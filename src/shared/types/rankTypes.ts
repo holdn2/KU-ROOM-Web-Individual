@@ -1,4 +1,4 @@
 export interface RankListType {
-  name: string[];
+  name: string;
   sharingCount: number;
 }
