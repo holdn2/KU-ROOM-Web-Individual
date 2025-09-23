@@ -72,15 +72,10 @@ const MyLocationRanking = () => {
                 alt="랭킹 아이콘"
               />
               <div className={styles.EachRankingContentWrapper}>
-                <div>
-                  <span className={styles.EachRankLocation}>
-                    {item.name[0]}{" "}
-                  </span>
-                  {item.name.length > 1 && (
-                    <span className={styles.MoreLocation}>
-                      외 {item.name.length - 1}곳
-                    </span>
-                  )}
+                <div className={styles.EachRankLocationNameWrapper}>
+                  {item.name.map((location) => (
+                    <span className={styles.EachRankLocation}>{location}</span>
+                  ))}
                 </div>
 
                 <span className={styles.EachRankCount}>
