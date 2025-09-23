@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import ArrowBackIcon from "@assets/nav/arrowBackWhite.svg";
 import ImagePrev from "@assets/nav/image-prev-button.svg";
@@ -19,12 +19,37 @@ export default function ImageDetails({
 }: ImageDetailsProps) {
   const [currentIndex, setCurrentIndex] = useState(clickedIndex);
 
+  const startXRef = useRef<number | null>(null);
+  const isDraggingRef = useRef(false);
+
   const handlePrev = () => {
     setCurrentIndex(currentIndex - 1);
   };
 
   const handleNext = () => {
     setCurrentIndex(currentIndex + 1);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    startXRef.current = e.touches[0].clientX;
+    isDraggingRef.current = true;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current || startXRef.current === null) return;
+
+    const endX = e.changedTouches[0].clientX;
+    const diffX = startXRef.current - endX;
+
+    // 임계값 (50px 이상 이동해야 동작)
+    if (diffX > 50 && currentIndex !== imageUrls.length - 1) {
+      handleNext();
+    } else if (diffX < -50 && currentIndex !== 0) {
+      handlePrev();
+    }
+
+    isDraggingRef.current = false;
+    startXRef.current = null;
   };
 
   return (
@@ -40,7 +65,11 @@ export default function ImageDetails({
             {currentIndex + 1} / {imageUrls.length}
           </span>
         </header>
-        <div className={styles.ImageWrapper}>
+        <div
+          className={styles.ImageWrapper}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           {currentIndex !== 0 && (
             <img
               className={styles.PrevButton}

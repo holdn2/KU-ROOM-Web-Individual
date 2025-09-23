@@ -13,8 +13,11 @@
 .EachRankingContainer {
   display: flex;
   flex-direction: row;
-  align-items: center;
   gap: 13px;
+}
+.EachRankLocationNameWrapper {
+  display: flex;
+  flex-direction: column;
 }
 .RankIcon {
   width: 43px;
@@ -25,6 +28,7 @@
   flex-direction: column;
   gap: 4px;
 }
+
 .EachRankLocation,
 .EachRankCount,
 .FriendRankingTitle,
