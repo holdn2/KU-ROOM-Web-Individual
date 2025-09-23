@@ -87,12 +87,13 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
         }}
       >
         {isImageDetailMode && detailLocationData?.imageUrls ? (
-          <ImageDetails
-            clickedIndex={clickedIndex}
-            imageUrls={detailLocationData?.imageUrls}
-            handleCloseImageDetail={handleCloseImageDetail}
-          />
+          <div>?</div>
         ) : (
+          // <ImageDetails
+          //   clickedIndex={clickedIndex}
+          //   imageUrls={detailLocationData?.imageUrls}
+          //   handleCloseImageDetail={handleCloseImageDetail}
+          // />
           <>
             <div className={styles.SheetIndicator} />
             {isLoading ? (
