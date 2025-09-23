@@ -7,7 +7,7 @@ import { DetailPlaceData } from "@/shared/types";
 import styles from "./FocusedLocationBottomSheet.module.css";
 import LocationInfoTopContent from "./LocationInfoTopContent/LocationInfoTopContent";
 import FocusedLocationInfo from "./FocusedLocationInfo/FocusedLocationInfo";
-import ImageDetails from "./ImageDetails.tsx/ImageDetails";
+// import ImageDetails from "./ImageDetails.tsx/ImageDetails";
 
 interface FocusedLocationBottomSheetProps {
   hasFocusedMarker: boolean;
@@ -33,10 +33,11 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
   // 사진 자세히 보기 상태
   const [isImageDetailMode, setIsImageDetailMode] = useState(false);
   const [clickedIndex, setClickedIndex] = useState(0);
+  console.log(clickedIndex);
 
-  const handleCloseImageDetail = () => {
-    setIsImageDetailMode(false);
-  };
+  // const handleCloseImageDetail = () => {
+  //   setIsImageDetailMode(false);
+  // };
 
   const handleOpenSelectImageIndex = (index?: number) => {
     if (index) setClickedIndex(index);
