@@ -218,8 +218,6 @@ async function makeFocusMarker(
     position.lng()
   );
 
-  console.log("이거 실행됨!!");
-
   map.setCenter(adjustedPosition);
   map.setZoom(17);
   setIsTracking(false);
@@ -228,7 +226,6 @@ async function makeFocusMarker(
 
   try {
     const response = await getLocationDetailData(placeId);
-    console.log("이게 결과임:", response);
     setDetailLocationData(response);
   } catch (error) {
     console.error("디테일 위치 정보 가져오기 mapUtils에서 오류 : ", error);

@@ -38,6 +38,16 @@
   background: #fff;
   overflow-y: scroll;
 }
+.ImageDetails {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: #1d2228;
+}
+.Image {
+  width: 100%;
+  object-fit: contain;
+}
 .SheetIndicator {
   width: 45px;
   height: 5px;
