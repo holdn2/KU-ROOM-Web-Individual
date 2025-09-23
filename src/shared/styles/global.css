@@ -111,3 +111,11 @@ body {
 .black {
   font-weight: 900;
 }
+input {
+  appearance: none;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -khtml-user-select: text;
+  -ms-user-select: text;
+}
