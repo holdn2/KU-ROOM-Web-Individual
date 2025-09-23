@@ -59,7 +59,7 @@ export default function ImageDetails({
         >
           {imageUrls.map((img, idx) => (
             <img
-              key={`${img}-${idx}`}
+              key={`${img}/${idx}`}
               className={styles.Image}
               src={img}
               alt={`상세 이미지 ${idx + 1}`}
