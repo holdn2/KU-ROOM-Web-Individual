@@ -49,7 +49,7 @@ const MapCategoryChip: React.FC<MapCategoryChip> = ({
 }) => {
   const getSelectedLocationArray = (title: string) => {
     setSelectedCategoryTitle(title);
-    const name = getCategoryEnum(title);
+    let name = getCategoryEnum(title);
     if (!name) {
       return console.error("잘못된 칩 클릭");
     }
