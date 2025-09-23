@@ -140,8 +140,17 @@ button {
   outline: none; /* 포커스 아웃라인 제거 (주의 필요) */
 }
 
-/* input태그 스타일 초기화 */
+/* input태그 스타일 초기화 - 모바일 호환성 개선 */
 input,
 textarea {
-  all: unset; /* 모든 기본 스타일 제거 */
+  /* all: unset 대신 개별 속성으로 초기화하여 모바일 포커스 기능 보존 */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  background: transparent;
+  /* 모바일에서 포커스와 키보드를 위해 필수 속성들은 유지 */
+  /* appearance, -webkit-appearance, user-select, touch-action은 개별 설정 */
 }

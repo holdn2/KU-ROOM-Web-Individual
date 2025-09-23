@@ -31,6 +31,12 @@
   color: #1d2228;
   outline: none;
   box-sizing: border-box;
+  /* 모바일 input 포커스 및 키보드 지원 */
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: manipulation;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .input-field::placeholder,

@@ -13,6 +13,16 @@
   color: #1d2228;
   font-size: 16px;
   font-weight: 600;
+
+  /* 모바일 textarea 포커스 및 키보드 지원 */
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: manipulation;
+  user-select: text;
+  -webkit-user-select: text;
+  border: none;
+  outline: none;
+  resize: none;
 }
 .InputTextArea::placeholder {
   color: #9eaab5;
