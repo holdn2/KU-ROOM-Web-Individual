@@ -54,7 +54,7 @@
   display: none;
 }
 .EachRankingContentContainer {
-  padding: 20px 15px;
+  padding: 15px;
   min-width: 133px;
   display: flex;
   flex-direction: column;
@@ -78,6 +78,10 @@
   font-style: normal;
   font-weight: 600;
   line-height: 140%; /* 22.4px */
+}
+.MoreLocation {
+  font-size: 14px;
+  font-weight: 500;
 }
 .RankingCountText {
   color: #9eaab5;
