@@ -8,11 +8,26 @@
   box-sizing: border-box;
   overflow: hidden;
 }
+.ImgContainer {
+  height: 50vw;
+  width: 100%;
+}
+
+.OneImgContainer {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.TwoImgsContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
 .ImgGridContainer {
   display: grid;
   grid-template-columns: 2fr 2fr;
-  height: 100%;
-  width: 100%;
   box-sizing: border-box;
 }
 .MainImg {
