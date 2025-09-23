@@ -7,6 +7,7 @@ import { DetailPlaceData } from "@/shared/types";
 import styles from "./FocusedLocationBottomSheet.module.css";
 import LocationInfoTopContent from "./LocationInfoTopContent/LocationInfoTopContent";
 import FocusedLocationInfo from "./FocusedLocationInfo/FocusedLocationInfo";
+import ImageDetails from "./ImageDetails.tsx/ImageDetails";
 
 interface FocusedLocationBottomSheetProps {
   hasFocusedMarker: boolean;
@@ -28,6 +29,20 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
 
   // 아직 해당 장소 정보가 안 왔을 때 로딩처리
   const [isLoading, setIsLoading] = useState(true);
+
+  // 사진 자세히 보기 상태
+  const [isImageDetailMode, setIsImageDetailMode] = useState(false);
+  const [clickedIndex, setClickedIndex] = useState(0);
+
+  const handleCloseImageDetail = () => {
+    setIsImageDetailMode(false);
+  };
+
+  const handleOpenSelectImageIndex = (index?: number) => {
+    if (index) setClickedIndex(index);
+    else setClickedIndex(0);
+    setIsImageDetailMode(true);
+  };
 
   // 서버에 해당 장소 정보 요청
   useEffect(() => {
@@ -53,6 +68,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
     setIsExpanded: setIsExpandedFocusedSheet,
     setHasFocusedMarker: setHasFocusedMarker,
     minHeight: 450,
+    disabled: isImageDetailMode,
   });
 
   return (
@@ -70,38 +86,49 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
             : "translateY(calc(100% - 450px))",
         }}
       >
-        <div className={styles.SheetIndicator} />
-        {isLoading ? (
-          <div className={styles.MyPageLoadingWrapper}>
-            <BeatLoader color="#009733" size={18} margin={4} />
-          </div>
+        {isImageDetailMode && detailLocationData?.imageUrls ? (
+          <ImageDetails
+            clickedIndex={clickedIndex}
+            imageUrls={detailLocationData?.imageUrls}
+            handleCloseImageDetail={handleCloseImageDetail}
+          />
         ) : (
           <>
-            {isExpandedFocusedSheet && (
-              <LocationInfoTopContent
-                detailInfo={detailLocationData}
-                setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
-              />
-            )}
-            <FocusedLocationInfo
-              detailInfo={detailLocationData}
-              isExpandedFocusedSheet={isExpandedFocusedSheet}
-              setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
-            />
-            {!isExpandedFocusedSheet && (
-              <div className={styles.SheetImgContainer}>
-                {/* 최대 3개까지만 보이도록 */}
-                {detailLocationData?.imageUrls
-                  .slice(0, 3)
-                  .map((item, index) => (
-                    <img
-                      className={styles.SheetImg}
-                      key={index}
-                      src={item}
-                      alt="위치 관련 이미지"
-                    />
-                  ))}
+            <div className={styles.SheetIndicator} />
+            {isLoading ? (
+              <div className={styles.MyPageLoadingWrapper}>
+                <BeatLoader color="#009733" size={18} margin={4} />
               </div>
+            ) : (
+              <>
+                {isExpandedFocusedSheet && (
+                  <LocationInfoTopContent
+                    locationImages={detailLocationData?.imageUrls}
+                    setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+                    handleSelectImageIndex={handleOpenSelectImageIndex}
+                  />
+                )}
+                <FocusedLocationInfo
+                  detailInfo={detailLocationData}
+                  isExpandedFocusedSheet={isExpandedFocusedSheet}
+                  setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+                />
+                {!isExpandedFocusedSheet && (
+                  <div className={styles.SheetImgContainer}>
+                    {/* 최대 3개까지만 보이도록 */}
+                    {detailLocationData?.imageUrls
+                      .slice(0, 3)
+                      .map((item, index) => (
+                        <img
+                          className={styles.SheetImg}
+                          key={index}
+                          src={item}
+                          alt="위치 관련 이미지"
+                        />
+                      ))}
+                  </div>
+                )}
+              </>
             )}
           </>
         )}

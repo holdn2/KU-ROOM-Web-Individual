@@ -7,6 +7,7 @@ interface UseBottomSheetDragProps {
   setIsExpanded: (value: boolean) => void;
   setHasFocusedMarker?: (value: boolean) => void;
   minHeight: number; // 예: 150, 380 등
+  disabled?: boolean;
 }
 
 export default function useBottomSheetDrag({
@@ -16,6 +17,7 @@ export default function useBottomSheetDrag({
   setIsExpanded,
   setHasFocusedMarker,
   minHeight,
+  disabled = false,
 }: UseBottomSheetDragProps) {
   const startY = useRef(0);
   const currentY = useRef(0);
@@ -23,6 +25,8 @@ export default function useBottomSheetDrag({
   const canDrag = useRef(false);
 
   useEffect(() => {
+    if (disabled) return;
+
     const sheet = sheetRef.current;
     if (!sheet) return;
 
@@ -118,5 +122,6 @@ export default function useBottomSheetDrag({
     sheetRef,
     hasFocusedMarker,
     setHasFocusedMarker,
+    disabled,
   ]);
 }
