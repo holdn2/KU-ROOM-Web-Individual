@@ -31,6 +31,7 @@ import OAuthCallback from "@pages/OAuthCallback/OAuthCallback";
 import "@/shared/styles/global.css";
 import ChatbotMain from "./pages/Chatbot/ChatbotMain/ChatbotMain";
 import ChatPage from "./pages/Chatbot/ChatPage/ChatPage";
+import LocationTotalRank from "./pages/LocationTotalRank/LocationTotalRank";
 
 function App() {
   useEffect(() => {
@@ -176,6 +177,10 @@ function App() {
               element: <FriendLocationRanking />,
             },
           ],
+        },
+        {
+          path: "location-total-rank",
+          element: <LocationTotalRank />,
         },
         {
           path: "bookmark",
