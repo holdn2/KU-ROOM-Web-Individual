@@ -34,6 +34,7 @@ import {
   makeMarkerIcon,
   renderedMarkers,
   renderMarkers,
+  resetFocusedMarker,
 } from "./utils/kuroomMapUtils";
 import SearchResultHeader from "./components/MapSearch/SearchResultHeader";
 
@@ -148,6 +149,8 @@ const MapPage = () => {
     if (isExpandedSheet) {
       setIsExpandedSheet(false);
       setIsExpandedFocusedSheet(false);
+    } else if (detailLocationData) {
+      resetFocusedMarker(setHasFocusedMarker);
     } else {
       resetSelectSearch();
     }

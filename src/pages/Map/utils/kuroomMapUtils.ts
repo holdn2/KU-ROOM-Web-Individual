@@ -166,38 +166,8 @@ export function renderMarkers(
 
   // 지도 클릭 시 포커스 해제 (단, 드래그 아닌 경우에만)
   window.naver.maps.Event.addListener(map, "click", () => {
-    if (!isDraggingMap && focusedMarker) {
-      const target = renderedMarkers.find(
-        ({ marker }) => marker === focusedMarker
-      );
-      if (target) {
-        if (target.isFriendMarker) {
-          focusedMarker.setIcon({
-            content: `
-        <div style="
-          position: relative;
-          width: 50px;
-          height: 50px;
-          border: 3px solid #fff;
-          border-radius: 50px;
-          box-shadow: 0 0 4px rgba(0,0,0,0.25);
-        ">
-          <img src="${target.originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
-          <div style="
-            position: absolute; top: -10px; right: -10px; display: flex; 
-            width: 25px; height: 25px; justify-content: center;
-            align-items: center; border-radius: 50px; border: 3px solid #FFF; background: #F2FAF5; color: #009733; font-size: 14px; font-weight: 700;
-          ">${target.numOfFriends ?? ""}</div>
-        </div>
-      `,
-            anchor: new naver.maps.Point(20, 20),
-          });
-        } else {
-          focusedMarker.setIcon({ url: target.originalIcon });
-        }
-      }
-      focusedMarker = null;
-      setHasFocusedMarker(false);
+    if (!isDraggingMap) {
+      resetFocusedMarker(setHasFocusedMarker);
     }
   });
 }
@@ -299,6 +269,47 @@ async function makeFocusMarker(
     }
   );
 }
+
+// 포커스된 마커 원래 상태로 되돌리는 함수
+export function resetFocusedMarker(
+  setHasFocusedMarker: (value: boolean) => void
+) {
+  if (focusedMarker) {
+    const target = renderedMarkers.find(
+      ({ marker }) => marker === focusedMarker
+    );
+    if (target) {
+      if (target.isFriendMarker) {
+        focusedMarker.setIcon({
+          content: `
+            <div style="
+              position: relative;
+              width: 50px;
+              height: 50px;
+              border: 3px solid #fff;
+              border-radius: 50px;
+              box-shadow: 0 0 4px rgba(0,0,0,0.25);
+            ">
+              <img src="${target.originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
+              <div style="
+                position: absolute; top: -10px; right: -10px; display: flex; 
+                width: 25px; height: 25px; justify-content: center;
+                align-items: center; border-radius: 50px; border: 3px solid #FFF; background: #F2FAF5; color: #009733; font-size: 14px; font-weight: 700;
+              ">${target.numOfFriends ?? ""}</div>
+            </div>
+          `,
+          anchor: new naver.maps.Point(20, 20),
+        });
+      } else {
+        focusedMarker.setIcon({ url: target.originalIcon });
+      }
+    }
+
+    focusedMarker = null;
+    setHasFocusedMarker(false);
+  }
+}
+
 // 현재 위치 정보 가져와서 내 위치 마커 추가 및 watchPosition으로 따라가는 로직
 export function myLocationTracking(
   map: naver.maps.Map,
