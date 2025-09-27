@@ -12,7 +12,7 @@ const HomeMenu = () => {
 
   const navToSearchLocation = () => {
     console.log("장소 검색으로");
-    navigate("/map");
+    navigate("/map", { state: { isSearchMode: true } });
   };
   const navToPlusFriend = () => {
     console.log("친구 추가로");
