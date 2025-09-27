@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import DefaultProfileImg from "@assets/defaultProfileImg.svg";
 import Rank1Icon from "@assets/icon/ranking/rank1.png";
@@ -7,9 +8,8 @@ import Rank3Icon from "@assets/icon/ranking/rank3.png";
 import ArrowRight from "@assets/nav/arrowRight.svg";
 import { DetailPlaceData } from "@/shared/types";
 
-import styles from "./FocusedLocationInfo.module.css";
 import { totalRankMock } from "./total-rank-mock";
-import { useNavigate } from "react-router-dom";
+import styles from "./FocusedLocationInfo.module.css";
 
 interface FocusedLocationInfo {
   detailInfo: DetailPlaceData | null;
@@ -25,7 +25,7 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
   const navigate = useNavigate();
 
   const handleNavigateToTotalRank = () => {
-    navigate("/location-total-rank");
+    navigate(`/map/location-total-rank/${detailInfo?.name}`);
   };
 
   return (

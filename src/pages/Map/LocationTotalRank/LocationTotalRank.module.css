@@ -1,0 +1,58 @@
+.TotalRankingPageWrapper {
+  padding: 96px 35px 40px 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.EachRankingContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+}
+.EachRankLocationNameWrapper {
+  display: flex;
+  flex-direction: column;
+}
+.RankIcon {
+  width: 43px;
+  height: 43px;
+}
+.EachRankingContentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.UserName,
+.RankCount,
+.RankText {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%; /* 25.2px */
+}
+.RankCount {
+  color: #9eaab5;
+  font-size: 16px;
+  font-weight: 500;
+}
+.RankText {
+  color: #009733;
+  text-align: center;
+  align-self: center;
+  font-size: 14px;
+  font-weight: 600;
+  width: 43px;
+}
+.DotsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.moredots {
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background-color: #ced5db;
+}
