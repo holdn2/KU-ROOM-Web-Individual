@@ -1,5 +1,6 @@
 // 지도 페이지
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
+import { useLocation, useOutletContext } from "react-router-dom";
 
 import {
   checkIsSharedApi,
@@ -21,21 +22,18 @@ import MapSearch from "./components/MapSearch/MapSearch";
 import LocationsBottomSheet from "./components/LocationsBottomSheet/LocationsBottomSheet";
 import FocusedLocationBottomSheet from "./components/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
 import { isMyLocationInSchool } from "@utils/mapRangeUtils";
-import {
-  Coordinate,
-  DetailPlaceData,
-  MapSearchResult,
-  MarkerData,
-  PlaceData,
-} from "@/shared/types/mapTypes";
+import { MapSearchResult, MarkerData } from "@/shared/types/mapTypes";
 import {
   clearAllMarkers,
+  focusDetailLocationMarker,
   makeFocusMarker,
   makeMarkerIcon,
   renderedMarkers,
   renderMarkers,
+  resetFocusedMarker,
 } from "./utils/kuroomMapUtils";
 import SearchResultHeader from "./components/MapSearch/SearchResultHeader";
+import { MapLayoutContext } from "./layout/MapLayout";
 
 const includeBottomSheetList = [
   "건물",
@@ -51,47 +49,51 @@ const includeBottomSheetList = [
   "우체국",
 ];
 
+// TODO: 전체 랭킹 페이지에서 돌아왔을 때 마커 포커스 및 해당 마커를 가운데로 정렬하는 기능 추가 필요
+
 const MapPage = () => {
-  // 로컬 상태 ***************************************************************
-  const [isTracking, setIsTracking] = useState(true); // 내 현재 위치를 따라가는지 상태
-  const [searchMode, setSearchMode] = useState(false);
-  const [isInSchool, setIsInSchool] = useState(false);
-  const [isSharedLocation, setIsSharedLocation] = useState(false);
-  // 공유 상태 확인 트리거 키
-  const [locationSharedRefreshKey, setLocationSharedRefreshKey] = useState(0);
+  const { state } = useLocation();
+  const {
+    // ================== 상태 ==================
+    isTracking,
+    visibleBottomSheet,
+    isExpandedSheet,
+    hasFocusedMarker,
+    isExpandedFocusedSheet,
+    selectedCategoryLocations,
+    detailLocationData,
+    searchMode,
+    isInSchool,
+    isSharedLocation,
+    locationSharedRefreshKey,
+    selectedCategoryTitle,
+    selectedCategoryEnum,
+    modalState,
+    currentLocation,
+    nearLocation,
+    markers,
+    markerFlag,
+    mapInstanceRef,
 
-  // 하나의 위치에 대한 디테일 정보
-  const [detailLocationData, setDetailLocationData] =
-    useState<DetailPlaceData | null>(null);
-  // 선택된 위치 카테고리 명
-  const [selectedCategoryTitle, setSelectedCategoryTitle] =
-    useState<string>("");
-  const [selectedCategoryEnum, setSelectedCategoryEnum] = useState<string>("");
-  // 선택된 위치 카테고리 관련 위치 배열
-  const [selectedCategoryLocations, setSelectedCategoryLocations] = useState<
-    PlaceData[]
-  >([]);
-
-  // 위치 공유 상태
-  const [modalState, setModalState] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState<Coordinate | null>(
-    null
-  ); // 현재 위치
-  // 유저의 위치와 가장 가까운 위치 타이틀
-  const [nearLocation, setNearLocation] = useState("");
-
-  const [markers, setMarkers] = useState<MarkerData[]>([]);
-  const mapInstanceRef = useRef<naver.maps.Map | null>(null);
-  // 마커가 변경될 때마다 플래그 설정. 마커 렌더링 트리거
-  const [markerFlag, setMarkerFlag] = useState<number>(0);
-
-  // 검색 또는 칩 클릭 시 바텀 시트
-  const [visibleBottomSheet, setVisibleBottomSheet] = useState(false);
-  const [isExpandedSheet, setIsExpandedSheet] = useState(false);
-
-  // 클릭 또는 마커가 하나만 있을 때(==마커가 포커스되었을 때) 바텀시트
-  const [hasFocusedMarker, setHasFocusedMarker] = useState(false);
-  const [isExpandedFocusedSheet, setIsExpandedFocusedSheet] = useState(false);
+    setIsTracking,
+    setVisibleBottomSheet,
+    setIsExpandedSheet,
+    setHasFocusedMarker,
+    setIsExpandedFocusedSheet,
+    setSelectedCategoryLocations,
+    setDetailLocationData,
+    setSearchMode,
+    setIsInSchool,
+    setIsSharedLocation,
+    setLocationSharedRefreshKey,
+    setSelectedCategoryTitle,
+    setSelectedCategoryEnum,
+    setModalState,
+    setCurrentLocation,
+    setNearLocation,
+    setMarkers,
+    setMarkerFlag,
+  } = useOutletContext<MapLayoutContext>();
 
   // 서버로부터 데이터 fetching ***********************************************
   // 현재 내 위치 공유 상태 확인 함수
@@ -125,7 +127,7 @@ const MapPage = () => {
       const locations = await getCategoryLocationsApi(selectedCategory);
       setSelectedCategoryLocations(locations);
     } catch (error) {
-      console.error();
+      console.error(error);
       alert("서버 상태 또는 네트워크에 문제가 있습니다.");
     }
   };
@@ -148,6 +150,10 @@ const MapPage = () => {
     if (isExpandedSheet) {
       setIsExpandedSheet(false);
       setIsExpandedFocusedSheet(false);
+    } else if (hasFocusedMarker) {
+      setIsTracking(false);
+      resetFocusedMarker(setHasFocusedMarker);
+      setDetailLocationData(null);
     } else {
       resetSelectSearch();
     }
@@ -208,22 +214,22 @@ const MapPage = () => {
   };
   // 컴포넌트 초기화 로직 ***********************************************
   useEffect(() => {
+    setSearchMode(state?.isSearchMode ?? false);
+
     // 현재 내 위치가 학교 내부인지 검증
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
   }, []);
 
   // 사이드 이펙트 (useEffect) *********************************************
   useEffect(() => {
-    console.log("위치공유 상태는?:", isSharedLocation);
+    // console.log("위치공유 상태는?:", isSharedLocation);
     // 현재 내 위치 공유 상태 확인
     getIsMySharedInfo();
   }, [locationSharedRefreshKey]);
 
-  // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작.
   useEffect(() => {
     if (!detailLocationData) {
       setMarkers([]);
-      setVisibleBottomSheet(false);
       return;
     }
     setVisibleBottomSheet(true);
@@ -240,6 +246,23 @@ const MapPage = () => {
       },
     ]);
   }, [detailLocationData]);
+
+  useEffect(() => {
+    if (
+      detailLocationData &&
+      renderedMarkers.length > 0 &&
+      mapInstanceRef.current
+    ) {
+      focusDetailLocationMarker(
+        mapInstanceRef.current,
+        detailLocationData,
+        selectedCategoryLocations,
+        setIsTracking,
+        setHasFocusedMarker,
+        setDetailLocationData
+      );
+    }
+  }, [renderedMarkers]);
 
   useEffect(() => {
     if (!selectedCategoryTitle) {

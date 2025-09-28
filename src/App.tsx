@@ -31,6 +31,8 @@ import OAuthCallback from "@pages/OAuthCallback/OAuthCallback";
 import "@/shared/styles/global.css";
 import ChatbotMain from "./pages/Chatbot/ChatbotMain/ChatbotMain";
 import ChatPage from "./pages/Chatbot/ChatPage/ChatPage";
+import LocationTotalRank from "./pages/Map/LocationTotalRank/LocationTotalRank";
+import MapLayout from "./pages/Map/layout/MapLayout";
 
 function App() {
   useEffect(() => {
@@ -130,8 +132,19 @@ function App() {
         },
         {
           path: "map",
-          element: <MapPage />,
+          element: <MapLayout />,
+          children: [
+            {
+              index: true,
+              element: <MapPage />,
+            },
+            {
+              path: "location-total-rank/:location?",
+              element: <LocationTotalRank />,
+            },
+          ],
         },
+
         {
           path: "myinfo",
           element: <MyPage />,
@@ -177,6 +190,7 @@ function App() {
             },
           ],
         },
+
         {
           path: "bookmark",
           element: <Bookmark />,

@@ -14,9 +14,11 @@ import styles from "./MyLocationRanking.module.css";
 
 const dummyFriendRanking = [
   {
+    id: 1,
     nickname: "쿠룸",
   },
   {
+    id: 2,
     nickname: "쿠룸쿠룸",
   },
 ];
@@ -74,7 +76,9 @@ const MyLocationRanking = () => {
               <div className={styles.EachRankingContentWrapper}>
                 <div className={styles.EachRankLocationNameWrapper}>
                   {item.name.map((location) => (
-                    <span className={styles.EachRankLocation}>{location}</span>
+                    <span key={location} className={styles.EachRankLocation}>
+                      {location}
+                    </span>
                   ))}
                 </div>
                 <span className={styles.EachRankCount}>
@@ -87,13 +91,13 @@ const MyLocationRanking = () => {
         <div className={styles.FriendRankingContainer}>
           <span className={styles.FriendRankingTitle}>친구 랭킹</span>
           <div className={styles.FriendWrapper}>
-            {dummyFriendRanking.map((item, index) => (
+            {dummyFriendRanking.map((friend) => (
               <button
-                key={index}
+                key={friend.id}
                 className={styles.FriendNickname}
-                onClick={() => handleNavToFriendRanking(item.nickname)}
+                onClick={() => handleNavToFriendRanking(friend.nickname)}
               >
-                {item.nickname}
+                {friend.nickname}
               </button>
             ))}
           </div>

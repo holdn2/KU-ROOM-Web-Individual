@@ -9,8 +9,8 @@
   overflow: hidden;
 }
 .ImgContainer {
-  height: 50vw;
   width: 100%;
+  aspect-ratio: 2 / 1;
 }
 
 .OneImgContainer {

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { resetFocusedMarker } from "../utils/kuroomMapUtils";
 
 interface UseBottomSheetDragProps {
   sheetRef: React.RefObject<HTMLDivElement | null>;
@@ -84,7 +85,7 @@ export default function useBottomSheetDrag({
         return;
       }
 
-      if (diff > 80) {
+      if (diff > 100) {
         setIsExpanded(false);
         sheet.style.transform = `translateY(calc(100% - ${minHeight}px))`;
       } else if (diff < -80) {
@@ -97,7 +98,7 @@ export default function useBottomSheetDrag({
       }
 
       if (!isExpanded && hasFocusedMarker && setHasFocusedMarker && diff > 80) {
-        setHasFocusedMarker(false);
+        resetFocusedMarker(setHasFocusedMarker);
       }
 
       isDragging.current = false;

@@ -1,6 +1,7 @@
 .DetailInfoWrapper {
-  width: calc(100% - 28px);
-  padding: 20px 0;
+  width: 100%;
+  max-height: calc(100vh - 50vw);
+  padding: 20px 25px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -9,13 +10,36 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 15px 22px;
+  padding: 15px 11px;
+}
+.TotalRankWrapper {
+  max-width: 360px;
+  padding: 14px 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: rgba(227, 231, 235, 0.3);
+  border-radius: 10px;
+  margin: 18px 0;
+}
+.RankContainer {
+  flex: 1;
+  display: flex;
+  gap: 2px;
+  flex-direction: row;
+  align-items: center;
+}
+.TotalRankNav {
+  width: 32px;
+  height: 32px;
+  padding: 8px 10px;
+  box-sizing: border-box;
 }
 .ContentWrapper {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  padding: 10px 22px;
+  padding: 10px 13px 30px 13px;
 }
 .FriendSectionWrapper {
   display: flex;
@@ -60,7 +84,8 @@
 .SubTitleText,
 .FriendTitle,
 .InfoTitle,
-.InfoContent {
+.InfoContent,
+.Ranker {
   color: #000;
   font-size: 22px;
   font-style: normal;
@@ -95,4 +120,14 @@
   /* 페이드 아웃 마스크 효과 */
   mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+.Ranker {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 140%;
+
+  overflow: hidden;
+  max-width: 45px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

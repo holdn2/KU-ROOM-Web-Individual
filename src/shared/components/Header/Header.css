@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
   background-color: #f8f9fc;
-  z-index: 100000;
+  z-index: 10000;
 }
 .header-title {
   color: var(--Black, #1d2228);
