@@ -12,7 +12,7 @@ import dormitoryMarker from "@assets/map/markers/dormitoryMarker.svg";
 import bankMarker from "@assets/map/markers/bankMarker.svg";
 import postMarker from "@assets/map/markers/postMarker.svg";
 import defaultMarker from "@assets/map/defaultMarkerIcon.svg";
-import { DetailPlaceData, MarkerData } from "@/shared/types";
+import { DetailPlaceData, MarkerData, PlaceData } from "@/shared/types";
 
 interface KuroomMarker {
   marker: naver.maps.Marker;
@@ -25,7 +25,7 @@ let renderedMarkers: KuroomMarker[] = []; // 전역 배열로 기존 마커 저�
 let focusedMarker: naver.maps.Marker | null = null;
 let isDraggingMap = false;
 
-export { renderedMarkers, makeFocusMarker };
+export { renderedMarkers, focusedMarker, makeFocusMarker };
 
 export const makeMarkerIcon = (category: string): string => {
   switch (category) {
@@ -268,6 +268,51 @@ async function makeFocusMarker(
       }
     }
   );
+}
+
+/**
+ * detailLocationData가 있다면 selectedCategoryLocations에서
+ * 해당 마커를 찾아 포커스하고 지도 중심을 해당 마커로 이동시키는 함수
+ */
+export function focusDetailLocationMarker(
+  map: naver.maps.Map,
+  detailLocationData: DetailPlaceData | null,
+  selectedCategoryLocations: PlaceData[],
+  setIsTracking: (value: boolean) => void,
+  setHasFocusedMarker: (value: boolean) => void,
+  setDetailLocationData: (value: DetailPlaceData) => void
+) {
+  if (!map || !detailLocationData) return;
+
+  // renderedMarkers에서 detailLocationData.name과 같은 마커 찾기
+  const target = renderedMarkers.find(
+    ({ marker }) => marker.getTitle() === detailLocationData.name
+  );
+
+  if (target) {
+    makeFocusMarker(
+      map,
+      target.marker,
+      setIsTracking,
+      setHasFocusedMarker,
+      setDetailLocationData,
+      target.isFriendMarker
+    );
+  } else {
+    // 아직 렌더링된 마커가 없을 경우 (예: selectedCategoryLocations만 있는 경우)
+    const candidate = selectedCategoryLocations.find(
+      (place) => place.name === detailLocationData.name
+    );
+
+    if (candidate) {
+      const position = new window.naver.maps.LatLng(
+        candidate.latitude,
+        candidate.longitude
+      );
+      map.setCenter(position);
+      map.setZoom(17);
+    }
+  }
 }
 
 // 포커스된 마커 원래 상태로 되돌리는 함수

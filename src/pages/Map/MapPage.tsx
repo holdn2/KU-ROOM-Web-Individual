@@ -1,5 +1,6 @@
 // 지도 페이지
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
+import { useLocation, useOutletContext } from "react-router-dom";
 
 import {
   checkIsSharedApi,
@@ -24,6 +25,8 @@ import { isMyLocationInSchool } from "@utils/mapRangeUtils";
 import { MapSearchResult, MarkerData } from "@/shared/types/mapTypes";
 import {
   clearAllMarkers,
+  focusDetailLocationMarker,
+  focusedMarker,
   makeFocusMarker,
   makeMarkerIcon,
   renderedMarkers,
@@ -31,7 +34,6 @@ import {
   resetFocusedMarker,
 } from "./utils/kuroomMapUtils";
 import SearchResultHeader from "./components/MapSearch/SearchResultHeader";
-import { useLocation, useOutletContext } from "react-router-dom";
 import { MapLayoutContext } from "./layout/MapLayout";
 
 const includeBottomSheetList = [
@@ -47,6 +49,8 @@ const includeBottomSheetList = [
   "은행",
   "우체국",
 ];
+
+// TODO: 전체 랭킹 페이지에서 돌아왔을 때 마커 포커스 및 해당 마커를 가운데로 정렬하는 기능 추가 필요
 
 const MapPage = () => {
   const { state } = useLocation();
@@ -147,9 +151,10 @@ const MapPage = () => {
     if (isExpandedSheet) {
       setIsExpandedSheet(false);
       setIsExpandedFocusedSheet(false);
-    } else if (detailLocationData) {
+    } else if (hasFocusedMarker) {
       setIsTracking(false);
       resetFocusedMarker(setHasFocusedMarker);
+      setDetailLocationData(null);
     } else {
       resetSelectSearch();
     }
@@ -211,6 +216,7 @@ const MapPage = () => {
   // 컴포넌트 초기화 로직 ***********************************************
   useEffect(() => {
     setSearchMode(state?.isSearchMode ?? false);
+
     // 현재 내 위치가 학교 내부인지 검증
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
   }, []);
@@ -222,11 +228,9 @@ const MapPage = () => {
     getIsMySharedInfo();
   }, [locationSharedRefreshKey]);
 
-  // 요청의 응답값을 markers배열에 저장. 바텀 시트 조작.
   useEffect(() => {
     if (!detailLocationData) {
       setMarkers([]);
-      setVisibleBottomSheet(false);
       return;
     }
     setVisibleBottomSheet(true);
@@ -243,6 +247,23 @@ const MapPage = () => {
       },
     ]);
   }, [detailLocationData]);
+
+  useEffect(() => {
+    if (
+      detailLocationData &&
+      renderedMarkers.length > 0 &&
+      mapInstanceRef.current
+    ) {
+      focusDetailLocationMarker(
+        mapInstanceRef.current,
+        detailLocationData,
+        selectedCategoryLocations,
+        setIsTracking,
+        setHasFocusedMarker,
+        setDetailLocationData
+      );
+    }
+  }, [renderedMarkers]);
 
   useEffect(() => {
     if (!selectedCategoryTitle) {
