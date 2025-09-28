@@ -85,7 +85,7 @@ export default function useBottomSheetDrag({
         return;
       }
 
-      if (diff > 80) {
+      if (diff > 100) {
         setIsExpanded(false);
         sheet.style.transform = `translateY(calc(100% - ${minHeight}px))`;
       } else if (diff < -80) {
