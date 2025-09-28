@@ -26,7 +26,6 @@ import { MapSearchResult, MarkerData } from "@/shared/types/mapTypes";
 import {
   clearAllMarkers,
   focusDetailLocationMarker,
-  focusedMarker,
   makeFocusMarker,
   makeMarkerIcon,
   renderedMarkers,
@@ -128,7 +127,7 @@ const MapPage = () => {
       const locations = await getCategoryLocationsApi(selectedCategory);
       setSelectedCategoryLocations(locations);
     } catch (error) {
-      console.error();
+      console.error(error);
       alert("서버 상태 또는 네트워크에 문제가 있습니다.");
     }
   };
