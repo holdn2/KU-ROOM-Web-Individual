@@ -63,6 +63,10 @@
   font-style: normal;
 }
 
+:root {
+  --custom-max-width: 600px;
+}
+
 /* 전체 화면 영역 스크롤 방지 */
 html,
 body {
@@ -74,6 +78,8 @@ body {
 body {
   font-family: "Pretendard", sans-serif;
   font-weight: 400; /* 기본적으로 Regular 사용 */
+  max-width: var(--custom-max-width);
+  margin: 0 auto;
 }
 
 .thin {
