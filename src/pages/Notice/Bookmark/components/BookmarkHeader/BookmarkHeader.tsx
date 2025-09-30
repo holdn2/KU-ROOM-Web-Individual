@@ -20,12 +20,6 @@ export const BookmarkHeader = ({ title = "북마크" }: BookmarkHeaderProps) => 
   return (
     <div className={styles["fixed-header"]}>
       <Header>{title}</Header>
-      <button
-        className={styles["back-button"]}
-        onClick={handleGoBack}
-        aria-label="뒤로가기"
-        type="button"
-      />
     </div>
   );
 };

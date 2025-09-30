@@ -6,8 +6,8 @@ import { BOOKMARK_MESSAGES } from "./constants";
 import styles from "./Bookmark.module.css";
 
 const Bookmark = () => {
-  const { bookmarks, loading, error, fetchBookmarks, handleBookmarkToggle } = useBookmarks();
-
+  const { bookmarks, loading, error, fetchBookmarks, handleBookmarkToggle } =
+    useBookmarks();
 
   return (
     <div className={styles["bookmark-container"]}>

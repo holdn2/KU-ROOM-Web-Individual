@@ -26,6 +26,7 @@
 .ButtonWrapper {
   position: absolute;
   width: calc(100vw - 56px);
+  max-width: calc(var(--custom-max-width) - 56px);
   bottom: 128px;
 }
 .ErrorMsg {

@@ -4,11 +4,14 @@
   left: 0;
   right: 0;
   z-index: 99;
-  background-color: #f8f9fc;
+  width: 100%;
 }
 
 .notice-tabs-container {
+  max-width: var(--custom-max-width);
   position: relative;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #f8f9fc;
   border-bottom: 1px solid #ced5db;
   overflow-x: auto;
@@ -23,7 +26,8 @@
 
 .notice-tabs {
   display: flex;
-  min-width: max-content;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .notice-tab {

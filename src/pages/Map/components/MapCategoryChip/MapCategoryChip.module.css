@@ -1,19 +1,26 @@
 .CategoryChipsWrapper {
   position: absolute;
   top: 84px;
-  width: calc(100% - 50px);
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: row;
+  width: 100%;
+  max-width: var(--custom-max-width);
   gap: 10px;
   z-index: 100;
   overflow-x: auto; /* 가로 스크롤만 */
-  overflow-y: visible;
   padding: 0 25px;
   white-space: nowrap;
+  box-sizing: border-box;
+  scrollbar-width: 1px;
 }
-.CategoryChipsWrapper::-webkit-scrollbar {
-  display: none;
+@media (max-width: 600px) {
+  .CategoryChipsWrapper::-webkit-scrollbar {
+    display: none;
+  }
 }
+
 .CategoryChip {
   height: 36px;
   box-sizing: border-box;
