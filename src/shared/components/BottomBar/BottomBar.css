@@ -1,4 +1,5 @@
 .bottom-bar-container {
+  max-width: var(--custom-max-width);
   position: fixed;
   display: flex;
   flex-direction: row;
