@@ -71,6 +71,7 @@
 .ButtonWrapper {
   position: absolute;
   width: calc(100vw - 60px);
+  max-width: calc(var(--custom-max-width) - 60px);
   bottom: 49px;
   padding: 0 16px;
 }
