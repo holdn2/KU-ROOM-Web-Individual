@@ -143,6 +143,7 @@ const MapPage = () => {
     setIsExpandedSheet(false);
     setVisibleBottomSheet(false);
     setHasFocusedMarker(false);
+    setVisibleBottomSheet(false);
     setIsExpandedFocusedSheet(false);
     clearAllMarkers();
   };
@@ -151,7 +152,8 @@ const MapPage = () => {
     if (isExpandedSheet) {
       setIsExpandedSheet(false);
       setIsExpandedFocusedSheet(false);
-    } else if (hasFocusedMarker) {
+    } else if (hasFocusedMarker && selectedCategoryLocations) {
+      console.log("여기", selectedCategoryLocations);
       setIsTracking(false);
       resetFocusedMarker(setHasFocusedMarker);
       setDetailLocationData(null);

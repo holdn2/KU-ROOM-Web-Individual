@@ -1,6 +1,7 @@
 .DetailInfoBottomSheetContainer {
   position: relative;
   width: 100%;
+  max-width: var(--custom-max-width);
   position: absolute;
   bottom: 0;
   display: flex;

@@ -1,6 +1,11 @@
 .SearchModeContainer {
   background: #f8f9fc;
   height: 100%;
+  width: 100%;
+  max-width: var(--custom-max-width);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .SearchBarContainer {
   padding: 20px 30px;

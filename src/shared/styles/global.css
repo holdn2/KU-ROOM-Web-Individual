@@ -63,6 +63,10 @@
   font-style: normal;
 }
 
+:root {
+  --custom-max-width: 600px;
+}
+
 /* 전체 화면 영역 스크롤 방지 */
 html,
 body {
@@ -71,9 +75,15 @@ body {
   touch-action: none; /* 터치 이벤트 방지 */
   overscroll-behavior: none; /* 스크롤 바운싱 방지 */
 }
+html {
+  background-color: white;
+}
 body {
   font-family: "Pretendard", sans-serif;
   font-weight: 400; /* 기본적으로 Regular 사용 */
+  max-width: var(--custom-max-width);
+  margin: 0 auto;
+  box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.04);
 }
 
 .thin {

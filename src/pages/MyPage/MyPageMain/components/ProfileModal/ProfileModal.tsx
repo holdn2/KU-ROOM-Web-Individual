@@ -28,8 +28,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
       case "logout":
         console.log("로그아웃 실행");
         setModalState(false);
-        const logoutResponse = await logoutApi();
-        console.log(logoutResponse);
+        await logoutApi();
         localStorage.clear();
         navigate("/login");
 
@@ -37,8 +36,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
       case "withdraw":
         console.log("회원 탈퇴 실행");
         setModalState(false);
-        const withdrawRepsonse = await withdrawApi();
-        console.log(withdrawRepsonse);
+        await withdrawApi();
         localStorage.clear();
 
         navigate("/login");

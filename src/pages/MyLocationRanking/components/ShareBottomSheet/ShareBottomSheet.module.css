@@ -1,25 +1,26 @@
 .ShareBottomSheetContainer {
   height: 270px;
   width: 100%;
-  max-width: 700px;
+  max-width: var(--custom-max-width);
   border-top-left-radius: 20.967px;
   border-top-right-radius: 20.967px;
   background: #fff;
   box-shadow: 5.242px 0px 15.725px 0px rgba(0, 0, 0, 0.13);
   position: absolute;
   bottom: 0;
+  left: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   /* 애니메이션 효과 */
-  transform: translateY(100%);
+  transform: translate(-50%, 100%);
   opacity: 0;
   transition: transform 0.2s ease-in-out;
 }
 
 .ShareBottomSheetContainer.open {
-  transform: translateY(0%);
+  transform: translateX(-50%) translateY(0%);
   opacity: 1;
 }
 
