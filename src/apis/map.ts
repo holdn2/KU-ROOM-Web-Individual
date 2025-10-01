@@ -159,6 +159,7 @@ export const getLocationDetailData = async (placeId: number) => {
     const response = await axiosInstance.get<GetLocationDetailData>(
       GET_LOCATION_DETAIL_DATA + placeId
     );
+    console.log(response.data.data);
     return response.data.data; // 성공 응답 반환
   } catch (error: any) {
     console.error(

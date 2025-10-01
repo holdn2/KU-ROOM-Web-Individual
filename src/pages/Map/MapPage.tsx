@@ -141,6 +141,7 @@ const MapPage = () => {
     setMarkerFlag(0);
     setMarkers([]);
     setIsExpandedSheet(false);
+    setVisibleBottomSheet(false);
     setHasFocusedMarker(false);
     setIsExpandedFocusedSheet(false);
     clearAllMarkers();

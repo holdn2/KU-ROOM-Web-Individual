@@ -1,3 +1,5 @@
+import { LocationTotalRankType } from "./rankTypes";
+
 // 좌표
 export interface Coordinate {
   latitude: number;
@@ -54,6 +56,7 @@ export interface SharedFriendData {
 
 // 디테일한 장소 정보.
 export interface DetailPlaceData extends PlaceData {
+  ranks: LocationTotalRankType[];
   imageUrls: string[];
 }
 

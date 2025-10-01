@@ -8,7 +8,6 @@ import Rank3Icon from "@assets/icon/ranking/rank3.png";
 import ArrowRight from "@assets/nav/arrowRight.svg";
 import { DetailPlaceData } from "@/shared/types";
 
-import { totalRankMock } from "./total-rank-mock";
 import styles from "./FocusedLocationInfo.module.css";
 
 interface FocusedLocationInfo {
@@ -25,7 +24,11 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
   const navigate = useNavigate();
 
   const handleNavigateToTotalRank = () => {
-    navigate(`/map/location-total-rank/${detailInfo?.name}`);
+    if (!detailInfo) return;
+    navigate(
+      `/map/location-total-rank/${encodeURIComponent(detailInfo.name)}`,
+      { state: { rank: detailInfo.ranks } }
+    );
   };
 
   return (
@@ -41,10 +44,10 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
             </span>
             <span className={styles.SubTitleText}>{detailInfo.subName}</span>
           </div>
-          {isExpandedFocusedSheet && (
+          {isExpandedFocusedSheet && detailInfo.ranks.length > 0 && (
             <div className={styles.TotalRankWrapper}>
-              {totalRankMock.map((rankData, index) => (
-                <div key={rankData.name} className={styles.RankContainer}>
+              {detailInfo.ranks.slice(0, 3).map((rankData, index) => (
+                <div key={rankData.ranking} className={styles.RankContainer}>
                   {index === 0 ? (
                     <img style={{ width: "43px" }} src={Rank1Icon} />
                   ) : index === 1 ? (
@@ -52,7 +55,11 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
                   ) : (
                     <img style={{ width: "43px" }} src={Rank3Icon} />
                   )}
-                  <span className={styles.Ranker}>{rankData.name}</span>
+                  <span className={styles.Ranker}>
+                    {rankData.nickname.map((name) => (
+                      <span key={name}>{name}</span>
+                    ))}
+                  </span>
                 </div>
               ))}
               <img
