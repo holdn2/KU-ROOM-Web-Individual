@@ -42,14 +42,33 @@ const OAuthCallback = () => {
         const response = await getTokenByAuthCode(authCode);
 
         console.log("토큰 교환 응답:", response);
+        console.log("응답 코드:", response?.code);
+        console.log("응답 데이터:", response?.data);
 
         if (response?.data) {
-          // 성공 조건 확인
           const {
-            tokenResponse: { accessToken, refreshToken },
+            tokenResponse: { accessToken, refreshToken, isFirstLogin },
             userResponse,
           } = response.data;
 
+          // 신규 회원인 경우 (isFirstLogin === true)
+          if (isFirstLogin) {
+            console.log("신규 회원 감지, 추가 정보 입력 페이지로 이동");
+
+            // 토큰 임시 저장 (추가 정보 입력 완료 후 사용)
+            sessionStorage.setItem("tempAccessToken", accessToken);
+            sessionStorage.setItem("tempRefreshToken", refreshToken);
+            sessionStorage.setItem("socialAuthCode", authCode);
+
+            // OAuth 유저 정보 임시 저장
+            sessionStorage.setItem("oauthUserInfo", JSON.stringify(userResponse));
+
+            // 약관 동의 페이지로 이동
+            navigate("/agreement");
+            return;
+          }
+
+          // 기존 회원인 경우
           // 토큰 저장
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
@@ -64,8 +83,8 @@ const OAuthCallback = () => {
           sessionStorage.removeItem("redirectUrl");
           navigate(redirectUrl);
         } else if (response?.code === 1024) {
-          // 신규 회원인 경우 (code 1024)
-          console.log("신규 회원 감지, 추가 정보 입력 페이지로 이동");
+          // 신규 회원인 경우 (code 1024) - 백엔드가 이 코드를 사용할 경우 대비
+          console.log("신규 회원 감지 (code 1024), 추가 정보 입력 페이지로 이동");
 
           // authCode를 sessionStorage에 저장하여 나중에 회원가입 완료 시 사용
           sessionStorage.setItem("socialAuthCode", authCode);
