@@ -63,6 +63,15 @@ const OAuthCallback = () => {
           const redirectUrl = sessionStorage.getItem("redirectUrl") || "/";
           sessionStorage.removeItem("redirectUrl");
           navigate(redirectUrl);
+        } else if (response?.code === 1024) {
+          // 신규 회원인 경우 (code 1024)
+          console.log("신규 회원 감지, 추가 정보 입력 페이지로 이동");
+
+          // authCode를 sessionStorage에 저장하여 나중에 회원가입 완료 시 사용
+          sessionStorage.setItem("socialAuthCode", authCode);
+
+          // 약관 동의 페이지로 이동
+          navigate("/agreement");
         } else {
           console.error("토큰 교환 실패:", response);
           navigate("/login");
