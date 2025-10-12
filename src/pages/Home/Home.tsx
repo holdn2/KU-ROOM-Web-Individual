@@ -63,9 +63,18 @@ const Home = () => {
 
   useEffect(() => {
     console.log("위치공유 상태는?:", isSharedLocation);
+
+    // OAuth 콜백 처리 중이면 API 호출 스킵
+    const authCode =
+      searchParams.get("token") ||
+      searchParams.get("authCode") ||
+      searchParams.get("code");
+
+    if (authCode) return;
+
     // 현재 내 위치 공유 상태 확인
     getIsMySharedInfo();
-  }, [locationSharedRefreshKey]);
+  }, [locationSharedRefreshKey, searchParams]);
   useEffect(() => {
     // 현재 내 위치가 학교 내부인지 검증
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
@@ -116,7 +125,13 @@ const Home = () => {
         }
       } catch (error) {
         console.error("OAuth 토큰 교환 중 오류:", error);
-        navigate("/login");
+
+        // 에러 발생 시 잠시 후 토큰 파라미터 제거하고 페이지 새로고침
+        // (백엔드에서 토큰은 발급했지만 응답 중 에러가 발생한 경우 대응)
+        setTimeout(() => {
+          window.history.replaceState({}, "", "/");
+          window.location.reload();
+        }, 1000);
       }
     };
 
@@ -142,9 +157,28 @@ const Home = () => {
 
     setHasNewAlarm(true);
   }, [searchParams, navigate]);
-  // if (showSplash) {
-  //   return <Splash />;
-  // }
+
+  // OAuth 콜백 처리 중이거나 토큰이 없으면 로딩 화면 표시
+  const authCode =
+    searchParams.get("token") ||
+    searchParams.get("authCode") ||
+    searchParams.get("code");
+  const hasToken = localStorage.getItem("accessToken");
+
+  if (authCode || !hasToken) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <div>로그인 처리 중...</div>
+      </div>
+    );
+  }
 
   return (
     <div>
