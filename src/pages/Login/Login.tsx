@@ -83,10 +83,10 @@ const Login = () => {
     // 현재 페이지 저장 (로그인 후 돌아올 위치)
     sessionStorage.setItem("redirectUrl", "/");
 
-    // 현재 도메인을 기반으로 리다이렉트 URI 생성
-    const redirectUri = `${window.location.origin}/oauth/callback`;
+    // 로컬 개발 환경에서는 localhost로 리다이렉트
+    const redirectUri = window.location.origin;
 
-    // 구글 OAuth2 엔드포인트로 리다이렉트 (redirect_uri 파라미터 추가)
+    // 구글 OAuth2 엔드포인트로 리다이렉트
     window.location.href = `https://kuroom.shop/oauth2/authorization/google?redirect_uri=${redirectUri}`;
   };
 
@@ -95,8 +95,8 @@ const Login = () => {
     // 현재 페이지 저장 (로그인 후 돌아올 위치)
     sessionStorage.setItem("redirectUrl", "/");
 
-    // 현재 도메인을 기반으로 리다이렉트 URI 생성
-    const redirectUri = `${window.location.origin}/oauth/callback`;
+    // 로컬 개발 환경에서는 localhost로 리다이렉트
+    const redirectUri = window.location.origin;
 
     // 카카오 OAuth2 엔드포인트로 리다이렉트
     window.location.href = `https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=${redirectUri}`;
@@ -107,8 +107,8 @@ const Login = () => {
     // 현재 페이지 저장 (로그인 후 돌아올 위치)
     sessionStorage.setItem("redirectUrl", "/");
 
-    // 현재 도메인을 기반으로 리다이렉트 URI 생성
-    const redirectUri = `${window.location.origin}/oauth/callback`;
+    // 로컬 개발 환경에서는 localhost로 리다이렉트
+    const redirectUri = window.location.origin;
 
     // 네이버 OAuth2 엔드포인트로 리다이렉트
     window.location.href = `https://kuroom.shop/oauth2/authorization/naver?redirect_uri=${redirectUri}`;

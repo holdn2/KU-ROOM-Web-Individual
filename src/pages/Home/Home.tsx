@@ -1,8 +1,10 @@
 // 홈 페이지
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { checkIsSharedApi } from "@apis/map";
+import { getTokenByAuthCode } from "@apis/auth";
+import { useUserStore } from "@stores/userStore";
 // import Splash from "@components/Splash";
 import BottomBar from "@components/BottomBar/BottomBar";
 import Header from "@components/Header/Header";
@@ -20,6 +22,8 @@ import styles from "./Home.module.css";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { setUser } = useUserStore();
   // const [showSplash, setShowSplash] = useState(true);
   const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
   const [sharedLocationName, setSharedLocationName] = useState<string | null>(
@@ -68,25 +72,76 @@ const Home = () => {
   }, []);
   // **********************************************************************
 
-  // api 기다리는 상태 관리도 추후 추가 예정.
+  // OAuth 콜백 처리 (백엔드가 /?token=xxx 로 리다이렉트하는 경우)
   useEffect(() => {
-    // 로그인 여부 확인
-    console.log("로그인 여부 확인");
+    const handleOAuthCallback = async () => {
+      const authCode =
+        searchParams.get("token") ||
+        searchParams.get("authCode") ||
+        searchParams.get("code");
+
+      if (!authCode) return;
+
+      try {
+        const response = await getTokenByAuthCode(authCode);
+
+        if (response?.data) {
+          const {
+            tokenResponse: { accessToken, refreshToken, isFirstLogin },
+            userResponse,
+          } = response.data;
+
+          // 신규 회원인 경우
+          if (isFirstLogin) {
+            sessionStorage.setItem("tempAccessToken", accessToken);
+            sessionStorage.setItem("tempRefreshToken", refreshToken);
+            sessionStorage.setItem("socialAuthCode", authCode);
+            sessionStorage.setItem(
+              "oauthUserInfo",
+              JSON.stringify(userResponse)
+            );
+            navigate("/agreement");
+            return;
+          }
+
+          // 기존 회원인 경우
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
+          setUser(userResponse);
+
+          // URL에서 token 파라미터 제거
+          window.history.replaceState({}, "", "/");
+        } else {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("OAuth 토큰 교환 중 오류:", error);
+        navigate("/login");
+      }
+    };
+
+    handleOAuthCallback();
+  }, [searchParams, navigate, setUser]);
+
+  // 로그인 여부 확인
+  useEffect(() => {
+    const authCode =
+      searchParams.get("token") ||
+      searchParams.get("authCode") ||
+      searchParams.get("code");
+
+    // OAuth 콜백 처리 중이면 로그인 체크 스킵
+    if (authCode) return;
+
     const token = localStorage.getItem("accessToken");
     if (!token) {
       localStorage.clear();
       navigate("/login");
       return;
     }
-    // 서버에 새로운 알람이 있는지 검증. 있다면 true로
+
     setHasNewAlarm(true);
-
-    // const timeout = setTimeout(() => {
-    //   setShowSplash(false);
-    // }, 2000); // 1.5초 후에 splash 화면 종료
-
-    // return () => clearTimeout(timeout);
-  }, []);
+  }, [searchParams, navigate]);
   // if (showSplash) {
   //   return <Splash />;
   // }
