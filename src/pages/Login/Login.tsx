@@ -2,9 +2,9 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { loginApi } from "@apis/auth";
-import googleIcon from "@assets/socialLoginIcon/googleLogin.svg";
-import kakaoIcon from "@assets/socialLoginIcon/kakaoLogin.svg";
-import naverIcon from "@assets/socialLoginIcon/naverLogin.svg";
+import GoogleIcon from "@assets/socialLoginIcon/googleLogin.svg?react";
+import KakaoIcon from "@assets/socialLoginIcon/kakaoLogin.svg?react";
+import NaverIcon from "@assets/socialLoginIcon/naverLogin.svg?react";
 import Button from "@components/Button/Button";
 import { EdgeGuard } from "@components/EdgeGuard";
 import InputBar from "@components/InputBar/InputBar";
@@ -188,23 +188,20 @@ const Login = () => {
               marginTop: "67px",
             }}
           >
-            <img
-              src={kakaoIcon}
-              alt="카카오로 로그인"
+            <KakaoIcon
               onClick={handleKakaoLogin}
               style={{ cursor: "pointer" }}
+              aria-label="카카오로 로그인"
             />
-            <img
-              src={naverIcon}
-              alt="네이버로 로그인"
+            <NaverIcon
               onClick={handleNaverLogin}
               style={{ cursor: "pointer" }}
+              aria-label="네이버로 로그인"
             />
-            <img
-              src={googleIcon}
-              alt="구글로 로그인"
+            <GoogleIcon
               onClick={handleGoogleLogin}
               style={{ cursor: "pointer" }}
+              aria-label="구글로 로그인"
             />
           </div>
         </div>
