@@ -10,6 +10,7 @@ import styles from "./ShareLocationModal.module.css";
 interface ShareLocationModalProps {
   modalState: boolean;
   isSharedLocation: boolean;
+  ableToShare: boolean;
   nearLocation: string;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
   refreshSharedStatus: () => void;
@@ -19,6 +20,7 @@ interface ShareLocationModalProps {
 const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
   modalState,
   isSharedLocation,
+  ableToShare,
   nearLocation,
   setModalState,
   refreshSharedStatus,
@@ -30,7 +32,6 @@ const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
   const handleSharingLocation = async () => {
     try {
       const response = await shareUserLocation(nearLocation);
-      console.log("서버에 내 위치 공유 요청");
       console.log(response);
 
       refreshSharedStatus();
@@ -72,6 +73,13 @@ const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
               친구들에게 현재 위치가 보이지 않게 됩니다.
             </span>
           </>
+        ) : !ableToShare ? (
+          <>
+            <span className={styles.BoldText}>위치 공유가 불가합니다.</span>
+            <span className={styles.AdditionalInform}>
+              학교 건물 안에서 위치 공유를 시도해주세요.
+            </span>
+          </>
         ) : (
           <>
             <span className={styles.InformText}>
@@ -87,17 +95,27 @@ const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
         )}
       </div>
       <div className={styles.ButtonWrapper}>
-        <Button variant="tertiary" onClick={handleCloseModal} size="sm">
-          취소
-        </Button>
-        <Button
-          onClick={
-            isSharedLocation ? handleUnSharingLocation : handleSharingLocation
-          }
-          size="sm"
-        >
-          확인
-        </Button>
+        {!isSharedLocation && !ableToShare ? (
+          <Button onClick={handleCloseModal} size="sm">
+            확인
+          </Button>
+        ) : (
+          <>
+            <Button variant="tertiary" onClick={handleCloseModal} size="sm">
+              취소
+            </Button>
+            <Button
+              onClick={
+                isSharedLocation
+                  ? handleUnSharingLocation
+                  : handleSharingLocation
+              }
+              size="sm"
+            >
+              확인
+            </Button>
+          </>
+        )}
       </div>
     </ReactModal>
   );

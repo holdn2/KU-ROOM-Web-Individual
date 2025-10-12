@@ -26,6 +26,8 @@ export interface MapLayoutContext {
   searchMode: boolean;
   /** 현재 위치가 학교 내부인지 여부 */
   isInSchool: boolean;
+  // 위치 공유 가능한지 상태
+  ableToShare: boolean;
   /** 내 위치 공유 상태 */
   isSharedLocation: boolean;
   /** 위치 공유 상태 갱신 트리거 키 */
@@ -60,6 +62,7 @@ export interface MapLayoutContext {
   >;
   setSearchMode: React.Dispatch<React.SetStateAction<boolean>>;
   setIsInSchool: React.Dispatch<React.SetStateAction<boolean>>;
+  setAbleToShare: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSharedLocation: React.Dispatch<React.SetStateAction<boolean>>;
   setLocationSharedRefreshKey: React.Dispatch<React.SetStateAction<number>>;
   setSelectedCategoryTitle: React.Dispatch<React.SetStateAction<string>>;
@@ -85,6 +88,7 @@ const MapLayout = () => {
 
   const [searchMode, setSearchMode] = useState(false);
   const [isInSchool, setIsInSchool] = useState(false);
+  const [ableToShare, setAbleToShare] = useState(false);
   const [isSharedLocation, setIsSharedLocation] = useState(false);
   const [locationSharedRefreshKey, setLocationSharedRefreshKey] = useState(0);
   const [selectedCategoryTitle, setSelectedCategoryTitle] =
@@ -112,6 +116,7 @@ const MapLayout = () => {
         detailLocationData,
         searchMode,
         isInSchool,
+        ableToShare,
         isSharedLocation,
         locationSharedRefreshKey,
         selectedCategoryTitle,
@@ -131,6 +136,7 @@ const MapLayout = () => {
         setDetailLocationData,
         setSearchMode,
         setIsInSchool,
+        setAbleToShare,
         setIsSharedLocation,
         setLocationSharedRefreshKey,
         setSelectedCategoryTitle,
