@@ -53,17 +53,10 @@ export const useNoticeDetail = (id: string | undefined) => {
     }
   };
 
-  const handleOriginalLinkClick = () => {
-    if (notice?.link) {
-      window.open(notice.link, '_blank');
-    }
-  };
-
   return {
     notice,
     loading,
     error,
     handleBookmarkToggle,
-    handleOriginalLinkClick,
   };
 };
