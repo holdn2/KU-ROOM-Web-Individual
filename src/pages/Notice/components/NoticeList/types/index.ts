@@ -3,6 +3,7 @@ import type { NoticeResponse } from "@apis/notice";
 export interface NoticeListProps {
   notices: NoticeResponse[];
   loading?: boolean;
+  loadingMore?: boolean;
   error?: string | null;
   showBookmarkButton?: boolean;
   showSortOptions?: boolean;

@@ -4,13 +4,19 @@ import NoticeList from "../components/NoticeList/NoticeList";
 import { NoticeHeader, NoticeTabs, ChatButton } from "./components";
 import { useNotices } from "./hooks/useNotices";
 import { useTabIndicator } from "./hooks/useTabIndicator";
+import { useInfiniteScroll } from "@hooks/useInfiniteScroll";
 import { NOTICE_TABS, NOTICE_CONFIG, NOTICE_MESSAGES } from "./constants";
 import styles from "./Notice.module.css";
 
 const Notice = () => {
   const [activeTab, setActiveTab] = useState<string>(NOTICE_CONFIG.DEFAULT_TAB);
-  const { notices, loading, loadNoticesByCategory } = useNotices();
+  const { notices, loading, hasMore, loadNoticesByCategory, loadMoreNotices } = useNotices();
   const { tabsRef, indicatorStyle } = useTabIndicator(activeTab, NOTICE_TABS);
+  const { loadMoreRef } = useInfiniteScroll({
+    onLoadMore: loadMoreNotices,
+    hasMore,
+    loading,
+  });
 
   useEffect(() => {
     loadNoticesByCategory(activeTab);
@@ -30,11 +36,13 @@ const Notice = () => {
       <div className={styles["scrollable-content"]}>
         <NoticeList
           notices={notices}
-          loading={loading}
+          loading={loading && notices.length === 0}
+          loadingMore={loading && notices.length > 0}
           showBookmarkButton={false}
           showSortOptions={false}
           emptyMessage={NOTICE_MESSAGES.EMPTY_MESSAGE}
         />
+        {hasMore && <div ref={loadMoreRef} style={{ height: "20px" }} />}
       </div>
 
       <ChatButton />
