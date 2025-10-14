@@ -38,6 +38,7 @@ const MyLocationRanking = ({ updateTrigger }: Props) => {
   }, [updateTrigger]);
 
   return (
+    // TODO: 공유 횟수가 모두 0이면 "아직 아무것도 공유하지 않았습니다." 등의 화면으로 보여주기 (10/13)
     myRankData.length > 0 && (
       <div className={styles.MyLocationRankingBackground}>
         <div className={styles.MyLocationRankingWrapper}>

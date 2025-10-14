@@ -102,9 +102,10 @@ const MyLocationRanking = () => {
             ))}
           </div>
         </div>
-        <div className={styles.ButtonWrapper}>
+        {/* TODO: 공유 기능은 후순위로 미루기(10/13) */}
+        {/* <div className={styles.ButtonWrapper}>
           <Button onClick={openBottomSheet}>공유하기</Button>
-        </div>
+        </div> */}
       </div>
       {isSheetVisible && (
         <div className={styles.BottomSheetOverlay} onClick={closeBottomSheet}>
