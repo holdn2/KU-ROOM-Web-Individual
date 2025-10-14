@@ -15,6 +15,7 @@ const MyPageSectionData: { title: string; contents: string[] }[] = [
 
 const AlarmSectionData: { title: string; contents: string[] }[] = [
   {
+    // TODO: 친구 신청 없애기 (10/13)
     title: "친구",
     contents: ["친구 신청", "친구 위치 공유"],
   },
@@ -30,6 +31,7 @@ const AlarmSectionData: { title: string; contents: string[] }[] = [
 
 const ProfileChangeSectionData: { title: string; contents: string[] }[] = [
   {
+    // TODO: 소셜로그인일 때 이메일, 아이디, 비밀번호 변경하기 안보이도록 처리해야함
     title: "프로필",
     contents: ["이메일", "아이디", "비밀번호 변경하기", "닉네임 변경하기"],
   },
