@@ -5,6 +5,7 @@ const LOGOUT_API_URL = "/auth/logout";
 const WITHDRAW_API_URL = "/users/deactivate";
 const REISSUE_TOKEN_API_URL = "/auth/reissue";
 const OAUTH_TOKEN_API_URL = "/auth/token";
+const CREATE_SOCIAL_USER_API_URL = "/api/v1/users/social";
 
 interface LoginResponse {
   code: number;
@@ -140,6 +141,42 @@ export const getTokenByAuthCode = async (authCode: string) => {
     }
     throw new Error(
       error.response?.data?.message || "OAuth 토큰 교환 중 오류 발생"
+    );
+  }
+};
+
+// 소셜 로그인 신규 회원 생성 API
+interface CreateSocialUserRequest {
+  email: string;
+  loginId: string;
+  password: string;
+  studentId: string;
+  department: string;
+  nickname: string;
+  agreementStatus: string;
+}
+
+interface CreateSocialUserResponse {
+  code: number;
+  status: string;
+  message: string;
+}
+
+export const createSocialUserApi = async (
+  userData: CreateSocialUserRequest
+) => {
+  try {
+    const response = await axiosInstance.post<CreateSocialUserResponse>(
+      CREATE_SOCIAL_USER_API_URL,
+      userData,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "소셜 로그인 회원 생성 중 오류 발생"
     );
   }
 };
