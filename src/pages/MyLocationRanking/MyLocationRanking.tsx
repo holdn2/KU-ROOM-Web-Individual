@@ -6,7 +6,7 @@ import rank2Icon from "@assets/icon/ranking/rank2.png";
 import rank3Icon from "@assets/icon/ranking/rank3.png";
 import { getSharingRanking } from "@apis/home";
 import Header from "@components/Header/Header";
-import Button from "@components/Button/Button";
+// import Button from "@components/Button/Button";
 import { RankListType } from "@/shared/types";
 
 import ShareBottomSheet from "./components/ShareBottomSheet/ShareBottomSheet";
@@ -45,11 +45,11 @@ const MyLocationRanking = () => {
     navigate("friendlocationranking", { state: { nickname: nickname } });
   };
 
-  const openBottomSheet = () => {
-    console.log("공유하기");
-    setIsSheetVisible(true); // 먼저 보여주기
-    setTimeout(() => setIsSharedSheetOpen(true), 0); // 열리는 애니메이션 트리거
-  };
+  // const openBottomSheet = () => {
+  //   console.log("공유하기");
+  //   setIsSheetVisible(true); // 먼저 보여주기
+  //   setTimeout(() => setIsSharedSheetOpen(true), 0); // 열리는 애니메이션 트리거
+  // };
   const closeBottomSheet = () => {
     setIsSharedSheetOpen(false); // 닫히는 애니메이션 시작
     setTimeout(() => setIsSheetVisible(false), 300); // 0.3초 후 제거
