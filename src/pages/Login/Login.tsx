@@ -2,9 +2,9 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { loginApi } from "@apis/auth";
-import googleIcon from "@assets/socialLoginIcon/googleLogin.svg";
-import kakaoIcon from "@assets/socialLoginIcon/kakaoLogin.svg";
-import naverIcon from "@assets/socialLoginIcon/naverLogin.svg";
+import GoogleIcon from "@assets/socialLoginIcon/googleLogin.svg?react";
+import KakaoIcon from "@assets/socialLoginIcon/kakaoLogin.svg?react";
+import NaverIcon from "@assets/socialLoginIcon/naverLogin.svg?react";
 import Button from "@components/Button/Button";
 import { EdgeGuard } from "@components/EdgeGuard";
 import InputBar from "@components/InputBar/InputBar";
@@ -83,10 +83,10 @@ const Login = () => {
     // 현재 페이지 저장 (로그인 후 돌아올 위치)
     sessionStorage.setItem("redirectUrl", "/");
 
-    // 현재 도메인을 기반으로 리다이렉트 URI 생성
-    const redirectUri = `${window.location.origin}/oauth/callback`;
+    // 로컬 개발 환경에서는 localhost로 리다이렉트
+    const redirectUri = window.location.origin;
 
-    // 구글 OAuth2 엔드포인트로 리다이렉트 (redirect_uri 파라미터 추가)
+    // 구글 OAuth2 엔드포인트로 리다이렉트
     window.location.href = `https://kuroom.shop/oauth2/authorization/google?redirect_uri=${redirectUri}`;
   };
 
@@ -95,8 +95,8 @@ const Login = () => {
     // 현재 페이지 저장 (로그인 후 돌아올 위치)
     sessionStorage.setItem("redirectUrl", "/");
 
-    // 현재 도메인을 기반으로 리다이렉트 URI 생성
-    const redirectUri = `${window.location.origin}/oauth/callback`;
+    // 로컬 개발 환경에서는 localhost로 리다이렉트
+    const redirectUri = window.location.origin;
 
     // 카카오 OAuth2 엔드포인트로 리다이렉트
     window.location.href = `https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=${redirectUri}`;
@@ -107,8 +107,8 @@ const Login = () => {
     // 현재 페이지 저장 (로그인 후 돌아올 위치)
     sessionStorage.setItem("redirectUrl", "/");
 
-    // 현재 도메인을 기반으로 리다이렉트 URI 생성
-    const redirectUri = `${window.location.origin}/oauth/callback`;
+    // 로컬 개발 환경에서는 localhost로 리다이렉트
+    const redirectUri = window.location.origin;
 
     // 네이버 OAuth2 엔드포인트로 리다이렉트
     window.location.href = `https://kuroom.shop/oauth2/authorization/naver?redirect_uri=${redirectUri}`;
@@ -188,23 +188,20 @@ const Login = () => {
               marginTop: "67px",
             }}
           >
-            <img
-              src={kakaoIcon}
-              alt="카카오로 로그인"
+            <KakaoIcon
               onClick={handleKakaoLogin}
               style={{ cursor: "pointer" }}
+              aria-label="카카오로 로그인"
             />
-            <img
-              src={naverIcon}
-              alt="네이버로 로그인"
+            <NaverIcon
               onClick={handleNaverLogin}
               style={{ cursor: "pointer" }}
+              aria-label="네이버로 로그인"
             />
-            <img
-              src={googleIcon}
-              alt="구글로 로그인"
+            <GoogleIcon
               onClick={handleGoogleLogin}
               style={{ cursor: "pointer" }}
+              aria-label="구글로 로그인"
             />
           </div>
         </div>
