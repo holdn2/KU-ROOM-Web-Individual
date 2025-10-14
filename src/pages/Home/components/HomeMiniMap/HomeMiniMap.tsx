@@ -14,6 +14,7 @@ interface HomeMiniMapProps {
   currentLocation: Coordinate;
   sharedLocationName: string | null;
   setNearLocation: (value: string) => void;
+  setAbleToShare: (value: boolean) => void;
 }
 
 const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
@@ -22,6 +23,7 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
   currentLocation,
   sharedLocationName,
   setNearLocation,
+  setAbleToShare,
 }) => {
   const navigate = useNavigate();
 
@@ -35,7 +37,10 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
       console.log(response);
       setNearLocation(response);
       setModalState(true);
+      setAbleToShare(true);
     } catch (error) {
+      setModalState(true);
+      setAbleToShare(false);
       console.error("가장 가까운 위치 조회 실패 : ", error);
     }
   };

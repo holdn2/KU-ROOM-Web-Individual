@@ -64,6 +64,7 @@ const MapPage = () => {
     detailLocationData,
     searchMode,
     isInSchool,
+    ableToShare,
     isSharedLocation,
     locationSharedRefreshKey,
     selectedCategoryTitle,
@@ -84,6 +85,7 @@ const MapPage = () => {
     setDetailLocationData,
     setSearchMode,
     setIsInSchool,
+    setAbleToShare,
     setIsSharedLocation,
     setLocationSharedRefreshKey,
     setSelectedCategoryTitle,
@@ -116,7 +118,9 @@ const MapPage = () => {
       );
       console.log(response);
       setNearLocation(response);
+      setAbleToShare(true);
     } catch (error) {
+      setAbleToShare(false);
       console.error("가장 가까운 위치 조회 실패 : ", error);
     }
   };
@@ -456,6 +460,7 @@ const MapPage = () => {
       <ShareLocationModal
         modalState={modalState}
         isSharedLocation={isSharedLocation}
+        ableToShare={ableToShare}
         nearLocation={nearLocation}
         setModalState={setModalState}
         refreshSharedStatus={() =>

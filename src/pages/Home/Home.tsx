@@ -36,6 +36,7 @@ const Home = () => {
 
   // 유저의 위치와 가장 가까운 위치 저장할 상태
   const [nearLocation, setNearLocation] = useState("");
+  const [ableToShare, setAbleToShare] = useState(false);
 
   // 내 위치 공유 버튼 모달 상태
   const [shareModalState, setShareModalState] = useState(false);
@@ -110,6 +111,7 @@ const Home = () => {
             currentLocation={currentLocation}
             sharedLocationName={sharedLocationName}
             setNearLocation={setNearLocation}
+            setAbleToShare={setAbleToShare}
           />
         )}
         <FriendLocation userSharedLocation={sharedLocationName} />
@@ -120,6 +122,7 @@ const Home = () => {
       <ShareLocationModal
         modalState={shareModalState}
         isSharedLocation={isSharedLocation}
+        ableToShare={ableToShare}
         nearLocation={nearLocation}
         setModalState={setShareModalState}
         refreshSharedStatus={() =>
