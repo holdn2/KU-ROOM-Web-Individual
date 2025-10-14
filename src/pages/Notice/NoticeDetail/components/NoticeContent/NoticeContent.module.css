@@ -1,7 +1,7 @@
 .notice-content-wrapper {
   flex: 1;
   overflow-y: auto;
-  padding: 70px 26px 26px;
+  padding: 70px 0 26px;
   display: flex;
   flex-direction: column;
 }
@@ -26,7 +26,7 @@
 
 .notice-header {
   margin-bottom: 20px;
-  padding-bottom: 18px;
+  padding: 0 26px 18px;
   border-bottom: 1px solid #e3e7eb;
 }
 
