@@ -82,7 +82,7 @@ noticeAxiosInstance.interceptors.request.use(
 
 export const getNotices = async (
   params: NoticeListParams = {}
-): Promise<NoticeResponse[]> => {
+): Promise<NoticeListResponse> => {
   const response = await noticeAxiosInstance.get<NoticeListResponse>(
     "/api/v1/notices",
     {
@@ -95,7 +95,7 @@ export const getNotices = async (
       },
     }
   );
-  return response.data.content;
+  return response.data;
 };
 
 export const getBookmarks = async (

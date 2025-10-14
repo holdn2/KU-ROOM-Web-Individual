@@ -14,6 +14,7 @@ import styles from "./NoticeList.module.css";
 const NoticeList = ({
   notices,
   loading = false,
+  loadingMore = false,
   error = null,
   showBookmarkButton = true,
   showSortOptions = false,
@@ -42,7 +43,7 @@ const NoticeList = ({
     }
   };
 
-  if (loading) {
+  if (loading && notices.length === 0) {
     return (
       <div className={styles["notice-list-container"]}>
         <LoadingState />
@@ -71,21 +72,28 @@ const NoticeList = ({
       )}
 
       {sortedNotices.length > 0 ? (
-        <div className={styles["notice-list"]}>
-          {sortedNotices.map((notice) => (
-            <NoticeItem
-              key={notice.id}
-              notice={notice}
-              showBookmarkButton={showBookmarkButton}
-              onClick={() => handleNoticeClick(notice.id)}
-              onBookmarkClick={
-                showBookmarkButton 
-                  ? (e) => handleBookmarkClick(e, notice.id)
-                  : undefined
-              }
-            />
-          ))}
-        </div>
+        <>
+          <div className={styles["notice-list"]}>
+            {sortedNotices.map((notice) => (
+              <NoticeItem
+                key={notice.id}
+                notice={notice}
+                showBookmarkButton={showBookmarkButton}
+                onClick={() => handleNoticeClick(notice.id)}
+                onBookmarkClick={
+                  showBookmarkButton
+                    ? (e) => handleBookmarkClick(e, notice.id)
+                    : undefined
+                }
+              />
+            ))}
+          </div>
+          {loadingMore && (
+            <div style={{ padding: "20px", textAlign: "center" }}>
+              <LoadingState />
+            </div>
+          )}
+        </>
       ) : (
         <EmptyState message={emptyMessage} />
       )}
