@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import BottomBar from "@components/BottomBar/BottomBar";
 import NoticeList from "../components/NoticeList/NoticeList";
 import { NoticeHeader, NoticeTabs, ChatButton } from "./components";
@@ -10,6 +10,7 @@ import styles from "./Notice.module.css";
 
 const Notice = () => {
   const [activeTab, setActiveTab] = useState<string>(NOTICE_CONFIG.DEFAULT_TAB);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { notices, loading, hasMore, loadNoticesByCategory, loadMoreNotices } = useNotices();
   const { tabsRef, indicatorStyle } = useTabIndicator(activeTab, NOTICE_TABS);
   const { loadMoreRef } = useInfiniteScroll({
@@ -19,6 +20,10 @@ const Notice = () => {
   });
 
   useEffect(() => {
+    // 카테고리 변경 시 스크롤을 최상단으로 이동
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
     loadNoticesByCategory(activeTab);
   }, [activeTab, loadNoticesByCategory]);
 
@@ -33,7 +38,7 @@ const Notice = () => {
         indicatorStyle={indicatorStyle}
       />
 
-      <div className={styles["scrollable-content"]}>
+      <div ref={scrollContainerRef} className={styles["scrollable-content"]}>
         <NoticeList
           notices={notices}
           loading={loading && notices.length === 0}
