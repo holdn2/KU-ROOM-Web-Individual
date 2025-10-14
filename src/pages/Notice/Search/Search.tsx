@@ -33,7 +33,7 @@ const Search: React.FC = () => {
           getNotices({ categoryId, size: 5 })
         );
         const responses = await Promise.all(allNoticesPromises);
-        const allNotices = responses.flat();
+        const allNotices = responses.flatMap(response => response.content);
         setNotices(allNotices);
         setFilteredNotices(allNotices);
       } catch (error) {
