@@ -6,12 +6,11 @@ import styles from "./NoticeDetail.module.css";
 
 const NoticeDetail: React.FC = () => {
   const { category, id } = useParams<{ category: string; id: string }>();
-  const { 
-    notice, 
-    loading, 
-    error, 
-    handleBookmarkToggle, 
-    handleOriginalLinkClick 
+  const {
+    notice,
+    loading,
+    error,
+    handleBookmarkToggle
   } = useNoticeDetail(id);
 
   if (loading) {
@@ -46,15 +45,14 @@ const NoticeDetail: React.FC = () => {
 
   return (
     <div className={styles["notice-detail-container"]}>
-      <NoticeDetailHeader 
+      <NoticeDetailHeader
         notice={notice}
         category={category}
         onBookmarkToggle={handleBookmarkToggle}
       />
-      
-      <NoticeContent 
+
+      <NoticeContent
         notice={notice}
-        onOriginalLinkClick={handleOriginalLinkClick}
       />
     </div>
   );

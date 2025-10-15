@@ -18,7 +18,7 @@ export const useNoticeDetail = (id: string | undefined) => {
         
         // 전체 공지사항을 가져와서 해당 ID의 공지사항 찾기
         const allNotices = await getNotices({ size: NOTICE_DETAIL_CONFIG.DEFAULT_PAGE_SIZE });
-        const foundNotice = allNotices.find(n => n.id === parseInt(id));
+        const foundNotice = allNotices.content.find((n: NoticeResponse) => n.id === parseInt(id));
         
         if (foundNotice) {
           setNotice(foundNotice);
@@ -53,17 +53,10 @@ export const useNoticeDetail = (id: string | undefined) => {
     }
   };
 
-  const handleOriginalLinkClick = () => {
-    if (notice?.link) {
-      window.open(notice.link, '_blank');
-    }
-  };
-
   return {
     notice,
     loading,
     error,
     handleBookmarkToggle,
-    handleOriginalLinkClick,
   };
 };
