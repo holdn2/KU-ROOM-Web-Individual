@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { NoticeResponse } from "@apis/notice";
-import { getNotices, getNoticeDetailHtml, addBookmark, removeBookmark } from "@apis/notice";
+import { getNoticeDetailHtml, addBookmark, removeBookmark } from "@apis/notice";
 import { NOTICE_DETAIL_MESSAGES } from "../constants";
 
 export const useNoticeDetail = (id: string | undefined) => {
@@ -16,19 +16,24 @@ export const useNoticeDetail = (id: string | undefined) => {
         setLoading(true);
         setError(null);
 
-        const allNotices = await getNotices({ size: 1000 });
-        const foundNotice = allNotices.content.find((n: NoticeResponse) => n.id === parseInt(id));
-
-        if (foundNotice) {
-          try {
-            const htmlContent = await getNoticeDetailHtml(id);
-            setNotice({ ...foundNotice, content: htmlContent });
-          } catch (htmlErr) {
-            console.warn("HTML 콘텐츠를 가져오는데 실패했습니다:", htmlErr);
-            setNotice(foundNotice);
-          }
-        } else {
-          setError(NOTICE_DETAIL_MESSAGES.NOT_FOUND);
+        try {
+          const htmlContent = await getNoticeDetailHtml(id);
+          // HTML을 성공적으로 받아왔으면 최소한의 notice 객체 생성
+          setNotice({
+            id: parseInt(id),
+            categoryId: 0,
+            categoryName: "",
+            title: "",
+            link: "",
+            content: htmlContent,
+            pubDate: "",
+            author: "",
+            description: "",
+            isBookMarked: false,
+          });
+        } catch (htmlErr) {
+          console.error("HTML 콘텐츠를 가져오는데 실패했습니다:", htmlErr);
+          setError(NOTICE_DETAIL_MESSAGES.FETCH_ERROR);
         }
       } catch (err) {
         setError(NOTICE_DETAIL_MESSAGES.FETCH_ERROR);
