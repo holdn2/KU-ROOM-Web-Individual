@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { NoticeResponse } from "@apis/notice";
-import { getNotices, addBookmark, removeBookmark } from "@apis/notice";
-import { NOTICE_DETAIL_MESSAGES, NOTICE_DETAIL_CONFIG } from "../constants";
+import { getNoticeDetail, addBookmark, removeBookmark } from "@apis/notice";
+import { NOTICE_DETAIL_MESSAGES } from "../constants";
 
 export const useNoticeDetail = (id: string | undefined) => {
   const [notice, setNotice] = useState<NoticeResponse | null>(null);
@@ -15,16 +15,9 @@ export const useNoticeDetail = (id: string | undefined) => {
       try {
         setLoading(true);
         setError(null);
-        
-        // 전체 공지사항을 가져와서 해당 ID의 공지사항 찾기
-        const allNotices = await getNotices({ size: NOTICE_DETAIL_CONFIG.DEFAULT_PAGE_SIZE });
-        const foundNotice = allNotices.content.find((n: NoticeResponse) => n.id === parseInt(id));
-        
-        if (foundNotice) {
-          setNotice(foundNotice);
-        } else {
-          setError(NOTICE_DETAIL_MESSAGES.NOT_FOUND);
-        }
+
+        const noticeData = await getNoticeDetail(id);
+        setNotice(noticeData);
       } catch (err) {
         setError(NOTICE_DETAIL_MESSAGES.FETCH_ERROR);
         console.error("Failed to fetch notice detail:", err);

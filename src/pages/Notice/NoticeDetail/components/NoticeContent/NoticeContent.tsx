@@ -26,16 +26,14 @@ export const NoticeContent = ({ notice }: NoticeContentProps) => {
       </div>
 
       <div className={styles["notice-content"]}>
-        {notice.link ? (
-          <iframe
-            src={notice.link}
-            className={styles["notice-iframe"]}
-            title="공지사항 원문"
-            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+        {notice.content ? (
+          <div
+            className={styles["notice-html-content"]}
+            dangerouslySetInnerHTML={{ __html: notice.content }}
           />
         ) : (
           <div className={styles["no-content-message"]}>
-            <p>원문 링크가 없습니다.</p>
+            <p>콘텐츠가 없습니다.</p>
           </div>
         )}
       </div>

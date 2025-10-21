@@ -52,13 +52,27 @@
   flex-direction: column;
 }
 
-.notice-iframe {
+.notice-html-content {
   width: 100%;
-  flex: 1;
-  border: none;
-  border-radius: 8px;
-  min-height: 500px;
-  background-color: #fff;
+  padding: 0 26px;
+  overflow-x: auto;
+  word-break: break-word;
+}
+
+.notice-html-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+.notice-html-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.notice-html-content p {
+  margin: 10px 0;
+  line-height: 1.6;
 }
 
 .no-content-message {

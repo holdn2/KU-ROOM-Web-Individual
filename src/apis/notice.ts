@@ -6,6 +6,7 @@ export interface NoticeResponse {
   categoryName: string;
   title: string;
   link: string;
+  content: string;
   pubDate: string;
   author: string;
   description: string;
@@ -121,4 +122,11 @@ export const addBookmark = async (noticeId: number): Promise<void> => {
 
 export const removeBookmark = async (noticeId: number): Promise<void> => {
   await noticeAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
+};
+
+export const getNoticeDetail = async (noticeId: string): Promise<NoticeResponse> => {
+  const response = await noticeAxiosInstance.get<NoticeResponse>(
+    `/api/v1/notices/${noticeId}`
+  );
+  return response.data;
 };
