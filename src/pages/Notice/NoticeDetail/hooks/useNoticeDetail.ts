@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { NoticeResponse } from "@apis/notice";
-import { getNoticeDetailHtml, addBookmark, removeBookmark } from "@apis/notice";
+import { getNotices, getNoticeDetailHtml, addBookmark, removeBookmark } from "@apis/notice";
 import { NOTICE_DETAIL_MESSAGES } from "../constants";
 
 export const useNoticeDetail = (id: string | undefined) => {
@@ -16,24 +16,33 @@ export const useNoticeDetail = (id: string | undefined) => {
         setLoading(true);
         setError(null);
 
-        try {
-          const htmlContent = await getNoticeDetailHtml(id);
-          // HTML을 성공적으로 받아왔으면 최소한의 notice 객체 생성
-          setNotice({
-            id: parseInt(id),
-            categoryId: 0,
-            categoryName: "",
-            title: "",
-            link: "",
-            content: htmlContent,
-            pubDate: "",
-            author: "",
-            description: "",
-            isBookMarked: false,
-          });
-        } catch (htmlErr) {
-          console.error("HTML 콘텐츠를 가져오는데 실패했습니다:", htmlErr);
-          setError(NOTICE_DETAIL_MESSAGES.FETCH_ERROR);
+        // 여러 카테고리에서 작은 크기로 나눠서 조회
+        const categories = ["234", "235", "237", "238", "240", "4083", "4214", "4274"];
+        let foundNotice: NoticeResponse | null = null;
+
+        for (const category of categories) {
+          try {
+            const response = await getNotices({ category, size: 100 });
+            const notice = response.content.find((n: NoticeResponse) => n.id === parseInt(id));
+            if (notice) {
+              foundNotice = notice;
+              break;
+            }
+          } catch (err) {
+            console.warn(`카테고리 ${category} 조회 실패:`, err);
+          }
+        }
+
+        if (foundNotice) {
+          try {
+            const htmlContent = await getNoticeDetailHtml(id);
+            setNotice({ ...foundNotice, content: htmlContent });
+          } catch (htmlErr) {
+            console.warn("HTML 콘텐츠를 가져오는데 실패했습니다:", htmlErr);
+            setNotice(foundNotice);
+          }
+        } else {
+          setError(NOTICE_DETAIL_MESSAGES.NOT_FOUND);
         }
       } catch (err) {
         setError(NOTICE_DETAIL_MESSAGES.FETCH_ERROR);
