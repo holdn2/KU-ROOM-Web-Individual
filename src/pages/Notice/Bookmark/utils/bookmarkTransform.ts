@@ -7,6 +7,7 @@ export const transformBookmarkData = (apiData: BookmarkResponse[]): NoticeRespon
     categoryName: "",
     title: item.title,
     link: item.link || "",
+    content: "",
     pubDate: item.pubDate,
     author: "",
     description: "",
