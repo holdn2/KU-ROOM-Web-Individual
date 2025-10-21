@@ -8,7 +8,7 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
-    // "types": ["html-minifier-terser"],
+    "types": ["vite-plugin-pwa/client"],
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,

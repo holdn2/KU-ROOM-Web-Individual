@@ -52,13 +52,40 @@
   flex-direction: column;
 }
 
-.notice-iframe {
+.notice-html-content {
   width: 100%;
-  flex: 1;
-  border: none;
-  border-radius: 8px;
-  min-height: 500px;
-  background-color: #fff;
+  max-width: 100%;
+  padding: 0 26px;
+  overflow-x: hidden;
+  word-break: break-word;
+  box-sizing: border-box;
+}
+
+.notice-html-content * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.notice-html-content table {
+  width: 100% !important;
+  max-width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  display: block;
+  overflow-x: auto;
+}
+
+.notice-html-content img {
+  max-width: 100% !important;
+  height: auto !important;
+  width: auto !important;
+}
+
+.notice-html-content p {
+  margin: 10px 0;
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .no-content-message {

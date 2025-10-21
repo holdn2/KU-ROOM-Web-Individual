@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { NoticeResponse } from "@apis/notice";
-import { getNotices, addBookmark, removeBookmark } from "@apis/notice";
-import { NOTICE_DETAIL_MESSAGES, NOTICE_DETAIL_CONFIG } from "../constants";
+import { getNotices, getNoticeDetailHtml, addBookmark, removeBookmark } from "@apis/notice";
+import { NOTICE_DETAIL_MESSAGES } from "../constants";
 
 export const useNoticeDetail = (id: string | undefined) => {
   const [notice, setNotice] = useState<NoticeResponse | null>(null);
@@ -15,13 +15,32 @@ export const useNoticeDetail = (id: string | undefined) => {
       try {
         setLoading(true);
         setError(null);
-        
-        // 전체 공지사항을 가져와서 해당 ID의 공지사항 찾기
-        const allNotices = await getNotices({ size: NOTICE_DETAIL_CONFIG.DEFAULT_PAGE_SIZE });
-        const foundNotice = allNotices.content.find((n: NoticeResponse) => n.id === parseInt(id));
-        
+
+        // 여러 카테고리에서 작은 크기로 나눠서 조회
+        const categories = ["234", "235", "237", "238", "240", "4083", "4214", "4274"];
+        let foundNotice: NoticeResponse | null = null;
+
+        for (const category of categories) {
+          try {
+            const response = await getNotices({ category, size: 100 });
+            const notice = response.content.find((n: NoticeResponse) => n.id === parseInt(id));
+            if (notice) {
+              foundNotice = notice;
+              break;
+            }
+          } catch (err) {
+            console.warn(`카테고리 ${category} 조회 실패:`, err);
+          }
+        }
+
         if (foundNotice) {
-          setNotice(foundNotice);
+          try {
+            const htmlContent = await getNoticeDetailHtml(id);
+            setNotice({ ...foundNotice, content: htmlContent });
+          } catch (htmlErr) {
+            console.warn("HTML 콘텐츠를 가져오는데 실패했습니다:", htmlErr);
+            setNotice(foundNotice);
+          }
         } else {
           setError(NOTICE_DETAIL_MESSAGES.NOT_FOUND);
         }

@@ -22,7 +22,7 @@ export const useNotices = () => {
 
     try {
       const response = await getNotices({
-        categoryId,
+        category: String(categoryId),
         page: 0,
         size: NOTICE_CONFIG.DEFAULT_PAGE_SIZE,
       });
@@ -45,7 +45,7 @@ export const useNotices = () => {
 
     try {
       const response = await getNotices({
-        categoryId: currentCategoryRef.current,
+        category: String(currentCategoryRef.current),
         page: nextPage,
         size: NOTICE_CONFIG.DEFAULT_PAGE_SIZE,
       });
