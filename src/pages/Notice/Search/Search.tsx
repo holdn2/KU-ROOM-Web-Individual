@@ -28,9 +28,9 @@ const Search: React.FC = () => {
     const loadAllNotices = async () => {
       try {
         // 여러 카테고리에서 공지사항 가져오기
-        const categories = [234, 235, 237, 238, 240, 4083, 4214, 4274];
-        const allNoticesPromises = categories.map(categoryId => 
-          getNotices({ categoryId, size: 5 })
+        const categories = ["234", "235", "237", "238", "240", "4083", "4214", "4274"];
+        const allNoticesPromises = categories.map(category =>
+          getNotices({ category, size: 5 })
         );
         const responses = await Promise.all(allNoticesPromises);
         const allNotices = responses.flatMap(response => response.content);

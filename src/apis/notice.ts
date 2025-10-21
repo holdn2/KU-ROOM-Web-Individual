@@ -23,7 +23,7 @@ export interface NoticeListResponse {
 }
 
 export interface NoticeListParams {
-  categoryId?: number;
+  category?: string;
   keyword?: string;
   page?: number;
   size?: number;
@@ -87,7 +87,7 @@ export const getNotices = async (
     "/api/v1/notices",
     {
       params: {
-        categoryId: params.categoryId,
+        category: params.category,
         keyword: params.keyword,
         page: params.page || 0,
         size: params.size || 20,
