@@ -1,12 +1,17 @@
 import type { BookmarkResponse, NoticeResponse } from "@apis/notice";
 
-export const transformBookmarkData = (apiData: BookmarkResponse[]): NoticeResponse[] => {
+export const transformBookmarkData = (apiData: BookmarkResponse[] | undefined): NoticeResponse[] => {
+  if (!apiData || !Array.isArray(apiData)) {
+    return [];
+  }
+
   return apiData.map((item) => ({
     id: item.id,
     categoryId: 0,
     categoryName: "",
     title: item.title,
     link: item.link || "",
+    content: "",
     pubDate: item.pubDate,
     author: "",
     description: "",

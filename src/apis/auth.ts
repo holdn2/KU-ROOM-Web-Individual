@@ -17,6 +17,7 @@ interface LoginResponse {
       refreshToken: string;
       accessExpireIn: number;
       refreshExpireIn: number;
+      isFirstLogin?: boolean;
     };
     userResponse: {
       id: number;
