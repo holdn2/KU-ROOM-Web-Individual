@@ -53,49 +53,37 @@ export interface BookmarkListParams {
   sort?: string[];
 }
 
-const NOTICE_LIST_BASE_URL = "https://kuis.shop";
-const NOTICE_DETAIL_BASE_URL = "https://kuroom.shop";
+const NOTICE_BASE_URL = "https://kuroom.shop";
 
-const noticeListAxiosInstance = axios.create({
-  baseURL: NOTICE_LIST_BASE_URL,
+const noticeAxiosInstance = axios.create({
+  baseURL: NOTICE_BASE_URL,
   timeout: 8000,
   headers: { "Content-Type": "application/json" },
 });
 
-const noticeDetailAxiosInstance = axios.create({
-  baseURL: NOTICE_DETAIL_BASE_URL,
-  timeout: 8000,
-  headers: { "Content-Type": "application/json" },
-});
-
-const addAuthInterceptor = (instance: any) => {
-  instance.interceptors.request.use(
-    (config: any) => {
-      let token: string | null = null;
-      if (typeof window !== "undefined") {
-        try {
-          token = localStorage.getItem("accessToken");
-        } catch (_) {
-          throw Error;
-        }
+noticeAxiosInstance.interceptors.request.use(
+  (config) => {
+    let token: string | null = null;
+    if (typeof window !== "undefined") {
+      try {
+        token = localStorage.getItem("accessToken");
+      } catch (_) {
+        throw Error;
       }
-      if (token) {
-        if (!config.headers) config.headers = {};
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    },
-    (error: any) => Promise.reject(error)
-  );
-};
-
-addAuthInterceptor(noticeListAxiosInstance);
-addAuthInterceptor(noticeDetailAxiosInstance);
+    }
+    if (token) {
+      if (!config.headers) config.headers = {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export const getNotices = async (
   params: NoticeListParams = {}
 ): Promise<NoticeListResponse> => {
-  const response = await noticeListAxiosInstance.get<NoticeListResponse>(
+  const response = await noticeAxiosInstance.get<NoticeListResponse>(
     "/api/v1/notices",
     {
       params: {
@@ -113,7 +101,7 @@ export const getNotices = async (
 export const getBookmarks = async (
   params: BookmarkListParams = {}
 ): Promise<BookmarkResponse[]> => {
-  const response = await noticeListAxiosInstance.get<BookmarkListResponse>(
+  const response = await noticeAxiosInstance.get<BookmarkListResponse>(
     "/api/v1/notices/bookmarks",
     {
       params: {
@@ -127,23 +115,23 @@ export const getBookmarks = async (
 };
 
 export const addBookmark = async (noticeId: number): Promise<void> => {
-  await noticeListAxiosInstance.post(`/api/v1/notices/${noticeId}/bookmark`);
+  await noticeAxiosInstance.post(`/api/v1/notices/${noticeId}/bookmark`);
 };
 
 export const removeBookmark = async (noticeId: number): Promise<void> => {
-  await noticeListAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
+  await noticeAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
 };
 
 export const getNoticeDetailHtml = async (noticeId: string): Promise<string> => {
   try {
-    const response = await noticeDetailAxiosInstance.get<string>(
+    const response = await noticeAxiosInstance.get<string>(
       `/api/v1/notices/${noticeId}`,
       {
         headers: {
           'Accept': 'text/html'
         },
         responseType: 'text',
-        validateStatus: (status) => status >= 200 && status < 300
+        validateStatus: (status: number) => status >= 200 && status < 300
       }
     );
     return response.data;
