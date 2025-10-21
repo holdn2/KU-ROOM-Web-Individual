@@ -106,3 +106,19 @@
 .DeleteIcon {
   padding: 9px;
 }
+
+.EmptyView {
+  margin-top: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #b0bac3;
+  text-align: center;
+  line-height: 140%;
+}
+.EmptyIcon {
+  width: 50px;
+  padding: 15px 10px;
+  box-sizing: border-box;
+}

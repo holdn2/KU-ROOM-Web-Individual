@@ -10,6 +10,7 @@ import BottomBar from "@components/BottomBar/BottomBar";
 import arrowBack from "@assets/nav/arrowback.svg";
 import deleteIcon from "@assets/icon/deleteIcon.svg";
 import noResultIcon from "@assets/icon/noResultSearch.svg";
+import kuroomEmptyIcon from "@assets/icon/kuroom-icon/kuroom-gray.svg";
 import { MapRecentSearchData, MapSearchResult } from "@/shared/types";
 
 import styles from "./MapSearch.module.css";
@@ -177,6 +178,17 @@ const MapSearch: React.FC<MapSearchProps> = ({
           </div>
         </>
       )}
+      {recentSearchData.length === 0 && !tryToSearch && (
+        <div className={styles.EmptyView}>
+          <img src={kuroomEmptyIcon} className={styles.EmptyIcon} />
+          <span>
+            최근 검색어 내역이 없습니다.
+            <br />
+            궁금한 장소를 검색해보세요!
+          </span>
+        </div>
+      )}
+
       {searchText.trim() &&
         tryToSearch &&
         (searchResult.length !== 0 ? (
