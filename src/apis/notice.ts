@@ -53,38 +53,49 @@ export interface BookmarkListParams {
   sort?: string[];
 }
 
-const NOTICE_BASE_URL =
-  import.meta.env.VITE_NOTICE_API_BASE_URL ?? "https://kuis.shop";
+const NOTICE_LIST_BASE_URL = "https://kuis.shop";
+const NOTICE_DETAIL_BASE_URL = "https://kuroom.shop";
 
-const noticeAxiosInstance = axios.create({
-  baseURL: NOTICE_BASE_URL,
+const noticeListAxiosInstance = axios.create({
+  baseURL: NOTICE_LIST_BASE_URL,
   timeout: 8000,
   headers: { "Content-Type": "application/json" },
 });
 
-noticeAxiosInstance.interceptors.request.use(
-  (config) => {
-    let token: string | null = null;
-    if (typeof window !== "undefined") {
-      try {
-        token = localStorage.getItem("accessToken");
-      } catch (_) {
-        throw Error;
+const noticeDetailAxiosInstance = axios.create({
+  baseURL: NOTICE_DETAIL_BASE_URL,
+  timeout: 8000,
+  headers: { "Content-Type": "application/json" },
+});
+
+const addAuthInterceptor = (instance: any) => {
+  instance.interceptors.request.use(
+    (config: any) => {
+      let token: string | null = null;
+      if (typeof window !== "undefined") {
+        try {
+          token = localStorage.getItem("accessToken");
+        } catch (_) {
+          throw Error;
+        }
       }
-    }
-    if (token) {
-      if (!config.headers) config.headers = {};
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+      if (token) {
+        if (!config.headers) config.headers = {};
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error: any) => Promise.reject(error)
+  );
+};
+
+addAuthInterceptor(noticeListAxiosInstance);
+addAuthInterceptor(noticeDetailAxiosInstance);
 
 export const getNotices = async (
   params: NoticeListParams = {}
 ): Promise<NoticeListResponse> => {
-  const response = await noticeAxiosInstance.get<NoticeListResponse>(
+  const response = await noticeListAxiosInstance.get<NoticeListResponse>(
     "/api/v1/notices",
     {
       params: {
@@ -102,7 +113,7 @@ export const getNotices = async (
 export const getBookmarks = async (
   params: BookmarkListParams = {}
 ): Promise<BookmarkResponse[]> => {
-  const response = await noticeAxiosInstance.get<BookmarkListResponse>(
+  const response = await noticeListAxiosInstance.get<BookmarkListResponse>(
     "/api/v1/notices/bookmarks",
     {
       params: {
@@ -115,17 +126,16 @@ export const getBookmarks = async (
   return response.data.content;
 };
 
-// kuis.shop 서버용 북마크 API (토큰 인증 필요)
 export const addBookmark = async (noticeId: number): Promise<void> => {
-  await noticeAxiosInstance.post(`/api/v1/notices/${noticeId}/bookmark`);
+  await noticeListAxiosInstance.post(`/api/v1/notices/${noticeId}/bookmark`);
 };
 
 export const removeBookmark = async (noticeId: number): Promise<void> => {
-  await noticeAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
+  await noticeListAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
 };
 
 export const getNoticeDetail = async (noticeId: string): Promise<NoticeResponse> => {
-  const response = await noticeAxiosInstance.get<NoticeResponse>(
+  const response = await noticeDetailAxiosInstance.get<NoticeResponse>(
     `/api/v1/notices/${noticeId}`
   );
   return response.data;
