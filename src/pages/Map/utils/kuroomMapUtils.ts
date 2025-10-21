@@ -210,6 +210,10 @@ async function makeFocusMarker(
     <div style="display: flex; flex-direction: column; align-items: center; margin-top:-25px">
       <img src="${focusedMarkerIcon}" width="80" height="80" />
       <span style="
+        padding: 5px 7px;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
         margin-top: -4px;
         color: #000;
         text-align: center;
@@ -217,14 +221,9 @@ async function makeFocusMarker(
         font-style: normal;
         font-weight: 700;
         line-height: normal;
-        text-shadow:
-          -2px -2px 0 white,
-          2px -2px 0 white,
-          -2px  2px 0 white,
-          2px  2px 0 white;
-        white-space: normal;
+        white-space: nowrap;
         word-break: keep-all;         
-        overflow-wrap: break-word;   
+        overflow-wrap: normal;   
         text-align: center;
       ">
         ${marker.getTitle()}
