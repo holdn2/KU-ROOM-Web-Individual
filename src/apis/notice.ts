@@ -134,9 +134,21 @@ export const removeBookmark = async (noticeId: number): Promise<void> => {
   await noticeListAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
 };
 
-export const getNoticeDetail = async (noticeId: string): Promise<NoticeResponse> => {
-  const response = await noticeDetailAxiosInstance.get<NoticeResponse>(
-    `/api/v1/notices/${noticeId}`
-  );
-  return response.data;
+export const getNoticeDetailHtml = async (noticeId: string): Promise<string> => {
+  try {
+    const response = await noticeDetailAxiosInstance.get<string>(
+      `/api/v1/notices/${noticeId}`,
+      {
+        headers: {
+          'Accept': 'text/html'
+        },
+        responseType: 'text',
+        validateStatus: (status) => status >= 200 && status < 300
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error("HTML 콘텐츠 조회 실패:", error);
+    throw error;
+  }
 };

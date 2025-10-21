@@ -83,7 +83,9 @@ const Login = () => {
     // 현재 페이지 저장 (로그인 후 돌아올 위치)
     sessionStorage.setItem("redirectUrl", "/");
 
-    const redirectUri = "https://ku-room.vercel.app/oauth/callback";
+    const redirectUri = import.meta.env.DEV
+      ? "http://localhost:5173/oauth/callback"
+      : "https://ku-room.vercel.app/oauth/callback";
 
     // 구글 OAuth2 엔드포인트로 리다이렉트
     window.location.href = `https://kuroom.shop/oauth2/authorization/google?redirect_uri=${redirectUri}`;
@@ -94,7 +96,9 @@ const Login = () => {
     // 현재 페이지 저장 (로그인 후 돌아올 위치)
     sessionStorage.setItem("redirectUrl", "/");
 
-    const redirectUri = "https://ku-room.vercel.app/oauth/callback";
+    const redirectUri = import.meta.env.DEV
+      ? "http://localhost:5173/oauth/callback"
+      : "https://ku-room.vercel.app/oauth/callback";
 
     // 카카오 OAuth2 엔드포인트로 리다이렉트
     window.location.href = `https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=${redirectUri}`;
@@ -105,7 +109,9 @@ const Login = () => {
     // 현재 페이지 저장 (로그인 후 돌아올 위치)
     sessionStorage.setItem("redirectUrl", "/");
 
-    const redirectUri = "https://ku-room.vercel.app/oauth/callback";
+    const redirectUri = import.meta.env.DEV
+      ? "http://localhost:5173/oauth/callback"
+      : "https://ku-room.vercel.app/oauth/callback";
 
     // 네이버 OAuth2 엔드포인트로 리다이렉트
     window.location.href = `https://kuroom.shop/oauth2/authorization/naver?redirect_uri=${redirectUri}`;
