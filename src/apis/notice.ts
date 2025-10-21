@@ -72,7 +72,6 @@ noticeAxiosInstance.interceptors.request.use(
       }
     }
     if (token) {
-      if (!config.headers) config.headers = {};
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

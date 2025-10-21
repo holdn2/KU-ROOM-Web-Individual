@@ -1,21 +1,16 @@
-import axios from "axios";
-
-// 타입 추론하여 사용
-type AxiosRequestConfig = Parameters<typeof axios>[0];
+import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "https://kuroom.shop/api/v1",
-  // body가 있는 요청들의 경우에는 Content-Type: application/json를 명시해주는 것이 좋다.
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 axiosInstance.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
-      if (!config.headers) config.headers = {};
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -23,28 +18,19 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-interface AccessTokenExpiredReponse {
-  code: number;
-  status: string;
-  message: string;
-  data: {
-    token: string;
-  };
-}
-axiosInstance.interceptors.response.use<AccessTokenExpiredReponse>(
+axiosInstance.interceptors.response.use(
   async (response: any) => {
-    // HTTP status는 200이지만 내부 code가 401이면 -> 강제로 에러 핸들러로 넘김
     if (response.data.code === 401) {
       const originalRequest = response.config as AxiosRequestConfig & {
         _retry?: boolean;
       };
       try {
         const newAccessToken = await reissueTokenApi();
-        originalRequest.headers = {
+        const headers = {
           ...originalRequest.headers,
           Authorization: `Bearer ${newAccessToken}`,
         };
-        return axiosInstance(response.config);
+        return axiosInstance({ ...response.config, headers });
       } catch (error: any) {
         console.warn(
           "재발급 실패 (기타 이유)",
