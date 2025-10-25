@@ -105,3 +105,10 @@
 .RankBgDefault {
   background-color: #ced5db;
 }
+
+.EmtpyViewContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}

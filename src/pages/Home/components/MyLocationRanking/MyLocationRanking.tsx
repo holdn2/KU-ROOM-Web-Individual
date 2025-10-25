@@ -38,24 +38,23 @@ const MyLocationRanking = ({ updateTrigger }: Props) => {
   }, [updateTrigger]);
 
   return (
-    // TODO: 공유 횟수가 모두 0이면 "아직 아무것도 공유하지 않았습니다." 등의 화면으로 보여주기 (10/13)
-    myRankData.length > 0 && (
-      <div className={styles.MyLocationRankingBackground}>
-        <div className={styles.MyLocationRankingWrapper}>
-          <div className={styles.MyLocationRankingSectionTitle}>
-            <div className={styles.TitleWrapper}>
-              <h1 className={styles.SectionTitleBold}>내 장소 랭킹</h1>
-              <span className={styles.NormalText}>
-                내가 자주 간 장소를 모아 보여드려요 :)
-              </span>
-            </div>
-            <img
-              className={styles.ArrowButton}
-              src={arrowRight}
-              alt="자세히 보기"
-              onClick={goToMyLocationRankingPage}
-            />
+    <div className={styles.MyLocationRankingBackground}>
+      <div className={styles.MyLocationRankingWrapper}>
+        <div className={styles.MyLocationRankingSectionTitle}>
+          <div className={styles.TitleWrapper}>
+            <h1 className={styles.SectionTitleBold}>내 장소 랭킹</h1>
+            <span className={styles.NormalText}>
+              내가 자주 간 장소를 모아 보여드려요 :)
+            </span>
           </div>
+          <img
+            className={styles.ArrowButton}
+            src={arrowRight}
+            alt="자세히 보기"
+            onClick={goToMyLocationRankingPage}
+          />
+        </div>
+        {myRankData.length > 0 ? (
           <div className={styles.RankingContentWrapper}>
             {myRankData.map((item, index) => (
               <div
@@ -98,9 +97,11 @@ const MyLocationRanking = ({ updateTrigger }: Props) => {
               </div>
             ))}
           </div>
-        </div>
+        ) : (
+          <div className={styles.EmtpyViewContainer}>asdf</div>
+        )}
       </div>
-    )
+    </div>
   );
 };
 
