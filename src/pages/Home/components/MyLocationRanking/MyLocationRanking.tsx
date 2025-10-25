@@ -5,6 +5,7 @@ import arrowRight from "@assets/nav/arrowRight.svg";
 import rank1Icon from "@assets/icon/ranking/rank1.png";
 import rank2Icon from "@assets/icon/ranking/rank2.png";
 import rank3Icon from "@assets/icon/ranking/rank3.png";
+import kuroomEmptyIcon from "@assets/icon/kuroom-icon/kuroom-gray.svg";
 import { getSharingRanking } from "@apis/home";
 import { RankListType } from "@/shared/types";
 
@@ -98,7 +99,13 @@ const MyLocationRanking = ({ updateTrigger }: Props) => {
             ))}
           </div>
         ) : (
-          <div className={styles.EmtpyViewContainer}>asdf</div>
+          <div className={styles.EmtpyViewContainer}>
+            <img src={kuroomEmptyIcon} className={styles.EmtpyIcon} />
+            <span className={styles.EmptyText}>
+              아직 위치를 공유하지 않았어요.
+              <br /> 1시간 이상 위치 공유를 유지해야 1회로 인정됩니다.
+            </span>
+          </div>
         )}
       </div>
     </div>
