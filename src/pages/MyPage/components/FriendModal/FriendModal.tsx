@@ -32,14 +32,17 @@ const FriendModal: React.FC<FriendModalProps> = ({
   setRefreshList,
   filteringSearch,
 }) => {
-  const handleCloseModal = () => setModalState(false);
   const [reportReason, setReportReason] = useState("");
 
   const handleInputReportReason = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReportReason(e.target.value);
   };
 
-  // 서버에 각각에 대해 요청
+  const handleCloseModal = () => {
+    setModalState(false);
+    setReportReason("");
+  };
+
   const handleEditFriend = async () => {
     try {
       switch (modalType) {
@@ -59,13 +62,13 @@ const FriendModal: React.FC<FriendModalProps> = ({
           await friendReport(editFriendId, reportReason);
           break;
       }
-
-      console.log(`${editFriend}의 ${modalType} 완료`);
     } catch (error) {
       console.error(`친구 ${modalType} 중 오류:`, error);
     } finally {
       setModalState(false);
       setRefreshList((prev) => !prev);
+      setReportReason("");
+
       if (filteringSearch) await filteringSearch();
     }
   };
@@ -134,7 +137,11 @@ const FriendModal: React.FC<FriendModalProps> = ({
         <Button variant="tertiary" onClick={handleCloseModal} size="sm">
           취소
         </Button>
-        <Button onClick={handleEditFriend} size="sm">
+        <Button
+          onClick={handleEditFriend}
+          size="sm"
+          disabled={modalType === "report" && reportReason.trim() === ""}
+        >
           확인
         </Button>
       </div>
