@@ -7,6 +7,7 @@ import searchIcon from "@/assets/headericon/search.svg";
 import arrowBackIcon from "@/assets/nav/arrowback.svg";
 import kuroomIcon from "@/assets/icon/cloud.svg";
 import homeAlarmIcon from "@/assets/icon/homealarm.svg";
+import infoButtonIcon from "@/assets/icon/info-button.svg";
 
 import "./Header.css";
 
@@ -24,7 +25,6 @@ const renderHeaderContent = (
   onBookmarkClick?: () => void,
   isBookmarked?: boolean
 ) => {
-
   switch (children) {
     case "홈":
       return (
@@ -54,6 +54,22 @@ const renderHeaderContent = (
             onClick={() => navigate("/search")}
           />
         </div>
+      );
+    case "내 장소 랭킹":
+      return (
+        <>
+          <img
+            className="profilechange-header-content"
+            src={arrowBackIcon}
+            alt="뒤로가기"
+            onClick={() => navigate(-1)}
+          />
+          <img
+            className="header-info-button-icon"
+            src={infoButtonIcon}
+            alt="쿠룸 아이콘"
+          />
+        </>
       );
     case "":
       return (
@@ -91,7 +107,7 @@ const renderHeaderContent = (
           </>
         );
       }
-      
+
       return (
         <img
           className="profilechange-header-content"
@@ -103,11 +119,11 @@ const renderHeaderContent = (
   }
 };
 
-const Header: React.FC<HeaderProps> = ({ 
-  children = "", 
-  hasNewAlarm, 
-  onBookmarkClick, 
-  isBookmarked 
+const Header: React.FC<HeaderProps> = ({
+  children = "",
+  hasNewAlarm,
+  onBookmarkClick,
+  isBookmarked,
 }) => {
   const navigate = useNavigate();
   const newAlarmState = children === "홈" && hasNewAlarm === true;
@@ -120,7 +136,13 @@ const Header: React.FC<HeaderProps> = ({
         ) : (
           <span className="header-title">{children}</span>
         )}
-        {renderHeaderContent(children, newAlarmState, navigate, onBookmarkClick, isBookmarked)}
+        {renderHeaderContent(
+          children,
+          newAlarmState,
+          navigate,
+          onBookmarkClick,
+          isBookmarked
+        )}
       </header>
     </>
   );
