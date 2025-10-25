@@ -67,8 +67,8 @@ const MyLocationRanking = () => {
       <div className={styles.PageContentWrapper}>
         <div className={styles.MyRankingContainer}>
           {myRankData.length === 0 && (
-            <div className={styles.EmtpyViewContainer}>
-              <img src={kuroomEmptyIcon} className={styles.EmtpyIcon} />
+            <div className={styles.EmptyViewContainer}>
+              <img src={kuroomEmptyIcon} className={styles.EmptyIcon} />
               <span className={styles.EmptyText}>
                 아직 위치를 공유하지 않았어요.
                 <br /> 1시간 이상 위치 공유를 유지해야 1회로 인정됩니다.

@@ -86,13 +86,13 @@
   display: flex;
   align-items: flex-end;
 }
-.EmtpyViewContainer {
+.EmptyViewContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
 }
-.EmtpyIcon {
+.EmptyIcon {
   width: 50px;
   height: 50px;
   padding: 15px 10px;

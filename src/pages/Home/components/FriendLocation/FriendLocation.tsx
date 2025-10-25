@@ -70,8 +70,8 @@ const FriendLocation: React.FC<FriendLocationProps> = ({
       </div>
 
       {friendSharedLocationData.length === 0 && (
-        <div className={styles.EmtpyViewContainer}>
-          <img src={kuroomEmptyIcon} className={styles.EmtpyIcon} />
+        <div className={styles.EmptyViewContainer}>
+          <img src={kuroomEmptyIcon} className={styles.EmptyIcon} />
           <span className={styles.EmptyText}>
             아직 위치를 공유한 친구가 없어요.
             <br />
