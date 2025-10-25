@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactModal from "react-modal";
 
 import {
@@ -33,6 +33,11 @@ const FriendModal: React.FC<FriendModalProps> = ({
   filteringSearch,
 }) => {
   const handleCloseModal = () => setModalState(false);
+  const [reportReason, setReportReason] = useState("");
+
+  const handleInputReportReason = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setReportReason(e.target.value);
+  };
 
   // 서버에 각각에 대해 요청
   const handleEditFriend = async () => {
@@ -51,7 +56,7 @@ const FriendModal: React.FC<FriendModalProps> = ({
           await friendBlock(editFriendId);
           break;
         case "report":
-          await friendReport(editFriendId, "아직 모릅니다 ㅎㅎ..");
+          await friendReport(editFriendId, reportReason);
           break;
       }
 
@@ -61,7 +66,7 @@ const FriendModal: React.FC<FriendModalProps> = ({
     } finally {
       setModalState(false);
       setRefreshList((prev) => !prev);
-      if (filteringSearch) await filteringSearch(); // UI 재반영
+      if (filteringSearch) await filteringSearch();
     }
   };
 
@@ -90,9 +95,18 @@ const FriendModal: React.FC<FriendModalProps> = ({
         );
       case "report":
         return (
-          <span className={styles.InformText}>
-            {nicknameSpan} 님을 신고하시겠습니까?
-          </span>
+          <div className={styles.ReportWrapper}>
+            <span className={styles.InformText}>
+              {nicknameSpan} 님을 신고하시겠습니까?
+            </span>
+            <input
+              className={styles.ReportReasonInput}
+              type="text"
+              value={reportReason}
+              onChange={(e) => handleInputReportReason(e)}
+              placeholder="신고이유를 작성해주세요."
+            />
+          </div>
         );
       case "accept":
         return (
