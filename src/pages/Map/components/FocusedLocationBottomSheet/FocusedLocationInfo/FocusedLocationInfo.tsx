@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import DefaultProfileImg from "@assets/defaultProfileImg.svg";
@@ -27,9 +27,13 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
     if (!detailInfo) return;
     navigate(
       `/map/location-total-rank/${encodeURIComponent(detailInfo.name)}`,
-      { state: { rank: detailInfo.ranks } }
+      { state: { placeId: detailInfo.placeId } }
     );
   };
+
+  useEffect(() => {
+    console.log(detailInfo);
+  }, []);
 
   return (
     <div className={styles.DetailInfoWrapper}>
@@ -44,7 +48,8 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
             </span>
             <span className={styles.SubTitleText}>{detailInfo.subName}</span>
           </div>
-          {isExpandedFocusedSheet && detailInfo.ranks.length > 0 && (
+          {/* TODO: api 연동 이후 변경 예정. ranks가 어떻게 올지 서버와 논의 필요 */}
+          {isExpandedFocusedSheet && detailInfo.ranks.length === 0 && (
             <div className={styles.TotalRankWrapper}>
               {detailInfo.ranks.slice(0, 3).map((rankData, index) => (
                 <div key={rankData.ranking} className={styles.RankContainer}>

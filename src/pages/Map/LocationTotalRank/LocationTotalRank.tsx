@@ -1,35 +1,33 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
 
 import Header from "@/shared/components/Header/Header";
-import Rank1Icon from "@assets/icon/ranking/rank1.png";
-import Rank2Icon from "@assets/icon/ranking/rank2.png";
-import Rank3Icon from "@assets/icon/ranking/rank3.png";
-import { LocationTotalRankType } from "@/shared/types/rankTypes";
+// import Rank1Icon from "@assets/icon/ranking/rank1.png";
+// import Rank2Icon from "@assets/icon/ranking/rank2.png";
+// import Rank3Icon from "@assets/icon/ranking/rank3.png";
 
 import styles from "./LocationTotalRank.module.css";
 
-type LocationState = { rank?: LocationTotalRankType[] };
+type LocationState = { placeId: number };
 
 const LocationTotalRank = () => {
-  const navigate = useNavigate();
-  const { location } = useParams();
-  const rank = useLocation();
+  // const navigate = useNavigate();
+  const { place } = useParams();
+  const location = useLocation();
 
-  const rankData = (rank.state as LocationState | null)?.rank ?? [];
+  const placeId = (location.state as LocationState | null)?.placeId ?? [];
 
-  const top3Data = rankData.filter((data) => data.ranking <= 3);
-
-  const myRank = rankData.filter((data) => data.isSelf);
-
-  if (!rankData.length) {
-    navigate("/map");
-  }
+  useEffect(() => {
+    // TODO: placeId를 통해 api 요청
+    console.info(placeId);
+  }, []);
 
   return (
     <div>
-      <Header>{location}</Header>
+      <Header>{place}</Header>
       <div className={styles.TotalRankingPageWrapper}>
-        {top3Data.map((ranker) => (
+        <span>api 연동예정</span>
+        {/* {top3Data.map((ranker) => (
           <div key={ranker.ranking} className={styles.EachRankingContainer}>
             <img
               className={styles.RankIcon}
@@ -72,7 +70,7 @@ const LocationTotalRank = () => {
               </div>
             </div>
           </>
-        )}
+        )} */}
       </div>
     </div>
   );

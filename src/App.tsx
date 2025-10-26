@@ -139,7 +139,7 @@ function App() {
               element: <MapPage />,
             },
             {
-              path: "location-total-rank/:location?",
+              path: "location-total-rank/:place?",
               element: <LocationTotalRank />,
             },
           ],
