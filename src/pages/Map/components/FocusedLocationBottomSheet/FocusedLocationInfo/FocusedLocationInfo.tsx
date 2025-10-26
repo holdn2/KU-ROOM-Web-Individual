@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import DefaultProfileImg from "@assets/defaultProfileImg.svg";
@@ -30,10 +30,6 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
       { state: { placeId: detailInfo.placeId } }
     );
   };
-
-  useEffect(() => {
-    console.log(detailInfo);
-  }, []);
 
   return (
     <div className={styles.DetailInfoWrapper}>
