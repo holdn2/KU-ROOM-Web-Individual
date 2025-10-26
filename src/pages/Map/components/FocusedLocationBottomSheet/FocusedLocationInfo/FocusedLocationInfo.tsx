@@ -23,6 +23,8 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
 }) => {
   const navigate = useNavigate();
 
+  console.log(detailInfo);
+
   const handleNavigateToTotalRank = () => {
     if (!detailInfo) return;
     navigate(
@@ -45,7 +47,7 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
             <span className={styles.SubTitleText}>{detailInfo.subName}</span>
           </div>
           {/* TODO: api 연동 이후 변경 예정. ranks가 어떻게 올지 서버와 논의 필요 */}
-          {isExpandedFocusedSheet && detailInfo.ranks.length === 0 && (
+          {isExpandedFocusedSheet && detailInfo.ranks.length > 0 && (
             <div className={styles.TotalRankWrapper}>
               {detailInfo.ranks.slice(0, 3).map((rankData, index) => (
                 <div key={rankData.ranking} className={styles.RankContainer}>
