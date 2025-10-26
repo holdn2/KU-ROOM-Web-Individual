@@ -23,8 +23,6 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
 }) => {
   const navigate = useNavigate();
 
-  console.log(detailInfo);
-
   const handleNavigateToTotalRank = () => {
     if (!detailInfo) return;
     navigate(
