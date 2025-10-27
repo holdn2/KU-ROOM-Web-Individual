@@ -71,7 +71,6 @@ const MyLocationRanking = () => {
               <img src={kuroomEmptyIcon} className={styles.EmptyIcon} />
               <span className={styles.EmptyText}>
                 아직 위치를 공유하지 않았어요.
-                <br /> 1시간 이상 위치 공유를 유지해야 1회로 인정됩니다.
               </span>
             </div>
           )}
