@@ -74,10 +74,13 @@ const renderHeaderContent = (
           />
           <Tooltip
             id="my-location-ranking"
-            content={`1시간 이상 위치 공유를 유지해야\n1회로 인정됩니다.`}
+            content={`1시간 이상 위치 공유를 유지해야 1회로 인정되며 해제 여부와 관계 없이 00시에는 자동 해제됩니다.`}
             place="bottom-end"
             offset={10}
             style={{
+              width: "236px",
+              boxSizing: "border-box",
+              wordBreak: "keep-all",
               background: "#1D2228",
               padding: "10px 17px",
               borderRadius: "12px",
