@@ -11,15 +11,16 @@ const HomeMenu = () => {
   const navigate = useNavigate();
 
   const navToSearchLocation = () => {
-    console.log("장소 검색으로");
     navigate("/map", { state: { isSearchMode: true } });
   };
   const navToPlusFriend = () => {
-    console.log("친구 추가로");
     navigate("/friendadd");
   };
   const navToKcubeReserve = () => {
-    console.log("케이큐브 예약으로");
+    window.open(
+      "https://wein.konkuk.ac.kr/ptfol/cmnt/cube/findCubeResveStep1.do",
+      "_blank"
+    );
   };
   const navToReadingRoom = () => {
     console.log("열람실 좌석 현황으로");
