@@ -11,7 +11,7 @@ import Header from "@components/Header/Header";
 // import Button from "@components/Button/Button";
 import { RankListType } from "@/shared/types";
 
-import ShareBottomSheet from "./components/ShareBottomSheet/ShareBottomSheet";
+// import ShareBottomSheet from "./components/ShareBottomSheet/ShareBottomSheet";
 import styles from "./MyLocationRanking.module.css";
 
 const dummyFriendRanking = [
@@ -30,8 +30,8 @@ const MyLocationRanking = () => {
 
   const [myRankData, setMyRankData] = useState<RankListType[]>([]);
 
-  const [isSharedSheetOpen, setIsSharedSheetOpen] = useState(false);
-  const [isSheetVisible, setIsSheetVisible] = useState(false);
+  // const [isSharedSheetOpen, setIsSharedSheetOpen] = useState(false);
+  // const [isSheetVisible, setIsSheetVisible] = useState(false);
 
   const getMyLocationRanking = async () => {
     try {
@@ -52,10 +52,10 @@ const MyLocationRanking = () => {
   //   setIsSheetVisible(true); // 먼저 보여주기
   //   setTimeout(() => setIsSharedSheetOpen(true), 0); // 열리는 애니메이션 트리거
   // };
-  const closeBottomSheet = () => {
-    setIsSharedSheetOpen(false); // 닫히는 애니메이션 시작
-    setTimeout(() => setIsSheetVisible(false), 300); // 0.3초 후 제거
-  };
+  // const closeBottomSheet = () => {
+  //   setIsSharedSheetOpen(false); // 닫히는 애니메이션 시작
+  //   setTimeout(() => setIsSheetVisible(false), 300); // 0.3초 후 제거
+  // };
 
   useEffect(() => {
     getMyLocationRanking();
@@ -100,24 +100,34 @@ const MyLocationRanking = () => {
         </div>
         <div className={styles.FriendRankingContainer}>
           <span className={styles.FriendRankingTitle}>친구 랭킹</span>
-          <div className={styles.FriendWrapper}>
-            {dummyFriendRanking.map((friend) => (
-              <button
-                key={friend.id}
-                className={styles.FriendNickname}
-                onClick={() => handleNavToFriendRanking(friend.nickname)}
-              >
-                {friend.nickname}
-              </button>
-            ))}
-          </div>
+          {dummyFriendRanking.length !== 0 ? (
+            // TODO: 디자인 변경 가능성 있음
+            <div className={styles.EmptyViewContainer}>
+              <img src={kuroomEmptyIcon} className={styles.EmptyIcon} />
+              <span className={styles.EmptyText}>
+                아직 친구가 없어요. 친구를 만들어보세요!
+              </span>
+            </div>
+          ) : (
+            <div className={styles.FriendWrapper}>
+              {dummyFriendRanking.map((friend) => (
+                <button
+                  key={friend.id}
+                  className={styles.FriendNickname}
+                  onClick={() => handleNavToFriendRanking(friend.nickname)}
+                >
+                  {friend.nickname}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
         {/* TODO: 공유 기능은 후순위로 미루기(10/13) */}
         {/* <div className={styles.ButtonWrapper}>
           <Button onClick={openBottomSheet}>공유하기</Button>
         </div> */}
       </div>
-      {isSheetVisible && (
+      {/* {isSheetVisible && (
         <div className={styles.BottomSheetOverlay} onClick={closeBottomSheet}>
           <div
             className={styles.ShareBottomSheet}
@@ -126,7 +136,7 @@ const MyLocationRanking = () => {
             <ShareBottomSheet isSharedSheetOpen={isSharedSheetOpen} />
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
