@@ -1,76 +1,63 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
 import Header from "@/shared/components/Header/Header";
+import { getLocationTotalRank } from "@/apis/map";
 // import Rank1Icon from "@assets/icon/ranking/rank1.png";
 // import Rank2Icon from "@assets/icon/ranking/rank2.png";
 // import Rank3Icon from "@assets/icon/ranking/rank3.png";
 
 import styles from "./LocationTotalRank.module.css";
 
-type LocationState = { placeId: number };
+interface RankDataType {
+  ranking: number;
+  nickname: string[];
+  sharingCount: number;
+}
 
 const LocationTotalRank = () => {
-  // const navigate = useNavigate();
-  const { place } = useParams();
-  const location = useLocation();
+  const { placeName } = useParams();
+  const { state } = useLocation();
+  const placeId = state?.placeId;
 
-  const placeId = (location.state as LocationState | null)?.placeId ?? [];
+  const [totalRankData, setTotalRankData] = useState<RankDataType[] | null>(
+    null
+  );
+
+  const getCurrentLocationTotalRank = async () => {
+    try {
+      const response = await getLocationTotalRank(Number(placeId), 1, 5);
+      setTotalRankData(response);
+    } catch (error) {
+      console.error("현재 위치 랭킹 조회 시 클라측 오류 : ", error);
+    }
+  };
+  useEffect(() => {
+    getCurrentLocationTotalRank();
+  }, []);
 
   useEffect(() => {
-    // TODO: placeId를 통해 api 요청
-    console.info(placeId);
-  }, []);
+    console.log(totalRankData);
+  }, [totalRankData]);
 
   return (
     <div>
-      <Header>{place}</Header>
+      <Header>{placeName}</Header>
       <div className={styles.TotalRankingPageWrapper}>
-        <span>api 연동예정</span>
-        {/* {top3Data.map((ranker) => (
-          <div key={ranker.ranking} className={styles.EachRankingContainer}>
-            <img
-              className={styles.RankIcon}
-              src={
-                ranker.ranking === 1
-                  ? Rank1Icon
-                  : ranker.ranking === 2
-                    ? Rank2Icon
-                    : Rank3Icon
-              }
-              alt="랭킹 아이콘"
-            />
-            <div className={styles.EachRankingContentWrapper}>
-              <div className={styles.NicknameWrapper}>
-                {ranker.nickname.map((nickname) => (
-                  <span key={nickname} className={styles.UserName}>
-                    {nickname}
+        <div className={styles.LowRankWrapper}>
+          {totalRankData &&
+            totalRankData.map((rankData) => (
+              <div key={`${rankData.nickname}`} className={styles.LowRanksData}>
+                <span className={styles.LowRanking}>{rankData.ranking}</span>
+                <div className={styles.LowRanksInfo}>
+                  <span className={styles.RankerName}>{rankData.nickname}</span>
+                  <span className={styles.SharingCount}>
+                    {rankData.sharingCount}회
                   </span>
-                ))}
+                </div>
               </div>
-
-              <span className={styles.RankCount}>{ranker.sharingCount}회</span>
-            </div>
-          </div>
-        ))}
-        {myRank[0].ranking > 3 && (
-          <>
-            <div className={styles.DotsWrapper}>
-              <div className={styles.moredots} />
-              <div className={styles.moredots} />
-              <div className={styles.moredots} />
-            </div>
-            <div className={styles.EachRankingContainer}>
-              <span className={styles.RankText}>{myRank[0].ranking}위</span>
-              <div className={styles.EachRankingContentWrapper}>
-                <span className={styles.UserName}>{myRank[0].nickname}</span>
-                <span className={styles.RankCount}>
-                  {myRank[0].sharingCount}회
-                </span>
-              </div>
-            </div>
-          </>
-        )} */}
+            ))}
+        </div>
       </div>
     </div>
   );

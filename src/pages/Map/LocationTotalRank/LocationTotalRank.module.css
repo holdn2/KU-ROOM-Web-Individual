@@ -1,62 +1,45 @@
 .TotalRankingPageWrapper {
-  padding: 96px 35px 40px 35px;
+  padding: 56px 0 0 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.LowRankWrapper {
+  padding: 40px 35px;
   display: flex;
   flex-direction: column;
   gap: 40px;
+  overflow: auto;
 }
-.EachRankingContainer {
+.LowRanksData {
   display: flex;
   flex-direction: row;
   gap: 13px;
+  align-items: center;
 }
-.EachRankLocationNameWrapper {
-  display: flex;
-  flex-direction: column;
-}
-.RankIcon {
-  width: 43px;
-  height: 43px;
-}
-.EachRankingContentWrapper {
+.LowRanksInfo {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-.NicknameWrapper {
-  display: flex;
-  flex-direction: column;
-}
-.UserName,
-.RankCount,
-.RankText {
+.LowRanking,
+.RankerName,
+.SharingCount {
   color: #000;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
   line-height: 140%; /* 25.2px */
 }
-.RankCount {
+.LowRanking {
+  color: #009733;
+  text-align: center;
+  font-size: 18px;
+  width: 43px;
+}
+.SharingCount {
   color: #9eaab5;
   font-size: 16px;
   font-weight: 500;
-}
-.RankText {
-  color: #009733;
-  text-align: center;
-  align-self: center;
-  font-size: 14px;
-  font-weight: 600;
-  width: 43px;
-}
-.DotsWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-.moredots {
-  width: 6px;
-  height: 6px;
-  border-radius: 100%;
-  background-color: #ced5db;
 }

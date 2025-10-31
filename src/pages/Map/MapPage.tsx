@@ -102,7 +102,7 @@ const MapPage = () => {
   const getIsMySharedInfo = async () => {
     try {
       const response = await checkIsSharedApi();
-      console.log("현재 내 위치 공유 상태 : ", response);
+      // console.log("현재 내 위치 공유 상태 : ", response);
       setIsSharedLocation(response.isActive);
     } catch (error) {
       console.error("위치 공유 상태 확인 실패 : ", error);
@@ -116,7 +116,7 @@ const MapPage = () => {
         currentLocation!.latitude,
         currentLocation!.longitude
       );
-      console.log(response);
+      // console.log(response);
       setNearLocation(response);
       setAbleToShare(true);
     } catch (error) {
@@ -157,7 +157,7 @@ const MapPage = () => {
       setIsExpandedSheet(false);
       setIsExpandedFocusedSheet(false);
     } else if (hasFocusedMarker && selectedCategoryLocations) {
-      console.log("여기", selectedCategoryLocations);
+      // console.log("여기", selectedCategoryLocations);
       setIsTracking(false);
       resetFocusedMarker(setHasFocusedMarker);
       setDetailLocationData(null);

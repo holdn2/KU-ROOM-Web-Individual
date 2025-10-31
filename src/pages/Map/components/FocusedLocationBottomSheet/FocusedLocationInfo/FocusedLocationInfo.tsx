@@ -47,11 +47,11 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
           {/* TODO: api 연동 이후 변경 예정. ranks가 어떻게 올지 서버와 논의 필요 */}
           {isExpandedFocusedSheet && detailInfo.ranks.length > 0 && (
             <div className={styles.TotalRankWrapper}>
-              {detailInfo.ranks.slice(0, 3).map((rankData, index) => (
+              {detailInfo.ranks.slice(0, 3).map((rankData) => (
                 <div key={rankData.ranking} className={styles.RankContainer}>
-                  {index === 0 ? (
+                  {rankData.ranking === 1 ? (
                     <img style={{ width: "43px" }} src={Rank1Icon} />
-                  ) : index === 1 ? (
+                  ) : rankData.ranking === 2 ? (
                     <img style={{ width: "43px" }} src={Rank2Icon} />
                   ) : (
                     <img style={{ width: "43px" }} src={Rank3Icon} />
