@@ -35,7 +35,10 @@ const OAuthCallback = () => {
             sessionStorage.setItem("tempAccessToken", accessToken);
             sessionStorage.setItem("tempRefreshToken", refreshToken);
             sessionStorage.setItem("socialAuthCode", authCode);
-            sessionStorage.setItem("oauthUserInfo", JSON.stringify(userResponse));
+            sessionStorage.setItem(
+              "oauthUserInfo",
+              JSON.stringify(userResponse)
+            );
             navigate("/agreement");
             return;
           }
@@ -43,6 +46,7 @@ const OAuthCallback = () => {
           // 기존 회원인 경우
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
+          localStorage.setItem("isSocialLogin", "true");
           setUser(userResponse);
 
           const redirectUrl = sessionStorage.getItem("redirectUrl") || "/";

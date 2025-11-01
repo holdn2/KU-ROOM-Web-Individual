@@ -68,6 +68,7 @@ const Login = () => {
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("isSocialLogin", "false");
 
       // 전역 상태관리 zustand 사용해서 저장
       setUser(userResponse);
