@@ -1,0 +1,66 @@
+.Overlay {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  max-width: var(--custom-max-width);
+}
+.RankModalContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  padding: 30px;
+  width: 90%;
+  min-width: 300px;
+  max-width: 380px;
+  height: 500px;
+  border-radius: 18px;
+  background: #fff;
+  box-sizing: border-box;
+}
+.RankIcon {
+  width: 50px;
+}
+.RankInfo {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+.RankersWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+
+  width: 75%;
+  height: 100%;
+  margin: 10px 0;
+
+  overflow-y: auto;
+}
+.PlaceName,
+.SharingCount,
+.RankerName {
+  color: #000;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 120%;
+}
+.SharingCount {
+  color: #a8a8a8;
+  font-size: 14px;
+  font-weight: 500;
+}
+.RankerName {
+  font-weight: 600;
+}

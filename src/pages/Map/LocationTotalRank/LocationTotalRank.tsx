@@ -8,8 +8,9 @@ import Rank2Icon from "@assets/icon/ranking/rank2.png";
 import Rank3Icon from "@assets/icon/ranking/rank3.png";
 
 import styles from "./LocationTotalRank.module.css";
+import TopRankModal from "./TopRankModal";
 
-interface RankDataType {
+export interface RankDataType {
   ranking: number;
   nickname: string[];
   sharingCount: number;
@@ -24,15 +25,18 @@ const LocationTotalRank = () => {
     null
   );
   const [modalState, setModalState] = useState(false);
+  const [modalRankData, setModalRankData] = useState<RankDataType | undefined>(
+    undefined
+  );
 
   const handleOpenModal = (rankData: RankDataType) => {
     setModalState(true);
-    alert(`${rankData.ranking}등에 대한 모달 오픈`);
-    console.info(modalState);
+    setModalRankData(rankData);
   };
-  // const handleCloseModal = () => {
-  //   setModalState(false);
-  // };
+  const handleCloseModal = () => {
+    setModalState(false);
+    setModalRankData(undefined);
+  };
 
   const getCurrentLocationTotalRank = async () => {
     try {
@@ -94,17 +98,20 @@ const LocationTotalRank = () => {
                     />
                   </div>
                   <div className={styles.TopRanksInfo}>
-                    <div className={styles.TopRanksNameWrapper}>
-                      <span className={styles.RankerName}>
+                    <button
+                      type="button"
+                      className={styles.TopRanksNameWrapper}
+                      onClick={() => handleOpenModal(rankData)}
+                    >
+                      <span className={styles.TopRankerName}>
                         {rankData.nickname[0]}
                       </span>
-                      <button
-                        className={styles.RestCount}
-                        onClick={() => handleOpenModal(rankData)}
-                      >
+                      {/* {rankData.nickname.length > 1 && ( */}
+                      <span className={styles.RestCount}>
                         외 {rankData.nickname.length - 1}명
-                      </button>
-                    </div>
+                      </span>
+                      {/* )} */}
+                    </button>
                     <span className={styles.SharingCount}>
                       {rankData.sharingCount}회
                     </span>
@@ -130,6 +137,12 @@ const LocationTotalRank = () => {
           </>
         )}
       </div>
+      <TopRankModal
+        modalState={modalState}
+        placeName={placeName}
+        rankData={modalRankData}
+        handleCloseModal={handleCloseModal}
+      />
     </div>
   );
 };

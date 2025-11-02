@@ -64,6 +64,7 @@
   gap: 4px;
 }
 .LowRanking,
+.TopRankerName,
 .RankerName,
 .SharingCount,
 .RestCount {
@@ -73,13 +74,16 @@
   font-weight: 600;
   line-height: 140%; /* 25.2px */
 }
-.RankerName {
-  width: 100%;
+.TopRankerName {
+  max-width: 90%;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
+
 .LowRanking {
   color: #009733;
   text-align: center;
