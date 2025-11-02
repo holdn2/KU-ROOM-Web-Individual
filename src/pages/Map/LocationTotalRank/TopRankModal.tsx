@@ -54,56 +54,6 @@ export default function TopRankModal({
               {ranker}
             </span>
           ))}
-          {rankData.nickname.map((ranker) => (
-            <span key={ranker} className={styles.RankerName}>
-              {ranker}
-            </span>
-          ))}
-          {rankData.nickname.map((ranker) => (
-            <span key={ranker} className={styles.RankerName}>
-              {ranker}
-            </span>
-          ))}
-          {rankData.nickname.map((ranker) => (
-            <span key={ranker} className={styles.RankerName}>
-              {ranker}
-            </span>
-          ))}
-          {rankData.nickname.map((ranker) => (
-            <span key={ranker} className={styles.RankerName}>
-              {ranker}
-            </span>
-          ))}
-          {rankData.nickname.map((ranker) => (
-            <span key={ranker} className={styles.RankerName}>
-              {ranker}
-            </span>
-          ))}
-          {rankData.nickname.map((ranker) => (
-            <span key={ranker} className={styles.RankerName}>
-              {ranker}
-            </span>
-          ))}
-          {rankData.nickname.map((ranker) => (
-            <span key={ranker} className={styles.RankerName}>
-              {ranker}
-            </span>
-          ))}
-          {rankData.nickname.map((ranker) => (
-            <span key={ranker} className={styles.RankerName}>
-              {ranker}
-            </span>
-          ))}
-          {rankData.nickname.map((ranker) => (
-            <span key={ranker} className={styles.RankerName}>
-              {ranker}
-            </span>
-          ))}
-          {rankData.nickname.map((ranker) => (
-            <span key={ranker} className={styles.RankerName}>
-              {ranker}
-            </span>
-          ))}
         </div>
         <Button onClick={handleCloseModal}>확인</Button>
       </ReactModal>
