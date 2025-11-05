@@ -1,77 +1,148 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
 import Header from "@/shared/components/Header/Header";
-// import Rank1Icon from "@assets/icon/ranking/rank1.png";
-// import Rank2Icon from "@assets/icon/ranking/rank2.png";
-// import Rank3Icon from "@assets/icon/ranking/rank3.png";
+import { getLocationTotalRank } from "@/apis/map";
+import Rank1Icon from "@assets/icon/ranking/rank1.png";
+import Rank2Icon from "@assets/icon/ranking/rank2.png";
+import Rank3Icon from "@assets/icon/ranking/rank3.png";
 
 import styles from "./LocationTotalRank.module.css";
+import TopRankModal from "./TopRankModal";
 
-type LocationState = { placeId: number };
+export interface RankDataType {
+  ranking: number;
+  nickname: string[];
+  sharingCount: number;
+}
 
 const LocationTotalRank = () => {
-  // const navigate = useNavigate();
-  const { place } = useParams();
-  const location = useLocation();
+  const { placeName } = useParams();
+  const { state } = useLocation();
+  const placeId = state?.placeId;
 
-  const placeId = (location.state as LocationState | null)?.placeId ?? [];
+  const [totalRankData, setTotalRankData] = useState<RankDataType[] | null>(
+    null
+  );
+  const [modalState, setModalState] = useState(false);
+  const [modalRankData, setModalRankData] = useState<RankDataType | undefined>(
+    undefined
+  );
+
+  const handleOpenModal = (rankData: RankDataType) => {
+    setModalState(true);
+    setModalRankData(rankData);
+  };
+  const handleCloseModal = () => {
+    setModalState(false);
+    setModalRankData(undefined);
+  };
+
+  const getCurrentLocationTotalRank = async () => {
+    try {
+      const response = await getLocationTotalRank(Number(placeId), 1, 10);
+      setTotalRankData(response);
+    } catch (error) {
+      console.error("현재 위치 랭킹 조회 시 클라측 오류 : ", error);
+    }
+  };
+  useEffect(() => {
+    getCurrentLocationTotalRank();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    // TODO: placeId를 통해 api 요청
-    console.info(placeId);
-  }, []);
+    console.log(totalRankData);
+  }, [totalRankData]);
+
+  const rankIconBg = (ranking: number) => {
+    switch (ranking) {
+      case 1:
+        return "#F8DDDC";
+      case 2:
+        return "#DEE9FB";
+      case 3:
+        return "#FCEED7";
+    }
+  };
+  const rankIcon = (ranking: number) => {
+    switch (ranking) {
+      case 1:
+        return Rank1Icon;
+      case 2:
+        return Rank2Icon;
+      case 3:
+        return Rank3Icon;
+    }
+  };
 
   return (
     <div>
-      <Header>{place}</Header>
+      <Header>{placeName}</Header>
       <div className={styles.TotalRankingPageWrapper}>
-        <span>api 연동예정</span>
-        {/* {top3Data.map((ranker) => (
-          <div key={ranker.ranking} className={styles.EachRankingContainer}>
-            <img
-              className={styles.RankIcon}
-              src={
-                ranker.ranking === 1
-                  ? Rank1Icon
-                  : ranker.ranking === 2
-                    ? Rank2Icon
-                    : Rank3Icon
-              }
-              alt="랭킹 아이콘"
-            />
-            <div className={styles.EachRankingContentWrapper}>
-              <div className={styles.NicknameWrapper}>
-                {ranker.nickname.map((nickname) => (
-                  <span key={nickname} className={styles.UserName}>
-                    {nickname}
-                  </span>
-                ))}
-              </div>
-
-              <span className={styles.RankCount}>{ranker.sharingCount}회</span>
-            </div>
-          </div>
-        ))}
-        {myRank[0].ranking > 3 && (
+        {totalRankData && (
           <>
-            <div className={styles.DotsWrapper}>
-              <div className={styles.moredots} />
-              <div className={styles.moredots} />
-              <div className={styles.moredots} />
+            <div className={styles.TopRankWrapper}>
+              {totalRankData.slice(0, 3).map((rankData) => (
+                <div key={rankData.ranking} className={styles.TopRanksData}>
+                  <div
+                    className={styles.RankIconSection}
+                    style={{
+                      backgroundColor: `${rankIconBg(rankData.ranking)}`,
+                    }}
+                  >
+                    <img
+                      className={styles.RankIcon}
+                      src={rankIcon(rankData.ranking)}
+                      alt="등수 아이콘"
+                    />
+                  </div>
+                  <div className={styles.TopRanksInfo}>
+                    <button
+                      type="button"
+                      className={styles.TopRanksNameWrapper}
+                      onClick={() => handleOpenModal(rankData)}
+                    >
+                      <span className={styles.TopRankerName}>
+                        {rankData.nickname[0]}
+                      </span>
+                      {/* {rankData.nickname.length > 1 && ( */}
+                      <span className={styles.RestCount}>
+                        외 {rankData.nickname.length - 1}명
+                      </span>
+                      {/* )} */}
+                    </button>
+                    <span className={styles.SharingCount}>
+                      {rankData.sharingCount}회
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className={styles.EachRankingContainer}>
-              <span className={styles.RankText}>{myRank[0].ranking}위</span>
-              <div className={styles.EachRankingContentWrapper}>
-                <span className={styles.UserName}>{myRank[0].nickname}</span>
-                <span className={styles.RankCount}>
-                  {myRank[0].sharingCount}회
-                </span>
-              </div>
+            <div className={styles.LowRankWrapper}>
+              {totalRankData.slice(3).map((rankData) => (
+                <div key={rankData.ranking} className={styles.LowRanksData}>
+                  <span className={styles.LowRanking}>{rankData.ranking}</span>
+                  <div className={styles.LowRanksInfo}>
+                    <span className={styles.RankerName}>
+                      {rankData.nickname}
+                    </span>
+                    <span className={styles.SharingCount}>
+                      {rankData.sharingCount}회
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </>
-        )} */}
+        )}
       </div>
+      <TopRankModal
+        modalState={modalState}
+        placeName={placeName}
+        rankData={modalRankData}
+        handleCloseModal={handleCloseModal}
+      />
     </div>
   );
 };

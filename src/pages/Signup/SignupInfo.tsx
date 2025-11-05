@@ -154,7 +154,7 @@ const SignupInfo = () => {
                     navigate
                   )
                 }
-                disabled={!Boolean(inputPw && checkPw)}
+                disabled={!(inputPw && checkPw)}
               >
                 다음으로
               </Button>
