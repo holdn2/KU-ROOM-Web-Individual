@@ -1,0 +1,60 @@
+.PageWrapper {
+  position: relative;
+}
+.SharePinWrapper {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.SharePinText {
+  padding: 12px 25px;
+  border-radius: 10px;
+  border: 1px solid #009733;
+  background-color: #f2faf5;
+
+  color: #009733;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  word-break: normal;
+
+  white-space: nowrap;
+}
+.SharePinIcon {
+  width: 83px;
+  height: 83px;
+}
+.BottomSheetWrapper {
+  position: absolute;
+  bottom: 0;
+
+  background-color: white;
+  width: 100%;
+  min-height: 170px;
+  padding: 25px 20px 45px 20px;
+  box-sizing: border-box;
+
+  border-radius: 20px 20px 0 0;
+}
+.BottomSheetContent {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.PlaceName {
+  color: black;
+  font-size: 22px;
+  font-weight: 700;
+}
+.LoaderContainer {
+  display: flex;
+  min-height: 100px;
+  justify-content: center;
+  align-items: center;
+}

@@ -29,10 +29,11 @@ import Search from "@pages/Notice/Search/Search";
 import OAuthCallback from "@pages/OAuthCallback/OAuthCallback";
 
 import "@/shared/styles/global.css";
-import ChatbotMain from "./pages/Chatbot/ChatbotMain/ChatbotMain";
-import ChatPage from "./pages/Chatbot/ChatPage/ChatPage";
-import LocationTotalRank from "./pages/Map/LocationTotalRank/LocationTotalRank";
-import MapLayout from "./pages/Map/layout/MapLayout";
+import ChatbotMain from "@pages/Chatbot/ChatbotMain/ChatbotMain";
+import ChatPage from "@pages/Chatbot/ChatPage/ChatPage";
+import LocationTotalRank from "@pages/Map/LocationTotalRank/LocationTotalRank";
+import MapLayout from "@pages/Map/layout/MapLayout";
+import ShareLocation from "@pages/ShareLocation/ShareLocation";
 
 function App() {
   useEffect(() => {
@@ -144,7 +145,10 @@ function App() {
             },
           ],
         },
-
+        {
+          path: "share-location",
+          element: <ShareLocation />,
+        },
         {
           path: "myinfo",
           element: <MyPage />,

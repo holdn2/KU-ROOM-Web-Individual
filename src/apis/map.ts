@@ -68,7 +68,7 @@ export const getUserShareLocation = async (
         },
       }
     );
-    return response.data.data.placeName; // 성공 응답 반환
+    return response.data; // 성공 응답 반환
   } catch (error: any) {
     console.error(
       "유저의 가장 가까운 건물명 조회 실패:",
