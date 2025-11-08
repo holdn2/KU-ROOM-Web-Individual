@@ -1,11 +1,11 @@
 // 지도 페이지
 import { useEffect } from "react";
-import { useLocation, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 import {
   checkIsSharedApi,
   getCategoryLocationsApi,
-  getUserShareLocation,
+  // getUserShareLocation,
 } from "@apis/map";
 import DefaultProfileImg from "@assets/defaultProfileImg.svg";
 import myTrackingIcon from "@assets/map/tomylocation.svg";
@@ -52,6 +52,7 @@ const includeBottomSheetList = [
 // TODO: 전체 랭킹 페이지에서 돌아왔을 때 마커 포커스 및 해당 마커를 가운데로 정렬하는 기능 추가 필요
 
 const MapPage = () => {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const {
     // ================== 상태 ==================
@@ -85,14 +86,14 @@ const MapPage = () => {
     setDetailLocationData,
     setSearchMode,
     setIsInSchool,
-    setAbleToShare,
+    // setAbleToShare,
     setIsSharedLocation,
     setLocationSharedRefreshKey,
     setSelectedCategoryTitle,
     setSelectedCategoryEnum,
     setModalState,
     setCurrentLocation,
-    setNearLocation,
+    // setNearLocation,
     setMarkers,
     setMarkerFlag,
   } = useOutletContext<MapLayoutContext>();
@@ -110,20 +111,20 @@ const MapPage = () => {
   };
 
   // 현재 위치에 따른 가까운 건물 받아오기
-  const getNearBuildingToShare = async () => {
-    try {
-      const response = await getUserShareLocation(
-        currentLocation!.latitude,
-        currentLocation!.longitude
-      );
-      // console.log(response);
-      setNearLocation(response);
-      setAbleToShare(true);
-    } catch (error) {
-      setAbleToShare(false);
-      console.error("가장 가까운 위치 조회 실패 : ", error);
-    }
-  };
+  // const getNearBuildingToShare = async () => {
+  //   try {
+  //     const response = await getUserShareLocation(
+  //       currentLocation!.latitude,
+  //       currentLocation!.longitude
+  //     );
+  //     // console.log(response);
+  //     setNearLocation(response);
+  //     setAbleToShare(true);
+  //   } catch (error) {
+  //     setAbleToShare(false);
+  //     console.error("가장 가까운 위치 조회 실패 : ", error);
+  //   }
+  // };
 
   // 친구 제외 카테고리 칩을 눌렀을 때 서버에 카테고리 ENUM 을 이용하여 요청
   const getCategoryLocations = async (selectedCategory: string) => {
@@ -168,8 +169,12 @@ const MapPage = () => {
 
   // 위치 공유 모달에 사용할 가까운 위치 타이틀 받아오기
   const handleShareLocation = () => {
-    getNearBuildingToShare();
-    setModalState(true);
+    // getNearBuildingToShare();
+    if (isSharedLocation) {
+      setModalState(true);
+    } else {
+      navigate("/share-location");
+    }
   };
   // 시트에서 위치 클릭 시 이동하는 로직
   const clickToLocationMarker = (location: string) => {

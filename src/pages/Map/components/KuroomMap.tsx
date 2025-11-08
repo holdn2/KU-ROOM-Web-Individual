@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { DetailPlaceData, MarkerData } from "@/shared/types";
+import { Coordinate, DetailPlaceData, MarkerData } from "@/shared/types";
 
 import {
   myLocationTracking,
@@ -21,6 +21,7 @@ interface MapProps {
   zoomable?: boolean;
   setHasFocusedMarker?: (value: boolean) => void;
   setDetailLocationData?: (value: DetailPlaceData | null) => void;
+  handleCenterChanged?: (coord: Coordinate) => void;
 }
 
 // React Strict Mode로 인해 두번 마운트 되어서 하단 왼쪽 로고 두개로 보이는데
@@ -39,6 +40,7 @@ const KuroomMap = ({
   zoomable = true,
   setHasFocusedMarker,
   setDetailLocationData,
+  handleCenterChanged,
 }: MapProps) => {
   // 로컬 상태 ***************************************************************
   const mapRef = useRef(null);
@@ -97,6 +99,18 @@ const KuroomMap = ({
         markerRef,
         isTrackingRef
       );
+
+      //  지도 중심이 변경될 때마다 좌표 반환
+      if (handleCenterChanged) {
+        naver.maps.Event.addListener(map, "center_changed", () => {
+          const center = map.getCenter();
+          handleCenterChanged({
+            latitude: center.lat(),
+            longitude: center.lng(),
+          });
+        });
+      }
+
       return cleanup;
     } else {
       alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
