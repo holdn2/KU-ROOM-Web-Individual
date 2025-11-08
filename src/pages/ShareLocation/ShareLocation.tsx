@@ -23,7 +23,10 @@ const ShareLocation = () => {
   };
 
   const getBuildingToShare = useCallback(async () => {
-    if (!center) return;
+    if (!center) {
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await getUserShareLocation(
@@ -36,6 +39,7 @@ const ShareLocation = () => {
       }
       setPlaceName(response.data.placeName);
     } catch (error) {
+      setPlaceName("");
       console.error("위치 조회 실패:", error);
     } finally {
       setIsLoading(false);
