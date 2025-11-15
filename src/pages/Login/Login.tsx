@@ -69,8 +69,9 @@ const Login = () => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
-      // 전역 상태관리 zustand 사용해서 저장
-      setUser(userResponse);
+      // 전역 상태관리 zustand 사용해서 저장.
+      // TODO : 추후 서버에서 소셜 로그인 상태 보내주도록 수정
+      setUser({ ...userResponse, loginType: "email" });
       navigate("/", { replace: true });
     } catch (error: any) {
       console.error("로그인 중 오류 발생:", error.message); // 서버 오류(500) 같은 경우

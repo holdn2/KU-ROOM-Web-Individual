@@ -6,6 +6,8 @@ interface Department {
   departmentName: string;
 }
 
+export type LoginType = "email" | "social";
+
 interface UserInfo {
   id: number;
   oauthId: string | null;
@@ -15,6 +17,7 @@ interface UserInfo {
   studentId: string;
   imageUrl: string | null;
   departmentResponse: Department[];
+  loginType: LoginType;
 }
 interface UserState {
   user: UserInfo | null;
