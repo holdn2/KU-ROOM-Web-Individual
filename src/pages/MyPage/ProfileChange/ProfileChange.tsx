@@ -4,10 +4,12 @@ import { getProfileChangeSectionData } from "@constant/sectionDatas";
 import MyProfileComponent from "../components/MyProfileComponent/MyProfileComponent";
 import ProfileSection from "../components/ProfileSection/ProfileSection";
 import styles from "./ProfileChange.module.css";
+import { useUserStore } from "@/shared/stores/userStore";
 
 const ProfileChange = () => {
-  const isSocialLogin = localStorage.getItem("isSocialLogin");
-  const sectionData = getProfileChangeSectionData(isSocialLogin === "true");
+  const loginType = useUserStore((state) => state.user?.loginType);
+  const sectionData = getProfileChangeSectionData(loginType === "social");
+
   return (
     <div>
       <Header>프로필 설정</Header>

@@ -46,8 +46,9 @@ const OAuthCallback = () => {
           // 기존 회원인 경우
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
-          localStorage.setItem("isSocialLogin", "true");
-          setUser(userResponse);
+          console.log("소셜 로그인 후 회원 정보 : ", userResponse);
+          // TODO : 일반 로그인과 동일하게
+          setUser({ ...userResponse, loginType: "social" });
 
           const redirectUrl = sessionStorage.getItem("redirectUrl") || "/";
           sessionStorage.removeItem("redirectUrl");
