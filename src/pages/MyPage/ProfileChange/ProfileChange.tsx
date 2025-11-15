@@ -8,7 +8,8 @@ import { useUserStore } from "@/shared/stores/userStore";
 
 const ProfileChange = () => {
   const loginType = useUserStore((state) => state.user?.loginType);
-  const sectionData = getProfileChangeSectionData(loginType === "social");
+  if (!loginType) return;
+  const sectionData = getProfileChangeSectionData(loginType);
 
   return (
     <div>

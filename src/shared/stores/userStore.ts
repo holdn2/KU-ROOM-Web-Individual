@@ -6,7 +6,7 @@ interface Department {
   departmentName: string;
 }
 
-type LoginType = "email" | "social";
+export type LoginType = "email" | "social";
 
 interface UserInfo {
   id: number;
