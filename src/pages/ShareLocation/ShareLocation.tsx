@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import Header from "@/shared/components/Header/Header";
 import KuroomMap from "@pages/Map/components/KuroomMap";
-import sharePin from "@assets/map/share-pin.svg";
+import sharePin from "@assets/map/share-pin.png";
 import { Coordinate } from "@/shared/types";
 import { getUserShareLocation } from "@apis/map";
 

@@ -13,6 +13,7 @@ import { RankListType } from "@/shared/types";
 
 // import ShareBottomSheet from "./components/ShareBottomSheet/ShareBottomSheet";
 import styles from "./MyLocationRanking.module.css";
+import Button from "@/shared/components/Button/Button";
 
 const dummyFriendRanking = [
   {
@@ -45,6 +46,10 @@ const MyLocationRanking = () => {
 
   const handleNavToFriendRanking = (nickname: string) => {
     navigate("friendlocationranking", { state: { nickname: nickname } });
+  };
+
+  const handleToAddFriendPage = () => {
+    navigate("/friendadd");
   };
 
   // const openBottomSheet = () => {
@@ -103,10 +108,12 @@ const MyLocationRanking = () => {
           {dummyFriendRanking.length !== 0 ? (
             // TODO: 디자인 변경 가능성 있음
             <div className={styles.EmptyViewContainer}>
-              <img src={kuroomEmptyIcon} className={styles.EmptyIcon} />
-              <span className={styles.EmptyText}>
-                아직 친구가 없어요. 친구를 만들어보세요!
-              </span>
+              <div className={styles.EmtpyFriendWrapper}>
+                <span className={styles.EmptyText}>아직 친구가 없어요.</span>
+                <Button size="xs" onClick={handleToAddFriendPage}>
+                  친구 추가하러 가기
+                </Button>
+              </div>
             </div>
           ) : (
             <div className={styles.FriendWrapper}>
