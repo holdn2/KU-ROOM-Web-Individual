@@ -67,13 +67,12 @@ const HomeSildeBanner = () => {
         onScroll={handleScroll}
       >
         {homeBannerList.map((item) => (
-          <button type="button" onClick={() => handleToBannerLink(item.link)}>
-            <img
-              key={item.id}
-              className={styles.BannerImg}
-              src={item.img}
-              alt={item.title}
-            />
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => handleToBannerLink(item.link)}
+          >
+            <img className={styles.BannerImg} src={item.img} alt={item.title} />
           </button>
         ))}
       </div>
