@@ -89,8 +89,9 @@
 .EmptyViewContainer {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 20px;
+  height: 170px;
 }
 .EmptyIcon {
   width: 50px;
@@ -103,4 +104,10 @@
   text-align: center;
   font-size: 14px;
   font-weight: 500;
+}
+.EmtpyFriendWrapper {
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

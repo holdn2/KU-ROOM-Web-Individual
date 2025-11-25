@@ -1,23 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 
-import exBannerImg from "@assets/ExampleImg/slidebannerImg/exBanner1.svg";
-
 import styles from "./HomeSlideBanner.module.css";
-
-const exampleImg = [
-  { title: "EX1", img: exBannerImg },
-  { title: "EX2", img: exBannerImg },
-  { title: "EX3", img: exBannerImg },
-  { title: "EX4", img: exBannerImg },
-];
+import { homeBannerList } from "@pages/Home/constant/banner-img";
 
 const HomeSildeBanner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  const currentDeviceWidth = window.innerWidth > 600 ? 600 : window.innerWidth;
+
   const bannerWidth = 349;
   const getScrollLeft = (index: number) => {
-    const sidePadding = (window.innerWidth - bannerWidth) / 2;
+    const sidePadding = (currentDeviceWidth - bannerWidth) / 2;
     return index * bannerWidth - sidePadding;
   };
 
@@ -28,15 +22,15 @@ const HomeSildeBanner = () => {
     if (!wrapperRef.current) return;
 
     const scrollLeft = wrapperRef.current.scrollLeft;
-    const sidePadding = (window.innerWidth - bannerWidth) / 2;
+    const sidePadding = (currentDeviceWidth - bannerWidth) / 2;
     const adjustedScrollLeft = scrollLeft + sidePadding;
     const index = Math.round(adjustedScrollLeft / bannerWidth);
 
     // 스크롤 도중 계속 호출되지 않도록 delay 보정
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
-      handleBannerMove(index); // 스크롤 위치 정확히 맞춰줌
-    }, 50); // 스크롤 멈춘 뒤 보정
+      handleBannerMove(index);
+    }, 100);
   };
 
   const handleBannerMove = (index: number) => {
@@ -50,25 +44,20 @@ const HomeSildeBanner = () => {
     setCurrentIndex(index);
   };
 
-  // 자동 슬라이드(3초간격)
+  const handleToBannerLink = (bannerLink: string) => {
+    if (!bannerLink) return;
+    window.open(bannerLink, "_blank", "noopener,noreferrer");
+  };
+
+  // 3초 간격 자동 슬라이드
   useEffect(() => {
     const interval = setInterval(() => {
-      const next = (currentIndex + 1) % exampleImg.length;
+      const next = (currentIndex + 1) % homeBannerList.length;
       handleBannerMove(next);
     }, 3000);
 
     return () => clearInterval(interval);
   }, [currentIndex]);
-
-  // 처음 마운트 시 0번째로 정렬
-  useEffect(() => {
-    if (wrapperRef.current) {
-      wrapperRef.current.scrollTo({
-        left: getScrollLeft(0),
-        behavior: "auto",
-      });
-    }
-  }, []);
 
   return (
     <div className={styles.HomeSlideBannerWrapper}>
@@ -77,19 +66,21 @@ const HomeSildeBanner = () => {
         ref={wrapperRef}
         onScroll={handleScroll}
       >
-        {exampleImg.map((item, index) => (
-          <img
-            key={index}
-            className={styles.BannerImg}
-            src={item.img}
-            alt={item.title}
-          />
+        {homeBannerList.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => handleToBannerLink(item.link)}
+          >
+            <img className={styles.BannerImg} src={item.img} alt={item.title} />
+          </button>
         ))}
       </div>
       <div className={styles.DotsWrapper}>
-        {exampleImg.map((_, index) => (
-          <div
-            key={index}
+        {homeBannerList.map((item, index) => (
+          <button
+            type="button"
+            key={item.id}
             className={`${styles.DotIndicator} ${
               currentIndex === index ? styles.ActiveDot : ""
             }`}
