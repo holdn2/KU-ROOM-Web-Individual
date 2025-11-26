@@ -16,6 +16,12 @@ const LocationTotalRank = () => {
   const { state } = useLocation();
   const placeId = state?.placeId;
 
+  // TODO: 추후 toast 및 접근 방지 추가
+  // if (!placeId) {
+  //   alert("장소 ID가 잘못되었습니다.");
+  //   throw new Error();
+  // }
+
   const {
     listBottomRef,
     top3RankData,
@@ -63,8 +69,6 @@ const LocationTotalRank = () => {
     // TODO:로딩 페이지 만들기
     return <div>로딩중...</div>;
   }
-
-  // TODO : 지도 세부 정보 조회 시에도 top 관련 api 사용하도록 수정하기
 
   return (
     <div>
