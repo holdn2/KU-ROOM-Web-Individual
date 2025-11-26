@@ -207,7 +207,7 @@ async function makeFocusMarker(
   // HTMLIcon으로 스타일링 + 라벨링. 텍스트 스트로크 넣기
   marker.setIcon({
     content: `
-    <div style="display: flex; flex-direction: column; align-items: center; margin-top:-25px">
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top:-25px; z-index:10000">
       <img src="${focusedMarkerIcon}" width="80" height="80" />
       <span style="
         padding: 5px 7px;
@@ -243,22 +243,22 @@ async function makeFocusMarker(
         if (isFriendMarker) {
           m.setIcon({
             content: `
-        <div style="
-          position: relative;
-          width: 50px;
-          height: 50px;
-          border: 3px solid #fff;
-          border-radius: 50px;
-          box-shadow: 0 0 4px rgba(0,0,0,0.25);
-        ">
-          <img src="${originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
-          <div style="
-            position: absolute; top: -10px; right: -10px; display: flex; 
-            width: 25px; height: 25px; justify-content: center;
-            align-items: center; border-radius: 50px; border: 3px solid #FFF; background: #F2FAF5; color: #009733; font-size: 14px; font-weight: 700;
-          ">${numOfFriends ?? ""}</div>
-        </div>
-      `,
+            <div style="
+              position: relative;
+              width: 50px;
+              height: 50px;
+              border: 3px solid #fff;
+              border-radius: 50px;
+              box-shadow: 0 0 4px rgba(0,0,0,0.25);
+            ">
+              <img src="${originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
+              <div style="
+                position: absolute; top: -10px; right: -10px; display: flex; 
+                width: 25px; height: 25px; justify-content: center;
+                align-items: center; border-radius: 50px; border: 3px solid #FFF; background: #F2FAF5; color: #009733; font-size: 14px; font-weight: 700;
+              ">${numOfFriends ?? ""}</div>
+            </div>
+           `,
             anchor: new naver.maps.Point(20, 20),
           });
         } else {
@@ -333,6 +333,7 @@ export function resetFocusedMarker(
               border: 3px solid #fff;
               border-radius: 50px;
               box-shadow: 0 0 4px rgba(0,0,0,0.25);
+              z-index: 500;
             ">
               <img src="${target.originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover;" />
               <div style="

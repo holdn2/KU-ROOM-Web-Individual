@@ -9,9 +9,10 @@ import ArrowRight from "@assets/nav/arrowRight.svg";
 import { DetailPlaceData } from "@/shared/types";
 
 import styles from "./FocusedLocationInfo.module.css";
+import { useLocationTopRank } from "@/pages/Map/LocationTotalRank/hooks/use-location-top-rank";
 
 interface FocusedLocationInfo {
-  detailInfo: DetailPlaceData | null;
+  detailInfo: DetailPlaceData;
   isExpandedFocusedSheet: boolean;
   setIsExpandedFocusedSheet: (value: boolean) => void;
 }
@@ -23,6 +24,10 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
 }) => {
   const navigate = useNavigate();
 
+  const { top3RankData, isTop3Pending } = useLocationTopRank(
+    detailInfo?.placeId
+  );
+
   const handleNavigateToTotalRank = () => {
     if (!detailInfo) return;
     navigate(
@@ -30,6 +35,10 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
       { state: { placeId: detailInfo.placeId } }
     );
   };
+
+  if (isTop3Pending) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.DetailInfoWrapper}>
@@ -45,31 +54,34 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
             <span className={styles.SubTitleText}>{detailInfo.subName}</span>
           </div>
           {/* TODO: api 연동 이후 변경 예정. ranks가 어떻게 올지 서버와 논의 필요 */}
-          {isExpandedFocusedSheet && detailInfo.ranks.length > 0 && (
-            <div className={styles.TotalRankWrapper}>
-              {detailInfo.ranks.slice(0, 3).map((rankData) => (
-                <div key={rankData.ranking} className={styles.RankContainer}>
-                  {rankData.ranking === 1 ? (
-                    <img style={{ width: "43px" }} src={Rank1Icon} />
-                  ) : rankData.ranking === 2 ? (
-                    <img style={{ width: "43px" }} src={Rank2Icon} />
-                  ) : (
-                    <img style={{ width: "43px" }} src={Rank3Icon} />
-                  )}
-                  <span className={styles.Ranker}>
-                    {rankData.nickname.map((name) => (
+          {isExpandedFocusedSheet &&
+            top3RankData &&
+            top3RankData.length > 0 && (
+              <div className={styles.TotalRankWrapper}>
+                {top3RankData.map((rankData) => (
+                  <div key={rankData.ranking} className={styles.RankContainer}>
+                    {rankData.ranking === 1 ? (
+                      <img style={{ width: "43px" }} src={Rank1Icon} />
+                    ) : rankData.ranking === 2 ? (
+                      <img style={{ width: "43px" }} src={Rank2Icon} />
+                    ) : (
+                      <img style={{ width: "43px" }} src={Rank3Icon} />
+                    )}
+                    <span className={styles.Ranker}>
+                      {rankData.nickname}
+                      {/* {rankData.nickname.map((name) => (
                       <span key={name}>{name}</span>
-                    ))}
-                  </span>
-                </div>
-              ))}
-              <img
-                className={styles.TotalRankNav}
-                src={ArrowRight}
-                onClick={handleNavigateToTotalRank}
-              />
-            </div>
-          )}
+                    ))} */}
+                    </span>
+                  </div>
+                ))}
+                <img
+                  className={styles.TotalRankNav}
+                  src={ArrowRight}
+                  onClick={handleNavigateToTotalRank}
+                />
+              </div>
+            )}
           <div className={styles.ContentWrapper}>
             {detailInfo.friends.length !== 0 && (
               <div className={styles.FriendSectionWrapper}>

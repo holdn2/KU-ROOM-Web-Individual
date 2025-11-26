@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BeatLoader } from "react-spinners";
+// import { BeatLoader } from "react-spinners";
 
 import useBottomSheetDrag from "@pages/Map/hooks/useBottomSheetDrag";
 import { DetailPlaceData } from "@/shared/types";
@@ -28,7 +28,7 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
   const sheetRef = useRef<HTMLDivElement>(null);
 
   // 아직 해당 장소 정보가 안 왔을 때 로딩처리
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   // 사진 자세히 보기 상태
   const [isImageDetailMode, setIsImageDetailMode] = useState(false);
@@ -47,17 +47,17 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
   // 서버에 해당 장소 정보 요청
   useEffect(() => {
     // 여기에 실제 API 로딩 or 이미지 로딩 조건으로 변경해야함.
-    setIsLoading(true);
+    // setIsLoading(true);
 
     // 새로운 데이터가 로드될 때 스크롤을 최상단으로 리셋
     if (sheetRef.current) {
       sheetRef.current.scrollTop = 0;
     }
 
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timeout);
+    // const timeout = setTimeout(() => {
+    //   setIsLoading(false);
+    // }, 500);
+    // return () => clearTimeout(timeout);
   }, [detailLocationData]);
 
   // 바텀 시트 올리고 내리는 로직.
@@ -95,41 +95,42 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
         ) : (
           <>
             <div className={styles.SheetIndicator} />
-            {isLoading ? (
+            {/* {isLoading ? (
               <div className={styles.MyPageLoadingWrapper}>
                 <BeatLoader color="#009733" size={18} margin={4} />
               </div>
-            ) : (
-              <>
-                {isExpandedFocusedSheet && (
-                  <LocationInfoTopContent
-                    locationImages={detailLocationData?.imageUrls}
-                    setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
-                    handleSelectImageIndex={handleOpenSelectImageIndex}
-                  />
-                )}
+            ) : ( */}
+            <>
+              {isExpandedFocusedSheet && (
+                <LocationInfoTopContent
+                  locationImages={detailLocationData?.imageUrls}
+                  setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+                  handleSelectImageIndex={handleOpenSelectImageIndex}
+                />
+              )}
+              {detailLocationData && (
                 <FocusedLocationInfo
                   detailInfo={detailLocationData}
                   isExpandedFocusedSheet={isExpandedFocusedSheet}
                   setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
                 />
-                {!isExpandedFocusedSheet && (
-                  <div className={styles.SheetImgContainer}>
-                    {/* 최대 3개까지만 보이도록 */}
-                    {detailLocationData?.imageUrls
-                      .slice(0, 3)
-                      .map((item, index) => (
-                        <img
-                          className={styles.SheetImg}
-                          key={index}
-                          src={item}
-                          alt="위치 관련 이미지"
-                        />
-                      ))}
-                  </div>
-                )}
-              </>
-            )}
+              )}
+              {!isExpandedFocusedSheet && (
+                <div className={styles.SheetImgContainer}>
+                  {/* 최대 3개까지만 보이도록 */}
+                  {detailLocationData?.imageUrls
+                    .slice(0, 3)
+                    .map((item, index) => (
+                      <img
+                        className={styles.SheetImg}
+                        key={index}
+                        src={item}
+                        alt="위치 관련 이미지"
+                      />
+                    ))}
+                </div>
+              )}
+            </>
           </>
         )}
       </div>

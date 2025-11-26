@@ -19,7 +19,6 @@ const GET_SEARCH_LOCATION_RESULT = "/places/search?query=";
 const GET_RECENT_SEARCH = "/places/search/history"; // 최근 검색어 5개
 const DELETE_RECENT_ALL_SEARCH = "/places/search/history"; // 최근 검색어 모두 삭제
 const DELETE_RECENT_SEARCH = "/places/search/history/"; // 최근 검색어 하나 삭제
-const GET_LOCATION_TOTAL_RANK = "/places/ranks"; // 위치별 전체 랭킹 조회
 
 // 현재 위치 공유 상태인지 여부 api
 interface IsSharedApiResponse extends ApiResponse {
@@ -160,7 +159,6 @@ export const getLocationDetailData = async (placeId: number) => {
     const response = await axiosInstance.get<GetLocationDetailData>(
       GET_LOCATION_DETAIL_DATA + placeId
     );
-    console.log(response.data.data);
     return response.data.data; // 성공 응답 반환
   } catch (error: any) {
     console.error(
@@ -255,36 +253,6 @@ export const deleteRecentSearchLocation = async (deleteData: number) => {
     );
     throw new Error(
       error.response?.data?.message || "최근 검색어 하나 삭제 중 오류 발생"
-    );
-  }
-};
-
-// 위치별 전체 랭킹 조회하기
-interface LocationTotalRankResponse extends ApiResponse {
-  data: {
-    ranking: number;
-    nickname: string[];
-    sharingCount: number;
-  }[];
-}
-export const getLocationTotalRank = async (
-  placeId: number,
-  startRank: number,
-  endRank: number
-) => {
-  try {
-    const response = await axiosInstance.get<LocationTotalRankResponse>(
-      GET_LOCATION_TOTAL_RANK +
-        `/${placeId}?startRank=${startRank}&endRank=${endRank}`
-    );
-    return response.data.data;
-  } catch (error: any) {
-    console.error(
-      "해당 위치 전체 랭킹 조회 실패:",
-      error.response?.data || error.message
-    );
-    throw new Error(
-      error.response?.data?.message || "해당 위치 전체 랭킹 조회 중 오류 발생"
     );
   }
 };

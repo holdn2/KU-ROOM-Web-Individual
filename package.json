@@ -12,12 +12,14 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.11",
     "@types/react-modal": "^3.16.3",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.9.0",
     "classnames": "^2.5.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-intersection-observer": "^10.0.0",
     "react-markdown": "^10.1.0",
     "react-modal": "^3.16.3",
     "react-router-dom": "^7.2.0",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@tanstack/eslint-plugin-query": "^5.91.2",
     "@types/axios": "^0.9.36",
     "@types/navermaps": "^3.7.9",
     "@types/node": "^22.15.16",
