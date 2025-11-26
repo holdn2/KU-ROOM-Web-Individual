@@ -1,0 +1,39 @@
+.MyRankContainer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px 35px 40px 35px;
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+  align-items: center;
+}
+.LowRanksInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.LowRanking,
+.RankerName,
+.SharingCount {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%; /* 25.2px */
+}
+.LowRanking {
+  color: #009733;
+  text-align: center;
+  font-size: 18px;
+  width: 43px;
+}
+.SharingCount {
+  color: #9eaab5;
+  font-size: 16px;
+  font-weight: 500;
+}

@@ -1,0 +1,73 @@
+.TopRankWrapper {
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+}
+.TopRanksData {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid #9eaab5;
+  background: #fff;
+  width: calc((100% - 36px) / 3);
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.RankIconSection {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 63px;
+  border-radius: 10px 10px 0 0;
+}
+.RankIcon {
+  width: 45px;
+}
+.TopRanksInfo {
+  width: 100%;
+  height: 114px;
+  padding: 20px 5px 15px 5px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.TopRanksNameWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.LowRanking,
+.TopRankerName,
+.RankerName,
+.SharingCount,
+.RestCount {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%; /* 25.2px */
+}
+.TopRankerName {
+  max-width: 90%;
+  font-size: 16px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.RestCount {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.SharingCount {
+  color: #9eaab5;
+  font-size: 16px;
+  font-weight: 500;
+}
