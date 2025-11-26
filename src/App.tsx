@@ -34,6 +34,7 @@ import ChatPage from "@pages/Chatbot/ChatPage/ChatPage";
 import LocationTotalRank from "@pages/Map/LocationTotalRank/LocationTotalRank";
 import MapLayout from "@pages/Map/layout/MapLayout";
 import ShareLocation from "@pages/ShareLocation/ShareLocation";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
   useEffect(() => {
@@ -207,7 +208,13 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  const queryClient = new QueryClient();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;

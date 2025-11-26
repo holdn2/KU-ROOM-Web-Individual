@@ -19,6 +19,7 @@
   border: 1px solid #9eaab5;
   background: #fff;
   width: calc((100% - 36px) / 3);
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.25));
 }
 .RankIconSection {
   display: flex;
@@ -32,7 +33,7 @@
 }
 .TopRanksInfo {
   height: 114px;
-  padding: 20px 0 15px 0;
+  padding: 20px 5px;
 
   display: flex;
   flex-direction: column;
@@ -46,7 +47,7 @@
   align-items: center;
 }
 .LowRankWrapper {
-  padding: 40px 35px;
+  padding: 40px 35px 95px 35px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -80,8 +81,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 .LowRanking {
@@ -100,4 +99,18 @@
   text-underline-offset: 3px;
   font-size: 14px;
   font-weight: 400;
+}
+
+.MyRankContainer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px 35px 40px 35px;
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+  align-items: center;
 }

@@ -3,9 +3,14 @@ export interface RankListType {
   sharingCount: number;
 }
 
-export interface LocationTotalRankType {
-  nickname: string[];
+export interface LocationTop3RankType {
   ranking: number;
+  nickname: string[];
   sharingCount: number;
-  isSelf: boolean;
+}
+
+export interface LocationTotalRankType {
+  ranking: number;
+  nickname: string;
+  sharingCount: number;
 }
