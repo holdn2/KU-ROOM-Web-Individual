@@ -22,8 +22,6 @@ export const getLocationTop3Rank = async (placeId: number) => {
     LOCATION_RANK_URL.TOP3(placeId)
   );
 
-  console.log("top3 조회 시 응답 : ", response.data.data);
-
   return response.data.data;
 };
 
@@ -45,7 +43,6 @@ export const getLocationTotalRank = async (
     LOCATION_RANK_URL.TOTAL(placeId),
     { params: { lastKnown, limit: PAGE_SIZE } }
   );
-  console.log("나머지 전체 조회 시 응답 : ", response.data.data);
 
   return response.data.data;
 };
@@ -59,8 +56,6 @@ export const getLocationMyRank = async (placeId: number) => {
   const response = await axiosInstance.get<LocationMyRankResponse>(
     LOCATION_RANK_URL.ME(placeId)
   );
-
-  console.log("내 랭킹 조회 시 응답 : ", response.data.data);
 
   return response.data.data;
 };

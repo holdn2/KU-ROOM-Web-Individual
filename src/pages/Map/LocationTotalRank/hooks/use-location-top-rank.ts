@@ -12,7 +12,7 @@ export const useLocationTopRank = (placeId: number) => {
     queryKey: LOCATION_TOTAL_RANK_QUERY_KEY.TOP3(placeId),
     queryFn: () => getLocationTop3Rank(placeId),
     retry: 1,
-    staleTime: 1000 * 15,
+    staleTime: 1000 * 30,
   });
 
   if (isTop3Error) {

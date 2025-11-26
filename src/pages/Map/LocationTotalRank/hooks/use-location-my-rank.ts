@@ -13,7 +13,7 @@ export const useLocationMyRank = (placeId: number) => {
     queryKey: LOCATION_TOTAL_RANK_QUERY_KEY.ME(placeId),
     queryFn: () => getLocationMyRank(placeId),
     retry: 1,
-    staleTime: 1000 * 5,
+    staleTime: 1000 * 30,
   });
 
   if (isMyRankError) {

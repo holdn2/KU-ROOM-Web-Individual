@@ -36,7 +36,7 @@ export const useLocationTotalRank = (placeId: number) => {
       }
     },
     retry: 1,
-    staleTime: 1000 * 15,
+    staleTime: 1000 * 30,
   });
 
   const totalRankData =

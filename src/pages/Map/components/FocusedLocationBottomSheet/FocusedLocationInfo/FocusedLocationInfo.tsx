@@ -53,7 +53,6 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
             </span>
             <span className={styles.SubTitleText}>{detailInfo.subName}</span>
           </div>
-          {/* TODO: api 연동 이후 변경 예정. ranks가 어떻게 올지 서버와 논의 필요 */}
           {isExpandedFocusedSheet &&
             top3RankData &&
             top3RankData.length > 0 && (
@@ -68,10 +67,9 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
                       <img style={{ width: "43px" }} src={Rank3Icon} />
                     )}
                     <span className={styles.Ranker}>
-                      {rankData.nickname}
-                      {/* {rankData.nickname.map((name) => (
-                      <span key={name}>{name}</span>
-                    ))} */}
+                      {rankData.nickname.map((name) => (
+                        <span key={name}>{name}</span>
+                      ))}
                     </span>
                   </div>
                 ))}
