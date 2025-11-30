@@ -20,7 +20,7 @@ const useToast = () => {
 
   return {
     info: (message: string) =>
-      toast.success(<CustomToast message={message} />, toastOptions),
+      toast.info(<CustomToast message={message} />, toastOptions),
     error: (message: string) =>
       toast.error(
         <CustomToast message={message} isError={true} />,
