@@ -2,10 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getAllFriends } from "@apis/friend";
-import { reissueTokenApi } from "@apis/axiosInstance";
 import Header from "@components/Header/Header";
 import FriendContainer from "@components/FriendContainer/FriendContainer";
-import PullToRefresh from "@components/PullToRefresh/PullToRefresh";
 import { handleOutsideClick } from "@utils/friendUtils";
 
 import FriendEdit from "./components/FriendEdit/FriendEdit";
@@ -23,8 +21,6 @@ const FriendList = () => {
   const navigate = useNavigate();
   const [friendList, setFriendList] = useState<Friend[]>([]);
   const [searchNickname, setSearchNickname] = useState("");
-  // 페이지 리렌더링 트리거
-  const [isRefreshed, setIsRefreshed] = useState(0);
 
   const [refreshList, setRefreshList] = useState(false);
 
@@ -74,21 +70,6 @@ const FriendList = () => {
     getMyFriends();
   }, [refreshList]);
 
-  const pageRefresh = async () => {
-    try {
-      await reissueTokenApi();
-      setIsRefreshed((prev) => prev + 1);
-    } catch (error) {
-      console.error("토큰 재발급 실패 : ", error);
-      navigate("/login");
-    }
-  };
-
-  useEffect(() => {
-    console.log("페이지 리프레쉬");
-    getMyFriends();
-  }, [isRefreshed]);
-
   // 팝업 외부 클릭 시 닫기
   useEffect(() => {
     handleOutsideClick(popupRef, editPopupState.isPopupOpen, () => {
@@ -102,40 +83,38 @@ const FriendList = () => {
   return (
     <div>
       <Header>친구 목록</Header>
-      <PullToRefresh onRefresh={pageRefresh} maxDistance={80}>
-        <div className={styles.FriendListPageWrapper}>
-          <div className={styles.SearchBarContainer}>
-            <FriendSearch
-              searchTarget={searchNickname}
-              setSearchTarget={setSearchNickname}
-            />
-          </div>
-          <div className={styles.FriendListWrapper}>
-            {friendList.length === 0 ? (
-              <div className={styles.NoFriendsContainer}>
-                <span>현재 친구가 없습니다!</span>
-                <span
-                  className={styles.ToFriendAdd}
-                  onClick={() => navigate("/friendadd")}
-                >
-                  친구 추가하러 가기
-                </span>
-              </div>
-            ) : (
-              (searchNickname ? filteredFriends : friendList).map(
-                (friend, index) => (
-                  <div key={index}>
-                    <FriendContainer
-                      friend={friend}
-                      setEditPopupState={setEditPopupState}
-                    />
-                  </div>
-                )
-              )
-            )}
-          </div>
+      <div className={styles.FriendListPageWrapper}>
+        <div className={styles.SearchBarContainer}>
+          <FriendSearch
+            searchTarget={searchNickname}
+            setSearchTarget={setSearchNickname}
+          />
         </div>
-      </PullToRefresh>
+        <div className={styles.FriendListWrapper}>
+          {friendList.length === 0 ? (
+            <div className={styles.NoFriendsContainer}>
+              <span>현재 친구가 없습니다!</span>
+              <span
+                className={styles.ToFriendAdd}
+                onClick={() => navigate("/friendadd")}
+              >
+                친구 추가하러 가기
+              </span>
+            </div>
+          ) : (
+            (searchNickname ? filteredFriends : friendList).map(
+              (friend, index) => (
+                <div key={index}>
+                  <FriendContainer
+                    friend={friend}
+                    setEditPopupState={setEditPopupState}
+                  />
+                </div>
+              )
+            )
+          )}
+        </div>
+      </div>
 
       {editPopupState.isPopupOpen && (
         <div
