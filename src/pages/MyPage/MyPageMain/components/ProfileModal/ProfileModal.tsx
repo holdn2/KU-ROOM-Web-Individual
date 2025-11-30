@@ -7,6 +7,7 @@ import cautionIcon from "@assets/icon/editFriend/cautionIcon.svg";
 import Button from "@components/Button/Button";
 
 import styles from "./ProfileModal.module.css";
+import useToast from "@/shared/hooks/use-toast";
 
 interface ProfileModalProps {
   modalState: boolean;
@@ -20,21 +21,26 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   setModalState,
 }) => {
   const navigate = useNavigate();
+  const toast = useToast();
   const handleCloseModal = () => setModalState(false);
 
   // 서버에 각각 요청
   const handleClick = async () => {
     switch (modalType) {
       case "logout":
-        console.log("로그아웃 실행");
         setModalState(false);
-        await logoutApi();
-        localStorage.clear();
-        navigate("/login");
+        await logoutApi()
+          .then(() => {
+            toast.info("로그아웃되었습니다.");
+            localStorage.clear();
+            navigate("/login");
+          })
+          .catch(() => {
+            toast.error("새로고침 후 다시 시도해주세요.");
+          });
 
         break;
       case "withdraw":
-        console.log("회원 탈퇴 실행");
         setModalState(false);
         await withdrawApi();
         localStorage.clear();
