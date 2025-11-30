@@ -35,6 +35,7 @@ import LocationTotalRank from "@pages/Map/LocationTotalRank/LocationTotalRank";
 import MapLayout from "@pages/Map/layout/MapLayout";
 import ShareLocation from "@pages/ShareLocation/ShareLocation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   useEffect(() => {
@@ -212,6 +213,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ToastContainer />
       <RouterProvider router={router} />
     </QueryClientProvider>
   );

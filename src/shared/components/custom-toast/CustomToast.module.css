@@ -1,0 +1,18 @@
+.ToastContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 15px;
+
+  border-radius: 100px;
+  background: white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+
+  color: #1d2228;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 17px;
+}

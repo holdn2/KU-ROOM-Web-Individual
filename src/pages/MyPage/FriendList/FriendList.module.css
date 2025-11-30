@@ -1,16 +1,25 @@
 .FriendListPageWrapper {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .SearchBarContainer {
-  padding: 17px 25px 0 25px;
+  max-width: var(--custom-max-width);
+  padding: 17px 25px;
+  background-color: #f8f9fc;
+  width: 100%;
+  box-sizing: border-box;
+  position: fixed;
+  top: 56px;
 }
 .FriendListWrapper {
+  margin-top: 127px;
+  max-height: calc(100dvh - 127px);
   display: flex;
   flex-direction: column;
   padding: 40px 30px;
+  box-sizing: border-box;
   gap: 30px;
-  max-height: calc(100vh - 220px);
   overflow-y: auto;
 }
 .NoFriendsContainer {
