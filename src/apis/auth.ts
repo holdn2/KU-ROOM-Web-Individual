@@ -107,7 +107,6 @@ interface ReissueResponse {
 }
 export const reissueTokenApi = async () => {
   const refreshToken = localStorage.getItem("refreshToken");
-  console.log("refresh 토큰으로 재발급 요청: ", refreshToken);
   try {
     const response = await axiosInstance.patch<ReissueResponse>(
       REISSUE_TOKEN_API_URL,
@@ -118,10 +117,9 @@ export const reissueTokenApi = async () => {
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log("access token 재발급함");
     return response.data.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "회원탈퇴 중 오류 발생");
+    throw new Error(error.response?.data?.message || "토큰 재발급 중 오류 발생");
   }
 };
 
@@ -139,9 +137,8 @@ export const getTokenByTempToken = async (tempToken: string) => {
     );
     return response.data;
   } catch (error: any) {
-    console.error("❌ getTokenByTempToken 에러:", error.response?.data || error);
     throw new Error(
-      error.response?.data?.message || "토큰 발급 중 오류 발급"
+      error.response?.data?.message || "토큰 발급 중 오류 발생"
     );
   }
 };

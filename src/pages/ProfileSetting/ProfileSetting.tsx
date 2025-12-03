@@ -104,7 +104,6 @@ const ProfileSetting: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      // 소셜 로그인 신규 회원가입인 경우
       if (isSocialSignup && preSignupToken) {
         const socialUserData = {
           studentId: studentId,
@@ -112,13 +111,11 @@ const ProfileSetting: React.FC = () => {
           nickname: nickname,
           agreementStatus: isMarketingOk ? "AGREED" : "DISAGREED",
         };
-        console.log("소셜 회원가입 데이터:", socialUserData);
 
         const response = await createSocialUserApi(
           preSignupToken,
           socialUserData
         );
-        console.log("소셜 로그인 회원가입 성공", response);
 
         if (response?.data) {
           const {
@@ -126,20 +123,13 @@ const ProfileSetting: React.FC = () => {
             userResponse,
           } = response.data;
 
-          // 토큰 저장
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
-
-          // PreSignupToken 삭제
           sessionStorage.removeItem("preSignupToken");
-
-          // 사용자 정보 저장
           setUser({ ...userResponse, loginType: "social" });
-
           navigate("/welcome");
         }
       } else {
-        // 일반 회원가입인 경우
         const userData = {
           email: signupEmail || "",
           loginId: signupId || "",
@@ -149,18 +139,16 @@ const ProfileSetting: React.FC = () => {
           nickname: nickname,
           agreementStatus: isMarketingOk ? "AGREED" : "DISAGREED",
         };
-        console.log("일반 회원가입 데이터:", userData);
 
-        const response = await signupApi(
+        await signupApi(
           userData,
           setIsDuplicatedNickname,
           setIsDuplicatedStudentId
         );
-        console.log("회원가입 성공", response);
         navigate("/welcome");
       }
     } catch (error: any) {
-      // console.log("오류 발생", error.message);
+      // 에러 처리는 각 API 함수 내부에서 처리됨
     }
   };
 
