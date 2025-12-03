@@ -1,11 +1,12 @@
 import axiosInstance from "./axiosInstance";
+import axios from "axios";
 
 const LOGIN_API_URL = "/auth/login";
 const LOGOUT_API_URL = "/auth/logout";
 const WITHDRAW_API_URL = "/users/deactivate";
 const REISSUE_TOKEN_API_URL = "/auth/reissue";
 const OAUTH_TOKEN_API_URL = "/auth/token";
-const CREATE_SOCIAL_USER_API_URL = "/api/v1/users/social";
+const CREATE_SOCIAL_USER_API_URL = "/users/social";
 
 interface LoginResponse {
   code: number;
@@ -124,7 +125,28 @@ export const reissueTokenApi = async () => {
   }
 };
 
-// 임시 토큰(authCode)으로 실제 토큰 발급받는 API
+// TempToken으로 실제 AccessToken/RefreshToken 발급받는 API (기존 유저)
+export const getTokenByTempToken = async (tempToken: string) => {
+  try {
+    const response = await axios.post<LoginResponse>(
+      `https://kuroom.shop/api/v1${OAUTH_TOKEN_API_URL}?authCode=${tempToken}`,
+      null,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error("❌ getTokenByTempToken 에러:", error.response?.data || error);
+    throw new Error(
+      error.response?.data?.message || "토큰 발급 중 오류 발급"
+    );
+  }
+};
+
+// 임시 토큰(authCode)으로 실제 토큰 발급받는 API (기존 로직 - 사용 안 함)
 export const getTokenByAuthCode = async (authCode: string) => {
   try {
     const response = await axiosInstance.post<LoginResponse>(
@@ -135,10 +157,10 @@ export const getTokenByAuthCode = async (authCode: string) => {
         headers: { "Content-Type": "application/json" },
       }
     );
-    return response.data; // 성공 시 반환
+    return response.data;
   } catch (error: any) {
     if (error.response?.status === 401) {
-      return error.response.data; // 401이면 throw하지 않고 반환
+      return error.response.data;
     }
     throw new Error(
       error.response?.data?.message || "OAuth 토큰 교환 중 오류 발생"
@@ -146,32 +168,29 @@ export const getTokenByAuthCode = async (authCode: string) => {
   }
 };
 
-// 소셜 로그인 신규 회원 생성 API
+// 소셜 로그인 신규 회원 생성 API (PreSignupToken 사용)
 interface CreateSocialUserRequest {
-  email: string;
-  loginId: string;
-  password: string;
   studentId: string;
   department: string;
   nickname: string;
   agreementStatus: string;
 }
 
-interface CreateSocialUserResponse {
-  code: number;
-  status: string;
-  message: string;
-}
-
 export const createSocialUserApi = async (
+  preSignupToken: string,
   userData: CreateSocialUserRequest
 ) => {
   try {
-    const response = await axiosInstance.post<CreateSocialUserResponse>(
-      CREATE_SOCIAL_USER_API_URL,
-      userData,
+    const response = await axios.post<LoginResponse>(
+      `https://kuroom.shop/api/v1${CREATE_SOCIAL_USER_API_URL}`,
       {
-        headers: { "Content-Type": "application/json" },
+        token: preSignupToken,
+        ...userData,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
     return response.data;

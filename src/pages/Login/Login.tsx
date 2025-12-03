@@ -81,41 +81,17 @@ const Login = () => {
 
   // 구글 로그인 처리 함수
   const handleGoogleLogin = () => {
-    // 현재 페이지 저장 (로그인 후 돌아올 위치)
-    sessionStorage.setItem("redirectUrl", "/");
-
-    const redirectUri = import.meta.env.DEV
-      ? "http://localhost:5173/oauth/callback"
-      : "https://ku-room.vercel.app/oauth/callback";
-
-    // 구글 OAuth2 엔드포인트로 리다이렉트
-    window.location.href = `https://kuroom.shop/oauth2/authorization/google?redirect_uri=${redirectUri}`;
+    window.location.href = `https://kuroom.shop/oauth2/authorization/google?redirect_uri=http://localhost:5173/social/callback`;
   };
 
   // 카카오 로그인 처리 함수
   const handleKakaoLogin = () => {
-    // 현재 페이지 저장 (로그인 후 돌아올 위치)
-    sessionStorage.setItem("redirectUrl", "/");
-
-    const redirectUri = import.meta.env.DEV
-      ? "http://localhost:5173/oauth/callback"
-      : "https://ku-room.vercel.app/oauth/callback";
-
-    // 카카오 OAuth2 엔드포인트로 리다이렉트
-    window.location.href = `https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=${redirectUri}`;
+    window.location.href = `https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/social/callback`;
   };
 
   // 네이버 로그인 처리 함수
   const handleNaverLogin = () => {
-    // 현재 페이지 저장 (로그인 후 돌아올 위치)
-    sessionStorage.setItem("redirectUrl", "/");
-
-    const redirectUri = import.meta.env.DEV
-      ? "http://localhost:5173/oauth/callback"
-      : "https://ku-room.vercel.app/oauth/callback";
-
-    // 네이버 OAuth2 엔드포인트로 리다이렉트
-    window.location.href = `https://kuroom.shop/oauth2/authorization/naver?redirect_uri=${redirectUri}`;
+    window.location.href = `https://kuroom.shop/oauth2/authorization/naver?redirect_uri=http://localhost:5173/social/callback`;
   };
 
   // 로그인 실패 시 2초 간 보여줌

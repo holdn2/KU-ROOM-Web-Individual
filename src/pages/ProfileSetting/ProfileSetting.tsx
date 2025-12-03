@@ -2,10 +2,12 @@ import React, { useState, ChangeEvent, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { signupApi } from "@apis/signup";
+import { createSocialUserApi } from "@apis/auth";
 import { getAllColleges, getDepartments } from "@apis/department";
 import Button from "@components/Button/Button";
 import InputBar from "@components/InputBar/InputBar";
 import { isValidStudentId } from "@utils/validations";
+import { useUserStore } from "@stores/userStore";
 
 import Select from "./components/Select/Select";
 import BottomSheet from "./components/BottomSheet/BottomSheet";
@@ -15,8 +17,13 @@ import "./ProfileSetting.css";
 const ProfileSetting: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { setUser } = useUserStore();
   const { signupEmail, signupId, signupPw, isMarketingOk } =
     location.state || {};
+
+  // 소셜 로그인 신규 회원인지 확인
+  const preSignupToken = sessionStorage.getItem("preSignupToken");
+  const isSocialSignup = !!preSignupToken;
 
   const [nickname, setNickname] = useState("");
   const [isDuplicatedNickname, setIsDuplicatedNickname] = useState(false);
@@ -96,24 +103,62 @@ const ProfileSetting: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    const userData = {
-      email: signupEmail,
-      loginId: signupId,
-      password: signupPw,
-      studentId: studentId,
-      department: selectedDepartment,
-      nickname: nickname,
-      agreementStatus: isMarketingOk ? "AGREED" : "DISAGREED",
-    };
-    console.log(userData);
     try {
-      const response = await signupApi(
-        userData,
-        setIsDuplicatedNickname,
-        setIsDuplicatedStudentId
-      );
-      console.log("회원가입 성공", response);
-      navigate("/welcome");
+      // 소셜 로그인 신규 회원가입인 경우
+      if (isSocialSignup && preSignupToken) {
+        const socialUserData = {
+          studentId: studentId,
+          department: selectedDepartment,
+          nickname: nickname,
+          agreementStatus: isMarketingOk ? "AGREED" : "DISAGREED",
+        };
+        console.log("소셜 회원가입 데이터:", socialUserData);
+
+        const response = await createSocialUserApi(
+          preSignupToken,
+          socialUserData
+        );
+        console.log("소셜 로그인 회원가입 성공", response);
+
+        if (response?.data) {
+          const {
+            tokenResponse: { accessToken, refreshToken },
+            userResponse,
+          } = response.data;
+
+          // 토큰 저장
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
+
+          // PreSignupToken 삭제
+          sessionStorage.removeItem("preSignupToken");
+
+          // 사용자 정보 저장
+          setUser({ ...userResponse, loginType: "social" });
+
+          navigate("/welcome");
+        }
+      } else {
+        // 일반 회원가입인 경우
+        const userData = {
+          email: signupEmail || "",
+          loginId: signupId || "",
+          password: signupPw || "",
+          studentId: studentId,
+          department: selectedDepartment,
+          nickname: nickname,
+          agreementStatus: isMarketingOk ? "AGREED" : "DISAGREED",
+        };
+        console.log("일반 회원가입 데이터:", userData);
+
+        const response = await signupApi(
+          userData,
+          setIsDuplicatedNickname,
+          setIsDuplicatedStudentId
+        );
+        console.log("회원가입 성공", response);
+        navigate("/welcome");
+      }
     } catch (error: any) {
       // console.log("오류 발생", error.message);
     }
