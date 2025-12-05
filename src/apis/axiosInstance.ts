@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://kuroom.shop/api/v1",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -59,7 +59,7 @@ export const reissueTokenApi = async (): Promise<string> => {
 
   try {
     const response = await axios.patch<ReissueResponse>(
-      "https://kuroom.shop/api/v1/auth/reissue",
+      `${import.meta.env.VITE_API_BASE_URL}/auth/reissue`,
       { refreshToken }
     );
 
