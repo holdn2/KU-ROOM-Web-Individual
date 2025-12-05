@@ -5,9 +5,12 @@ import { useInView } from "react-intersection-observer";
 import { AlarmListResponseData, getAlarmListApi } from "@pages/Alarm/api";
 import { ALARM_QUERY_KEY } from "@pages/Alarm/querykey/alarm";
 import useToast from "@/shared/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 export const useAlarmList = () => {
   const toast = useToast();
+  const navigate = useNavigate();
+
   const { ref: listBottomRef, inView } = useInView();
 
   const {
@@ -38,6 +41,7 @@ export const useAlarmList = () => {
 
   if (isError) {
     toast.error(error.message);
+    navigate("/");
   }
 
   useEffect(() => {

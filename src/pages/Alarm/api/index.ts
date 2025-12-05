@@ -1,6 +1,6 @@
 import axiosInstance from "@/apis/axiosInstance";
 import { ApiResponse } from "@/shared/types";
-import { AlarmDataType } from "@pages/Alarm/types";
+import { AlarmCategory, AlarmDataType } from "@pages/Alarm/types";
 import { PAGE_SIZE } from "@/shared/constant/page";
 
 const ALARM_API_URL = {
@@ -17,7 +17,6 @@ interface AlarmListResponse {
   data: AlarmListResponseData;
 }
 
-// 알림 관련 api
 export const getAlarmListApi = async (lastKnown?: string) => {
   const response = await axiosInstance.get<AlarmListResponse>(
     ALARM_API_URL.BASE,
@@ -26,3 +25,17 @@ export const getAlarmListApi = async (lastKnown?: string) => {
 
   return response.data.data;
 };
+
+export interface CheckAlarmParams {
+  alarmId: number;
+  alarmCategory: AlarmCategory;
+}
+
+export const checkAlarmApi = async ({
+  alarmId,
+  alarmCategory,
+}: CheckAlarmParams) =>
+  await axiosInstance.patch(ALARM_API_URL.BASE, {
+    alarmId,
+    alarmCategory,
+  });

@@ -17,7 +17,7 @@ export enum AlarmType {
   RENEW_RANK_PLACE = "RENEW_RANK_PLACE",
 }
 
-enum AlarmCategory {
+export enum AlarmCategory {
   ALARM = "ALARM",
   ANNOUNCEMENT = "ANNOUNCEMENT",
 }
