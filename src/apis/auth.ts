@@ -127,7 +127,7 @@ export const reissueTokenApi = async () => {
 export const getTokenByTempToken = async (tempToken: string) => {
   try {
     const response = await axios.post<LoginResponse>(
-      `https://kuroom.shop/api/v1${OAUTH_TOKEN_API_URL}?authCode=${tempToken}`,
+      `${import.meta.env.VITE_API_BASE_URL}${OAUTH_TOKEN_API_URL}?authCode=${tempToken}`,
       null,
       {
         headers: {
@@ -179,7 +179,7 @@ export const createSocialUserApi = async (
 ) => {
   try {
     const response = await axios.post<LoginResponse>(
-      `https://kuroom.shop/api/v1${CREATE_SOCIAL_USER_API_URL}`,
+      `${import.meta.env.VITE_API_BASE_URL}${CREATE_SOCIAL_USER_API_URL}`,
       {
         token: preSignupToken,
         ...userData,
