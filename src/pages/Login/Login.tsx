@@ -81,17 +81,20 @@ const Login = () => {
 
   // 구글 로그인 처리 함수
   const handleGoogleLogin = () => {
-    window.location.href = `https://kuroom.shop/oauth2/authorization/google?redirect_uri=http://localhost:5173/social/callback`;
+    const redirectUri = import.meta.env.VITE_REDIRECT_URI || window.location.origin + "/social/callback";
+    window.location.href = `https://kuroom.shop/oauth2/authorization/google?redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
   // 카카오 로그인 처리 함수
   const handleKakaoLogin = () => {
-    window.location.href = `https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=http://localhost:5173/social/callback`;
+    const redirectUri = import.meta.env.VITE_REDIRECT_URI || window.location.origin + "/social/callback";
+    window.location.href = `https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
   // 네이버 로그인 처리 함수
   const handleNaverLogin = () => {
-    window.location.href = `https://kuroom.shop/oauth2/authorization/naver?redirect_uri=http://localhost:5173/social/callback`;
+    const redirectUri = import.meta.env.VITE_REDIRECT_URI || window.location.origin + "/social/callback";
+    window.location.href = `https://kuroom.shop/oauth2/authorization/naver?redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
   // 로그인 실패 시 2초 간 보여줌
