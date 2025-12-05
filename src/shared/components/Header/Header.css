@@ -57,13 +57,23 @@
 }
 .new-alarm-marker {
   position: absolute;
-  top: 3px;
-  right: 1px;
-  width: 7px;
-  height: 7px;
+  top: 2px;
+  right: -3px;
   background: #f34d4d;
   border-radius: 50%;
   border: 2px solid #fff;
+  padding: 2px;
+  min-width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
 }
 .notice-detail-bookmark-icon {
   position: absolute;

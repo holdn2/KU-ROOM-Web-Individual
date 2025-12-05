@@ -17,15 +17,16 @@ import FriendLocation from "./components/FriendLocation/FriendLocation";
 import MyLocationRanking from "./components/MyLocationRanking/MyLocationRanking";
 import HomeNotice from "./components/HomeNotice/HomeNotice";
 import styles from "./Home.module.css";
+import { useUnreadAlarm } from "../Alarm/hooks/use-unread-alarm";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { unreadAlarmData } = useUnreadAlarm();
   // const [showSplash, setShowSplash] = useState(true);
   const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
   const [sharedLocationName, setSharedLocationName] = useState<string | null>(
     null
   );
-  const [hasNewAlarm, setHasNewAlarm] = useState(false); // 새로운 알람이 있는지
   // 공유 상태 확인 트리거 키
   const [locationSharedRefreshKey, setLocationSharedRefreshKey] = useState(0);
 
@@ -63,7 +64,7 @@ const Home = () => {
 
     // 현재 내 위치 공유 상태 확인
     getIsMySharedInfo();
-  }, [locationSharedRefreshKey]);
+  }, [locationSharedRefreshKey, isSharedLocation]);
   useEffect(() => {
     // 현재 내 위치가 학교 내부인지 검증
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
@@ -77,8 +78,6 @@ const Home = () => {
       navigate("/login");
       return;
     }
-
-    setHasNewAlarm(true);
   }, [navigate]);
 
   // 토큰이 없으면 로딩 화면 표시
@@ -101,7 +100,12 @@ const Home = () => {
 
   return (
     <div>
-      <Header hasNewAlarm={hasNewAlarm}>홈</Header>
+      <Header
+        hasUnread={unreadAlarmData?.hasUnread}
+        unreadCount={unreadAlarmData?.count}
+      >
+        홈
+      </Header>
       <div className={styles.HomeContentWrapper}>
         <HomeSildeBanner />
         <HomeMenu />

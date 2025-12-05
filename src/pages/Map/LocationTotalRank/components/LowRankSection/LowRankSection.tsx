@@ -14,7 +14,10 @@ export default function LowRankSection({
     totalRankData && (
       <div className={styles.LowRankWrapper}>
         {totalRankData.map((rankData) => (
-          <div key={rankData.ranking} className={styles.LowRanksData}>
+          <div
+            key={`${rankData.ranking}-${rankData.nickname}`}
+            className={styles.LowRanksData}
+          >
             <span className={styles.LowRanking}>{rankData.ranking}</span>
             <div className={styles.LowRanksInfo}>
               <span className={styles.RankerName}>{rankData.nickname}</span>

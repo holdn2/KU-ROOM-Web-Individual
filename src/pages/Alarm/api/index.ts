@@ -5,6 +5,7 @@ import { PAGE_SIZE } from "@/shared/constant/page";
 
 const ALARM_API_URL = {
   BASE: "/alarm",
+  UNREAD_STATUS: "/alarm/unread",
 };
 
 export interface AlarmListResponseData extends ApiResponse {
@@ -39,3 +40,20 @@ export const checkAlarmApi = async ({
     alarmId,
     alarmCategory,
   });
+
+export interface AlarmReadStatusResponseData {
+  hasUnread: boolean;
+  count: number;
+}
+
+interface AlarmReadStatusResponse extends ApiResponse {
+  data: AlarmReadStatusResponseData;
+}
+
+export const getAlarmReadStatus = async () => {
+  const response = await axiosInstance.get<AlarmReadStatusResponse>(
+    ALARM_API_URL.UNREAD_STATUS
+  );
+
+  return response.data.data;
+};

@@ -14,15 +14,17 @@ import "./Header.css";
 
 interface HeaderProps {
   children?: React.ReactNode;
-  hasNewAlarm?: boolean;
+  hasUnread?: boolean;
+  unreadCount?: number;
   onBookmarkClick?: () => void;
   isBookmarked?: boolean;
 }
 
 const renderHeaderContent = (
   children: React.ReactNode,
-  newAlarmState: boolean,
+  hasUnreadAlarm: boolean,
   navigate: ReturnType<typeof useNavigate>,
+  unreadCount?: number,
   onBookmarkClick?: () => void,
   isBookmarked?: boolean
 ) => {
@@ -37,7 +39,13 @@ const renderHeaderContent = (
               alt="알림"
               onClick={() => navigate("/alarm")}
             />
-            {newAlarmState ? <div className="new-alarm-marker" /> : <></>}
+            {hasUnreadAlarm && unreadCount ? (
+              <span className="new-alarm-marker">
+                {unreadCount <= 99 ? unreadCount : "99+"}
+              </span>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       );
@@ -142,12 +150,13 @@ const renderHeaderContent = (
 
 const Header: React.FC<HeaderProps> = ({
   children = "",
-  hasNewAlarm,
+  hasUnread,
+  unreadCount,
   onBookmarkClick,
   isBookmarked,
 }) => {
   const navigate = useNavigate();
-  const newAlarmState = children === "홈" && hasNewAlarm === true;
+  const hasUnreadAlarm = children === "홈" && hasUnread === true;
 
   return (
     <>
@@ -159,8 +168,9 @@ const Header: React.FC<HeaderProps> = ({
         )}
         {renderHeaderContent(
           children,
-          newAlarmState,
+          hasUnreadAlarm,
           navigate,
+          unreadCount,
           onBookmarkClick,
           isBookmarked
         )}
