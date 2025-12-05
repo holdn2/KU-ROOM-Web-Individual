@@ -8,8 +8,11 @@ import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import { useLocationTopRank } from "./use-location-top-rank";
 import { useLocationMyRank } from "./use-location-my-rank";
+import useToast from "@/shared/hooks/use-toast";
 
 export const useLocationTotalRank = (placeId: number) => {
+  const toast = useToast();
+
   const { ref: listBottomRef, inView } = useInView();
 
   const { top3RankData, isTop3Pending } = useLocationTopRank(placeId);
@@ -43,8 +46,7 @@ export const useLocationTotalRank = (placeId: number) => {
     rowTotalRankData?.pages.flatMap((page) => page?.ranks || []) || [];
 
   if (isTotalRankError) {
-    // TODO : 토스트로 보여주기
-    alert(`전체 랭킹 데이터 오류 : ${totalRankError.message}`);
+    toast.error(totalRankError.message);
   }
 
   const isPagePending = isTop3Pending || isTotalRankPending || isMyRankPending;

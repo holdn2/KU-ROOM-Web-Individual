@@ -1,0 +1,54 @@
+import { useEffect } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
+
+import { AlarmListResponseData, getAlarmListApi } from "@pages/Alarm/api";
+import { ALARM_QUERY_KEY } from "@pages/Alarm/querykey/alarm";
+import useToast from "@/shared/hooks/use-toast";
+
+export const useAlarmList = () => {
+  const toast = useToast();
+  const { ref: listBottomRef, inView } = useInView();
+
+  const {
+    data: rowAlarmDatas,
+    isPending,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery<AlarmListResponseData>({
+    queryKey: ALARM_QUERY_KEY.ALARM_LIST,
+    initialPageParam: null,
+    queryFn: async ({ pageParam }) => {
+      const lastKnown = pageParam === null ? undefined : String(pageParam);
+      const response = await getAlarmListApi(lastKnown);
+      return response;
+    },
+    getNextPageParam: (lastPage) => {
+      if (lastPage?.hasNext && lastPage.nextCursor !== undefined) {
+        return lastPage.nextCursor;
+      }
+    },
+    retry: 1,
+  });
+
+  const alarmList =
+    rowAlarmDatas?.pages.flatMap((page) => page?.alarms || []) || [];
+
+  if (isError) {
+    toast.error(error.message);
+  }
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  return {
+    listBottomRef,
+    alarmList,
+    isPending,
+  };
+};

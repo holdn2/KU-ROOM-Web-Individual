@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { LOCATION_TOTAL_RANK_QUERY_KEY } from "../querykey/rank";
 import { getLocationTop3Rank } from "../api";
+import useToast from "@/shared/hooks/use-toast";
 
 export const useLocationTopRank = (placeId: number) => {
+  const toast = useToast();
+
   const {
     data: top3RankData,
     isPending: isTop3Pending,
@@ -16,8 +19,7 @@ export const useLocationTopRank = (placeId: number) => {
   });
 
   if (isTop3Error) {
-    // TODO : 토스트로 보여주기
-    alert(`1~3등 데이터 오류 : ${top3Error.message}`);
+    toast.error(top3Error.message);
   }
 
   return {

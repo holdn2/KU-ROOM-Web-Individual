@@ -4,7 +4,7 @@ import {
   LocationTop3RankType,
   LocationTotalRankType,
 } from "@/shared/types/rankTypes";
-import { PAGE_SIZE } from "@pages/Map/LocationTotalRank/constant/page";
+import { PAGE_SIZE } from "@/shared/constant/page";
 
 const LOCATION_RANK_URL = {
   TOP3: (placeId: number) => `/places/${placeId}/top`,
