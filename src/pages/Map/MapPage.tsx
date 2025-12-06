@@ -34,6 +34,7 @@ import {
 } from "./utils/kuroomMapUtils";
 import SearchResultHeader from "./components/MapSearch/SearchResultHeader";
 import { MapLayoutContext } from "./layout/MapLayout";
+import { getCategoryEnum } from "./utils/category-chip";
 
 const includeBottomSheetList = [
   "건물",
@@ -196,6 +197,19 @@ const MapPage = () => {
 
     setIsExpandedSheet(false); // 바텀시트 내리기
   };
+
+  // 카테고리 칩 선택 핸들러
+  const handleSelectCategoryChip = (title: string) => {
+    setSelectedCategoryTitle(title);
+    const name = getCategoryEnum(title);
+    if (!name) {
+      return console.error("잘못된 칩 클릭");
+    }
+    setSelectedCategoryEnum(name);
+    console.log(title);
+    setIsTracking(false);
+  };
+
   // 검색 결과를 클릭 시에 마커 찍기
   const clickSearchResultToMarker = (searchResult: MapSearchResult) => {
     setSelectedCategoryTitle(searchResult.name);
@@ -227,6 +241,9 @@ const MapPage = () => {
   // 컴포넌트 초기화 로직 ***********************************************
   useEffect(() => {
     setSearchMode(state?.isSearchMode ?? false);
+    if (state.isFriendChip) {
+      handleSelectCategoryChip("친구");
+    }
 
     // 현재 내 위치가 학교 내부인지 검증
     isMyLocationInSchool(setIsInSchool, setCurrentLocation);
@@ -385,9 +402,7 @@ const MapPage = () => {
                 <MapSearchBar />
               </button>
               <MapCategoryChip
-                setSelectedCategoryTitle={setSelectedCategoryTitle}
-                setSelectedCategoryEnum={setSelectedCategoryEnum}
-                setIsTracking={setIsTracking}
+                handleSelectCategoryChip={handleSelectCategoryChip}
               />
               {/* 내 위치 추적 아이콘 */}
               <button

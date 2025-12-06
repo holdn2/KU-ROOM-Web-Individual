@@ -29,15 +29,11 @@ const AlarmItem = ({ alarm }: AlarmItemProps) => {
         navigate("/friendadd");
         break;
       case AlarmType.NEW_FRIEND_PLACE_SHARING:
-        // TODO: 친구 칩이 클릭된 상태로 되도록 수정
-        navigate("/map");
+        navigate("/map", { state: { isFriendChip: true } });
         break;
       case AlarmType.NEW_NOTICE:
-        navigate(`/notice/${alarm.dataId}`);
-        break;
       case AlarmType.NEW_KEYWORD_NOTICE:
-        // TODO: 해당 키워드가 입력된 채로 공지사항 검색 페이지로 이동되도록 수정
-        navigate("/search");
+        navigate(`/notice/${alarm.dataId}`);
         break;
       case AlarmType.RENEW_RANK_PLACE:
       case AlarmType.RENEW_TOP_RANK_PLACE:
