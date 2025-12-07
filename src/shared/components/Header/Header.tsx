@@ -160,7 +160,10 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <header className="header-container">
+      <header
+        className="header-container"
+        style={children === "알림" ? { backgroundColor: "white" } : {}}
+      >
         {children === "홈" ? (
           <></>
         ) : (
