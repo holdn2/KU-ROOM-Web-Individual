@@ -241,7 +241,7 @@ const MapPage = () => {
   // 컴포넌트 초기화 로직 ***********************************************
   useEffect(() => {
     setSearchMode(state?.isSearchMode ?? false);
-    if (state.isFriendChip) {
+    if (state?.isFriendChip) {
       handleSelectCategoryChip("친구");
     }
 
