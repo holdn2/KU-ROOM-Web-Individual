@@ -1,20 +1,20 @@
 import type { BookmarkResponse, NoticeResponse } from "@apis/notice";
 
-export const transformBookmarkData = (apiData: BookmarkResponse[] | undefined): NoticeResponse[] => {
+export const transformBookmarkToNotice = (apiData: BookmarkResponse[] | undefined): NoticeResponse[] => {
   if (!apiData || !Array.isArray(apiData)) {
     return [];
   }
 
   return apiData.map((item) => ({
-    id: item.id,
+    id: item.noticeId,
     categoryId: 0,
     categoryName: "",
-    title: item.title,
-    link: item.link || "",
+    title: item.noticeName,
+    link: "",
     content: "",
-    pubDate: item.pubDate,
+    pubDate: new Date().toISOString(),
     author: "",
     description: "",
-    isBookMarked: item.bookmarked,
+    isBookMarked: true,
   }));
 };
