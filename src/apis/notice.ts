@@ -13,13 +13,33 @@ export interface NoticeResponse {
   isBookMarked: boolean;
 }
 
-export interface NoticeListResponse {
-  content: NoticeResponse[];
+export interface PageableSort {
+  empty: boolean;
+  unsorted: boolean;
+  sorted: boolean;
+}
+
+export interface Pageable {
   pageNumber: number;
   pageSize: number;
-  totalElements: number;
-  totalPages: number;
+  sort: PageableSort;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface NoticeListResponse {
+  content: NoticeResponse[];
+  pageable: Pageable;
   last: boolean;
+  totalPages: number;
+  totalElements: number;
+  first: boolean;
+  size: number;
+  number: number;
+  sort: PageableSort;
+  numberOfElements: number;
+  empty: boolean;
 }
 
 export interface NoticeListParams {
