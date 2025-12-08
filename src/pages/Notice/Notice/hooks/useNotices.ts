@@ -10,18 +10,12 @@ export const useNotices = () => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   const currentCategoryRef = useRef<number | null>(null);
-  const isLoadingRef = useRef(false);
 
   const loadNoticesByCategory = useCallback(async (activeTab: string) => {
     const categoryId = getCategoryId(activeTab);
     if (!categoryId) return;
 
-    if (isLoadingRef.current && currentCategoryRef.current === categoryId) {
-      return;
-    }
-
     currentCategoryRef.current = categoryId;
-    isLoadingRef.current = true;
     setPage(0);
     setHasMore(true);
     setLoading(true);
@@ -40,7 +34,6 @@ export const useNotices = () => {
       setHasMore(false);
     } finally {
       setLoading(false);
-      isLoadingRef.current = false;
     }
   }, []);
 
