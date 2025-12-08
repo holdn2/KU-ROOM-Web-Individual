@@ -7,28 +7,20 @@ export const useBookmarks = () => {
   const [bookmarks, setBookmarks] = useState<NoticeResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const isMounted = useRef(true);
+  const hasFetched = useRef(false);
 
   const fetchBookmarks = async () => {
-    if (!isMounted.current) return;
-
     try {
       setLoading(true);
       setError(null);
       const apiBookmarks = await getBookmarksAPI();
       const notices = transformBookmarkToNotice(apiBookmarks);
-      if (isMounted.current) {
-        setBookmarks(notices);
-      }
+      setBookmarks(notices);
     } catch (err: unknown) {
-      if (isMounted.current) {
-        setError("북마크 데이터를 불러오는데 실패했습니다.");
-        console.error("Failed to fetch bookmarks:", err);
-      }
+      setError("북마크 데이터를 불러오는데 실패했습니다.");
+      console.error("Failed to fetch bookmarks:", err);
     } finally {
-      if (isMounted.current) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
   };
 
@@ -37,11 +29,10 @@ export const useBookmarks = () => {
   };
 
   useEffect(() => {
-    isMounted.current = true;
-    fetchBookmarks();
-    return () => {
-      isMounted.current = false;
-    };
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      fetchBookmarks();
+    }
   }, []);
 
   return {
