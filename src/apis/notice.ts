@@ -31,20 +31,16 @@ export interface NoticeListParams {
 }
 
 export interface BookmarkResponse {
-  id: number;
-  title: string;
-  pubDate: string;
-  bookmarked: boolean;
-  link?: string;
+  bookmarkId: number;
+  noticeId: number;
+  noticeName: string;
 }
 
-export interface BookmarkListResponse {
-  content: BookmarkResponse[];
-  pageNumber: number;
-  pageSize: number;
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
+export interface BookmarkApiResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: BookmarkResponse[];
 }
 
 export interface BookmarkListParams {
@@ -97,20 +93,11 @@ export const getNotices = async (
   return response.data;
 };
 
-export const getBookmarks = async (
-  params: BookmarkListParams = {}
-): Promise<BookmarkResponse[]> => {
-  const response = await noticeAxiosInstance.get<BookmarkListResponse>(
-    "/api/v1/notices/bookmarks",
-    {
-      params: {
-        page: params.page || 0,
-        size: params.size || 20,
-        sort: params.sort,
-      },
-    }
+export const getBookmarks = async (): Promise<BookmarkResponse[]> => {
+  const response = await noticeAxiosInstance.get<BookmarkApiResponse>(
+    "/api/v1/bookmark"
   );
-  return response.data.content;
+  return response.data.data;
 };
 
 export const addBookmark = async (noticeId: number): Promise<void> => {
