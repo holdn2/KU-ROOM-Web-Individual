@@ -25,7 +25,8 @@ const Notice = () => {
       scrollContainerRef.current.scrollTop = 0;
     }
     loadNoticesByCategory(activeTab);
-  }, [activeTab, loadNoticesByCategory]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
 
   return (
     <div className={styles["notice-container"]}>
