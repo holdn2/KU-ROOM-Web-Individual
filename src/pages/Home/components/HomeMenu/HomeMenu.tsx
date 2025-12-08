@@ -23,7 +23,10 @@ const HomeMenu = () => {
     );
   };
   const navToReadingRoom = () => {
-    console.log("열람실 좌석 현황으로");
+    window.open(
+      "https://library.konkuk.ac.kr/library-services/smuf/reading-rooms",
+      "_blank"
+    );
   };
   return (
     <div className={styles.HomeMenuWrapper}>
