@@ -13,13 +13,33 @@ export interface NoticeResponse {
   isBookMarked: boolean;
 }
 
-export interface NoticeListResponse {
-  content: NoticeResponse[];
+export interface PageableSort {
+  empty: boolean;
+  unsorted: boolean;
+  sorted: boolean;
+}
+
+export interface Pageable {
   pageNumber: number;
   pageSize: number;
-  totalElements: number;
-  totalPages: number;
+  sort: PageableSort;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface NoticeListResponse {
+  content: NoticeResponse[];
+  pageable: Pageable;
   last: boolean;
+  totalPages: number;
+  totalElements: number;
+  first: boolean;
+  size: number;
+  number: number;
+  sort: PageableSort;
+  numberOfElements: number;
+  empty: boolean;
 }
 
 export interface NoticeListParams {
@@ -34,6 +54,8 @@ export interface BookmarkResponse {
   bookmarkId: number;
   noticeId: number;
   noticeName: string;
+  noticePubDate: string;
+  bookmarkDate: string;
 }
 
 export interface BookmarkApiResponse {
@@ -64,7 +86,7 @@ noticeAxiosInstance.interceptors.request.use(
       try {
         token = localStorage.getItem("accessToken");
       } catch (_) {
-        throw Error;
+        token = null;
       }
     }
     if (token) {
