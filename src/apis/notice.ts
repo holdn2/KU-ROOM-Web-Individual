@@ -54,6 +54,8 @@ export interface BookmarkResponse {
   bookmarkId: number;
   noticeId: number;
   noticeName: string;
+  noticePubDate: string;
+  bookmarkDate: string;
 }
 
 export interface BookmarkApiResponse {
