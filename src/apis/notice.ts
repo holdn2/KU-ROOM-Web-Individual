@@ -86,7 +86,7 @@ noticeAxiosInstance.interceptors.request.use(
       try {
         token = localStorage.getItem("accessToken");
       } catch (_) {
-        throw Error;
+        token = null;
       }
     }
     if (token) {
