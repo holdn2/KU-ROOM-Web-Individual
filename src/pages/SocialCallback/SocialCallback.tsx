@@ -41,6 +41,14 @@ const SocialCallback = () => {
 
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
+
+            window.ReactNativeWebView?.postMessage(
+              JSON.stringify({
+                type: "AUTH_TOKEN",
+                accessToken: accessToken,
+              })
+            );
+
             setUser({ ...userResponse, loginType: "social" });
             navigate("/", { replace: true });
           } else {

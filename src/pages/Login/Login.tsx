@@ -69,6 +69,13 @@ const Login = () => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
+      window.ReactNativeWebView?.postMessage(
+        JSON.stringify({
+          type: "AUTH_TOKEN",
+          accessToken: accessToken,
+        })
+      );
+
       // 전역 상태관리 zustand 사용해서 저장.
       // TODO : 추후 서버에서 소셜 로그인 상태 보내주도록 수정
       setUser({ ...userResponse, loginType: "email" });
@@ -81,19 +88,25 @@ const Login = () => {
 
   // 구글 로그인 처리 함수
   const handleGoogleLogin = () => {
-    const redirectUri = import.meta.env.VITE_REDIRECT_URI || window.location.origin + "/social/callback";
+    const redirectUri =
+      import.meta.env.VITE_REDIRECT_URI ||
+      window.location.origin + "/social/callback";
     window.location.href = `https://kuroom.shop/oauth2/authorization/google?redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
   // 카카오 로그인 처리 함수
   const handleKakaoLogin = () => {
-    const redirectUri = import.meta.env.VITE_REDIRECT_URI || window.location.origin + "/social/callback";
+    const redirectUri =
+      import.meta.env.VITE_REDIRECT_URI ||
+      window.location.origin + "/social/callback";
     window.location.href = `https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
   // 네이버 로그인 처리 함수
   const handleNaverLogin = () => {
-    const redirectUri = import.meta.env.VITE_REDIRECT_URI || window.location.origin + "/social/callback";
+    const redirectUri =
+      import.meta.env.VITE_REDIRECT_URI ||
+      window.location.origin + "/social/callback";
     window.location.href = `https://kuroom.shop/oauth2/authorization/naver?redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
