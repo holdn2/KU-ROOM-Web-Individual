@@ -11,7 +11,7 @@ const NoticeDetail: React.FC = () => {
     loading,
     error,
     handleBookmarkToggle
-  } = useNoticeDetail(id);
+  } = useNoticeDetail(id, category);
 
   if (loading) {
     return (

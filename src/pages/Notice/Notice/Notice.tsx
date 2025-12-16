@@ -47,6 +47,7 @@ const Notice = () => {
           showBookmarkButton={false}
           showSortOptions={false}
           emptyMessage={NOTICE_MESSAGES.EMPTY_MESSAGE}
+          category={activeTab}
         />
         {hasMore && <div ref={loadMoreRef} style={{ height: "20px" }} />}
       </div>
