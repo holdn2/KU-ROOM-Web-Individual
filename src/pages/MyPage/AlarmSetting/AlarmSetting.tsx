@@ -24,7 +24,7 @@ const AlarmSetting = () => {
     const initialState: Record<string, boolean> = {};
     AlarmSectionData.forEach((section) =>
       section.contents.forEach((item) => {
-        initialState[item] = false;
+        initialState[item] = true;
       })
     );
     return initialState;
@@ -34,6 +34,15 @@ const AlarmSetting = () => {
       ...prev,
       [item]: !prev[item],
     }));
+    if (item === "새로운 공지 업로드") {
+      window.ReactNativeWebView?.postMessage(
+        JSON.stringify({
+          type: "UNSUBSCRIBE_DEV",
+          topic: "dev",
+          isSubscribe: false,
+        })
+      );
+    }
   };
 
   useEffect(() => {
