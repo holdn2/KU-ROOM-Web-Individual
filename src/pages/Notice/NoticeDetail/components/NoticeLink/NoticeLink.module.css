@@ -1,0 +1,17 @@
+.notice-link-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notice-link-container button {
+  width: 100%;
+  max-width: 584px;
+  font-weight: 600;
+}
