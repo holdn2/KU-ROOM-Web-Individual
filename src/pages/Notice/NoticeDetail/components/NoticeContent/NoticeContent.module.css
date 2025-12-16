@@ -37,7 +37,8 @@
 .notice-html-content {
   width: 100%;
   max-width: 100%;
-  padding: 70px 26px;
+  padding-bottom: 70px;
+  padding-inline: 26px;
   overflow-x: hidden;
   word-break: break-word;
   box-sizing: border-box;
