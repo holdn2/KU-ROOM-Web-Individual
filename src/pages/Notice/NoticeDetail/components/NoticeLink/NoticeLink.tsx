@@ -6,8 +6,20 @@ interface NoticeLinkProps {
 }
 
 function NoticeLink({ link }: NoticeLinkProps) {
+  if (!link || link.trim() === "") {
+    return null;
+  }
+
   const handleLinkClick = () => {
-    window.open(link, "_blank", "noopener,noreferrer");
+    try {
+      new URL(link);
+      const newWindow = window.open(link, "_blank", "noopener,noreferrer");
+      if (!newWindow) {
+        console.error("팝업이 차단되었습니다!");
+      }
+    } catch (error) {
+      console.error("유효하지 않은 URL:", error);
+    }
   };
 
   return (
