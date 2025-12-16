@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { NoticeResponse } from "@apis/notice";
-import { getNotices, getNoticeDetailHtml, addBookmark, removeBookmark } from "@apis/notice";
+import { getNotices, getNoticeDetail, addBookmark, removeBookmark } from "@apis/notice";
 import { NOTICE_DETAIL_MESSAGES } from "../constants";
 
 export const useNoticeDetail = (id: string | undefined) => {
@@ -35,10 +35,17 @@ export const useNoticeDetail = (id: string | undefined) => {
 
         if (foundNotice) {
           try {
-            const htmlContent = await getNoticeDetailHtml(id);
-            setNotice({ ...foundNotice, content: htmlContent });
-          } catch (htmlErr) {
-            console.warn("HTML 콘텐츠를 가져오는데 실패했습니다:", htmlErr);
+            const detailData = await getNoticeDetail(id);
+            // Base64 디코딩 후 UTF-8로 변환
+            const binaryString = atob(detailData.content);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+              bytes[i] = binaryString.charCodeAt(i);
+            }
+            const decodedContent = new TextDecoder('utf-8').decode(bytes);
+            setNotice({ ...foundNotice, content: decodedContent });
+          } catch (detailErr) {
+            console.warn("상세 콘텐츠를 가져오는데 실패했습니다:", detailErr);
             setNotice(foundNotice);
           }
         } else {
