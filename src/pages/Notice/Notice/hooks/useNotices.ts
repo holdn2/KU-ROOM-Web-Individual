@@ -10,12 +10,19 @@ export const useNotices = () => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   const currentCategoryRef = useRef<number | null>(null);
+  const loadingRef = useRef(false);
 
   const loadNoticesByCategory = useCallback(async (activeTab: string) => {
     const categoryId = getCategoryId(activeTab);
     if (!categoryId) return;
 
+    // 이미 같은 카테고리를 로딩 중이면 중복 호출 방지
+    if (loadingRef.current && currentCategoryRef.current === categoryId) {
+      return;
+    }
+
     currentCategoryRef.current = categoryId;
+    loadingRef.current = true;
     setPage(0);
     setHasMore(true);
     setLoading(true);
@@ -34,6 +41,7 @@ export const useNotices = () => {
       setHasMore(false);
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
   }, []);
 
