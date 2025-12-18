@@ -1,49 +1,50 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { NoticeResponse } from "@apis/notice";
-import { getNotices, getNoticeDetailHtml, addBookmark, removeBookmark } from "@apis/notice";
+import { getNoticeDetail, addBookmark, removeBookmark } from "@apis/notice";
 import { NOTICE_DETAIL_MESSAGES } from "../constants";
+import { decodeBase64ToUTF8 } from "@/shared/utils/base64";
+import { getCategoryId } from "@constant/categoryMapping";
 
-export const useNoticeDetail = (id: string | undefined) => {
+export const useNoticeDetail = (id: string | undefined, category: string | undefined) => {
   const [notice, setNotice] = useState<NoticeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const hasFetchedRef = useRef(false);
 
   useEffect(() => {
     const fetchNoticeDetail = async () => {
-      if (!id) return;
+      if (!id || !category || hasFetchedRef.current) return;
+
+      hasFetchedRef.current = true;
 
       try {
         setLoading(true);
         setError(null);
 
-        // 여러 카테고리에서 작은 크기로 나눠서 조회
-        const categories = ["234", "235", "237", "238", "240", "4083", "4214", "4274"];
-        let foundNotice: NoticeResponse | null = null;
-
-        for (const category of categories) {
-          try {
-            const response = await getNotices({ category, size: 100 });
-            const notice = response.content.find((n: NoticeResponse) => n.id === parseInt(id));
-            if (notice) {
-              foundNotice = notice;
-              break;
-            }
-          } catch (err) {
-            console.warn(`카테고리 ${category} 조회 실패:`, err);
-          }
-        }
-
-        if (foundNotice) {
-          try {
-            const htmlContent = await getNoticeDetailHtml(id);
-            setNotice({ ...foundNotice, content: htmlContent });
-          } catch (htmlErr) {
-            console.warn("HTML 콘텐츠를 가져오는데 실패했습니다:", htmlErr);
-            setNotice(foundNotice);
-          }
-        } else {
+        // 카테고리명을 ID로 변환
+        const categoryId = getCategoryId(category);
+        if (!categoryId) {
           setError(NOTICE_DETAIL_MESSAGES.NOT_FOUND);
+          return;
         }
+
+        // 상세 정보 조회
+        const detailData = await getNoticeDetail(id);
+        const decodedContent = decodeBase64ToUTF8(detailData.content);
+
+        // NoticeResponse 형식에 맞게 데이터 구성
+        setNotice({
+          id: detailData.id,
+          categoryId,
+          categoryName: category,
+          title: detailData.title,
+          link: detailData.link,
+          content: decodedContent,
+          pubDate: detailData.pubdate,
+          author: "",
+          description: "",
+          isBookMarked: false,
+        });
       } catch (err) {
         setError(NOTICE_DETAIL_MESSAGES.FETCH_ERROR);
         console.error("Failed to fetch notice detail:", err);
@@ -53,7 +54,7 @@ export const useNoticeDetail = (id: string | undefined) => {
     };
 
     fetchNoticeDetail();
-  }, [id]);
+  }, [id, category]);
 
   const handleBookmarkToggle = async () => {
     if (!notice) return;

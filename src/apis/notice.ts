@@ -71,6 +71,21 @@ export interface BookmarkListParams {
   sort?: string[];
 }
 
+export interface NoticeDetailData {
+  id: number;
+  content: string;
+  link: string;
+  title: string;
+  pubdate: string;
+}
+
+export interface NoticeDetailApiResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: NoticeDetailData;
+}
+
 const NOTICE_BASE_URL = "https://kuroom.shop";
 
 const noticeAxiosInstance = axios.create({
@@ -130,21 +145,14 @@ export const removeBookmark = async (noticeId: number): Promise<void> => {
   await noticeAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
 };
 
-export const getNoticeDetailHtml = async (noticeId: string): Promise<string> => {
+export const getNoticeDetail = async (noticeId: string): Promise<NoticeDetailData> => {
   try {
-    const response = await noticeAxiosInstance.get<string>(
-      `/api/v1/notices/${noticeId}`,
-      {
-        headers: {
-          'Accept': 'text/html'
-        },
-        responseType: 'text',
-        validateStatus: (status: number) => status >= 200 && status < 300
-      }
+    const response = await noticeAxiosInstance.get<NoticeDetailApiResponse>(
+      `/api/v1/notices/${noticeId}`
     );
-    return response.data;
+    return response.data.data;
   } catch (error: any) {
-    console.error("HTML 콘텐츠 조회 실패:", error);
+    console.error("공지사항 상세 조회 실패:", error);
     throw error;
   }
 };

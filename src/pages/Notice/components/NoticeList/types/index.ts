@@ -8,6 +8,7 @@ export interface NoticeListProps {
   showBookmarkButton?: boolean;
   showSortOptions?: boolean;
   emptyMessage?: string;
+  category?: string;
   onBookmarkToggle?: (noticeId: number) => void;
   onRetry?: () => void;
 }

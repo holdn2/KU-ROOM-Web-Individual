@@ -1,6 +1,6 @@
 import type React from "react";
 import { useParams } from "react-router-dom";
-import { NoticeDetailHeader, NoticeContent } from "./components";
+import { NoticeDetailHeader, NoticeContent, NoticeLink } from "./components";
 import { useNoticeDetail } from "./hooks/useNoticeDetail";
 import styles from "./NoticeDetail.module.css";
 
@@ -11,7 +11,7 @@ const NoticeDetail: React.FC = () => {
     loading,
     error,
     handleBookmarkToggle
-  } = useNoticeDetail(id);
+  } = useNoticeDetail(id, category);
 
   if (loading) {
     return (
@@ -54,6 +54,8 @@ const NoticeDetail: React.FC = () => {
       <NoticeContent
         notice={notice}
       />
+
+      <NoticeLink link={notice.link} />
     </div>
   );
 };
