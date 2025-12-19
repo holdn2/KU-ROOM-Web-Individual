@@ -3,6 +3,7 @@ import React from "react";
 import arrowRight from "@assets/nav/arrowRight.svg";
 import { AppVersion } from "@/shared/constant/appInfo";
 import { useUserStore } from "@stores/userStore";
+import { EmptyState } from "@/pages/Notice/components/NoticeList/components/EmptyState/EmptyState";
 
 import ToggleAlarmButton from "../ToggleAlarmButton";
 import KeywordButton from "../KeywordButton/KeywordButton";
@@ -87,8 +88,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               keywordData && (
                 <div className={styles.KeywordButtonWrapper} style={{}}>
                   {keywordData.length === 0 ? (
-                    <div className={styles.EmptyKeywordView}>
-                      <p>등록된 키워드가 없어요</p>
+                    <div className={styles.EmptyWrapper}>
+                      <EmptyState message="등록된 키워드가 없어요" />
                     </div>
                   ) : (
                     keywordData.map((item, index) => (

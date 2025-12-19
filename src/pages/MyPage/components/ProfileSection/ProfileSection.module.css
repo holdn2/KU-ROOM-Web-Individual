@@ -59,17 +59,14 @@
   gap: 10px;
 }
 
-.EmptyKeywordView {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50px;
-  color: #9eaab5;
-  font-size: 16px;
-  text-align: center;
+.EmptyWrapper {
   width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.EmptyKeywordView p {
-  margin: 0;
+.EmptyWrapper > div {
+  height: 50px;
 }
