@@ -139,3 +139,23 @@ export const getNoticeDetailHtml = async (noticeId: string): Promise<string> => 
     throw error;
   }
 };
+
+export interface KeywordToggleRequest {
+  keyword: string;
+}
+
+export interface KeywordToggleResponse {
+  code: number;
+  status: string;
+  message: string;
+}
+
+export const toggleKeyword = async (keyword: string): Promise<KeywordToggleResponse> => {
+  const response = await noticeAxiosInstance.post<KeywordToggleResponse>(
+    "/api/v1/notices/keyword",
+    {
+      keyword,
+    }
+  );
+  return response.data;
+};

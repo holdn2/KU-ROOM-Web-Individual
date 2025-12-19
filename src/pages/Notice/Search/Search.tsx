@@ -8,7 +8,7 @@ import { TagButtons } from "./Components/TagButtons";
 import { NoticeList } from "./Components/NoticeList";
 import { SearchResult } from "./Components/SearchResult";
 import { NotificationBadge } from "./Components/NotificationBadge";
-import { getNotices } from "../../../apis/notice";
+import { getNotices, toggleKeyword } from "../../../apis/notice";
 import type { NoticeResponse } from "@apis/notice";
 import styles from "./Search.module.css";
 
@@ -91,13 +91,21 @@ const Search: React.FC = () => {
     }
   };
 
-  const handleToggleNotification = (keyword: string) => {
-    setSubscribedKeywords((prev) => {
-      if (prev.includes(keyword)) {
-        return prev.filter((k) => k !== keyword);
+  const handleToggleNotification = async (keyword: string) => {
+    try {
+      const response = await toggleKeyword(keyword);
+
+      if (response.code === 200) {
+        setSubscribedKeywords((prev) => {
+          if (prev.includes(keyword)) {
+            return prev.filter((k) => k !== keyword);
+          }
+          return [...prev, keyword];
+        });
       }
-      return [...prev, keyword];
-    });
+    } catch (error) {
+      console.error('키워드 토글 실패:', error);
+    }
   };
 
   const handleToggleHistory = () => {
