@@ -86,13 +86,19 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               toggleStates?.[item] &&
               keywordData && (
                 <div className={styles.KeywordButtonWrapper} style={{}}>
-                  {keywordData.map((item, index) => (
-                    <KeywordButton
-                      key={index}
-                      keyword={item.keyword}
-                      handleDelete={() => onDeleteKeyword?.(item.keyword)}
-                    />
-                  ))}
+                  {keywordData.length === 0 ? (
+                    <div className={styles.EmptyKeywordView}>
+                      <p>등록된 키워드가 없어요</p>
+                    </div>
+                  ) : (
+                    keywordData.map((item, index) => (
+                      <KeywordButton
+                        key={index}
+                        keyword={item.keyword}
+                        handleDelete={() => onDeleteKeyword?.(item.keyword)}
+                      />
+                    ))
+                  )}
                 </div>
               )}
           </React.Fragment>
