@@ -8,7 +8,7 @@ import { TagButtons } from "./Components/TagButtons";
 import { NoticeList } from "./Components/NoticeList";
 import { SearchResult } from "./Components/SearchResult";
 import { NotificationBadge } from "./Components/NotificationBadge";
-import { getNotices, toggleKeyword } from "../../../apis/notice";
+import { getNotices, toggleKeyword, getKeywords } from "../../../apis/notice";
 import type { NoticeResponse } from "@apis/notice";
 import styles from "./Search.module.css";
 
@@ -41,7 +41,17 @@ const Search: React.FC = () => {
       }
     };
 
+    const loadSubscribedKeywords = async () => {
+      try {
+        const keywords = await getKeywords();
+        setSubscribedKeywords(keywords);
+      } catch (error) {
+        console.error('키워드 조회 실패:', error);
+      }
+    };
+
     loadAllNotices();
+    loadSubscribedKeywords();
   }, []);
 
   useEffect(() => {
