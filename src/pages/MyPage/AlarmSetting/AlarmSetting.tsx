@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import Header from "@components/Header/Header";
 import { AlarmSectionData } from "@constant/sectionDatas";
@@ -8,9 +8,13 @@ import ProfileSection from "../components/ProfileSection/ProfileSection";
 
 const AlarmSetting = () => {
   const [keywords, setKeywords] = useState<{ keyword: string }[]>([]);
+  const hasLoadedKeywords = useRef(false);
 
   useEffect(() => {
     const loadKeywords = async () => {
+      if (hasLoadedKeywords.current) return;
+      hasLoadedKeywords.current = true;
+
       try {
         const keywordList = await getKeywords();
         setKeywords(keywordList.map((keyword) => ({ keyword })));
