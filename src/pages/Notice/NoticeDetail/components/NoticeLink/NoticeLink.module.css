@@ -4,10 +4,19 @@
   left: 0;
   right: 0;
   padding: 16px 20px;
+  padding-top: 40px;
   z-index: 100;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.98) 50%,
+    rgba(255, 255, 255, 0.9) 70%,
+    rgba(255, 255, 255, 0.7) 85%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
 .notice-link-container button {
