@@ -2,21 +2,33 @@ import { useEffect, useState } from "react";
 
 import Header from "@components/Header/Header";
 import { AlarmSectionData } from "@constant/sectionDatas";
+import { getKeywords, toggleKeyword } from "@apis/notice";
 
 import ProfileSection from "../components/ProfileSection/ProfileSection";
 
 const AlarmSetting = () => {
-  // 키워드 더미 데이터
-  const [keywords, setKeywords] = useState<{ keyword: string }[]>([
-    { keyword: "입학식" },
-    { keyword: "성적 삭제" },
-    { keyword: "복학" },
-    { keyword: "휴학" },
-  ]);
-  // 추후 서버와 연동 시에 수정 필요
-  const handleDeleteKeyword = (target: string) => {
-    // 삭제 시 서버에 알려야 함.
-    setKeywords((prev) => prev.filter((k) => k.keyword !== target));
+  const [keywords, setKeywords] = useState<{ keyword: string }[]>([]);
+
+  useEffect(() => {
+    const loadKeywords = async () => {
+      try {
+        const keywordList = await getKeywords();
+        setKeywords(keywordList.map((keyword) => ({ keyword })));
+      } catch (error) {
+        console.error("키워드 조회 실패:", error);
+      }
+    };
+
+    loadKeywords();
+  }, []);
+
+  const handleDeleteKeyword = async (target: string) => {
+    try {
+      await toggleKeyword(target);
+      setKeywords((prev) => prev.filter((k) => k.keyword !== target));
+    } catch (error) {
+      console.error("키워드 삭제 실패:", error);
+    }
   };
 
   // 각 알림 상태

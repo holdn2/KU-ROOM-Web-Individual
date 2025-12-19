@@ -159,3 +159,19 @@ export const toggleKeyword = async (keyword: string): Promise<KeywordToggleRespo
   );
   return response.data;
 };
+
+export interface KeywordListResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    keywords: string[];
+  };
+}
+
+export const getKeywords = async (): Promise<string[]> => {
+  const response = await noticeAxiosInstance.get<KeywordListResponse>(
+    "/api/v1/notices/keyword"
+  );
+  return response.data.data.keywords;
+};
