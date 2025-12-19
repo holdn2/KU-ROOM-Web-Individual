@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import Header from "@components/Header/Header";
 
@@ -23,9 +23,13 @@ const Search: React.FC = () => {
   ]);
   const [subscribedKeywords, setSubscribedKeywords] = useState<string[]>([]);
   const [isHistoryEnabled, setIsHistoryEnabled] = useState(true);
+  const hasLoadedData = useRef(false);
 
   useEffect(() => {
-    const loadAllNotices = async () => {
+    const loadData = async () => {
+      if (hasLoadedData.current) return;
+      hasLoadedData.current = true;
+
       try {
         // 여러 카테고리에서 공지사항 가져오기
         const categories = ["234", "235", "237", "238", "240", "4083", "4214", "4274"];
@@ -36,22 +40,16 @@ const Search: React.FC = () => {
         const allNotices = responses.flatMap(response => response.content);
         setNotices(allNotices);
         setFilteredNotices(allNotices);
-      } catch (error) {
-        console.error('공지사항 로드 실패:', error);
-      }
-    };
 
-    const loadSubscribedKeywords = async () => {
-      try {
+        // 키워드 조회
         const keywords = await getKeywords();
         setSubscribedKeywords(keywords);
       } catch (error) {
-        console.error('키워드 조회 실패:', error);
+        console.error('데이터 로드 실패:', error);
       }
     };
 
-    loadAllNotices();
-    loadSubscribedKeywords();
+    loadData();
   }, []);
 
   useEffect(() => {
