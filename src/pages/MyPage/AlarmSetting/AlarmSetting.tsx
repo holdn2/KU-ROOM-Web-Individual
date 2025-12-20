@@ -3,10 +3,12 @@ import { useEffect, useState, useRef } from "react";
 import Header from "@components/Header/Header";
 import { AlarmSectionData } from "@constant/sectionDatas";
 import { getKeywords, toggleKeyword } from "@apis/notice";
+import useToast from "@/shared/hooks/use-toast";
 
 import ProfileSection from "../components/ProfileSection/ProfileSection";
 
 const AlarmSetting = () => {
+  const toast = useToast();
   const [keywords, setKeywords] = useState<{ keyword: string }[]>([]);
   const hasLoadedKeywords = useRef(false);
 
@@ -30,8 +32,10 @@ const AlarmSetting = () => {
     try {
       await toggleKeyword(target);
       setKeywords((prev) => prev.filter((k) => k.keyword !== target));
+      toast.info('키워드가 삭제되었어요');
     } catch (error) {
       console.error("키워드 삭제 실패:", error);
+      toast.error('키워드 삭제에 실패했어요');
     }
   };
 

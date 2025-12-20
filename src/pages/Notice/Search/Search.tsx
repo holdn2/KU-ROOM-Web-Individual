@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 import Header from "@components/Header/Header";
+import useToast from "@/shared/hooks/use-toast";
 
 import { SearchInput } from "./Components/SearchInput";
 import { SearchHistory } from "./Components/SearchHistory";
@@ -13,6 +14,7 @@ import type { NoticeResponse } from "@apis/notice";
 import styles from "./Search.module.css";
 
 const Search: React.FC = () => {
+  const toast = useToast();
   const [searchText, setSearchText] = useState("");
   const [notices, setNotices] = useState<NoticeResponse[]>([]);
   const [filteredNotices, setFilteredNotices] = useState<NoticeResponse[]>([]);
@@ -104,15 +106,24 @@ const Search: React.FC = () => {
       const response = await toggleKeyword(keyword);
 
       if (response.code === 200) {
+        const isRemoving = subscribedKeywords.includes(keyword);
+
         setSubscribedKeywords((prev) => {
           if (prev.includes(keyword)) {
             return prev.filter((k) => k !== keyword);
           }
           return [...prev, keyword];
         });
+
+        if (isRemoving) {
+          toast.info('키워드 알림이 해제되었어요');
+        } else {
+          toast.info('키워드 알림이 등록되었어요');
+        }
       }
     } catch (error) {
       console.error('키워드 토글 실패:', error);
+      toast.error('키워드 설정에 실패했어요');
     }
   };
 
