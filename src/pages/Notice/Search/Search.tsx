@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 import Header from "@components/Header/Header";
 import useToast from "@/shared/hooks/use-toast";
+import { categoryMapping } from "@/shared/constant/categoryMapping";
 
 import { SearchInput } from "./Components/SearchInput";
 import { SearchHistory } from "./Components/SearchHistory";
@@ -34,8 +35,8 @@ const Search: React.FC = () => {
 
       try {
         // 여러 카테고리에서 공지사항 가져오기
-        const categories = ["234", "235", "237", "238", "240", "4083", "4214", "4274"];
-        const allNoticesPromises = categories.map(category =>
+        const categoryIds = Object.values(categoryMapping).map(String);
+        const allNoticesPromises = categoryIds.map(category =>
           getNotices({ category, size: 5 })
         );
         const responses = await Promise.all(allNoticesPromises);
