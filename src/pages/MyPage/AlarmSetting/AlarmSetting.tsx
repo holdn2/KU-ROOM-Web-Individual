@@ -1,22 +1,42 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import Header from "@components/Header/Header";
 import { AlarmSectionData } from "@constant/sectionDatas";
+import { getKeywords, toggleKeyword } from "@apis/notice";
+import useToast from "@/shared/hooks/use-toast";
 
 import ProfileSection from "../components/ProfileSection/ProfileSection";
 
 const AlarmSetting = () => {
-  // 키워드 더미 데이터
-  const [keywords, setKeywords] = useState<{ keyword: string }[]>([
-    { keyword: "입학식" },
-    { keyword: "성적 삭제" },
-    { keyword: "복학" },
-    { keyword: "휴학" },
-  ]);
-  // 추후 서버와 연동 시에 수정 필요
-  const handleDeleteKeyword = (target: string) => {
-    // 삭제 시 서버에 알려야 함.
-    setKeywords((prev) => prev.filter((k) => k.keyword !== target));
+  const toast = useToast();
+  const [keywords, setKeywords] = useState<{ keyword: string }[]>([]);
+  const hasLoadedKeywords = useRef(false);
+
+  useEffect(() => {
+    const loadKeywords = async () => {
+      if (hasLoadedKeywords.current) return;
+      hasLoadedKeywords.current = true;
+
+      try {
+        const keywordList = await getKeywords();
+        setKeywords(keywordList.map((keyword) => ({ keyword })));
+      } catch (error) {
+        console.error("키워드 조회 실패:", error);
+      }
+    };
+
+    loadKeywords();
+  }, []);
+
+  const handleDeleteKeyword = async (target: string) => {
+    try {
+      await toggleKeyword(target);
+      setKeywords((prev) => prev.filter((k) => k.keyword !== target));
+      toast.info('키워드가 삭제되었어요');
+    } catch (error) {
+      console.error("키워드 삭제 실패:", error);
+      toast.error('키워드 삭제에 실패했어요');
+    }
   };
 
   // 각 알림 상태

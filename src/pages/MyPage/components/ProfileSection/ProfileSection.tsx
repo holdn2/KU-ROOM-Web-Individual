@@ -3,6 +3,7 @@ import React from "react";
 import arrowRight from "@assets/nav/arrowRight.svg";
 import { AppVersion } from "@/shared/constant/appInfo";
 import { useUserStore } from "@stores/userStore";
+import { EmptyState } from "@/pages/Notice/components/NoticeList/components/EmptyState/EmptyState";
 
 import ToggleAlarmButton from "../ToggleAlarmButton";
 import KeywordButton from "../KeywordButton/KeywordButton";
@@ -86,13 +87,19 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               toggleStates?.[item] &&
               keywordData && (
                 <div className={styles.KeywordButtonWrapper} style={{}}>
-                  {keywordData.map((item, index) => (
-                    <KeywordButton
-                      key={index}
-                      keyword={item.keyword}
-                      handleDelete={() => onDeleteKeyword?.(item.keyword)}
-                    />
-                  ))}
+                  {keywordData.length === 0 ? (
+                    <div className={styles.EmptyWrapper}>
+                      <EmptyState message="등록된 키워드가 없어요" />
+                    </div>
+                  ) : (
+                    keywordData.map((item, index) => (
+                      <KeywordButton
+                        key={index}
+                        keyword={item.keyword}
+                        handleDelete={() => onDeleteKeyword?.(item.keyword)}
+                      />
+                    ))
+                  )}
                 </div>
               )}
           </React.Fragment>

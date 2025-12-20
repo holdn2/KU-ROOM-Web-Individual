@@ -139,3 +139,39 @@ export const getNoticeDetailHtml = async (noticeId: string): Promise<string> => 
     throw error;
   }
 };
+
+export interface KeywordToggleRequest {
+  keyword: string;
+}
+
+export interface KeywordToggleResponse {
+  code: number;
+  status: string;
+  message: string;
+}
+
+export const toggleKeyword = async (keyword: string): Promise<KeywordToggleResponse> => {
+  const response = await noticeAxiosInstance.post<KeywordToggleResponse>(
+    "/api/v1/notices/keyword",
+    {
+      keyword,
+    }
+  );
+  return response.data;
+};
+
+export interface KeywordListResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    keywords: string[];
+  };
+}
+
+export const getKeywords = async (): Promise<string[]> => {
+  const response = await noticeAxiosInstance.get<KeywordListResponse>(
+    "/api/v1/notices/keyword"
+  );
+  return response.data.data.keywords;
+};

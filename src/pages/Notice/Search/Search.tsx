@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import Header from "@components/Header/Header";
+import useToast from "@/shared/hooks/use-toast";
+import { categoryMapping } from "@/shared/constant/categoryMapping";
 
 import { SearchInput } from "./Components/SearchInput";
 import { SearchHistory } from "./Components/SearchHistory";
@@ -8,11 +10,12 @@ import { TagButtons } from "./Components/TagButtons";
 import { NoticeList } from "./Components/NoticeList";
 import { SearchResult } from "./Components/SearchResult";
 import { NotificationBadge } from "./Components/NotificationBadge";
-import { getNotices } from "../../../apis/notice";
+import { getNotices, toggleKeyword, getKeywords } from "../../../apis/notice";
 import type { NoticeResponse } from "@apis/notice";
 import styles from "./Search.module.css";
 
 const Search: React.FC = () => {
+  const toast = useToast();
   const [searchText, setSearchText] = useState("");
   const [notices, setNotices] = useState<NoticeResponse[]>([]);
   const [filteredNotices, setFilteredNotices] = useState<NoticeResponse[]>([]);
@@ -23,25 +26,33 @@ const Search: React.FC = () => {
   ]);
   const [subscribedKeywords, setSubscribedKeywords] = useState<string[]>([]);
   const [isHistoryEnabled, setIsHistoryEnabled] = useState(true);
+  const hasLoadedData = useRef(false);
 
   useEffect(() => {
-    const loadAllNotices = async () => {
+    const loadData = async () => {
+      if (hasLoadedData.current) return;
+      hasLoadedData.current = true;
+
       try {
         // 여러 카테고리에서 공지사항 가져오기
-        const categories = ["234", "235", "237", "238", "240", "4083", "4214", "4274"];
-        const allNoticesPromises = categories.map(category =>
+        const categoryIds = Object.values(categoryMapping).map(String);
+        const allNoticesPromises = categoryIds.map(category =>
           getNotices({ category, size: 5 })
         );
         const responses = await Promise.all(allNoticesPromises);
         const allNotices = responses.flatMap(response => response.content);
         setNotices(allNotices);
         setFilteredNotices(allNotices);
+
+        // 키워드 조회
+        const keywords = await getKeywords();
+        setSubscribedKeywords(keywords);
       } catch (error) {
-        console.error('공지사항 로드 실패:', error);
+        console.error('데이터 로드 실패:', error);
       }
     };
 
-    loadAllNotices();
+    loadData();
   }, []);
 
   useEffect(() => {
@@ -91,13 +102,30 @@ const Search: React.FC = () => {
     }
   };
 
-  const handleToggleNotification = (keyword: string) => {
-    setSubscribedKeywords((prev) => {
-      if (prev.includes(keyword)) {
-        return prev.filter((k) => k !== keyword);
+  const handleToggleNotification = async (keyword: string) => {
+    try {
+      const response = await toggleKeyword(keyword);
+
+      if (response.code === 200) {
+        const isRemoving = subscribedKeywords.includes(keyword);
+
+        setSubscribedKeywords((prev) => {
+          if (prev.includes(keyword)) {
+            return prev.filter((k) => k !== keyword);
+          }
+          return [...prev, keyword];
+        });
+
+        if (isRemoving) {
+          toast.info('키워드 알림이 해제되었어요');
+        } else {
+          toast.info('키워드 알림이 등록되었어요');
+        }
       }
-      return [...prev, keyword];
-    });
+    } catch (error) {
+      console.error('키워드 토글 실패:', error);
+      toast.error('키워드 설정에 실패했어요');
+    }
   };
 
   const handleToggleHistory = () => {

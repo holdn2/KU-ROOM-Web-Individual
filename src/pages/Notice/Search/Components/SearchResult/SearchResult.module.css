@@ -1,5 +1,6 @@
 .searchResult {
-  padding: 0 15px;
+  padding: 0;
+  margin-top: 20px;
 }
 
 .noResultContainer {
