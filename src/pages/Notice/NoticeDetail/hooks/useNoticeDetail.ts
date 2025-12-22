@@ -48,6 +48,7 @@ export const useNoticeDetail = (
           author: "",
           description: "",
           isBookMarked: detailData.isBookmark,
+          bookmarkId: detailData.bookmarkId,
         });
       } catch (err) {
         setError(NOTICE_DETAIL_MESSAGES.FETCH_ERROR);
@@ -64,16 +65,19 @@ export const useNoticeDetail = (
     if (!notice) return;
 
     try {
-      if (notice.isBookMarked) {
-        await removeBookmark(notice.id);
+      if (notice.isBookMarked && notice.bookmarkId) {
+        // 북마크 삭제
+        await removeBookmark(notice.bookmarkId);
+        setNotice((prev) =>
+          prev ? { ...prev, isBookMarked: false, bookmarkId: undefined } : null
+        );
       } else {
-        await addBookmark(notice.id);
+        // 북마크 추가
+        const bookmarkId = await addBookmark(notice.id);
+        setNotice((prev) =>
+          prev ? { ...prev, isBookMarked: true, bookmarkId } : null
+        );
       }
-
-      // 북마크 상태 업데이트
-      setNotice((prev) =>
-        prev ? { ...prev, isBookMarked: !prev.isBookMarked } : null
-      );
     } catch (error) {
       console.error(NOTICE_DETAIL_MESSAGES.BOOKMARK_TOGGLE_ERROR, error);
     }

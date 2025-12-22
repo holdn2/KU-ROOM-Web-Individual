@@ -11,6 +11,7 @@ export interface NoticeResponse {
   author: string;
   description: string;
   isBookMarked: boolean;
+  bookmarkId?: number;
 }
 
 export interface PageableSort {
@@ -78,6 +79,7 @@ export interface NoticeDetailData {
   title: string;
   pubdate: string;
   isBookmark: boolean;
+  bookmarkId?: number;
 }
 
 export interface NoticeDetailApiResponse {
@@ -162,8 +164,16 @@ export const addBookmark = async (noticeId: number): Promise<number> => {
   return response.data.data.bookmarkId;
 };
 
-export const removeBookmark = async (noticeId: number): Promise<void> => {
-  await noticeAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
+export interface RemoveBookmarkApiResponse {
+  code: number;
+  status: string;
+  message: string;
+}
+
+export const removeBookmark = async (bookmarkId: number): Promise<void> => {
+  await noticeAxiosInstance.delete<RemoveBookmarkApiResponse>(
+    `/api/v1/bookmark/${bookmarkId}`
+  );
 };
 
 export const getNoticeDetail = async (
