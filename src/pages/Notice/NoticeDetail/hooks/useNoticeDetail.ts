@@ -24,7 +24,7 @@ export const useNoticeDetail = (id: string | undefined, category: string | undef
 
         // 카테고리명을 ID로 변환
         const categoryId = getCategoryId(category);
-        if (!categoryId) {
+        if (categoryId === undefined) {
           setError(NOTICE_DETAIL_MESSAGES.NOT_FOUND);
           return;
         }
