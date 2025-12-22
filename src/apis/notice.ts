@@ -13,13 +13,33 @@ export interface NoticeResponse {
   isBookMarked: boolean;
 }
 
-export interface NoticeListResponse {
-  content: NoticeResponse[];
+export interface PageableSort {
+  empty: boolean;
+  unsorted: boolean;
+  sorted: boolean;
+}
+
+export interface Pageable {
   pageNumber: number;
   pageSize: number;
-  totalElements: number;
-  totalPages: number;
+  sort: PageableSort;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface NoticeListResponse {
+  content: NoticeResponse[];
+  pageable: Pageable;
   last: boolean;
+  totalPages: number;
+  totalElements: number;
+  first: boolean;
+  size: number;
+  number: number;
+  sort: PageableSort;
+  numberOfElements: number;
+  empty: boolean;
 }
 
 export interface NoticeListParams {
@@ -31,26 +51,39 @@ export interface NoticeListParams {
 }
 
 export interface BookmarkResponse {
-  id: number;
-  title: string;
-  pubDate: string;
-  bookmarked: boolean;
-  link?: string;
+  bookmarkId: number;
+  noticeId: number;
+  noticeName: string;
+  noticePubDate: string;
+  bookmarkDate: string;
 }
 
-export interface BookmarkListResponse {
-  content: BookmarkResponse[];
-  pageNumber: number;
-  pageSize: number;
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
+export interface BookmarkApiResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: BookmarkResponse[];
 }
 
 export interface BookmarkListParams {
   page?: number;
   size?: number;
   sort?: string[];
+}
+
+export interface NoticeDetailData {
+  id: number;
+  content: string;
+  link: string;
+  title: string;
+  pubdate: string;
+}
+
+export interface NoticeDetailApiResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: NoticeDetailData;
 }
 
 const NOTICE_BASE_URL = "https://kuroom.shop";
@@ -68,7 +101,7 @@ noticeAxiosInstance.interceptors.request.use(
       try {
         token = localStorage.getItem("accessToken");
       } catch (_) {
-        throw Error;
+        token = null;
       }
     }
     if (token) {
@@ -97,20 +130,11 @@ export const getNotices = async (
   return response.data;
 };
 
-export const getBookmarks = async (
-  params: BookmarkListParams = {}
-): Promise<BookmarkResponse[]> => {
-  const response = await noticeAxiosInstance.get<BookmarkListResponse>(
-    "/api/v1/notices/bookmarks",
-    {
-      params: {
-        page: params.page || 0,
-        size: params.size || 20,
-        sort: params.sort,
-      },
-    }
+export const getBookmarks = async (): Promise<BookmarkResponse[]> => {
+  const response = await noticeAxiosInstance.get<BookmarkApiResponse>(
+    "/api/v1/bookmark"
   );
-  return response.data.content;
+  return response.data.data;
 };
 
 export const addBookmark = async (noticeId: number): Promise<void> => {
@@ -121,21 +145,14 @@ export const removeBookmark = async (noticeId: number): Promise<void> => {
   await noticeAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
 };
 
-export const getNoticeDetailHtml = async (noticeId: string): Promise<string> => {
+export const getNoticeDetail = async (noticeId: string): Promise<NoticeDetailData> => {
   try {
-    const response = await noticeAxiosInstance.get<string>(
-      `/api/v1/notices/${noticeId}`,
-      {
-        headers: {
-          'Accept': 'text/html'
-        },
-        responseType: 'text',
-        validateStatus: (status: number) => status >= 200 && status < 300
-      }
+    const response = await noticeAxiosInstance.get<NoticeDetailApiResponse>(
+      `/api/v1/notices/${noticeId}`
     );
-    return response.data;
+    return response.data.data;
   } catch (error: any) {
-    console.error("HTML 콘텐츠 조회 실패:", error);
+    console.error("공지사항 상세 조회 실패:", error);
     throw error;
   }
 };

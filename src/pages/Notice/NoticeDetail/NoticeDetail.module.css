@@ -41,7 +41,7 @@
 .notice-content-wrapper {
   flex: 1;
   overflow-y: auto;
-  padding: 70px 0 26px;
+  padding: 70px 0 90px;
   display: flex;
   flex-direction: column;
 }

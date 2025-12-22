@@ -19,6 +19,7 @@ const NoticeList = ({
   showBookmarkButton = true,
   showSortOptions = false,
   emptyMessage = NOTICE_LIST_MESSAGES.DEFAULT_EMPTY,
+  category,
   onBookmarkToggle,
   onRetry
 }: NoticeListProps) => {
@@ -33,7 +34,11 @@ const NoticeList = ({
   } = useNoticeListSort(notices);
 
   const handleNoticeClick = (noticeId: number) => {
-    navigate(`/notice/${noticeId}`);
+    if (category) {
+      navigate(`/notice/${category}/${noticeId}`);
+    } else {
+      navigate(`/notice/${noticeId}`);
+    }
   };
 
   const handleBookmarkClick = (e: React.MouseEvent, noticeId: number) => {

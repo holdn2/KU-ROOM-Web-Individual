@@ -16,12 +16,6 @@
   border-bottom: 1px solid #ced5db;
   overflow-x: auto;
   white-space: nowrap;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.notice-tabs-container::-webkit-scrollbar {
-  display: none;
 }
 
 .notice-tabs {
