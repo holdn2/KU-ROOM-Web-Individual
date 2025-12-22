@@ -57,6 +57,7 @@ export interface BookmarkResponse {
   noticeName: string;
   noticePubDate: string;
   bookmarkDate: string;
+  categoryId?: number;
 }
 
 export interface BookmarkApiResponse {
@@ -134,8 +135,9 @@ export const getNotices = async (
 };
 
 export const getBookmarks = async (): Promise<BookmarkResponse[]> => {
-  const response =
-    await noticeAxiosInstance.get<BookmarkApiResponse>("/api/v1/bookmark");
+  const response = await noticeAxiosInstance.get<BookmarkApiResponse>(
+    "/api/v1/bookmark"
+  );
   return response.data.data;
 };
 

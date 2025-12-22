@@ -17,7 +17,7 @@ export const useNoticeDetail = (
   useEffect(() => {
     const fetchNoticeDetail = async () => {
       const currentKey = `${id}-${category}`;
-      if (!id || !category || fetchedKeyRef.current === currentKey) return;
+      if (!id || fetchedKeyRef.current === currentKey) return;
 
       fetchedKeyRef.current = currentKey;
 
@@ -25,22 +25,30 @@ export const useNoticeDetail = (
         setLoading(true);
         setError(null);
 
-        // 카테고리명을 ID로 변환
-        const categoryId = getCategoryId(category);
-        if (categoryId === undefined) {
-          setError(NOTICE_DETAIL_MESSAGES.NOT_FOUND);
-          return;
-        }
-
         // 상세 정보 조회
         const detailData = await getNoticeDetail(id);
         const decodedContent = decodeBase64ToUTF8(detailData.content);
+
+        // 카테고리 정보 처리
+        let categoryId = 0;
+        let categoryName = "";
+
+        if (category) {
+          // URL에 카테고리가 있는 경우
+          const id = getCategoryId(category);
+          if (id === undefined) {
+            setError(NOTICE_DETAIL_MESSAGES.NOT_FOUND);
+            return;
+          }
+          categoryId = id;
+          categoryName = category;
+        }
 
         // NoticeResponse 형식에 맞게 데이터 구성
         setNotice({
           id: detailData.id,
           categoryId,
-          categoryName: category,
+          categoryName,
           title: detailData.title,
           link: detailData.link,
           content: decodedContent,
