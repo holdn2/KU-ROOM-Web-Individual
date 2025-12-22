@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { NoticeResponse } from "@apis/notice";
 import { getNoticeDetail, addBookmark, removeBookmark } from "@apis/notice";
 import { NOTICE_DETAIL_MESSAGES } from "../constants";
@@ -9,13 +9,14 @@ export const useNoticeDetail = (id: string | undefined, category: string | undef
   const [notice, setNotice] = useState<NoticeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const hasFetchedRef = useRef(false);
+  const [fetchedKey, setFetchedKey] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchNoticeDetail = async () => {
-      if (!id || !category || hasFetchedRef.current) return;
+      const currentKey = `${id}-${category}`;
+      if (!id || !category || fetchedKey === currentKey) return;
 
-      hasFetchedRef.current = true;
+      setFetchedKey(currentKey);
 
       try {
         setLoading(true);

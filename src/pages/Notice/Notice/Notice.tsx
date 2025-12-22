@@ -9,7 +9,12 @@ import { NOTICE_TABS, NOTICE_CONFIG, NOTICE_MESSAGES } from "./constants";
 import styles from "./Notice.module.css";
 
 const Notice = () => {
-  const [activeTab, setActiveTab] = useState<string>(NOTICE_CONFIG.DEFAULT_TAB);
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    const savedTab = localStorage.getItem(NOTICE_CONFIG.LAST_TAB_STORAGE_KEY);
+    return savedTab && NOTICE_TABS.includes(savedTab as (typeof NOTICE_TABS)[number])
+      ? savedTab
+      : NOTICE_CONFIG.DEFAULT_TAB;
+  });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { notices, loading, hasMore, loadNoticesByCategory, loadMoreNotices } = useNotices();
   const { tabsRef, indicatorStyle } = useTabIndicator(activeTab, NOTICE_TABS);
@@ -25,6 +30,7 @@ const Notice = () => {
       scrollContainerRef.current.scrollTop = 0;
     }
     loadNoticesByCategory(activeTab);
+    localStorage.setItem(NOTICE_CONFIG.LAST_TAB_STORAGE_KEY, activeTab);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 

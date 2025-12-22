@@ -12,6 +12,7 @@ export const NOTICE_TABS = [
 export const NOTICE_CONFIG = {
   DEFAULT_TAB: "학사",
   DEFAULT_PAGE_SIZE: 20,
+  LAST_TAB_STORAGE_KEY: "notice_last_tab",
 } as const;
 
 export const NOTICE_MESSAGES = {
