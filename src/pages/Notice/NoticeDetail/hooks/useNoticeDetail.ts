@@ -5,7 +5,10 @@ import { NOTICE_DETAIL_MESSAGES } from "../constants";
 import { decodeBase64ToUTF8 } from "@/shared/utils/base64";
 import { getCategoryId } from "@constant/categoryMapping";
 
-export const useNoticeDetail = (id: string | undefined, category: string | undefined) => {
+export const useNoticeDetail = (
+  id: string | undefined,
+  category: string | undefined
+) => {
   const [notice, setNotice] = useState<NoticeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +47,7 @@ export const useNoticeDetail = (id: string | undefined, category: string | undef
           pubDate: detailData.pubdate,
           author: "",
           description: "",
-          isBookMarked: false,
+          isBookMarked: detailData.isBookmark,
         });
       } catch (err) {
         setError(NOTICE_DETAIL_MESSAGES.FETCH_ERROR);
@@ -59,16 +62,18 @@ export const useNoticeDetail = (id: string | undefined, category: string | undef
 
   const handleBookmarkToggle = async () => {
     if (!notice) return;
-    
+
     try {
       if (notice.isBookMarked) {
         await removeBookmark(notice.id);
       } else {
         await addBookmark(notice.id);
       }
-      
+
       // 북마크 상태 업데이트
-      setNotice(prev => prev ? { ...prev, isBookMarked: !prev.isBookMarked } : null);
+      setNotice((prev) =>
+        prev ? { ...prev, isBookMarked: !prev.isBookMarked } : null
+      );
     } catch (error) {
       console.error(NOTICE_DETAIL_MESSAGES.BOOKMARK_TOGGLE_ERROR, error);
     }
