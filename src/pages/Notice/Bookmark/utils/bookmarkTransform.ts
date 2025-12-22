@@ -16,5 +16,6 @@ export const transformBookmarkToNotice = (apiData: BookmarkResponse[] | undefine
     author: "",
     description: "",
     isBookMarked: true,
+    bookmarkId: item.bookmarkId,
   }));
 };
