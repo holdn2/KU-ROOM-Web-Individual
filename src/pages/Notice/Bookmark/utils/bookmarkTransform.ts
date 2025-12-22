@@ -12,7 +12,7 @@ export const transformBookmarkToNotice = (apiData: BookmarkResponse[] | undefine
     title: item.noticeName,
     link: "",
     content: "",
-    pubDate: new Date().toISOString(),
+    pubDate: item.noticePubDate,
     author: "",
     description: "",
     isBookMarked: true,
