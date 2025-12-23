@@ -17,6 +17,7 @@ import {
   toggleKeyword,
   getKeywords,
   getPopularNotices,
+  getPrimaryNotices,
 } from "../../../apis/notice";
 import type { NoticeResponse } from "@apis/notice";
 import styles from "./Search.module.css";
@@ -26,6 +27,7 @@ const Search: React.FC = () => {
   const [searchText, setSearchText] = useState("");
   const [notices, setNotices] = useState<NoticeResponse[]>([]);
   const [popularNotices, setPopularNotices] = useState<NoticeResponse[]>([]);
+  const [primaryNotices, setPrimaryNotices] = useState<NoticeResponse[]>([]);
   const [filteredNotices, setFilteredNotices] = useState<NoticeResponse[]>([]);
   const [searchHistory, setSearchHistory] = useState<string[]>([
     "입학식",
@@ -35,6 +37,7 @@ const Search: React.FC = () => {
   const [subscribedKeywords, setSubscribedKeywords] = useState<string[]>([]);
   const [isHistoryEnabled, setIsHistoryEnabled] = useState(true);
   const [isLoadingPopular, setIsLoadingPopular] = useState(false);
+  const [isLoadingPrimary, setIsLoadingPrimary] = useState(false);
   const hasLoadedData = useRef(false);
 
   useEffect(() => {
@@ -67,6 +70,18 @@ const Search: React.FC = () => {
           toast.error("인기 공지를 불러오지 못했어요");
         } finally {
           setIsLoadingPopular(false);
+        }
+
+        // 주요 공지사항 조회
+        setIsLoadingPrimary(true);
+        try {
+          const primary = await getPrimaryNotices();
+          setPrimaryNotices(primary);
+        } catch (error) {
+          console.error("주요 공지사항 조회 실패:", error);
+          toast.error("주요 공지를 불러오지 못했어요");
+        } finally {
+          setIsLoadingPrimary(false);
         }
       } catch (error) {
         console.error("데이터 로드 실패:", error);
@@ -209,10 +224,18 @@ const Search: React.FC = () => {
           )}
 
           <h2 className={styles.sectionTitle}>주요 공지</h2>
-          <NoticeList
-            notices={notices.slice(5, 8)}
-            onItemClick={(noticeId: number) => navigateToNoticeDetail(noticeId)}
-          />
+          {isLoadingPrimary ? (
+            <LoadingState />
+          ) : primaryNotices.length === 0 ? (
+            <EmptyState message="주요 공지가 없어요" />
+          ) : (
+            <NoticeList
+              notices={primaryNotices}
+              onItemClick={(noticeId: number) =>
+                navigateToNoticeDetail(noticeId)
+              }
+            />
+          )}
         </>
       ) : (
         <>

@@ -243,3 +243,17 @@ export const getPopularNotices = async (): Promise<NoticeResponse[]> => {
   );
   return response.data.data;
 };
+
+export interface PrimaryNoticeResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: NoticeResponse[];
+}
+
+export const getPrimaryNotices = async (): Promise<NoticeResponse[]> => {
+  const response = await noticeAxiosInstance.get<PrimaryNoticeResponse>(
+    "/api/v1/notices/primary"
+  );
+  return response.data.data;
+};
