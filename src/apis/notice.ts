@@ -229,3 +229,17 @@ export const getKeywords = async (): Promise<string[]> => {
   );
   return response.data.data.keywords;
 };
+
+export interface PopularNoticeResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: NoticeResponse[];
+}
+
+export const getPopularNotices = async (): Promise<NoticeResponse[]> => {
+  const response = await noticeAxiosInstance.get<PopularNoticeResponse>(
+    "/api/v1/notices/popular"
+  );
+  return response.data.data;
+};

@@ -10,7 +10,14 @@ import { TagButtons } from "./Components/TagButtons";
 import { NoticeList } from "./Components/NoticeList";
 import { SearchResult } from "./Components/SearchResult";
 import { NotificationBadge } from "./Components/NotificationBadge";
-import { getNotices, toggleKeyword, getKeywords } from "../../../apis/notice";
+import { LoadingState } from "../components/NoticeList/components/LoadingState/LoadingState";
+import { EmptyState } from "../components/NoticeList/components/EmptyState/EmptyState";
+import {
+  getNotices,
+  toggleKeyword,
+  getKeywords,
+  getPopularNotices,
+} from "../../../apis/notice";
 import type { NoticeResponse } from "@apis/notice";
 import styles from "./Search.module.css";
 
@@ -18,6 +25,7 @@ const Search: React.FC = () => {
   const toast = useToast();
   const [searchText, setSearchText] = useState("");
   const [notices, setNotices] = useState<NoticeResponse[]>([]);
+  const [popularNotices, setPopularNotices] = useState<NoticeResponse[]>([]);
   const [filteredNotices, setFilteredNotices] = useState<NoticeResponse[]>([]);
   const [searchHistory, setSearchHistory] = useState<string[]>([
     "입학식",
@@ -26,6 +34,7 @@ const Search: React.FC = () => {
   ]);
   const [subscribedKeywords, setSubscribedKeywords] = useState<string[]>([]);
   const [isHistoryEnabled, setIsHistoryEnabled] = useState(true);
+  const [isLoadingPopular, setIsLoadingPopular] = useState(false);
   const hasLoadedData = useRef(false);
 
   useEffect(() => {
@@ -36,24 +45,36 @@ const Search: React.FC = () => {
       try {
         // 여러 카테고리에서 공지사항 가져오기
         const categoryIds = Object.values(categoryMapping).map(String);
-        const allNoticesPromises = categoryIds.map(category =>
+        const allNoticesPromises = categoryIds.map((category) =>
           getNotices({ category, size: 5 })
         );
         const responses = await Promise.all(allNoticesPromises);
-        const allNotices = responses.flatMap(response => response.content);
+        const allNotices = responses.flatMap((response) => response.content);
         setNotices(allNotices);
         setFilteredNotices(allNotices);
 
         // 키워드 조회
         const keywords = await getKeywords();
         setSubscribedKeywords(keywords);
+
+        // 북마크 기준 인기 공지사항 조회
+        setIsLoadingPopular(true);
+        try {
+          const popular = await getPopularNotices();
+          setPopularNotices(popular);
+        } catch (error) {
+          console.error("인기 공지사항 조회 실패:", error);
+          toast.error("인기 공지를 불러오지 못했어요");
+        } finally {
+          setIsLoadingPopular(false);
+        }
       } catch (error) {
-        console.error('데이터 로드 실패:', error);
+        console.error("데이터 로드 실패:", error);
       }
     };
 
     loadData();
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     // 검색어에 따라 공지사항 필터링
@@ -96,9 +117,9 @@ const Search: React.FC = () => {
   };
 
   const navigateToNoticeDetail = (noticeId: number) => {
-    const notice = notices.find(n => n.id === noticeId);
+    const notice = notices.find((n) => n.id === noticeId);
     if (notice?.link) {
-      window.open(notice.link, '_blank');
+      window.open(notice.link, "_blank");
     }
   };
 
@@ -117,14 +138,14 @@ const Search: React.FC = () => {
         });
 
         if (isRemoving) {
-          toast.info('키워드 알림이 해제되었어요');
+          toast.info("키워드 알림이 해제되었어요");
         } else {
-          toast.info('키워드 알림이 등록되었어요');
+          toast.info("키워드 알림이 등록되었어요");
         }
       }
     } catch (error) {
-      console.error('키워드 토글 실패:', error);
-      toast.error('키워드 설정에 실패했어요');
+      console.error("키워드 토글 실패:", error);
+      toast.error("키워드 설정에 실패했어요");
     }
   };
 
@@ -136,7 +157,6 @@ const Search: React.FC = () => {
     setSearchHistory([]);
   };
 
-  // 검색어가 있으면 검색 결과만 표시
   const isSearching = searchText.length > 0;
 
   return (
@@ -170,15 +190,23 @@ const Search: React.FC = () => {
               "다전공",
               "졸업유예",
             ]}
-            selectedTags={[]} // 추천 검색어에서는 선택 상태가 없음
+            selectedTags={[]}
             onTagClick={handleTagClick}
           />
 
           <h2 className={styles.sectionTitle}>인기 공지</h2>
-          <NoticeList
-            notices={notices.slice(0, 3)}
-            onItemClick={(noticeId: number) => navigateToNoticeDetail(noticeId)}
-          />
+          {isLoadingPopular ? (
+            <LoadingState />
+          ) : popularNotices.length === 0 ? (
+            <EmptyState message="인기 공지가 없어요" />
+          ) : (
+            <NoticeList
+              notices={popularNotices}
+              onItemClick={(noticeId: number) =>
+                navigateToNoticeDetail(noticeId)
+              }
+            />
+          )}
 
           <h2 className={styles.sectionTitle}>주요 공지</h2>
           <NoticeList
