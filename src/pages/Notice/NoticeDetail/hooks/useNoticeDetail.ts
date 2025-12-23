@@ -4,6 +4,7 @@ import { getNoticeDetail, addBookmark, removeBookmark } from "@apis/notice";
 import { NOTICE_DETAIL_MESSAGES } from "../constants";
 import { decodeBase64ToUTF8 } from "@/shared/utils/base64";
 import { getCategoryId } from "@constant/categoryMapping";
+import useToast from "@/shared/hooks/use-toast";
 
 export const useNoticeDetail = (
   id: string | undefined,
@@ -13,6 +14,7 @@ export const useNoticeDetail = (
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const fetchedKeyRef = useRef<string | null>(null);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchNoticeDetail = async () => {
@@ -88,6 +90,7 @@ export const useNoticeDetail = (
       }
     } catch (error) {
       console.error(NOTICE_DETAIL_MESSAGES.BOOKMARK_TOGGLE_ERROR, error);
+      toast.error(NOTICE_DETAIL_MESSAGES.BOOKMARK_TOGGLE_ERROR);
     }
   };
 
