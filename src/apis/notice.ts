@@ -11,6 +11,7 @@ export interface NoticeResponse {
   author: string;
   description: string;
   isBookMarked: boolean;
+  bookmarkId?: number;
 }
 
 export interface PageableSort {
@@ -56,6 +57,7 @@ export interface BookmarkResponse {
   noticeName: string;
   noticePubDate: string;
   bookmarkDate: string;
+  categoryId?: number;
 }
 
 export interface BookmarkApiResponse {
@@ -77,6 +79,8 @@ export interface NoticeDetailData {
   link: string;
   title: string;
   pubdate: string;
+  isBookmark: boolean;
+  bookmarkId?: number;
 }
 
 export interface NoticeDetailApiResponse {
@@ -137,15 +141,46 @@ export const getBookmarks = async (): Promise<BookmarkResponse[]> => {
   return response.data.data;
 };
 
-export const addBookmark = async (noticeId: number): Promise<void> => {
-  await noticeAxiosInstance.post(`/api/v1/notices/${noticeId}/bookmark`);
+export interface AddBookmarkRequest {
+  noticeId: number;
+}
+
+export interface AddBookmarkData {
+  bookmarkId: number;
+}
+
+export interface AddBookmarkApiResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: AddBookmarkData;
+}
+
+export const addBookmark = async (noticeId: number): Promise<number> => {
+  const response = await noticeAxiosInstance.post<AddBookmarkApiResponse>(
+    "/api/v1/bookmark",
+    {
+      noticeId,
+    }
+  );
+  return response.data.data.bookmarkId;
 };
 
-export const removeBookmark = async (noticeId: number): Promise<void> => {
-  await noticeAxiosInstance.delete(`/api/v1/notices/${noticeId}/bookmark`);
+export interface RemoveBookmarkApiResponse {
+  code: number;
+  status: string;
+  message: string;
+}
+
+export const removeBookmark = async (bookmarkId: number): Promise<void> => {
+  await noticeAxiosInstance.delete<RemoveBookmarkApiResponse>(
+    `/api/v1/bookmark/${bookmarkId}`
+  );
 };
 
-export const getNoticeDetail = async (noticeId: string): Promise<NoticeDetailData> => {
+export const getNoticeDetail = async (
+  noticeId: string
+): Promise<NoticeDetailData> => {
   try {
     const response = await noticeAxiosInstance.get<NoticeDetailApiResponse>(
       `/api/v1/notices/${noticeId}`
@@ -167,7 +202,9 @@ export interface KeywordToggleResponse {
   message: string;
 }
 
-export const toggleKeyword = async (keyword: string): Promise<KeywordToggleResponse> => {
+export const toggleKeyword = async (
+  keyword: string
+): Promise<KeywordToggleResponse> => {
   const response = await noticeAxiosInstance.post<KeywordToggleResponse>(
     "/api/v1/notices/keyword",
     {
