@@ -11,7 +11,6 @@ import { ALARM_SECTION_DATA } from "./constant/alarm";
 import useAlarmSettingQuery from "./hooks/use-alarm-setting-query";
 import useAlarmSettingMutation from "./hooks/use-alarm-setting-mutation";
 import styles from "./AlarmSetting.module.css";
-import { ALARM_CATEGORY } from "./types/alarm-type";
 
 const AlarmSetting = () => {
   const toast = useToast();
@@ -49,27 +48,13 @@ const AlarmSetting = () => {
   };
 
   const handleToggle = (item: string) => {
-    let category: string;
+    const category = ALARM_SECTION_DATA.flatMap(
+      (section) => section.contents
+    ).find((content) => content.name === item)?.category;
 
-    switch (item) {
-      case "친구 신청":
-        category = ALARM_CATEGORY.NEW_FRIEND_REQUEST;
-        break;
-      case "친구 위치 공유":
-        category = ALARM_CATEGORY.NEW_FRIEND_PLACE_SHARING;
-        break;
-      case "새로운 공지 업로드":
-        category = ALARM_CATEGORY.NEW_NOTICE;
-        break;
-      case "공지 키워드 알림":
-        category = ALARM_CATEGORY.NEW_KEYWORD_NOTICE;
-        break;
-      case "순위 변동 알림":
-        category = ALARM_CATEGORY.RENEW_RANK_PLACE;
-        break;
-      default:
-        category = "";
-        break;
+    if (!category) {
+      console.error(`Unknown alarm item: ${item}`);
+      return;
     }
     updateAlarmActiveStatus(category);
   };

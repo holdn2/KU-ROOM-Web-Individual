@@ -60,5 +60,9 @@ export const getAlarmReadStatus = async () => {
 };
 
 export const checkAllAlarmsApi = async () => {
-  await axiosInstance.patch(ALARM_API_URL.CHECK_ALL);
+  const response = await axiosInstance.patch<ApiResponse>(
+    ALARM_API_URL.CHECK_ALL
+  );
+
+  return response.data;
 };
