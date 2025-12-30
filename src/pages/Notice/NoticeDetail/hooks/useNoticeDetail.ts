@@ -37,12 +37,12 @@ export const useNoticeDetail = (
 
         if (category) {
           // URL에 카테고리가 있는 경우
-          const id = getCategoryId(category);
-          if (id === undefined) {
+          const resolvedCategoryId = getCategoryId(category);
+          if (resolvedCategoryId === undefined) {
             setError(NOTICE_DETAIL_MESSAGES.NOT_FOUND);
             return;
           }
-          categoryId = id;
+          categoryId = resolvedCategoryId;
           categoryName = category;
         }
 
