@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 
 import Header from "@components/Header/Header";
 import useToast from "@/shared/hooks/use-toast";
-import { categoryMapping } from "@/shared/constant/categoryMapping";
 
 import { SearchInput } from "./Components/SearchInput";
 import { SearchHistory } from "./Components/SearchHistory";
@@ -13,7 +12,6 @@ import { NotificationBadge } from "./Components/NotificationBadge";
 import { LoadingState } from "../components/NoticeList/components/LoadingState/LoadingState";
 import { EmptyState } from "../components/NoticeList/components/EmptyState/EmptyState";
 import {
-  getNotices,
   toggleKeyword,
   getKeywords,
   getPopularNotices,
@@ -26,7 +24,6 @@ import styles from "./Search.module.css";
 const Search: React.FC = () => {
   const toast = useToast();
   const [searchText, setSearchText] = useState("");
-  const [notices, setNotices] = useState<NoticeResponse[]>([]);
   const [popularNotices, setPopularNotices] = useState<NoticeResponse[]>([]);
   const [primaryNotices, setPrimaryNotices] = useState<NoticeResponse[]>([]);
   const [filteredNotices, setFilteredNotices] = useState<NoticeResponse[]>([]);
@@ -48,16 +45,6 @@ const Search: React.FC = () => {
       hasLoadedData.current = true;
 
       try {
-        // 여러 카테고리에서 공지사항 가져오기
-        const categoryIds = Object.values(categoryMapping).map(String);
-        const allNoticesPromises = categoryIds.map((category) =>
-          getNotices({ category, size: 5 })
-        );
-        const responses = await Promise.all(allNoticesPromises);
-        const allNotices = responses.flatMap((response) => response.content);
-        setNotices(allNotices);
-        setFilteredNotices(allNotices);
-
         // 키워드 조회
         const keywords = await getKeywords();
         setSubscribedKeywords(keywords);
@@ -145,7 +132,12 @@ const Search: React.FC = () => {
   };
 
   const navigateToNoticeDetail = (noticeId: number) => {
-    const notice = notices.find((n) => n.id === noticeId);
+    const allNotices = [
+      ...popularNotices,
+      ...primaryNotices,
+      ...filteredNotices,
+    ];
+    const notice = allNotices.find((n) => n.id === noticeId);
     if (notice?.link) {
       window.open(notice.link, "_blank");
     }
