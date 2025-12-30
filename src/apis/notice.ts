@@ -257,3 +257,25 @@ export const getPrimaryNotices = async (): Promise<NoticeResponse[]> => {
   );
   return response.data.data;
 };
+
+export interface SearchNoticesParams {
+  keyword: string;
+  page?: number;
+  size?: number;
+}
+
+export const searchNotices = async (
+  params: SearchNoticesParams
+): Promise<NoticeListResponse> => {
+  const response = await noticeAxiosInstance.get<NoticeListResponse>(
+    "/api/v1/notices/search",
+    {
+      params: {
+        keyword: params.keyword,
+        page: params.page || 0,
+        size: params.size || 20,
+      },
+    }
+  );
+  return response.data;
+};

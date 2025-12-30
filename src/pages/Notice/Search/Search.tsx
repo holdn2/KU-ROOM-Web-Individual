@@ -18,6 +18,7 @@ import {
   getKeywords,
   getPopularNotices,
   getPrimaryNotices,
+  searchNotices,
 } from "../../../apis/notice";
 import type { NoticeResponse } from "@apis/notice";
 import styles from "./Search.module.css";
@@ -38,6 +39,7 @@ const Search: React.FC = () => {
   const [isHistoryEnabled, setIsHistoryEnabled] = useState(true);
   const [isLoadingPopular, setIsLoadingPopular] = useState(false);
   const [isLoadingPrimary, setIsLoadingPrimary] = useState(false);
+  const [isLoadingSearch, setIsLoadingSearch] = useState(false);
   const hasLoadedData = useRef(false);
 
   useEffect(() => {
@@ -92,17 +94,28 @@ const Search: React.FC = () => {
   }, [toast]);
 
   useEffect(() => {
-    // 검색어에 따라 공지사항 필터링
-    let filtered = notices;
-
-    if (searchText) {
-      filtered = filtered.filter((notice) =>
-        notice.title.toLowerCase().includes(searchText.toLowerCase())
-      );
+    if (!searchText) {
+      setFilteredNotices([]);
+      return;
     }
 
-    setFilteredNotices(filtered);
-  }, [searchText, notices]);
+    const debounceTimer = setTimeout(async () => {
+      setIsLoadingSearch(true);
+      try {
+        const response = await searchNotices({ keyword: searchText });
+        setFilteredNotices(response.content);
+      } catch (error) {
+        console.error("검색 실패:", error);
+        toast.error("검색에 실패했어요");
+        setFilteredNotices([]);
+      } finally {
+        setIsLoadingSearch(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchText]);
 
   const handleTagClick = (tag: string) => {
     setSearchText(tag);
@@ -247,6 +260,7 @@ const Search: React.FC = () => {
           <SearchResult
             filteredNotices={filteredNotices}
             onItemClick={navigateToNoticeDetail}
+            isLoading={isLoadingSearch}
           />
         </>
       )}
