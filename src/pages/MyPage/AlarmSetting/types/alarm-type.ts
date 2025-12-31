@@ -8,6 +8,6 @@ export const ALARM_CATEGORY = {
 } as const;
 
 export interface AlarmContentType {
-  category: string;
+  category: string[];
   name: string;
 }
