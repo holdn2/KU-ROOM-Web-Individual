@@ -22,7 +22,7 @@ export default function useAlarmSettingQuery() {
     queryFn: () => getAlarmActiveStatusApi(),
   });
 
-  if (isError || !disabledAlarmTypes) {
+  if (isError) {
     toast.error("기존 알림 설정을 가져오는데 실패했습니다.");
     navigate("/myinfo");
   }
@@ -54,10 +54,11 @@ export default function useAlarmSettingQuery() {
   };
 
   const handleToggleAll = () => {
-    // disabledAlarmTypes가 undefined이면 페이지 이동
+    if (!disabledAlarmTypes) return;
+
     const update = isAllAlarmOn
       ? Object.values(ALARM_CATEGORY)
-      : [...disabledAlarmTypes!];
+      : [...disabledAlarmTypes];
     updateAlarmActiveStatus(update);
   };
 
