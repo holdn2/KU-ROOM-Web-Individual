@@ -90,7 +90,7 @@ export interface NoticeDetailApiResponse {
   data: NoticeDetailData;
 }
 
-const NOTICE_BASE_URL = "https://kuroom.shop";
+const NOTICE_BASE_URL = "https://kuroom.shop/api/v1";
 
 const noticeAxiosInstance = axios.create({
   baseURL: NOTICE_BASE_URL,
@@ -120,7 +120,7 @@ export const getNotices = async (
   params: NoticeListParams = {}
 ): Promise<NoticeListResponse> => {
   const response = await noticeAxiosInstance.get<NoticeListResponse>(
-    "/api/v1/notices",
+    "/notices",
     {
       params: {
         category: params.category,
@@ -136,7 +136,7 @@ export const getNotices = async (
 
 export const getBookmarks = async (): Promise<BookmarkResponse[]> => {
   const response = await noticeAxiosInstance.get<BookmarkApiResponse>(
-    "/api/v1/bookmark"
+    "/bookmark"
   );
   return response.data.data;
 };
@@ -158,7 +158,7 @@ export interface AddBookmarkApiResponse {
 
 export const addBookmark = async (noticeId: number): Promise<number> => {
   const response = await noticeAxiosInstance.post<AddBookmarkApiResponse>(
-    "/api/v1/bookmark",
+    "/bookmark",
     {
       noticeId,
     }
@@ -174,7 +174,7 @@ export interface RemoveBookmarkApiResponse {
 
 export const removeBookmark = async (bookmarkId: number): Promise<void> => {
   await noticeAxiosInstance.delete<RemoveBookmarkApiResponse>(
-    `/api/v1/bookmark/${bookmarkId}`
+    `/bookmark/${bookmarkId}`
   );
 };
 
@@ -183,7 +183,7 @@ export const getNoticeDetail = async (
 ): Promise<NoticeDetailData> => {
   try {
     const response = await noticeAxiosInstance.get<NoticeDetailApiResponse>(
-      `/api/v1/notices/${noticeId}`
+      `/notices/${noticeId}`
     );
     return response.data.data;
   } catch (error: any) {
@@ -206,7 +206,7 @@ export const toggleKeyword = async (
   keyword: string
 ): Promise<KeywordToggleResponse> => {
   const response = await noticeAxiosInstance.post<KeywordToggleResponse>(
-    "/api/v1/notices/keyword",
+    "/notices/keyword",
     {
       keyword,
     }
@@ -225,7 +225,7 @@ export interface KeywordListResponse {
 
 export const getKeywords = async (): Promise<string[]> => {
   const response = await noticeAxiosInstance.get<KeywordListResponse>(
-    "/api/v1/notices/keyword"
+    "/notices/keyword"
   );
   return response.data.data.keywords;
 };
@@ -239,7 +239,7 @@ export interface PopularNoticeResponse {
 
 export const getPopularNotices = async (): Promise<NoticeResponse[]> => {
   const response = await noticeAxiosInstance.get<PopularNoticeResponse>(
-    "/api/v1/notices/popular"
+    "/notices/popular"
   );
   return response.data.data;
 };
@@ -253,7 +253,7 @@ export interface PrimaryNoticeResponse {
 
 export const getPrimaryNotices = async (): Promise<NoticeResponse[]> => {
   const response = await noticeAxiosInstance.get<PrimaryNoticeResponse>(
-    "/api/v1/notices/primary"
+    "/notices/primary"
   );
   return response.data.data;
 };
@@ -268,7 +268,7 @@ export const searchNotices = async (
   params: SearchNoticesParams
 ): Promise<NoticeListResponse> => {
   const response = await noticeAxiosInstance.get<NoticeListResponse>(
-    "/api/v1/notices/search",
+    "/notices/search",
     {
       params: {
         keyword: params.keyword,
