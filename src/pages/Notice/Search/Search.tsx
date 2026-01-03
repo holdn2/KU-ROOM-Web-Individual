@@ -12,7 +12,7 @@ import { NotificationBadge } from "./Components/NotificationBadge";
 import { LoadingState } from "../components/NoticeList/components/LoadingState/LoadingState";
 import { EmptyState } from "../components/NoticeList/components/EmptyState/EmptyState";
 import {
-  toggleKeyword,
+  registerKeyword,
   getKeywords,
   searchNotices,
 } from "../../../apis/search";
@@ -144,7 +144,7 @@ const Search: React.FC = () => {
 
   const handleToggleNotification = async (keyword: string) => {
     try {
-      const response = await toggleKeyword(keyword);
+      const response = await registerKeyword(keyword);
 
       if (response.code === 200) {
         const isRemoving = subscribedKeywords.includes(keyword);
@@ -163,7 +163,7 @@ const Search: React.FC = () => {
         }
       }
     } catch (error) {
-      console.error("키워드 토글 실패:", error);
+      console.error("키워드 등록/해제 실패:", error);
       toast.error("키워드 설정에 실패했어요");
     }
   };

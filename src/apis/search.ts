@@ -7,11 +7,11 @@ export interface SearchNoticesParams {
   size?: number;
 }
 
-export interface KeywordToggleRequest {
+export interface KeywordRegisterRequest {
   keyword: string;
 }
 
-export interface KeywordToggleResponse {
+export interface KeywordRegisterResponse {
   code: number;
   status: string;
   message: string;
@@ -68,10 +68,10 @@ export const searchNotices = async (
   return response.data;
 };
 
-export const toggleKeyword = async (
+export const registerKeyword = async (
   keyword: string
-): Promise<KeywordToggleResponse> => {
-  const response = await searchAxiosInstance.post<KeywordToggleResponse>(
+): Promise<KeywordRegisterResponse> => {
+  const response = await searchAxiosInstance.post<KeywordRegisterResponse>(
     "/notices/keyword",
     {
       keyword,
