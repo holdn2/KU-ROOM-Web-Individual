@@ -14,10 +14,9 @@ import { EmptyState } from "../components/NoticeList/components/EmptyState/Empty
 import {
   toggleKeyword,
   getKeywords,
-  getPopularNotices,
-  getPrimaryNotices,
   searchNotices,
-} from "../../../apis/notice";
+} from "../../../apis/search";
+import { getPopularNotices, getPrimaryNotices } from "../../../apis/notice";
 import type { NoticeResponse } from "@apis/notice";
 import styles from "./Search.module.css";
 

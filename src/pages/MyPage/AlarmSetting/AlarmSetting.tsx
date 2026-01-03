@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 
 import Header from "@components/Header/Header";
 import { AlarmSectionData } from "@constant/sectionDatas";
-import { getKeywords, toggleKeyword } from "@apis/notice";
+import { getKeywords, toggleKeyword } from "@apis/search";
 import useToast from "@/shared/hooks/use-toast";
 
 import ProfileSection from "../components/ProfileSection/ProfileSection";

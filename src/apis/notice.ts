@@ -51,28 +51,6 @@ export interface NoticeListParams {
   sort?: string[];
 }
 
-export interface BookmarkResponse {
-  bookmarkId: number;
-  noticeId: number;
-  noticeName: string;
-  noticePubDate: string;
-  bookmarkDate: string;
-  categoryId?: number;
-}
-
-export interface BookmarkApiResponse {
-  code: number;
-  status: string;
-  message: string;
-  data: BookmarkResponse[];
-}
-
-export interface BookmarkListParams {
-  page?: number;
-  size?: number;
-  sort?: string[];
-}
-
 export interface NoticeDetailData {
   id: number;
   content: string;
@@ -134,50 +112,6 @@ export const getNotices = async (
   return response.data;
 };
 
-export const getBookmarks = async (): Promise<BookmarkResponse[]> => {
-  const response = await noticeAxiosInstance.get<BookmarkApiResponse>(
-    "/bookmark"
-  );
-  return response.data.data;
-};
-
-export interface AddBookmarkRequest {
-  noticeId: number;
-}
-
-export interface AddBookmarkData {
-  bookmarkId: number;
-}
-
-export interface AddBookmarkApiResponse {
-  code: number;
-  status: string;
-  message: string;
-  data: AddBookmarkData;
-}
-
-export const addBookmark = async (noticeId: number): Promise<number> => {
-  const response = await noticeAxiosInstance.post<AddBookmarkApiResponse>(
-    "/bookmark",
-    {
-      noticeId,
-    }
-  );
-  return response.data.data.bookmarkId;
-};
-
-export interface RemoveBookmarkApiResponse {
-  code: number;
-  status: string;
-  message: string;
-}
-
-export const removeBookmark = async (bookmarkId: number): Promise<void> => {
-  await noticeAxiosInstance.delete<RemoveBookmarkApiResponse>(
-    `/bookmark/${bookmarkId}`
-  );
-};
-
 export const getNoticeDetail = async (
   noticeId: string
 ): Promise<NoticeDetailData> => {
@@ -190,44 +124,6 @@ export const getNoticeDetail = async (
     console.error("공지사항 상세 조회 실패:", error);
     throw error;
   }
-};
-
-export interface KeywordToggleRequest {
-  keyword: string;
-}
-
-export interface KeywordToggleResponse {
-  code: number;
-  status: string;
-  message: string;
-}
-
-export const toggleKeyword = async (
-  keyword: string
-): Promise<KeywordToggleResponse> => {
-  const response = await noticeAxiosInstance.post<KeywordToggleResponse>(
-    "/notices/keyword",
-    {
-      keyword,
-    }
-  );
-  return response.data;
-};
-
-export interface KeywordListResponse {
-  code: number;
-  status: string;
-  message: string;
-  data: {
-    keywords: string[];
-  };
-}
-
-export const getKeywords = async (): Promise<string[]> => {
-  const response = await noticeAxiosInstance.get<KeywordListResponse>(
-    "/notices/keyword"
-  );
-  return response.data.data.keywords;
 };
 
 export interface PopularNoticeResponse {
@@ -256,26 +152,4 @@ export const getPrimaryNotices = async (): Promise<NoticeResponse[]> => {
     "/notices/primary"
   );
   return response.data.data;
-};
-
-export interface SearchNoticesParams {
-  keyword: string;
-  page?: number;
-  size?: number;
-}
-
-export const searchNotices = async (
-  params: SearchNoticesParams
-): Promise<NoticeListResponse> => {
-  const response = await noticeAxiosInstance.get<NoticeListResponse>(
-    "/notices/search",
-    {
-      params: {
-        keyword: params.keyword,
-        page: params.page || 0,
-        size: params.size || 20,
-      },
-    }
-  );
-  return response.data;
 };

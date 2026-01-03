@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { NoticeResponse } from "@apis/notice";
-import { getNoticeDetail, addBookmark, removeBookmark } from "@apis/notice";
+import { getNoticeDetail } from "@apis/notice";
+import { addBookmark, removeBookmark } from "@apis/bookmark";
 import { NOTICE_DETAIL_MESSAGES } from "../constants";
 import { decodeBase64ToUTF8 } from "@/shared/utils/base64";
 import { getCategoryId } from "@constant/categoryMapping";
