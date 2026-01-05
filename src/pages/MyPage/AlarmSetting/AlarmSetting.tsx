@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 
 import Header from "@components/Header/Header";
-import { AlarmSectionData } from "@/shared/constant/sectionDatas";
 import { getKeywords, registerKeyword } from "@apis/search";
 import useToast from "@/shared/hooks/use-toast";
 
