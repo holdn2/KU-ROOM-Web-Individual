@@ -1,15 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 
+import useToast from "@hooks/use-toast";
 import Header from "@components/Header/Header";
 import { getKeywords, registerKeyword } from "@apis/search";
-import useToast from "@/shared/hooks/use-toast";
 
 import ProfileSection from "@pages/MyPage/components/ProfileSection/ProfileSection";
 import ToggleAlarmButton from "@pages/MyPage/components/ToggleAlarmButton";
+import { ALARM_SECTION_DATA } from "@pages/MyPage/AlarmSetting/constant/alarm";
+import useAlarmSettingQuery from "@pages/MyPage/AlarmSetting/hooks/use-alarm-setting-query";
 
-import { ALARM_SECTION_DATA } from "./constant/alarm";
-import useAlarmSettingQuery from "./hooks/use-alarm-setting-query";
-import useAlarmSettingMutation from "./hooks/use-alarm-setting-mutation";
 import styles from "./AlarmSetting.module.css";
 
 const AlarmSetting = () => {
@@ -17,8 +16,13 @@ const AlarmSetting = () => {
   const [keywords, setKeywords] = useState<{ keyword: string }[]>([]);
   const hasLoadedKeywords = useRef(false);
 
-  const { toggleStates, isPending } = useAlarmSettingQuery();
-  const { updateAlarmActiveStatus } = useAlarmSettingMutation();
+  const {
+    isAllAlarmOn,
+    toggleStates,
+    isPending,
+    handleToggle,
+    handleToggleAll,
+  } = useAlarmSettingQuery();
 
   useEffect(() => {
     const loadKeywords = async () => {
@@ -36,6 +40,11 @@ const AlarmSetting = () => {
     loadKeywords();
   }, []);
 
+  if (isPending) {
+    // TODO: 로딩 화면 보여주기
+    return <div>로딩중...</div>;
+  }
+
   const handleDeleteKeyword = async (target: string) => {
     try {
       await registerKeyword(target);
@@ -47,23 +56,6 @@ const AlarmSetting = () => {
     }
   };
 
-  const handleToggle = (item: string) => {
-    const category = ALARM_SECTION_DATA.flatMap(
-      (section) => section.contents
-    ).find((content) => content.name === item)?.category;
-
-    if (!category) {
-      console.error(`Unknown alarm item: ${item}`);
-      return;
-    }
-    updateAlarmActiveStatus(category);
-  };
-
-  if (isPending) {
-    // TODO: 로딩 화면 보여주기
-    return <div>로딩중...</div>;
-  }
-
   return (
     <div>
       <Header>알림 설정</Header>
@@ -72,7 +64,7 @@ const AlarmSetting = () => {
           <span className={styles.SectionTitle}>전체</span>
           <div className={styles.ContentWrapper}>
             <span className={styles.ContentName}>전체 알림</span>
-            <ToggleAlarmButton isOn={false} onToggle={() => {}} />
+            <ToggleAlarmButton isOn={isAllAlarmOn} onToggle={handleToggleAll} />
           </div>
         </div>
         {ALARM_SECTION_DATA.map((data, index) => (

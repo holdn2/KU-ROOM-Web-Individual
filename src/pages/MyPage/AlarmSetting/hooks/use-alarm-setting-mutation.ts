@@ -1,13 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import useToast from "@hooks/use-toast";
-import { updateAlarmActiveStatusApi } from "../api";
-import { ALARM_QUERY_KEY } from "@/pages/Alarm/querykey/alarm";
+
+import { updateAlarmActiveStatusApi } from "@pages/MyPage/AlarmSetting/api";
+import { ALARM_QUERY_KEY } from "@pages/Alarm/querykey/alarm";
 
 export default function useAlarmSettingMutation() {
   const toast = useToast();
   const qc = useQueryClient();
   const { mutate: updateAlarmActiveStatus } = useMutation({
-    mutationFn: (alarmType: string) => updateAlarmActiveStatusApi(alarmType),
+    mutationFn: (alarmTypes: string[]) =>
+      updateAlarmActiveStatusApi(alarmTypes),
     onSuccess: () => {
       qc.invalidateQueries({
         queryKey: ALARM_QUERY_KEY.SETTING,

@@ -21,19 +21,21 @@ export const getAlarmActiveStatusApi = async () => {
 
 interface UpdateAlarmActiveStatusResponse extends ApiResponse {
   data: {
-    disabledAlarmType: string[];
+    userId: number;
+    alarms: {
+      alarmType: string;
+      isDisabled: boolean;
+    }[];
   };
 }
 
-export const updateAlarmActiveStatusApi = async (alarmType: string) => {
+export const updateAlarmActiveStatusApi = async (alarmTypes: string[]) => {
   const response = await axiosInstance.patch<UpdateAlarmActiveStatusResponse>(
     ALARM_SETTING_API_URL.ALARM_ACTIVE_STATUS,
     {
-      alarmType,
+      alarmTypes,
     }
   );
 
   return response.data.data;
 };
-
-// TODO : 전체 알림 활성화 및 비활성화 api 필요
