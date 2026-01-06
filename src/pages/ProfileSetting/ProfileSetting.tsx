@@ -150,6 +150,8 @@ const ProfileSetting: React.FC = () => {
       }
     } catch (error: any) {
       // 에러 처리는 각 API 함수 내부에서 처리됨
+      // TODO: 추후 API 함수 내에서 처리하지 말고 여기서 처리하도록 수정하기
+      console.error(error);
     }
   };
 
