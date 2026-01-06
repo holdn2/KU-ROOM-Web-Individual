@@ -20,7 +20,6 @@ interface FriendModalProps {
   modalType: string;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
   setRefreshList: React.Dispatch<React.SetStateAction<boolean>>;
-  filteringSearch?: () => Promise<void>;
 }
 
 const FriendModal: React.FC<FriendModalProps> = ({
@@ -30,7 +29,6 @@ const FriendModal: React.FC<FriendModalProps> = ({
   modalType,
   setModalState,
   setRefreshList,
-  filteringSearch,
 }) => {
   const [reportReason, setReportReason] = useState("");
 
@@ -68,8 +66,6 @@ const FriendModal: React.FC<FriendModalProps> = ({
       setModalState(false);
       setRefreshList((prev) => !prev);
       setReportReason("");
-
-      if (filteringSearch) await filteringSearch();
     }
   };
 
