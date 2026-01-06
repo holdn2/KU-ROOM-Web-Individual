@@ -168,12 +168,12 @@ export const acceptRequest = async (receiverId: number) => {
   }
 };
 // 친구 요청 거절 api
-export const rejectRequest = async (requestId: number) => {
+export const rejectRequest = async (receiverId: number) => {
   try {
     const response = await axiosInstance.put(
       REJECT_REQUEST,
       {
-        requestId: requestId,
+        receiverId,
       },
       {
         headers: {
@@ -190,13 +190,13 @@ export const rejectRequest = async (requestId: number) => {
 };
 
 // 보낸 요청 취소 api
-export const cancelRequest = async (requestId: number) => {
+export const cancelRequest = async (receiverId: number) => {
   try {
     // delete 요청에 body가 필요할 때 아래와 같이 사용한다.
     const response = await axiosInstance.request({
       url: REQUEST_FRIEND,
       method: "DELETE",
-      data: { requestId: requestId },
+      data: { receiverId },
       headers: {
         "Content-Type": "application/json",
       },

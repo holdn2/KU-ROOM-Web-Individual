@@ -109,7 +109,7 @@ const FriendAdd = () => {
       const response = await cancelRequest(id);
       console.log(response);
       setRefreshList((prev) => !prev);
-      await filteringSearch();
+      if (filteredUsers) await filteringSearch();
     } catch (error) {
       console.error("친구요청 취소 실패 :", error);
     }
@@ -186,7 +186,6 @@ const FriendAdd = () => {
         modalType={modalType}
         setModalState={setModalState}
         setRefreshList={setRefreshList}
-        filteringSearch={filteringSearch}
       />
     </div>
   );
