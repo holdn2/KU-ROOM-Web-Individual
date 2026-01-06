@@ -119,7 +119,9 @@ export const reissueTokenApi = async () => {
     );
     return response.data.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "토큰 재발급 중 오류 발생");
+    throw new Error(
+      error.response?.data?.message || "토큰 재발급 중 오류 발생"
+    );
   }
 };
 
@@ -137,9 +139,7 @@ export const getTokenByTempToken = async (tempToken: string) => {
     );
     return response.data;
   } catch (error: any) {
-    throw new Error(
-      error.response?.data?.message || "토큰 발급 중 오류 발생"
-    );
+    throw new Error(error.response?.data?.message || "토큰 발급 중 오류 발생");
   }
 };
 
@@ -175,7 +175,8 @@ interface CreateSocialUserRequest {
 
 export const createSocialUserApi = async (
   preSignupToken: string,
-  userData: CreateSocialUserRequest
+  userData: CreateSocialUserRequest,
+  setIsDuplicatedNickname: (value: boolean) => void
 ) => {
   try {
     const response = await axios.post<LoginResponse>(
@@ -192,6 +193,11 @@ export const createSocialUserApi = async (
     );
     return response.data;
   } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.message || "회원가입 중 오류 발생";
+    if (errorMessage === "이미 존재하는 닉네임입니다.") {
+      setIsDuplicatedNickname(true);
+    }
     throw new Error(
       error.response?.data?.message || "소셜 로그인 회원 생성 중 오류 발생"
     );

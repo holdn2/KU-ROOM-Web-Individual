@@ -114,7 +114,8 @@ const ProfileSetting: React.FC = () => {
 
         const response = await createSocialUserApi(
           preSignupToken,
-          socialUserData
+          socialUserData,
+          setIsDuplicatedNickname
         );
 
         if (response?.data) {
