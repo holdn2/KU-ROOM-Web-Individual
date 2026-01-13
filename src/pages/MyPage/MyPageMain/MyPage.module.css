@@ -1,7 +1,8 @@
-/* .MyPageContentWrapper {
+.MyPageContentWrapper {
+  margin-top: 56px;
   max-height: calc(100vh - 150px);
   overflow-y: auto;
-} */
+}
 .DivideSectionThick {
   height: 10px;
   background: var(--Gray-500, rgba(227, 231, 235, 0.3));

@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import {
   cancelRequest,
   getSearchedNewFriends,
   requestFriend,
 } from "@apis/friend";
-import { reissueTokenApi } from "@apis/axiosInstance";
-import PullToRefresh from "@components/PullToRefresh/PullToRefresh";
 import Header from "@components/Header/Header";
 
 import FriendSearch from "../components/FriendSearch/FriendSearch";
@@ -27,16 +24,16 @@ interface SearchedFriend {
 }
 
 const FriendAdd = () => {
-  const navigate = useNavigate();
   const [searchTarget, setSearchTarget] = useState("");
-  // 페이지 리렌더링 트리거
-  const [isRefreshed, setIsRefreshed] = useState(0);
 
   const [refreshList, setRefreshList] = useState(false);
 
   const [filteredUsers, setFilteredUsers] = useState<SearchedFriend[]>([]);
   const [trySearch, setTrySearch] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  const [hasRequested, setHasRequested] = useState(false);
+  const [hasReceived, setHasReceived] = useState(false);
 
   const [acceptReceiveFriend, setAcceptReceiveFriend] = useState("");
   const [acceptReceiveFriendId, setAcceptReceiveFriendId] = useState(0);
@@ -47,19 +44,6 @@ const FriendAdd = () => {
     setTrySearch(false);
     setFilteredUsers([]);
   }, [searchTarget]);
-
-  const pageRefresh = async () => {
-    try {
-      await reissueTokenApi();
-      setIsRefreshed((prev) => prev + 1);
-    } catch (error) {
-      console.error("토큰 재발급 실패 : ", error);
-      navigate("/login");
-    }
-  };
-  useEffect(() => {
-    console.log("페이지 리프레쉬");
-  }, [isRefreshed]);
 
   // 검색 시 로직. 서버에 요청해야함.
   const filteringSearch = async () => {
@@ -109,7 +93,7 @@ const FriendAdd = () => {
       const response = await cancelRequest(id);
       console.log(response);
       setRefreshList((prev) => !prev);
-      if (filteredUsers) await filteringSearch();
+      if (filteredUsers.length > 0) await filteringSearch();
     } catch (error) {
       console.error("친구요청 취소 실패 :", error);
     }
@@ -128,55 +112,58 @@ const FriendAdd = () => {
   };
 
   return (
-    <div>
+    <>
       <Header>친구 추가</Header>
-      <PullToRefresh onRefresh={pageRefresh} maxDistance={80}>
-        <div className={styles.FriendAddPageWrapper}>
-          <div className={styles.SearchBarContainer}>
-            <FriendSearch
-              searchTarget={searchTarget}
-              setSearchTarget={(value) => {
-                setSearchTarget(value);
-                setFilteredUsers([]);
-              }}
-              onFocus={() => setIsSearchFocused(true)}
-              onBlur={handleBlurSearch}
-              onKeyDown={handleSearchKeyDown}
-            />
-          </div>
-          {isSearchFocused ? (
-            // 검색 결과 렌더링
-            <SearchAddFriend
-              searchTarget={searchTarget}
-              trySearch={trySearch}
-              filteredUsers={filteredUsers}
-              handleSendRequest={handleSendRequest}
+      <div className={styles.FriendAddPageWrapper}>
+        <div className={styles.SearchBarContainer}>
+          <FriendSearch
+            searchTarget={searchTarget}
+            setSearchTarget={(value) => {
+              setSearchTarget(value);
+              setFilteredUsers([]);
+            }}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={handleBlurSearch}
+            onKeyDown={handleSearchKeyDown}
+          />
+        </div>
+        {isSearchFocused ? (
+          // 검색 결과 렌더링
+          <SearchAddFriend
+            searchTarget={searchTarget}
+            trySearch={trySearch}
+            filteredUsers={filteredUsers}
+            handleSendRequest={handleSendRequest}
+            handleDeleteRequest={handleDeleteRequest}
+            setAcceptReceiveFriend={setAcceptReceiveFriend}
+            setAcceptReceiveFriendId={setAcceptReceiveFriendId}
+            setModalType={setModalType}
+            setModalState={setModalState}
+            refreshList={refreshList}
+          />
+        ) : (
+          <div className={styles.FriendAddListWrapper}>
+            {/* 보낸 요청 */}
+            <RequestedFriend
               handleDeleteRequest={handleDeleteRequest}
+              refreshList={refreshList}
+              setHasRequested={setHasRequested}
+            />
+            {hasRequested && hasReceived && (
+              <div className={styles.separator} />
+            )}
+            {/* 받은 요청 */}
+            <ReceivedFriend
               setAcceptReceiveFriend={setAcceptReceiveFriend}
               setAcceptReceiveFriendId={setAcceptReceiveFriendId}
               setModalType={setModalType}
               setModalState={setModalState}
               refreshList={refreshList}
+              setHasReceived={setHasReceived}
             />
-          ) : (
-            <div className={styles.FriendAddListWrapper}>
-              {/* 보낸 요청 */}
-              <RequestedFriend
-                handleDeleteRequest={handleDeleteRequest}
-                refreshList={refreshList}
-              />
-              {/* 받은 요청 */}
-              <ReceivedFriend
-                setAcceptReceiveFriend={setAcceptReceiveFriend}
-                setAcceptReceiveFriendId={setAcceptReceiveFriendId}
-                setModalType={setModalType}
-                setModalState={setModalState}
-                refreshList={refreshList}
-              />
-            </div>
-          )}
-        </div>
-      </PullToRefresh>
+          </div>
+        )}
+      </div>
 
       {/* 수락/거절 모달 */}
       <FriendModal
@@ -187,7 +174,7 @@ const FriendAdd = () => {
         setModalState={setModalState}
         setRefreshList={setRefreshList}
       />
-    </div>
+    </>
   );
 };
 

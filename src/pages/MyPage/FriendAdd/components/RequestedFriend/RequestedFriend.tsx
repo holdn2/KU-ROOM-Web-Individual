@@ -16,11 +16,13 @@ interface Friend {
 interface RequestedFriendProps {
   handleDeleteRequest: (id: number) => void;
   refreshList: boolean;
+  setHasRequested: (value: boolean) => void;
 }
 
 const RequestedFriend = ({
   handleDeleteRequest,
   refreshList,
+  setHasRequested,
 }: RequestedFriendProps) => {
   const [requestList, setRequestList] = useState<Friend[]>([]);
 
@@ -44,6 +46,10 @@ const RequestedFriend = ({
   useEffect(() => {
     fetchSentRequest();
   }, [refreshList]);
+
+  useEffect(() => {
+    setHasRequested(requestList.length > 0);
+  }, [requestList.length, setHasRequested]);
 
   return (
     !(requestList.length === 0) && (

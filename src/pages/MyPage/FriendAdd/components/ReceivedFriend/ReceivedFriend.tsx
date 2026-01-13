@@ -19,6 +19,7 @@ interface ReceivedFriendProps {
   setModalType: (value: string) => void;
   setModalState: (value: boolean) => void;
   refreshList: boolean;
+  setHasReceived: (value: boolean) => void;
 }
 
 const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
@@ -27,6 +28,7 @@ const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
   setModalType,
   setModalState,
   refreshList,
+  setHasReceived,
 }) => {
   const [receivedList, setReceivedList] = useState<Friend[]>([]);
 
@@ -49,6 +51,10 @@ const ReceivedFriend: React.FC<ReceivedFriendProps> = ({
     };
     fetchReceivedRequests();
   }, [refreshList]);
+
+  useEffect(() => {
+    setHasReceived(receivedList.length > 0);
+  }, [receivedList.length, setHasReceived]);
 
   // 친구 요청 수락
   const handleAcceptRequest = (friend: Friend) => {
