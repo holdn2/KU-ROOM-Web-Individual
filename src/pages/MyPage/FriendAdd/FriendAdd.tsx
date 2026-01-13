@@ -93,7 +93,7 @@ const FriendAdd = () => {
       const response = await cancelRequest(id);
       console.log(response);
       setRefreshList((prev) => !prev);
-      if (filteredUsers) await filteringSearch();
+      if (filteredUsers.length > 0) await filteringSearch();
     } catch (error) {
       console.error("친구요청 취소 실패 :", error);
     }
