@@ -36,7 +36,7 @@ const MapSearch: React.FC<MapSearchProps> = ({
   const getRecentSearch = async () => {
     try {
       const response = await getRecentSearchLocation();
-      console.log(response);
+      console.log("여기???", response);
       setRecentSearchData(response);
     } catch (error) {
       console.error("최근 검색어 가져오기 실패 : ", error);
@@ -106,13 +106,6 @@ const MapSearch: React.FC<MapSearchProps> = ({
     setSearchText(name);
     handleSearch(name);
   };
-
-  useEffect(() => {
-    if (searchText === "") {
-      resetSearchText();
-      getRecentSearch();
-    }
-  }, [searchText]);
 
   return (
     <div className={styles.SearchModeContainer}>
