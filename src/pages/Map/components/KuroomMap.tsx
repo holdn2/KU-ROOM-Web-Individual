@@ -74,24 +74,26 @@ const KuroomMap = ({
     if (setIsTracking) noTracking(map, setIsTracking, isTrackingRef);
 
     // 현재 위치 정보 가져와서 마커 추가 및 watchPosition으로 따라가기
-    if (navigator.geolocation && isTracking) {
+    if (navigator.geolocation) {
       // 초기 위치 먼저 빠르게 잡기. watchPosition은 최초 위치 가져올 때 시간이 걸릴 수 있음.
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const current = new window.naver.maps.LatLng(
-            position.coords.latitude,
-            position.coords.longitude,
-          );
-          setCurrentLatLng(current); // 상태 업데이트
-          map.setCenter(current); // 지도 중심 이동
-          if (setIsTracking) setIsTracking(true);
-        },
-        (err) => console.warn("초기 위치 가져오기 실패", err),
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-        },
-      );
+      if (isTracking) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const current = new window.naver.maps.LatLng(
+              position.coords.latitude,
+              position.coords.longitude,
+            );
+            setCurrentLatLng(current); // 상태 업데이트
+            map.setCenter(current); // 지도 중심 이동
+            if (setIsTracking) setIsTracking(true);
+          },
+          (err) => console.warn("초기 위치 가져오기 실패", err),
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+          },
+        );
+      }
 
       const cleanup = myLocationTracking(
         map,
