@@ -80,7 +80,7 @@ const KuroomMap = ({
         (position) => {
           const current = new window.naver.maps.LatLng(
             position.coords.latitude,
-            position.coords.longitude
+            position.coords.longitude,
           );
           setCurrentLatLng(current); // 상태 업데이트
           map.setCenter(current); // 지도 중심 이동
@@ -90,14 +90,14 @@ const KuroomMap = ({
         {
           enableHighAccuracy: true,
           timeout: 10000,
-        }
+        },
       );
 
       const cleanup = myLocationTracking(
         map,
         setCurrentLatLng,
         markerRef,
-        isTrackingRef
+        isTrackingRef,
       );
 
       //  지도 중심이 변경될 때마다 좌표 반환
@@ -133,17 +133,17 @@ const KuroomMap = ({
         selectedCategoryTitle!,
         setIsTracking,
         setHasFocusedMarker,
-        setDetailLocationData
+        setDetailLocationData,
       );
     }
   }, [markerFlag]);
 
   // 추적 모드 활성화 시 현재 위치 중심으로 지도 이동
   useEffect(() => {
-    if (isTrackingRef.current && currentLatLng && mapInstance.current) {
+    if (isTracking && currentLatLng && mapInstance.current) {
       mapInstance.current.setCenter(currentLatLng);
     }
-  }, [isTrackingRef.current]);
+  }, [isTracking, currentLatLng]);
 
   useEffect(() => {
     isTrackingRef.current = isTracking;
