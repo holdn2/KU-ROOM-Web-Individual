@@ -140,10 +140,10 @@ const KuroomMap = ({
 
   // 추적 모드 활성화 시 현재 위치 중심으로 지도 이동
   useEffect(() => {
-    if (isTracking && currentLatLng && mapInstance.current) {
+    if (isTrackingRef.current && currentLatLng && mapInstance.current) {
       mapInstance.current.setCenter(currentLatLng);
     }
-  }, [isTracking]);
+  }, [isTrackingRef.current]);
 
   useEffect(() => {
     isTrackingRef.current = isTracking;
