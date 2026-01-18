@@ -33,7 +33,7 @@ const KuroomMap = ({
   markers,
   markerFlag,
   mapRefProp,
-  isTracking = true,
+  isTracking = false,
   selectedCategoryTitle,
   setIsTracking,
   draggable = true,
@@ -47,7 +47,7 @@ const KuroomMap = ({
   const markerRef = useRef<naver.maps.Marker | null>(null);
   const mapInstance = useRef<naver.maps.Map | null>(null); // 지도 객체를 저장할 ref
   const [currentLatLng, setCurrentLatLng] = useState<any>(null); // 현재 위치를 기억
-  const isTrackingRef = useRef(true); // 추적 상태 최신값을 유지할 ref
+  const isTrackingRef = useRef(false); // 추적 상태 최신값을 유지할 ref
 
   // 컴포넌트 초기화 로직 ***********************************************
   useEffect(() => {
