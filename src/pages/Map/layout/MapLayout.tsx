@@ -75,7 +75,7 @@ export interface MapLayoutContext {
 }
 
 const MapLayout = () => {
-  const [isTracking, setIsTracking] = useState(true);
+  const [isTracking, setIsTracking] = useState(false);
   const [visibleBottomSheet, setVisibleBottomSheet] = useState(false);
   const [isExpandedSheet, setIsExpandedSheet] = useState(false);
   const [hasFocusedMarker, setHasFocusedMarker] = useState(false);
@@ -96,7 +96,7 @@ const MapLayout = () => {
   const [selectedCategoryEnum, setSelectedCategoryEnum] = useState<string>("");
   const [modalState, setModalState] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<Coordinate | null>(
-    null
+    null,
   );
   const [nearLocation, setNearLocation] = useState("");
   const [markers, setMarkers] = useState<MarkerData[]>([]);
