@@ -6,6 +6,8 @@ import editIcon from "@assets/icon/editpencil.svg";
 import Button from "@components/Button/Button";
 import { useUserStore } from "@stores/userStore";
 
+import { useUserProfile } from "../../hooks/use-user-profile";
+
 import styles from "./MyProfileComponent.module.css";
 
 interface MyProfileComponentProps {
@@ -15,14 +17,12 @@ interface MyProfileComponentProps {
 const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
   isChangeProfile,
 }) => {
+  const { userProfileData, isPendingUserProfile } = useUserProfile();
+
   const navigate = useNavigate();
-  const nickname = useUserStore((state) => state.user?.nickname);
+  // TODO: 이미지도 서버에서 주도록 변경 예정
   const imageUrl = useUserStore((state) => state.user?.imageUrl);
-  // const department = useUserStore(
-  //   (state) => state.user?.departmentResponse[0].departmentName
-  // );
-  const email = useUserStore((state) => state.user?.email);
-  // const department = useUserStore((state) => state.user?.department);
+  const profileImage = imageUrl || defaultProfileImg;
 
   const goToProfileSetting = () => {
     navigate("/profilechange");
@@ -36,32 +36,39 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
         gap: "29px",
       }}
     >
-      <div className={styles.MyProfileInfoWrapper}>
-        <div className={styles.ImgWrapper}>
-          {isChangeProfile ? (
-            <button onClick={() => console.log("프로필 사진 변경")}>
-              <img
-                src={imageUrl || defaultProfileImg}
-                alt="프로필 사진"
-                style={{ borderRadius: "65px", border: "2px solid #009733" }}
-              />
-            </button>
-          ) : (
-            <img src={imageUrl || defaultProfileImg} alt="프로필 사진" />
-          )}
+      {isPendingUserProfile ? (
+        <div>로딩중...</div>
+      ) : (
+        <div className={styles.MyProfileInfoWrapper}>
+          <div className={styles.ImgWrapper}>
+            {isChangeProfile ? (
+              <button onClick={() => console.log("프로필 사진 변경")}>
+                <img
+                  src={profileImage}
+                  alt="프로필 사진"
+                  style={{ borderRadius: "65px", border: "2px solid #009733" }}
+                />
+              </button>
+            ) : (
+              <img src={profileImage} alt="프로필 사진" />
+            )}
 
-          {isChangeProfile && (
-            <img src={editIcon} alt="수정하기" className={styles.EditIcon} />
-          )}
-        </div>
+            {isChangeProfile && (
+              <img src={editIcon} alt="수정하기" className={styles.EditIcon} />
+            )}
+          </div>
 
-        <div className={styles.InfoWrapper}>
-          <span className={styles.MyName}>{nickname}</span>
-          {!isChangeProfile && (
-            <span className={styles.MyDepartment}>{email}</span>
-          )}
+          <div className={styles.InfoWrapper}>
+            <span className={styles.MyName}>{userProfileData?.nickname}</span>
+            {!isChangeProfile && (
+              <span className={styles.MyDepartment}>
+                {userProfileData?.email}
+              </span>
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
       {!isChangeProfile && (
         <Button onClick={goToProfileSetting} variant="secondary">
           프로필 설정
