@@ -118,6 +118,7 @@
   text-overflow: ellipsis;
 
   /* 페이드 아웃 마스크 효과 */
+  /* 추후 제거가 필요할 수도 */
   mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
 }
