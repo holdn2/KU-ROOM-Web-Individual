@@ -6,14 +6,16 @@ const MYPAGE_API_URL = {
   departmentSearch: "/departments/search",
 };
 
-interface DepartmentType {
+export interface DepartmentType {
   department: string;
   college: string;
 }
 
 export interface UserProfileResponseData {
+  profileImage: string | null;
   email: string | null;
   nickname: string;
+  loginId: string | null;
   studentId: number;
   departments: DepartmentType[];
 }

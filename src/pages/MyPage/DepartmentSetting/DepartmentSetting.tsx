@@ -6,11 +6,7 @@ import DepartmentSearch from "./components/DepartmentSearchBar/DepartmentSearchB
 import UserDepartmentList from "./components/UserDepartmentList/UserDepartmentList";
 import SearchDepartmentList from "./components/SearchDepartmentList/SearchDepartmentList";
 import styles from "./DepartmentSetting.module.css";
-
-const dummyUserDepartmentData = [
-  { department: "융합생명공학과", college: "KU융합과학기술원" },
-  { department: "응용통계학과", college: "사회과학대학" },
-];
+import { useUserProfile } from "../hooks/use-user-profile";
 
 const dummySearchData = [
   { department: "컴퓨터공학과", college: "공과대학" },
@@ -18,21 +14,16 @@ const dummySearchData = [
 ];
 
 const DepartmentSetting = () => {
+  const { userProfileData, isPendingUserProfile } = useUserProfile();
+
   const [searchTarget, setSearchTarget] = useState("");
-  const [userDepartment, setUserDepartment] = useState<
-    { department: string; college: string }[]
-  >([]);
+
   const [filteredDepartment, setFilteredDepartment] = useState<
     { department: string; college: string }[]
   >([]);
 
   const [trySearch, setTrySearch] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-
-  // 렌더링 시 서버에 유저가 추가해둔 학과 정보 받아오기
-  useEffect(() => {
-    setUserDepartment(dummyUserDepartmentData);
-  }, []);
 
   useEffect(() => {
     setTrySearch(false);
@@ -42,7 +33,7 @@ const DepartmentSetting = () => {
   // 검색 시 로직. 서버에 요청해야함.
   const filteringSearch = () => {
     const result = dummySearchData.filter((department) =>
-      department.department.includes(searchTarget.trim())
+      department.department.includes(searchTarget.trim()),
     );
     setFilteredDepartment(result);
   };
@@ -55,6 +46,7 @@ const DepartmentSetting = () => {
     }
   };
 
+  // TODO: 검색 디바운싱으로 구현하기
   // 검색창에 입력 후 다른 곳 클릭했을 때(포커스 잃을 때) 검색되도록
   const handleBlurSearch = () => {
     setTrySearch(true);
@@ -93,7 +85,9 @@ const DepartmentSetting = () => {
             onKeyDown={handleSearchKeyDown}
           />
         </div>
-        {isSearchFocused ? (
+        {isPendingUserProfile ? (
+          <div>로딩중...</div>
+        ) : isSearchFocused ? (
           <SearchDepartmentList
             trySearch={trySearch}
             searchTarget={searchTarget}
@@ -102,7 +96,7 @@ const DepartmentSetting = () => {
           />
         ) : (
           <UserDepartmentList
-            userDepartment={userDepartment}
+            userDepartment={userProfileData?.departments}
             handleDeleteDepartment={handleDeleteDepartment}
           />
         )}

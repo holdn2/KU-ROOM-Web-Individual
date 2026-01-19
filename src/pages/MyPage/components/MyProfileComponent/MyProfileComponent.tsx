@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import defaultProfileImg from "@assets/defaultProfileImg.svg";
 import editIcon from "@assets/icon/editpencil.svg";
 import Button from "@components/Button/Button";
-import { useUserStore } from "@stores/userStore";
 
 import { useUserProfile } from "../../hooks/use-user-profile";
 
@@ -20,9 +19,8 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
   const { userProfileData, isPendingUserProfile } = useUserProfile();
 
   const navigate = useNavigate();
-  // TODO: 이미지도 서버에서 주도록 변경 예정
-  const imageUrl = useUserStore((state) => state.user?.imageUrl);
-  const profileImage = imageUrl || defaultProfileImg;
+
+  const profileImage = userProfileData?.profileImage || defaultProfileImg;
 
   const goToProfileSetting = () => {
     navigate("/profilechange");

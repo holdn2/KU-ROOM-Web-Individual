@@ -2,7 +2,6 @@ import React from "react";
 
 import arrowRight from "@assets/nav/arrowRight.svg";
 import { AppVersion } from "@constant/appInfo";
-import { useUserStore } from "@stores/userStore";
 import { EmptyState } from "@pages/Notice/components/NoticeList/components/EmptyState/EmptyState";
 
 import ToggleAlarmButton from "../ToggleAlarmButton";
@@ -40,9 +39,6 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
 }) => {
   const { userProfileData, isPendingUserProfile } = useUserProfile();
 
-  // TODO: 추후 서버에서 받아오는 것으로 수정
-  const userId = useUserStore((state) => state.user?.loginId);
-
   const handleSectionClick = useHandleSectionClick(setModalType, setModalState);
   return (
     !isPendingUserProfile && (
@@ -71,7 +67,9 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
                   </span>
                 )}
                 {item === "아이디" && (
-                  <span className={styles.ExtraInfoText}>{userId}</span>
+                  <span className={styles.ExtraInfoText}>
+                    {userProfileData?.loginId}
+                  </span>
                 )}
                 {item === "학번" && (
                   <span className={styles.ExtraInfoText}>
