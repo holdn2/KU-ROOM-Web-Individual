@@ -17,7 +17,7 @@ export const useUserProfile = () => {
     error,
   } = useQuery<UserProfileResponseData>({
     queryKey: MYPAGE_QUERY_KEY.USER_PROFILE,
-    queryFn: async () => await getUserProfileApi(),
+    queryFn: () => getUserProfileApi(),
     staleTime: 1000 * 60,
   });
 

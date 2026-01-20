@@ -31,3 +31,16 @@ export const getUserProfileApi = async () => {
 
   return response.data.data;
 };
+
+interface SearchedDepartmentsResponse extends ApiResponse {
+  data: DepartmentType[];
+}
+
+export const getSearchedDepartmentsApi = async (searchText: string) => {
+  const response = await axiosInstance.get<SearchedDepartmentsResponse>(
+    MYPAGE_API_URL.departmentSearch,
+    { params: { query: searchText } },
+  );
+
+  return response.data.data;
+};

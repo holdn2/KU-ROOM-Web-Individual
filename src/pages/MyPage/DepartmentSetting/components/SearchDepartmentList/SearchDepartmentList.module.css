@@ -1,3 +1,9 @@
+.SearchedListWrapper {
+  height: calc(100dvh - 150px);
+  overflow-y: auto;
+  padding-bottom: 10px;
+}
+
 .SearchedDepartmentContainer {
   padding: 20px 35px;
   display: flex;
@@ -23,7 +29,7 @@
   font-size: 14px;
   font-weight: 500;
 }
-.NoSearchResultWrapper {
+.EmptyLoadingWrapper {
   margin-top: 150px;
   display: flex;
   flex-direction: column;
@@ -31,7 +37,7 @@
   justify-content: center;
   gap: 8px;
 }
-.NoSearchResultText {
+.EmptyLoadingText {
   color: #b0bac3;
   font-size: 14px;
   font-style: normal;
