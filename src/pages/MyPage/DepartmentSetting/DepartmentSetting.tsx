@@ -19,6 +19,7 @@ const DepartmentSetting = () => {
 
   const handleDeleteDepartment = (department: string) => {
     if (userProfileData?.departments.length === 1) {
+      // TODO: 추후 멘트 수정
       toast.error("최소 하나 이상 설정해야 합니다.");
       return;
     }
