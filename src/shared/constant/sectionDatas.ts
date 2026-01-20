@@ -18,7 +18,6 @@ const MyPageSectionData: { title: string; contents: string[] }[] = [
 const getProfileChangeSectionData = (loginType: LoginType) => {
   return [
     {
-      // TODO: 소셜로그인일 때 이메일, 아이디, 비밀번호 변경하기 안보이도록 처리해야함
       title: "프로필",
       contents:
         loginType === "social"

@@ -1,5 +1,7 @@
 .ProfileChangePageWrapper {
   margin-top: 56px;
+  height: calc(100dvh - 56px);
+  overflow-y: auto;
 }
 .DivideSectionThick {
   height: 10px;
