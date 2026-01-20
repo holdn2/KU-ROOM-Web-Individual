@@ -46,15 +46,28 @@ export const getSearchedDepartmentsApi = async (searchText: string) => {
   return response.data.data;
 };
 
-interface AddDepartmentResponse extends ApiResponse {
+interface UpdateDepartmentResponse extends ApiResponse {
   data: string;
 }
 
 export const addDepartmentApi = async (department: string) => {
-  const response = await axiosInstance.post<AddDepartmentResponse>(
+  const response = await axiosInstance.post<UpdateDepartmentResponse>(
     MYPAGE_API_URL.departmentUpdate,
     {
       department,
+    },
+  );
+
+  return response.data.data;
+};
+
+export const deleteDepartmentApi = async (department: string) => {
+  const response = await axiosInstance.delete<UpdateDepartmentResponse>(
+    MYPAGE_API_URL.departmentUpdate,
+    {
+      data: {
+        department,
+      },
     },
   );
 

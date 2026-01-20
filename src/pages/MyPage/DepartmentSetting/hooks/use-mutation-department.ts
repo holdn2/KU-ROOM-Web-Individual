@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import useToast from "@hooks/use-toast";
 
-import { addDepartmentApi } from "../../api";
+import { addDepartmentApi, deleteDepartmentApi } from "../../api";
 import { MYPAGE_QUERY_KEY } from "../../querykey";
 
 export default function useMutationDepartment() {
@@ -24,7 +24,22 @@ export default function useMutationDepartment() {
     },
   });
 
+  const { mutate: deleteDepartment } = useMutation({
+    mutationFn: (department: string) => deleteDepartmentApi(department),
+    onSuccess: (response) => {
+      qc.invalidateQueries({
+        queryKey: MYPAGE_QUERY_KEY.USER_PROFILE,
+        exact: true,
+      });
+      toast.info(response);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   return {
     addDepartment,
+    deleteDepartment,
   };
 }

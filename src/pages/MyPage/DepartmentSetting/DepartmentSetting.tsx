@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import useToast from "@hooks/use-toast";
 import Header from "@components/Header/Header";
 
 import DepartmentSearch from "./components/DepartmentSearchBar/DepartmentSearchBar";
@@ -10,16 +11,19 @@ import { useUserProfile } from "../hooks/use-user-profile";
 import useMutationDepartment from "./hooks/use-mutation-department";
 
 const DepartmentSetting = () => {
+  const toast = useToast();
   const { userProfileData, isPendingUserProfile } = useUserProfile();
-  const { addDepartment } = useMutationDepartment();
+  const { addDepartment, deleteDepartment } = useMutationDepartment();
 
   const [searchText, setSearchText] = useState("");
 
-  // 서버에 삭제 요청
   const handleDeleteDepartment = (department: string) => {
-    console.log(department, "를 목록에서 삭제");
+    if (userProfileData?.departments.length === 1) {
+      toast.error("최소 하나 이상 설정해야 합니다.");
+      return;
+    }
+    deleteDepartment(department);
   };
-  // 서버에 추가 요청
   const handleAddUserDepartment = (department: string) => {
     addDepartment(department);
     setSearchText("");
