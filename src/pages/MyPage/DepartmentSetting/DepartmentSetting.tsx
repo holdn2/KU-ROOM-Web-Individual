@@ -7,9 +7,11 @@ import UserDepartmentList from "./components/UserDepartmentList/UserDepartmentLi
 import SearchDepartmentList from "./components/SearchDepartmentList/SearchDepartmentList";
 import styles from "./DepartmentSetting.module.css";
 import { useUserProfile } from "../hooks/use-user-profile";
+import useMutationDepartment from "./hooks/use-mutation-department";
 
 const DepartmentSetting = () => {
   const { userProfileData, isPendingUserProfile } = useUserProfile();
+  const { addDepartment } = useMutationDepartment();
 
   const [searchText, setSearchText] = useState("");
 
@@ -19,7 +21,7 @@ const DepartmentSetting = () => {
   };
   // 서버에 추가 요청
   const handleAddUserDepartment = (department: string) => {
-    console.log(department, "를 목록에 추가");
+    addDepartment(department);
     setSearchText("");
   };
 

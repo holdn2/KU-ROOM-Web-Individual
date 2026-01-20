@@ -4,6 +4,7 @@ import { ApiResponse } from "@/shared/types";
 const MYPAGE_API_URL = {
   userProfile: "/users/profile",
   departmentSearch: "/departments/search",
+  departmentUpdate: "/users/department",
 };
 
 export interface DepartmentType {
@@ -40,6 +41,21 @@ export const getSearchedDepartmentsApi = async (searchText: string) => {
   const response = await axiosInstance.get<SearchedDepartmentsResponse>(
     MYPAGE_API_URL.departmentSearch,
     { params: { query: searchText } },
+  );
+
+  return response.data.data;
+};
+
+interface AddDepartmentResponse extends ApiResponse {
+  data: string;
+}
+
+export const addDepartmentApi = async (department: string) => {
+  const response = await axiosInstance.post<AddDepartmentResponse>(
+    MYPAGE_API_URL.departmentUpdate,
+    {
+      department,
+    },
   );
 
   return response.data.data;
