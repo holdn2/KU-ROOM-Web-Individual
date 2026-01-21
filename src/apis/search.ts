@@ -41,6 +41,12 @@ export interface RecentSearchListResponse {
   data: RecentSearch[];
 }
 
+export interface DeleteRecentSearchResponse {
+  code: number;
+  status: string;
+  message: string;
+}
+
 const SEARCH_BASE_URL = "https://kuroom.shop/api/v1";
 
 const searchAxiosInstance = axios.create({
@@ -112,4 +118,13 @@ export const getRecentSearches = async (
     }
   );
   return response.data.data;
+};
+
+export const deleteRecentSearch = async (
+  id: number
+): Promise<DeleteRecentSearchResponse> => {
+  const response = await searchAxiosInstance.delete<DeleteRecentSearchResponse>(
+    `/notices/searches/recent/${id}`
+  );
+  return response.data;
 };

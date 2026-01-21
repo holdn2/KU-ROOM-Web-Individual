@@ -16,6 +16,7 @@ import {
   getKeywords,
   searchNotices,
   getRecentSearches,
+  deleteRecentSearch,
   type RecentSearch,
 } from "../../../apis/search";
 import { getPopularNotices, getPrimaryNotices } from "../../../apis/notice";
@@ -113,8 +114,17 @@ const Search: React.FC = () => {
     setSearchText(tag);
   };
 
-  const handleRemoveSearchTerm = (term: string) => {
-    setRecentSearches((prev) => prev.filter((search) => search.keyword !== term));
+  const handleRemoveSearchTerm = async (term: string) => {
+    const searchToDelete = recentSearches.find((search) => search.keyword === term);
+    if (!searchToDelete) return;
+
+    try {
+      await deleteRecentSearch(searchToDelete.id);
+      setRecentSearches((prev) => prev.filter((search) => search.keyword !== term));
+    } catch (error) {
+      console.error("최근 검색어 삭제 실패:", error);
+      toast.error("검색어 삭제에 실패했어요");
+    }
   };
 
   const handleSelectSearchTerm = (term: string) => {
