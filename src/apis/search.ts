@@ -26,6 +26,21 @@ export interface KeywordListResponse {
   };
 }
 
+export interface RecentSearch {
+  id: number;
+  userId: number;
+  keyword: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RecentSearchListResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: RecentSearch[];
+}
+
 const SEARCH_BASE_URL = "https://kuroom.shop/api/v1";
 
 const searchAxiosInstance = axios.create({
@@ -85,4 +100,16 @@ export const getKeywords = async (): Promise<string[]> => {
     "/notices/keyword"
   );
   return response.data.data.keywords;
+};
+
+export const getRecentSearches = async (
+  limit: number = 20
+): Promise<RecentSearch[]> => {
+  const response = await searchAxiosInstance.get<RecentSearchListResponse>(
+    "/notices/searches/recent",
+    {
+      params: { limit },
+    }
+  );
+  return response.data.data;
 };

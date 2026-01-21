@@ -15,6 +15,8 @@ import {
   registerKeyword,
   getKeywords,
   searchNotices,
+  getRecentSearches,
+  type RecentSearch,
 } from "../../../apis/search";
 import { getPopularNotices, getPrimaryNotices } from "../../../apis/notice";
 import type { NoticeResponse } from "@apis/notice";
@@ -26,11 +28,7 @@ const Search: React.FC = () => {
   const [popularNotices, setPopularNotices] = useState<NoticeResponse[]>([]);
   const [primaryNotices, setPrimaryNotices] = useState<NoticeResponse[]>([]);
   const [filteredNotices, setFilteredNotices] = useState<NoticeResponse[]>([]);
-  const [searchHistory, setSearchHistory] = useState<string[]>([
-    "입학식",
-    "수강 신청",
-    "장학금",
-  ]);
+  const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([]);
   const [subscribedKeywords, setSubscribedKeywords] = useState<string[]>([]);
   const [isHistoryEnabled, setIsHistoryEnabled] = useState(true);
   const [isLoadingPopular, setIsLoadingPopular] = useState(false);
@@ -47,6 +45,14 @@ const Search: React.FC = () => {
         // 키워드 조회
         const keywords = await getKeywords();
         setSubscribedKeywords(keywords);
+
+        // 최근 검색어 조회
+        try {
+          const searches = await getRecentSearches(20);
+          setRecentSearches(searches);
+        } catch (error) {
+          console.error("최근 검색어 조회 실패:", error);
+        }
 
         // 북마크 기준 인기 공지사항 조회
         setIsLoadingPopular(true);
@@ -105,29 +111,18 @@ const Search: React.FC = () => {
 
   const handleTagClick = (tag: string) => {
     setSearchText(tag);
-
-    // 검색 히스토리에 추가
-    if (isHistoryEnabled && !searchHistory.includes(tag)) {
-      setSearchHistory((prev) => [tag, ...prev].slice(0, 10));
-    }
   };
 
   const handleRemoveSearchTerm = (term: string) => {
-    setSearchHistory((prev) => prev.filter((t) => t !== term));
+    setRecentSearches((prev) => prev.filter((search) => search.keyword !== term));
   };
 
   const handleSelectSearchTerm = (term: string) => {
-    // 최근 검색어 태그 클릭 시 검색창에 입력하고 검색 실행
     setSearchText(term);
   };
 
   const handleSearch = (text: string) => {
     setSearchText(text);
-
-    // 검색어가 있고, 엔터 등의 검색 이벤트가 발생했을 때 히스토리에 추가
-    if (text && isHistoryEnabled && !searchHistory.includes(text)) {
-      setSearchHistory((prev) => [text, ...prev].slice(0, 10)); // 최대 10개 유지
-    }
   };
 
   const navigateToNoticeDetail = (noticeId: number) => {
@@ -173,7 +168,7 @@ const Search: React.FC = () => {
   };
 
   const handleClearHistory = () => {
-    setSearchHistory([]);
+    setRecentSearches([]);
   };
 
   const isSearching = searchText.length > 0;
@@ -191,7 +186,7 @@ const Search: React.FC = () => {
       {!isSearching ? (
         <>
           <SearchHistory
-            searchTerms={searchHistory}
+            searchTerms={recentSearches.map((search) => search.keyword)}
             onRemoveTerm={handleRemoveSearchTerm}
             onSelectTerm={handleSelectSearchTerm}
             isHistoryEnabled={isHistoryEnabled}
