@@ -56,27 +56,33 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({
         />
       )}
 
-      {isHistoryEnabled && searchTerms.length > 0 && (
+      {isHistoryEnabled && (
         <div className={styles.searchHistory}>
-          <div className={styles.tagContainer}>
-            {searchTerms.map((term) => (
-              <div
-                key={term}
-                role="button"
-                tabIndex={0}
-                onClick={() => onSelectTerm(term)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    onSelectTerm(term);
-                  }
-                }}
-                className={styles.searchButton}
-              >
-                <SearchTag text={term} onRemove={() => onRemoveTerm(term)} />
-              </div>
-            ))}
-          </div>
+          {searchTerms.length > 0 ? (
+            <div className={styles.tagContainer}>
+              {searchTerms.map((term) => (
+                <div
+                  key={term}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => onSelectTerm(term)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      onSelectTerm(term);
+                    }
+                  }}
+                  className={styles.searchButton}
+                >
+                  <SearchTag text={term} onRemove={() => onRemoveTerm(term)} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.emptyState}>
+              <p className={styles.emptyText}>최근 검색어가 없습니다</p>
+            </div>
+          )}
         </div>
       )}
     </div>
