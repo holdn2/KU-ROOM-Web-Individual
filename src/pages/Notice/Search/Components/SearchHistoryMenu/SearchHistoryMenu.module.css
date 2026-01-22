@@ -1,13 +1,16 @@
 .menuOverlay {
   position: fixed;
   top: 70px;
-  left: 0;
-  right: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--custom-max-width);
   bottom: 0;
   z-index: 1000;
   display: flex;
   justify-content: flex-end;
   padding: 110px 20px;
+  box-sizing: border-box;
 }
 
 .menuContainer {
