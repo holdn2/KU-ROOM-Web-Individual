@@ -17,6 +17,7 @@ import {
   searchNotices,
   getRecentSearches,
   deleteRecentSearch,
+  deleteAllRecentSearches,
   type RecentSearch,
 } from "../../../apis/search";
 import { getPopularNotices, getPrimaryNotices } from "../../../apis/notice";
@@ -177,8 +178,14 @@ const Search: React.FC = () => {
     setIsHistoryEnabled((prev) => !prev);
   };
 
-  const handleClearHistory = () => {
-    setRecentSearches([]);
+  const handleClearHistory = async () => {
+    try {
+      await deleteAllRecentSearches();
+      setRecentSearches([]);
+    } catch (error) {
+      console.error("최근 검색어 전체 삭제 실패:", error);
+      toast.error("검색어 삭제에 실패했어요");
+    }
   };
 
   const isSearching = searchText.length > 0;
