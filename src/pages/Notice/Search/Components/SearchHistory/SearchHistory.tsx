@@ -29,6 +29,16 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({
     setShowMenu(false);
   };
 
+  const handleTermKeyDown = (
+    e: React.KeyboardEvent,
+    term: string
+  ) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onSelectTerm(term);
+    }
+  };
+
   return (
     <div className={styles.searchHistoryContainer}>
       <div className={styles.searchHistoryHeader}>
@@ -59,12 +69,7 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({
                 role="button"
                 tabIndex={0}
                 onClick={() => onSelectTerm(term)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    onSelectTerm(term);
-                  }
-                }}
+                onKeyDown={(e) => handleTermKeyDown(e, term)}
                 className={styles.searchButton}
               >
                 <SearchTag text={term} onRemove={() => onRemoveTerm(term)} />
