@@ -33,7 +33,6 @@ const Search: React.FC = () => {
   const [filteredNotices, setFilteredNotices] = useState<NoticeResponse[]>([]);
   const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([]);
   const [subscribedKeywords, setSubscribedKeywords] = useState<string[]>([]);
-  const [isHistoryEnabled, setIsHistoryEnabled] = useState(true);
   const [isLoadingPopular, setIsLoadingPopular] = useState(false);
   const [isLoadingPrimary, setIsLoadingPrimary] = useState(false);
   const [isLoadingSearch, setIsLoadingSearch] = useState(false);
@@ -136,7 +135,7 @@ const Search: React.FC = () => {
   const handleSearch = async (text: string) => {
     setSearchText(text);
 
-    if (text && isHistoryEnabled) {
+    if (text) {
       try {
         await saveRecentSearch(text);
         const searches = await getRecentSearches(20);
@@ -185,10 +184,6 @@ const Search: React.FC = () => {
     }
   };
 
-  const handleToggleHistory = () => {
-    setIsHistoryEnabled((prev) => !prev);
-  };
-
   const handleClearHistory = async () => {
     try {
       await deleteAllRecentSearches();
@@ -217,8 +212,6 @@ const Search: React.FC = () => {
             searchTerms={recentSearches.map((search) => search.keyword)}
             onRemoveTerm={handleRemoveSearchTerm}
             onSelectTerm={handleSelectSearchTerm}
-            isHistoryEnabled={isHistoryEnabled}
-            onToggleHistory={handleToggleHistory}
             onClearHistory={handleClearHistory}
           />
 
