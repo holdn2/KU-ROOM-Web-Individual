@@ -26,6 +26,39 @@ export interface KeywordListResponse {
   };
 }
 
+export interface RecentSearch {
+  id: number;
+  userId: number;
+  keyword: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RecentSearchListResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: RecentSearch[];
+}
+
+export interface DeleteRecentSearchResponse {
+  code: number;
+  status: string;
+  message: string;
+}
+
+export interface DeleteAllRecentSearchesResponse {
+  code: number;
+  status: string;
+  message: string;
+}
+
+export interface SaveRecentSearchResponse {
+  code: number;
+  status: string;
+  message: string;
+}
+
 const SEARCH_BASE_URL = "https://kuroom.shop/api/v1";
 
 const searchAxiosInstance = axios.create({
@@ -85,4 +118,45 @@ export const getKeywords = async (): Promise<string[]> => {
     "/notices/keyword"
   );
   return response.data.data.keywords;
+};
+
+export const getRecentSearches = async (
+  limit: number = 20
+): Promise<RecentSearch[]> => {
+  const response = await searchAxiosInstance.get<RecentSearchListResponse>(
+    "/notices/searches/recent",
+    {
+      params: { limit },
+    }
+  );
+  return response.data.data;
+};
+
+export const deleteRecentSearch = async (
+  id: number
+): Promise<DeleteRecentSearchResponse> => {
+  const response = await searchAxiosInstance.delete<DeleteRecentSearchResponse>(
+    `/notices/searches/recent/${id}`
+  );
+  return response.data;
+};
+
+export const deleteAllRecentSearches = async (): Promise<DeleteAllRecentSearchesResponse> => {
+  const response = await searchAxiosInstance.delete<DeleteAllRecentSearchesResponse>(
+    "/notices/searches/recent/all"
+  );
+  return response.data;
+};
+
+export const saveRecentSearch = async (
+  keyword: string
+): Promise<SaveRecentSearchResponse> => {
+  const response = await searchAxiosInstance.post<SaveRecentSearchResponse>(
+    "/notices/searches/recent",
+    null,
+    {
+      params: { keyword },
+    }
+  );
+  return response.data;
 };
