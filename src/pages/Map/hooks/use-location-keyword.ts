@@ -6,6 +6,7 @@ import {
   saveSearchLocationKeywordApi,
 } from "@apis/map";
 import useToast from "@hooks/use-toast";
+import { MAP_SEARCH_QUERY_KEY } from "../querykey";
 
 export const useLocationKeyword = () => {
   const toast = useToast();
@@ -15,7 +16,7 @@ export const useLocationKeyword = () => {
     mutationFn: (search: string) => saveSearchLocationKeywordApi(search),
     onSuccess: () => {
       qc.invalidateQueries({
-        queryKey: ["map-recent-search"],
+        queryKey: MAP_SEARCH_QUERY_KEY.KEYWORD,
       });
     },
     onError: (error) => {
@@ -27,7 +28,7 @@ export const useLocationKeyword = () => {
     mutationFn: (keywordId: number) => deleteRecentSearchLocation(keywordId),
     onSuccess: () => {
       qc.invalidateQueries({
-        queryKey: ["map-recent-search"],
+        queryKey: MAP_SEARCH_QUERY_KEY.KEYWORD,
       });
     },
     onError: (error) => {
@@ -40,7 +41,7 @@ export const useLocationKeyword = () => {
     onSuccess: () => {
       toast.info("최근 검색어가 모두 삭제되었습니다.");
       qc.invalidateQueries({
-        queryKey: ["map-recent-search"],
+        queryKey: MAP_SEARCH_QUERY_KEY.KEYWORD,
       });
     },
     onError: (error) => {
