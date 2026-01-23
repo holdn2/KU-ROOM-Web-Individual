@@ -18,6 +18,7 @@ import {
   getRecentSearches,
   deleteRecentSearch,
   deleteAllRecentSearches,
+  saveRecentSearch,
   type RecentSearch,
 } from "../../../apis/search";
 import { getPopularNotices, getPrimaryNotices } from "../../../apis/notice";
@@ -132,8 +133,18 @@ const Search: React.FC = () => {
     setSearchText(term);
   };
 
-  const handleSearch = (text: string) => {
+  const handleSearch = async (text: string) => {
     setSearchText(text);
+
+    if (text && isHistoryEnabled) {
+      try {
+        await saveRecentSearch(text);
+        const searches = await getRecentSearches(20);
+        setRecentSearches(searches);
+      } catch (error) {
+        console.error("최근 검색어 저장 실패:", error);
+      }
+    }
   };
 
   const navigateToNoticeDetail = (noticeId: number) => {
