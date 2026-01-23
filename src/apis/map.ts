@@ -13,10 +13,10 @@ const CHECK_SHARE_STATE_API = "/places/sharing/status";
 const GET_USER_SHARE_LOCATION = "/places/sharing";
 const SHARE_USER_LOCATION = "/places/sharing/confirm";
 const UNSHARE_LOCATION = "/places/sharing/confirm";
-const GET_CHIP_LOCATION = "/places?chip=";
+const GET_CHIP_LOCATION = "/places";
 const GET_LOCATION_DETAIL_DATA = "/places/";
-const GET_SEARCH_LOCATION_RESULT = "/places/search?query=";
-const SAVE_SEARCH_LOCATION_KEYWORD = "/places/search/keyword?query=";
+const GET_SEARCH_LOCATION_RESULT = "/places/search";
+const SAVE_SEARCH_LOCATION_KEYWORD = "/places/search/keyword";
 const GET_RECENT_SEARCH = "/places/search/history"; // 최근 검색어 5개
 const DELETE_RECENT_ALL_SEARCH = "/places/search/history"; // 최근 검색어 모두 삭제
 const DELETE_RECENT_SEARCH = "/places/search/history/"; // 최근 검색어 하나 삭제
@@ -136,7 +136,8 @@ interface LocationChipApiResponse extends ApiResponse {
 export const getCategoryLocationsApi = async (category: string) => {
   try {
     const response = await axiosInstance.get<LocationChipApiResponse>(
-      GET_CHIP_LOCATION + category,
+      GET_CHIP_LOCATION,
+      { params: { chip: category.trim() } },
     );
 
     return response.data.data; // 성공 응답 반환
@@ -179,7 +180,8 @@ interface SearchResultApiResponse extends ApiResponse {
 }
 export const getSearchLocationResult = async (search: string) => {
   const response = await axiosInstance.get<SearchResultApiResponse>(
-    GET_SEARCH_LOCATION_RESULT + search,
+    GET_SEARCH_LOCATION_RESULT,
+    { params: { query: search.trim() } },
   );
   return response.data.data;
 };
@@ -198,7 +200,9 @@ export const getRecentSearchLocation = async () => {
 // 최근 위치 검색어 저장 api
 export const saveSearchLocationKeywordApi = async (search: string) => {
   const response = await axiosInstance.post<ApiResponse>(
-    SAVE_SEARCH_LOCATION_KEYWORD + search,
+    SAVE_SEARCH_LOCATION_KEYWORD,
+    {},
+    { params: { query: search.trim() } },
   );
   return response.data;
 };
