@@ -19,7 +19,7 @@ export const useLocationKeyword = () => {
       });
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(`검색어 저장 실패: ${error.message}`);
     },
   });
 
@@ -31,7 +31,7 @@ export const useLocationKeyword = () => {
       });
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(`검색어 삭제 실패: ${error.message}`);
     },
   });
 
@@ -44,7 +44,7 @@ export const useLocationKeyword = () => {
       });
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(`검색어 삭제 실패: ${error.message}`);
     },
   });
 
