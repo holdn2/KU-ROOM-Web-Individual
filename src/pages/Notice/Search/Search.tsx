@@ -256,6 +256,7 @@ const Search: React.FC = () => {
               }
             />
           )}
+          <div className={styles.bottomSpacer} />
         </>
       ) : (
         <>
