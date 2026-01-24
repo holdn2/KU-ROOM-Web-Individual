@@ -13,19 +13,21 @@ const HomeMenu = () => {
   const navToSearchLocation = () => {
     navigate("/map", { state: { isSearchMode: true } });
   };
-  const navToPlusFriend = () => {
-    navigate("/friendadd");
+  const navToStudentInfoSystem = () => {
+    window.open("https://kuis.konkuk.ac.kr", "_blank", "noopener,noreferrer");
   };
   const navToKcubeReserve = () => {
     window.open(
       "https://wein.konkuk.ac.kr/ptfol/cmnt/cube/findCubeResveStep1.do",
-      "_blank"
+      "_blank",
+      "noopener,noreferrer",
     );
   };
   const navToReadingRoom = () => {
     window.open(
       "https://library.konkuk.ac.kr/library-services/smuf/reading-rooms",
-      "_blank"
+      "_blank",
+      "noopener,noreferrer",
     );
   };
   return (
@@ -44,16 +46,19 @@ const HomeMenu = () => {
           <span className={styles.EachMenuText}>장소 검색</span>
         </div>
       </button>
-      <button className={styles.EachMenuContainer} onClick={navToPlusFriend}>
+      <button
+        className={styles.EachMenuContainer}
+        onClick={navToStudentInfoSystem}
+      >
         <div className={styles.InnerContent}>
           <img
             className={styles.MenuIcon}
             src={plusFriendIcon}
-            alt="친구 추가"
+            alt="학사정보시스템"
             draggable="false"
           />
 
-          <span className={styles.EachMenuText}>친구 추가</span>
+          <span className={styles.EachMenuText}>학사정보시스템</span>
         </div>
       </button>
       <button className={styles.EachMenuContainer} onClick={navToKcubeReserve}>
