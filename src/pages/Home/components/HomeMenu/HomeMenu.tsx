@@ -54,7 +54,7 @@ const HomeMenu = () => {
           <img
             className={styles.MenuIcon}
             src={plusFriendIcon}
-            alt="친구 추가"
+            alt="학사정보시스템"
             draggable="false"
           />
 
