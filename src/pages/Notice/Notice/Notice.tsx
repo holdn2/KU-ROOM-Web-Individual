@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import BottomBar from "@components/BottomBar/BottomBar";
 import NoticeList from "../components/NoticeList/NoticeList";
-import { NoticeHeader, NoticeTabs, ChatButton } from "./components";
+import { NoticeHeader, NoticeTabs, NoticeOthers } from "./components";
 import { useNotices } from "./hooks/useNotices";
 import { useTabIndicator } from "./hooks/useTabIndicator";
 import { useInfiniteScroll } from "@hooks/useInfiniteScroll";
@@ -11,12 +11,14 @@ import styles from "./Notice.module.css";
 const Notice = () => {
   const [activeTab, setActiveTab] = useState<string>(() => {
     const savedTab = localStorage.getItem(NOTICE_CONFIG.LAST_TAB_STORAGE_KEY);
-    return savedTab && NOTICE_TABS.includes(savedTab as (typeof NOTICE_TABS)[number])
+    return savedTab &&
+      NOTICE_TABS.includes(savedTab as (typeof NOTICE_TABS)[number])
       ? savedTab
       : NOTICE_CONFIG.DEFAULT_TAB;
   });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { notices, loading, hasMore, loadNoticesByCategory, loadMoreNotices } = useNotices();
+  const { notices, loading, hasMore, loadNoticesByCategory, loadMoreNotices } =
+    useNotices();
   const { tabsRef, indicatorStyle } = useTabIndicator(activeTab, NOTICE_TABS);
   const { loadMoreRef } = useInfiniteScroll({
     onLoadMore: loadMoreNotices,
@@ -45,20 +47,25 @@ const Notice = () => {
         indicatorStyle={indicatorStyle}
       />
 
-      <div ref={scrollContainerRef} className={styles["scrollable-content"]}>
-        <NoticeList
-          notices={notices}
-          loading={loading && notices.length === 0}
-          loadingMore={loading && notices.length > 0}
-          showBookmarkButton={false}
-          showSortOptions={false}
-          emptyMessage={NOTICE_MESSAGES.EMPTY_MESSAGE}
-          category={activeTab}
-        />
-        {hasMore && <div ref={loadMoreRef} style={{ height: "20px" }} />}
-      </div>
+      {activeTab === "기타" ? (
+        <NoticeOthers />
+      ) : (
+        <div ref={scrollContainerRef} className={styles["scrollable-content"]}>
+          <NoticeList
+            notices={notices}
+            loading={loading && notices.length === 0}
+            loadingMore={loading && notices.length > 0}
+            showBookmarkButton={false}
+            showSortOptions={false}
+            emptyMessage={NOTICE_MESSAGES.EMPTY_MESSAGE}
+            category={activeTab}
+          />
+          {hasMore && <div ref={loadMoreRef} style={{ height: "20px" }} />}
+        </div>
+      )}
 
-      <ChatButton />
+      {/* 챗봇 기능은 추후 업그레이드 예정 */}
+      {/* <ChatButton /> */}
 
       <BottomBar />
     </div>

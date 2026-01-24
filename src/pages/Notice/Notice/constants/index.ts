@@ -1,12 +1,10 @@
 export const NOTICE_TABS = [
   "학사",
   "장학",
-  "취창업",
   "국제",
   "학생",
   "일반",
-  "산학",
-  "도서관",
+  "기타",
 ] as const;
 
 export const NOTICE_CONFIG = {
@@ -20,3 +18,18 @@ export const NOTICE_MESSAGES = {
   LOADING_MESSAGE: "로딩 중...",
   ERROR_FETCH: "공지사항 로드 실패:",
 } as const;
+
+export const NOTICE_OTHERS = [
+  {
+    name: "산학",
+    url: "https://www.konkuk.ac.kr/konkuk/19329/subview.do",
+  },
+  {
+    name: "도서관",
+    url: "https://library.konkuk.ac.kr/library-guide/bulletins/notice",
+  },
+  {
+    name: "취창업",
+    url: "https://www.konkuk.ac.kr/konkuk/2240/subview.do",
+  },
+] as const;
