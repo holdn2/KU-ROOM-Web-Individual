@@ -1,4 +1,6 @@
 import axios from "axios";
+import { ApiResponse } from "@/shared/types";
+import axiosInstance from "./axiosInstance";
 
 export interface NoticeResponse {
   id: number;
@@ -91,11 +93,11 @@ noticeAxiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 export const getNotices = async (
-  params: NoticeListParams = {}
+  params: NoticeListParams = {},
 ): Promise<NoticeListResponse> => {
   const response = await noticeAxiosInstance.get<NoticeListResponse>(
     "/notices",
@@ -107,17 +109,17 @@ export const getNotices = async (
         size: params.size || 20,
         sort: params.sort,
       },
-    }
+    },
   );
   return response.data;
 };
 
 export const getNoticeDetail = async (
-  noticeId: string
+  noticeId: string,
 ): Promise<NoticeDetailData> => {
   try {
     const response = await noticeAxiosInstance.get<NoticeDetailApiResponse>(
-      `/notices/${noticeId}`
+      `/notices/${noticeId}`,
     );
     return response.data.data;
   } catch (error: any) {
@@ -134,9 +136,8 @@ export interface PopularNoticeResponse {
 }
 
 export const getPopularNotices = async (): Promise<NoticeResponse[]> => {
-  const response = await noticeAxiosInstance.get<PopularNoticeResponse>(
-    "/notices/popular"
-  );
+  const response =
+    await noticeAxiosInstance.get<PopularNoticeResponse>("/notices/popular");
   return response.data.data;
 };
 
@@ -148,8 +149,24 @@ export interface PrimaryNoticeResponse {
 }
 
 export const getPrimaryNotices = async (): Promise<NoticeResponse[]> => {
-  const response = await noticeAxiosInstance.get<PrimaryNoticeResponse>(
-    "/notices/primary"
-  );
+  const response =
+    await noticeAxiosInstance.get<PrimaryNoticeResponse>("/notices/primary");
+  return response.data.data;
+};
+
+// 공지사항 기타 탭
+export interface DepartmentUrlData {
+  name: string;
+  url: string;
+}
+
+interface NoticeOthersResponse extends ApiResponse {
+  data: DepartmentUrlData[];
+}
+
+const NOTICE_OTHERS_URL = "/departments/url";
+export const getNoticeOthersApi = async () => {
+  const response =
+    await axiosInstance.get<NoticeOthersResponse>(NOTICE_OTHERS_URL);
   return response.data.data;
 };

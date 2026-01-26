@@ -15,7 +15,6 @@ export default function useMutationDepartment() {
     onSuccess: (response) => {
       qc.invalidateQueries({
         queryKey: MYPAGE_QUERY_KEY.USER_PROFILE,
-        exact: true,
       });
       toast.info(response);
     },
@@ -29,7 +28,6 @@ export default function useMutationDepartment() {
     onSuccess: (response) => {
       qc.invalidateQueries({
         queryKey: MYPAGE_QUERY_KEY.USER_PROFILE,
-        exact: true,
       });
       toast.info(response);
     },
