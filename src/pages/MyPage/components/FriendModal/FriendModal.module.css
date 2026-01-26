@@ -19,6 +19,7 @@
   border-radius: 18px;
   background: #fff;
   align-items: center;
+  box-sizing: border-box;
 }
 .CautionIcon {
   width: 41px;
