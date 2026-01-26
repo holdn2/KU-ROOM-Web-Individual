@@ -13,7 +13,7 @@
 
 .InformModalContainer {
   display: flex;
-  width: 85%;
+  width: 80%;
   height: 200px;
   padding: 23px 20px 10px 20px;
   flex-direction: column;
