@@ -25,14 +25,14 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
   const navigate = useNavigate();
 
   const { top3RankData, isTop3Pending } = useLocationTopRank(
-    detailInfo?.placeId
+    detailInfo?.placeId,
   );
 
   const handleNavigateToTotalRank = () => {
     if (!detailInfo) return;
     navigate(
       `/map/location-total-rank/${encodeURIComponent(detailInfo.name)}`,
-      { state: { placeId: detailInfo.placeId } }
+      { state: { placeId: detailInfo.placeId } },
     );
   };
 
@@ -105,7 +105,11 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
                 </div>
               </div>
             )}
-            <div className={styles.InfoWrapper}>
+            <div
+              className={`${styles.InfoWrapper} ${
+                isExpandedFocusedSheet ? styles.InfoWrapperOpen : ""
+              }`}
+            >
               <span className={styles.InfoTitle}>정보</span>
               <span
                 className={`${styles.InfoContent} ${
