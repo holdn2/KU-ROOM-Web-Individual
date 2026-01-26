@@ -26,13 +26,13 @@ const renderHeaderContent = (
   navigate: ReturnType<typeof useNavigate>,
   unreadCount?: number,
   onBookmarkClick?: () => void,
-  isBookmarked?: boolean
+  isBookmarked?: boolean,
 ) => {
   switch (children) {
     case "홈":
       return (
         <div className="home-header-wrapper">
-          <h1 className="home-header-title">KURUM</h1>
+          <h1 className="home-header-title">KUROOM</h1>
           <div style={{ position: "relative" }}>
             <img
               src={homeAlarmIcon}
@@ -175,7 +175,7 @@ const Header: React.FC<HeaderProps> = ({
           navigate,
           unreadCount,
           onBookmarkClick,
-          isBookmarked
+          isBookmarked,
         )}
       </header>
     </>
