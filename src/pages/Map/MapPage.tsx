@@ -182,7 +182,7 @@ const MapPage = () => {
     if (!isExpandedSheet) return;
     // 다음 frame에 마커 포커스하기
     const target = renderedMarkers.find(
-      ({ marker }) => marker.getTitle() === location
+      ({ marker }) => marker.getTitle() === location,
     );
     if (target && mapInstanceRef.current) {
       setHasFocusedMarker(true);
@@ -191,7 +191,7 @@ const MapPage = () => {
         target.marker,
         setIsTracking,
         setHasFocusedMarker,
-        setDetailLocationData
+        setDetailLocationData,
       );
     }
 
@@ -234,7 +234,7 @@ const MapPage = () => {
         searchResult.name,
         setIsTracking,
         setHasFocusedMarker,
-        setDetailLocationData
+        setDetailLocationData,
       );
     }
   };
@@ -288,7 +288,7 @@ const MapPage = () => {
         selectedCategoryLocations,
         setIsTracking,
         setHasFocusedMarker,
-        setDetailLocationData
+        setDetailLocationData,
       );
     }
   }, [renderedMarkers]);
@@ -318,7 +318,7 @@ const MapPage = () => {
           longitude: item.longitude,
           isFriendMarker: true,
           numOfFriends: item.friends.length,
-        })
+        }),
       );
       setMarkers(placeMarkers);
       setMarkerFlag((prev) => prev + 1);
@@ -331,7 +331,7 @@ const MapPage = () => {
           name: item.name,
           latitude: item.latitude,
           longitude: item.longitude,
-        })
+        }),
       );
       setMarkers(placeMarkers);
       setMarkerFlag((prev) => prev + 1);
@@ -415,22 +415,6 @@ const MapPage = () => {
                   style={{ filter: isTracking ? "none" : "grayscale(100%)" }}
                 />
               </button>
-              {/* 학교 내부에서만 보이도록 하기! */}
-              {/* 내 위치 공유 버튼 */}
-              {/* {isInSchool && currentLocation !== null && (
-                <button
-                  className={styles.SharedLocationButton}
-                  onClick={handleShareLocation}
-                >
-                  <img src={shareLocationIcon} alt="위치 공유 아이콘" />
-                  {isSharedLocation ? (
-                    <span className={styles.SharingText}>내 위치 공유 중</span>
-                  ) : (
-                    <span className={styles.SharingText}>내 위치 공유</span>
-                  )}
-                </button>
-              )} */}
-              {/* 현재 위치를 가져온 다음에만 렌더링 되도록 */}
               {currentLocation !== null &&
                 (isSharedLocation ? (
                   <button
@@ -444,13 +428,15 @@ const MapPage = () => {
                     <span>내 위치 공유 중</span>
                   </button>
                 ) : (
-                  <button
-                    className={styles.SharedLocationButton}
-                    onClick={handleShareLocation}
-                  >
-                    <img src={shareLocationIcon} alt="위치 공유 아이콘" />
-                    <span>내 위치 공유</span>
-                  </button>
+                  isInSchool && (
+                    <button
+                      className={styles.SharedLocationButton}
+                      onClick={handleShareLocation}
+                    >
+                      <img src={shareLocationIcon} alt="위치 공유 아이콘" />
+                      <span>내 위치 공유</span>
+                    </button>
+                  )
                 ))}
             </>
           )}
