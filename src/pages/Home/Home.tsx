@@ -25,7 +25,7 @@ const Home = () => {
   // const [showSplash, setShowSplash] = useState(true);
   const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
   const [sharedLocationName, setSharedLocationName] = useState<string | null>(
-    null
+    null,
   );
   // 공유 상태 확인 트리거 키
   const [locationSharedRefreshKey, setLocationSharedRefreshKey] = useState(0);
@@ -42,7 +42,7 @@ const Home = () => {
   // 내 위치 공유 버튼 모달 상태
   const [shareModalState, setShareModalState] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<Coordinate | null>(
-    null
+    null,
   ); // 현재 위치
 
   const [tryToRerender, setTryToRerender] = useState(false);
@@ -109,13 +109,7 @@ const Home = () => {
       <div className={styles.HomeContentWrapper}>
         <HomeSildeBanner />
         <HomeMenu />
-        {/* {isInSchool && (
-          <HomeMiniMap
-            isSharedLocation={isSharedLocation}
-            setModalState={setShareModalState}
-          />
-        )} */}
-        {currentLocation !== null && (
+        {isInSchool && currentLocation !== null && (
           <HomeMiniMap
             isSharedLocation={isSharedLocation}
             setModalState={setShareModalState}
