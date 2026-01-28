@@ -39,7 +39,7 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
-  padding: 10px 13px 30px 13px;
+  padding: 10px 13px;
 }
 .FriendSectionWrapper {
   display: flex;
@@ -80,6 +80,9 @@
   flex-direction: column;
   gap: 10px;
 }
+.InfoWrapperOpen {
+  padding-bottom: 20px;
+}
 .TitleText,
 .SubTitleText,
 .FriendTitle,
@@ -109,17 +112,21 @@
   font-weight: 500;
   line-height: 120%; /* 19.2px */
 }
+.InfoContent {
+  white-space: pre-wrap;
+}
 .InfoContentClamp {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 
   /* 페이드 아웃 마스크 효과 */
-  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  /* 추후 제거가 필요할 수도 */
+  /* mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%); */
 }
 .Ranker {
   font-size: 16px;

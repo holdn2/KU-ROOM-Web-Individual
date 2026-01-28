@@ -48,3 +48,17 @@
   padding: 0;
   cursor: pointer;
 }
+
+.emptyState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.emptyText {
+  font-size: 14px;
+  color: #9ca3af;
+  font-weight: 400;
+  line-height: 100%;
+}

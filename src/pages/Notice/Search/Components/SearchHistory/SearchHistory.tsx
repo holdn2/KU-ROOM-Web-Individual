@@ -10,8 +10,6 @@ interface SearchHistoryProps {
   searchTerms: string[];
   onRemoveTerm: (term: string) => void;
   onSelectTerm: (term: string) => void;
-  isHistoryEnabled: boolean;
-  onToggleHistory: () => void;
   onClearHistory: () => void;
 }
 
@@ -19,8 +17,6 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({
   searchTerms,
   onRemoveTerm,
   onSelectTerm,
-  isHistoryEnabled,
-  onToggleHistory,
   onClearHistory,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -31,6 +27,16 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({
 
   const handleCloseMenu = () => {
     setShowMenu(false);
+  };
+
+  const handleTermKeyDown = (
+    e: React.KeyboardEvent,
+    term: string
+  ) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onSelectTerm(term);
+    }
   };
 
   return (
@@ -49,15 +55,13 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({
 
       {showMenu && (
         <SearchHistoryMenu
-          isHistoryEnabled={isHistoryEnabled}
-          onToggleHistory={onToggleHistory}
           onClearHistory={onClearHistory}
           onClose={handleCloseMenu}
         />
       )}
 
-      {isHistoryEnabled && searchTerms.length > 0 && (
-        <div className={styles.searchHistory}>
+      <div className={styles.searchHistory}>
+        {searchTerms.length > 0 ? (
           <div className={styles.tagContainer}>
             {searchTerms.map((term) => (
               <div
@@ -65,20 +69,19 @@ export const SearchHistory: React.FC<SearchHistoryProps> = ({
                 role="button"
                 tabIndex={0}
                 onClick={() => onSelectTerm(term)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    onSelectTerm(term);
-                  }
-                }}
+                onKeyDown={(e) => handleTermKeyDown(e, term)}
                 className={styles.searchButton}
               >
                 <SearchTag text={term} onRemove={() => onRemoveTerm(term)} />
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <div className={styles.emptyState}>
+            <p className={styles.emptyText}>최근 검색어가 없습니다</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

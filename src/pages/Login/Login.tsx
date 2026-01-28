@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginApi } from "@apis/auth";
 import GoogleIcon from "@assets/socialLoginIcon/googleLogin.svg?react";
 import KakaoIcon from "@assets/socialLoginIcon/kakaoLogin.svg?react";
-import NaverIcon from "@assets/socialLoginIcon/naverLogin.svg?react";
+import AppleIcon from "@assets/socialLoginIcon/appleLogin.svg?react";
 import Button from "@components/Button/Button";
 import { EdgeGuard } from "@components/EdgeGuard";
 import InputBar from "@components/InputBar/InputBar";
@@ -102,12 +102,12 @@ const Login = () => {
     window.location.href = `https://kuroom.shop/oauth2/authorization/kakao?redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
-  // 네이버 로그인 처리 함수
-  const handleNaverLogin = () => {
+  // 애플 로그인 처리 함수
+  const handleAppleLogin = () => {
     const redirectUri =
       import.meta.env.VITE_REDIRECT_URI ||
       window.location.origin + "/social/callback";
-    window.location.href = `https://kuroom.shop/oauth2/authorization/naver?redirect_uri=${encodeURIComponent(redirectUri)}`;
+    window.location.href = `https://kuroom.shop/oauth2/authorization/apple?redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
   // 로그인 실패 시 2초 간 보여줌
@@ -189,10 +189,10 @@ const Login = () => {
               style={{ cursor: "pointer" }}
               aria-label="카카오로 로그인"
             />
-            <NaverIcon
-              onClick={handleNaverLogin}
+            <AppleIcon
+              onClick={handleAppleLogin}
               style={{ cursor: "pointer" }}
-              aria-label="네이버로 로그인"
+              aria-label="애플로 로그인"
             />
             <GoogleIcon
               onClick={handleGoogleLogin}

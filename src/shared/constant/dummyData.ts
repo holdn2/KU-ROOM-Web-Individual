@@ -3,7 +3,7 @@
 // 로그인 더미 데이터
 const dummyLoginInfo = [
   {
-    userId: "kurum",
+    userId: "kuroom",
     userPw: "qwer1234!",
   },
 ];

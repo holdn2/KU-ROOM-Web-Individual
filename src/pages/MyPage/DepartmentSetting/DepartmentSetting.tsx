@@ -1,83 +1,33 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 
+import useToast from "@hooks/use-toast";
 import Header from "@components/Header/Header";
 
 import DepartmentSearch from "./components/DepartmentSearchBar/DepartmentSearchBar";
 import UserDepartmentList from "./components/UserDepartmentList/UserDepartmentList";
 import SearchDepartmentList from "./components/SearchDepartmentList/SearchDepartmentList";
 import styles from "./DepartmentSetting.module.css";
-
-const dummyUserDepartmentData = [
-  { department: "융합생명공학과", college: "KU융합과학기술원" },
-  { department: "응용통계학과", college: "사회과학대학" },
-];
-
-const dummySearchData = [
-  { department: "컴퓨터공학과", college: "공과대학" },
-  { department: "경영학과", college: "경영대학" },
-];
+import { useUserProfile } from "../hooks/use-user-profile";
+import useMutationDepartment from "./hooks/use-mutation-department";
 
 const DepartmentSetting = () => {
-  const [searchTarget, setSearchTarget] = useState("");
-  const [userDepartment, setUserDepartment] = useState<
-    { department: string; college: string }[]
-  >([]);
-  const [filteredDepartment, setFilteredDepartment] = useState<
-    { department: string; college: string }[]
-  >([]);
+  const toast = useToast();
+  const { userProfileData, isPendingUserProfile } = useUserProfile();
+  const { addDepartment, deleteDepartment } = useMutationDepartment();
 
-  const [trySearch, setTrySearch] = useState(false);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
-  // 렌더링 시 서버에 유저가 추가해둔 학과 정보 받아오기
-  useEffect(() => {
-    setUserDepartment(dummyUserDepartmentData);
-  }, []);
-
-  useEffect(() => {
-    setTrySearch(false);
-    setFilteredDepartment([]);
-  }, [searchTarget]);
-
-  // 검색 시 로직. 서버에 요청해야함.
-  const filteringSearch = () => {
-    const result = dummySearchData.filter((department) =>
-      department.department.includes(searchTarget.trim())
-    );
-    setFilteredDepartment(result);
-  };
-  // 엔터 시 검색 로직
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (searchTarget.trim() === "") return;
-    if (e.key === "Enter") {
-      setTrySearch(true);
-      filteringSearch();
-    }
-  };
-
-  // 검색창에 입력 후 다른 곳 클릭했을 때(포커스 잃을 때) 검색되도록
-  const handleBlurSearch = () => {
-    setTrySearch(true);
-    if (searchTarget.trim() === "") {
-      setSearchTarget("");
-      setIsSearchFocused(false);
-      setFilteredDepartment([]);
-    } else {
-      // 포커스를 잃었지만 검색 결과가 아직 없으면 자동 필터링
-      filteringSearch();
-    }
-  };
-
-  // 서버에 삭제 요청
   const handleDeleteDepartment = (department: string) => {
-    console.log(department, "를 목록에서 삭제");
+    if (userProfileData?.departments.length === 1) {
+      // TODO: 추후 멘트 수정
+      toast.error("최소 하나 이상 설정해야 합니다.");
+      return;
+    }
+    deleteDepartment(department);
   };
-  // 서버에 추가 요청
   const handleAddUserDepartment = (department: string) => {
-    console.log(department, "를 목록에 추가");
-    setSearchTarget("");
-    setIsSearchFocused(false);
-    setFilteredDepartment([]);
+    addDepartment(department);
+    setSearchText("");
   };
 
   return (
@@ -86,23 +36,20 @@ const DepartmentSetting = () => {
       <div className={styles.DepartmentSettingPage}>
         <div className={styles.SearchBarContainer}>
           <DepartmentSearch
-            searchTarget={searchTarget}
-            setSearchTarget={setSearchTarget}
-            onFocus={() => setIsSearchFocused(true)}
-            onBlur={handleBlurSearch}
-            onKeyDown={handleSearchKeyDown}
+            searchTarget={searchText}
+            setSearchTarget={setSearchText}
           />
         </div>
-        {isSearchFocused ? (
+        {isPendingUserProfile ? (
+          <div>로딩중...</div>
+        ) : searchText.trim().length > 0 ? (
           <SearchDepartmentList
-            trySearch={trySearch}
-            searchTarget={searchTarget}
-            filteredDepartment={filteredDepartment}
+            searchText={searchText}
             handleAddUserDepartment={handleAddUserDepartment}
           />
         ) : (
           <UserDepartmentList
-            userDepartment={userDepartment}
+            userDepartment={userProfileData?.departments}
             handleDeleteDepartment={handleDeleteDepartment}
           />
         )}

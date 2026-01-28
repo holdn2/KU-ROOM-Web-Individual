@@ -1,18 +1,20 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { changeNicknameApi, checkDuplictedNickname } from "@apis/nickname";
 import InputBar from "@components/InputBar/InputBar";
 import Button from "@components/Button/Button";
 import InformModal from "@components/InformModal/InformModal";
 import Header from "@components/Header/Header";
-import { useUserStore } from "@stores/userStore";
 
+import { useUserProfile } from "../hooks/use-user-profile";
 import styles from "./ChangeNickname.module.css";
+import { MYPAGE_QUERY_KEY } from "../querykey";
 
 const ChangeNickname = () => {
-  const { setUser } = useUserStore();
-  const user = useUserStore((state) => state.user);
-  const nickname = useUserStore((state) => state.user?.nickname);
+  const { userProfileData } = useUserProfile();
+  const qc = useQueryClient();
+
   const [newNickname, setNewNickname] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [modalState, setModalState] = useState(false);
@@ -32,7 +34,7 @@ const ChangeNickname = () => {
     // 서버에 닉네임 중복 여부 검증
     const checkResponse = await checkDuplictedNickname(
       newNickname,
-      setErrorMsg
+      setErrorMsg,
     );
     if (!checkResponse) return;
     // 서버에 닉네임 변경 요청
@@ -40,9 +42,10 @@ const ChangeNickname = () => {
     const changeResponse = await changeNicknameApi(changeNickname);
     console.log(changeResponse);
 
-    if (user) {
-      setUser({ ...user, nickname: newNickname });
-    }
+    qc.invalidateQueries({
+      queryKey: MYPAGE_QUERY_KEY.USER_PROFILE,
+    });
+
     // 닉네임 변경 모달 생성
     setModalType("NicknameChange");
     setModalState(true);
@@ -61,7 +64,7 @@ const ChangeNickname = () => {
           label="닉네임"
           type="text"
           value={newNickname}
-          placeholder={nickname}
+          placeholder={userProfileData?.nickname}
           onChange={handleInputNicknameChange}
         />
         {!isNicknameValid && newNickname && (

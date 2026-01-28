@@ -8,17 +8,11 @@ import styles from "./DepartmentSearchBar.module.css";
 interface DepartmentSearchProps {
   searchTarget: string;
   setSearchTarget: (value: string) => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const DepartmentSearch: React.FC<DepartmentSearchProps> = ({
   searchTarget,
   setSearchTarget,
-  onFocus,
-  onBlur,
-  onKeyDown,
 }) => {
   const inputFocus = useRef<HTMLInputElement>(null);
 
@@ -43,9 +37,6 @@ const DepartmentSearch: React.FC<DepartmentSearchProps> = ({
           value={searchTarget}
           onChange={handleChange}
           placeholder="추가할 학과명을 입력해주세요"
-          onFocus={onFocus}
-          onBlur={onBlur}
-          onKeyDown={onKeyDown}
           onTouchStart={() => {
             inputFocus.current?.focus();
           }}

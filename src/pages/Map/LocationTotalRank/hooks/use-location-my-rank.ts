@@ -2,8 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 
 import { LOCATION_TOTAL_RANK_QUERY_KEY } from "../querykey/rank";
 import { getLocationMyRank } from "../api";
+import useToast from "@/shared/hooks/use-toast";
 
 export const useLocationMyRank = (placeId: number) => {
+  const toast = useToast();
+
   const {
     data: myRankData,
     isPending: isMyRankPending,
@@ -17,8 +20,7 @@ export const useLocationMyRank = (placeId: number) => {
   });
 
   if (isMyRankError) {
-    // TODO : 토스트로 보여주기
-    alert(`사용자 데이터 오류 : ${myRankError.message}`);
+    toast.error(`사용자 데이터 오류 : ${myRankError.message}`);
   }
 
   return {

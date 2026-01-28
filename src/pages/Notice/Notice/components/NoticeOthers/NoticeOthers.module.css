@@ -1,0 +1,24 @@
+.Wrapper {
+  margin-top: 100px;
+  padding: 28px 22px 121px 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+}
+.OthersItem {
+  min-height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+}
+.Label {
+  color: #1d2228;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 120%;
+}

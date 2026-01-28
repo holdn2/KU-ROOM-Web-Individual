@@ -9,20 +9,20 @@ const ALARM_API_URL = {
   CHECK_ALL: "/alarm/read-all",
 };
 
-export interface AlarmListResponseData extends ApiResponse {
+export interface AlarmListResponseData {
   alarms: AlarmDataType[];
   hasNext: boolean;
   nextCursor: string;
 }
 
-interface AlarmListResponse {
+interface AlarmListResponse extends ApiResponse {
   data: AlarmListResponseData;
 }
 
 export const getAlarmListApi = async (lastKnown?: string) => {
   const response = await axiosInstance.get<AlarmListResponse>(
     ALARM_API_URL.BASE,
-    { params: { lastKnown, limit: PAGE_SIZE } }
+    { params: { lastKnown, limit: PAGE_SIZE } },
   );
 
   return response.data.data;
@@ -53,7 +53,7 @@ interface AlarmReadStatusResponse extends ApiResponse {
 
 export const getAlarmReadStatus = async () => {
   const response = await axiosInstance.get<AlarmReadStatusResponse>(
-    ALARM_API_URL.UNREAD_STATUS
+    ALARM_API_URL.UNREAD_STATUS,
   );
 
   return response.data.data;
@@ -61,7 +61,7 @@ export const getAlarmReadStatus = async () => {
 
 export const checkAllAlarmsApi = async () => {
   const response = await axiosInstance.patch<ApiResponse>(
-    ALARM_API_URL.CHECK_ALL
+    ALARM_API_URL.CHECK_ALL,
   );
 
   return response.data;

@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 import defaultProfileImg from "@assets/defaultProfileImg.svg";
 import editIcon from "@assets/icon/editpencil.svg";
 import Button from "@components/Button/Button";
-import { useUserStore } from "@stores/userStore";
-import useToast from "@hooks/use-toast";
-import BottomSheet from "@components/BottomSheet/BottomSheet";
+
+import { useUserProfile } from "../../hooks/use-user-profile";
 
 import styles from "./MyProfileComponent.module.css";
+import BottomSheet from "@/shared/components/BottomSheet/BottomSheet";
+import useToast from "@/shared/hooks/use-toast";
 
 interface MyProfileComponentProps {
   isChangeProfile: boolean;
@@ -17,6 +18,8 @@ interface MyProfileComponentProps {
 const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
   isChangeProfile,
 }) => {
+  const { userProfileData, isPendingUserProfile } = useUserProfile();
+
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -25,14 +28,6 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const toast = useToast();
-
-  const nickname = useUserStore((state) => state.user?.nickname);
-  const imageUrl = useUserStore((state) => state.user?.imageUrl);
-  // const department = useUserStore(
-  //   (state) => state.user?.departmentResponse[0].departmentName
-  // );
-  const email = useUserStore((state) => state.user?.email);
-  // const department = useUserStore((state) => state.user?.department);
 
   const goToProfileSetting = () => {
     navigate("/profilechange");
@@ -88,63 +83,74 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
     console.log("기본 이미지 적용");
   };
 
-  const displayImage = previewUrl || imageUrl || defaultProfileImg;
+  const displayImage =
+    previewUrl || userProfileData?.profileImage || defaultProfileImg;
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          padding: "32px 28.5px",
-          gap: "29px",
-        }}
-      >
-        <div className={styles.MyProfileInfoWrapper}>
-          <div className={styles.ImgWrapper}>
-            {isChangeProfile ? (
-              <>
-                <input
-                  ref={imageInputRef}
-                  type="file"
-                  accept=".png,.jpg,.jpeg,.svg,image/png,image/jpeg,image/svg+xml"
-                  onChange={handleChangeFile}
-                  style={{ display: "none" }}
-                />
-                <button type="button" onClick={handleOpenProfileImageSheet}>
-                  <img
-                    className={styles.EditProfileImg}
-                    src={displayImage}
-                    alt="프로필 사진"
+      {isPendingUserProfile ? (
+        <div>로딩중...</div>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            padding: "32px 28.5px",
+            gap: "29px",
+          }}
+        >
+          <div className={styles.MyProfileInfoWrapper}>
+            <div className={styles.ImgWrapper}>
+              {isChangeProfile ? (
+                <>
+                  <input
+                    ref={imageInputRef}
+                    type="file"
+                    accept=".png,.jpg,.jpeg,.svg,image/png,image/jpeg,image/svg+xml"
+                    onChange={handleChangeFile}
+                    style={{ display: "none" }}
                   />
-                </button>
-              </>
-            ) : (
-              <img
-                className={styles.ProfileImg}
-                src={displayImage}
-                alt="프로필 사진"
-              />
-            )}
+                  <button type="button" onClick={handleOpenProfileImageSheet}>
+                    <img
+                      className={styles.EditProfileImg}
+                      src={displayImage}
+                      alt="프로필 사진"
+                    />
+                  </button>
+                </>
+              ) : (
+                <img
+                  className={styles.ProfileImg}
+                  src={displayImage}
+                  alt="프로필 사진"
+                />
+              )}
 
-            {isChangeProfile && (
-              <img src={editIcon} alt="수정하기" className={styles.EditIcon} />
-            )}
-          </div>
+              {isChangeProfile && (
+                <img
+                  src={editIcon}
+                  alt="수정하기"
+                  className={styles.EditIcon}
+                />
+              )}
+            </div>
 
-          <div className={styles.InfoWrapper}>
-            <span className={styles.MyName}>{nickname}</span>
-            {!isChangeProfile && (
-              <span className={styles.MyDepartment}>{email}</span>
-            )}
+            <div className={styles.InfoWrapper}>
+              <span className={styles.MyName}>{userProfileData?.nickname}</span>
+              {!isChangeProfile && (
+                <span className={styles.MyDepartment}>
+                  {userProfileData?.email}
+                </span>
+              )}
+            </div>
           </div>
+          {!isChangeProfile && (
+            <Button onClick={goToProfileSetting} variant="secondary">
+              프로필 설정
+            </Button>
+          )}
         </div>
-        {!isChangeProfile && (
-          <Button onClick={goToProfileSetting} variant="secondary">
-            프로필 설정
-          </Button>
-        )}
-      </div>
+      )}
       <BottomSheet
         isOpen={isOpen}
         handleCloseBottomSheet={handleCloseProfileImageSheet}

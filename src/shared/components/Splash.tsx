@@ -1,4 +1,4 @@
-import kurumIcon from "@assets/icon/cloud.svg";
+import kuroomIcon from "@assets/icon/cloud.svg";
 
 const Splash = () => {
   return (
@@ -22,7 +22,7 @@ const Splash = () => {
       >
         <img
           style={{ width: "67px", height: "44px" }}
-          src={kurumIcon}
+          src={kuroomIcon}
           alt="쿠룸 아이콘"
         />
         <h1
@@ -35,7 +35,7 @@ const Splash = () => {
             lineHeight: "120%",
           }}
         >
-          KURUM
+          KUROOM
         </h1>
       </div>
       <span
