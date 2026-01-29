@@ -1,7 +1,7 @@
 .PageWrapper {
   display: flex;
   flex-direction: column;
-  padding: 9px 28px 11px 28px;
+  padding: 20px 28px;
   min-height: 100vh;
   max-width: 100%;
   align-items: center;
@@ -14,11 +14,15 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 710px;
-  margin-top: 10px;
+  margin-top: 36px;
+}
+.InputWrapper {
+  margin-top: 29px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 .PageTitle {
-  margin-top: 36px;
   color: var(--gray-black, #1d2228);
   font-size: 30px;
   font-style: normal;

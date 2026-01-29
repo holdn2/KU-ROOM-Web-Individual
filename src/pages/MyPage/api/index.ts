@@ -1,10 +1,12 @@
 import axiosInstance from "@apis/axiosInstance";
 import { ApiResponse } from "@/shared/types";
+import axios from "axios";
 
 const MYPAGE_API_URL = {
   userProfile: "/users/profile",
   departmentSearch: "/departments/search",
   departmentUpdate: "/users/department",
+  presignedUrl: "/users/profile/presigned-url",
 };
 
 export interface DepartmentType {
@@ -72,4 +74,53 @@ export const deleteDepartmentApi = async (department: string) => {
   );
 
   return response.data.data;
+};
+
+interface UpdateProfileImageResponse extends ApiResponse {
+  data: string;
+}
+
+export const updateProfileImageApi = async (imageUrl: string | null) => {
+  const response = await axiosInstance.patch<UpdateProfileImageResponse>(
+    MYPAGE_API_URL.userProfile,
+    {
+      imageUrl,
+    },
+  );
+
+  return response.data;
+};
+
+export interface GetPresignedUrlData {
+  presignedUrl: string;
+  fileKey: string;
+  fullUrl: string;
+}
+
+interface GetPresignedUrlResponse extends ApiResponse {
+  data: GetPresignedUrlData;
+}
+
+export const getPresignedUrlApi = async (
+  fileName: string,
+  fileType: string,
+) => {
+  const response = await axiosInstance.post<GetPresignedUrlResponse>(
+    MYPAGE_API_URL.presignedUrl,
+    {
+      fileName,
+      fileType,
+    },
+  );
+
+  return response.data;
+};
+
+export const uploadToPresignedUrlApi = async (
+  presignedUrl: string,
+  file: File,
+) => {
+  await axios.put(presignedUrl, file, {
+    headers: { "Content-Type": file.type },
+  });
 };

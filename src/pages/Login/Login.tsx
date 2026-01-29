@@ -73,7 +73,7 @@ const Login = () => {
         JSON.stringify({
           type: "AUTH_TOKEN",
           accessToken: accessToken,
-        })
+        }),
       );
 
       // 전역 상태관리 zustand 사용해서 저장.
@@ -123,22 +123,15 @@ const Login = () => {
     <>
       <EdgeGuard />
       <div className={styles.PageWrapper}>
+        <TopIcon />
         <div className={styles.MainArea}>
-          <TopIcon />
           <h1 className={styles.PageTitle}>
             반가워요
             <br />
             <span className={styles.KUROOMTITLE}>쿠룸</span>
             입니다.
           </h1>
-          <div
-            style={{
-              marginTop: "30px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "20px",
-            }}
-          >
+          <div className={styles.InputWrapper}>
             <div>
               <InputBar
                 label="아이디"
@@ -181,7 +174,7 @@ const Login = () => {
               display: "flex",
               gap: "47px",
               alignSelf: "center",
-              marginTop: "67px",
+              marginTop: "40px",
             }}
           >
             <KakaoIcon

@@ -45,7 +45,7 @@ const IdentityVerify = () => {
       checkingEmail,
       setIsDuplicatedEmail,
       setModalType,
-      setModalState
+      setModalState,
     );
     console.log(response);
     if (response === "OK") {
@@ -87,8 +87,8 @@ const IdentityVerify = () => {
 
   return (
     <div className={styles.PageWrapper}>
+      <TopIcon />
       <div className={styles.MainArea}>
-        <TopIcon />
         <h1 className={styles.PageTitle}>본인인증</h1>
         <div style={{ position: "relative" }}>
           <InputBar
