@@ -10,6 +10,7 @@ import FindStep0 from "./FindStep0";
 import FindStep1 from "./FindStep1";
 import FindStep2 from "./FindStep2";
 import styles from "./FindIdPw.module.css";
+import Header from "@/shared/components/Header/Header";
 
 // 상태 정의
 type State = {
@@ -248,18 +249,18 @@ const FindIdPw = () => {
     }
   };
   return (
-    <div className={styles.PageWrapper}>
-      <div className={styles.MainArea}>
-        <TopIcon />
-        {renderFindIdPw()}
+    <>
+      <Header />
+      <div className={styles.PageWrapper}>
+        <div className={styles.MainArea}>{renderFindIdPw()}</div>
+        <InformModal
+          modalType={modalType}
+          modalState={modalState}
+          setModalState={setModalState}
+          setFindStep={setFindStep}
+        />
       </div>
-      <InformModal
-        modalType={modalType}
-        modalState={modalState}
-        setModalState={setModalState}
-        setFindStep={setFindStep}
-      />
-    </div>
+    </>
   );
 };
 

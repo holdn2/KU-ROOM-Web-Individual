@@ -11,7 +11,6 @@ import { useSearchLocationQuery } from "../../hooks/use-search-location-query";
 import { useLocationKeyword } from "../../hooks/use-location-keyword";
 import styles from "./MapSearch.module.css";
 
-// const dummyLocationData = ["레스티오", "1847", "신공학관"];
 interface MapSearchProps {
   setSearchMode: (value: boolean) => void;
   clickSearchResultToMarker: (value: MapSearchResult) => void;

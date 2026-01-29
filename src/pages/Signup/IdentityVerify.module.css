@@ -1,7 +1,7 @@
 .PageWrapper {
   display: flex;
   flex-direction: column;
-  padding: 20px 28px;
+  padding: 0 28px;
   min-height: 100vh;
   max-width: 100%;
   /* align-items: center; */
@@ -17,6 +17,10 @@
   width: 100%;
   flex: 1;
 }
+.PageTitle {
+  margin-top: 90px;
+  margin-bottom: 36px;
+}
 .PageTitle,
 .ErrorMsg {
   color: var(--Black, #1d2228);
@@ -24,7 +28,6 @@
   font-style: normal;
   font-weight: 700;
   line-height: 140%;
-  margin: 36px 0;
 }
 .ButtonStyle {
   position: absolute;

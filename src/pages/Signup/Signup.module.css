@@ -1,7 +1,7 @@
 .PageWrapper {
   display: flex;
   flex-direction: column;
-  padding: 20px 28px;
+  padding: 0 28px;
   min-height: 100vh;
   max-width: 100%;
   /* align-items: center; */
@@ -18,7 +18,7 @@
   flex: 1;
 }
 .PageTitle {
-  margin-top: 36px;
+  margin-top: 90px;
   margin-bottom: 29px;
 }
 .PageTitle,
