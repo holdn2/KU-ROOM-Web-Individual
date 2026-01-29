@@ -151,7 +151,7 @@ const SignupInfo = () => {
                     setIsAttemptReset,
                     setAllowedPw,
                     setIsCheckedPw,
-                    navigate
+                    navigate,
                   )
                 }
                 disabled={!(inputPw && checkPw)}
@@ -166,9 +166,9 @@ const SignupInfo = () => {
 
   return (
     <div className={styles.PageWrapper}>
+      <TopIcon />
       <div className={styles.MainArea}>
-        <TopIcon />
-        <h1 className={styles.PageTitle} style={{ marginBottom: "29px" }}>
+        <h1 className={styles.PageTitle}>
           <span style={{ color: "#009733" }}>회원가입</span>을 위한
           <br />
           정보를 입력해주세요.

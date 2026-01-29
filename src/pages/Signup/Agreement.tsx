@@ -47,8 +47,8 @@ const Agreement: React.FC = () => {
 
   return (
     <div className={styles.PageWrapper}>
+      <TopIcon />
       <div className={styles.MainArea}>
-        <TopIcon />
         <h1 className={styles.PageTitle}>
           회원가입을 위한
           <br />

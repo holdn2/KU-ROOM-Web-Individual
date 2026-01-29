@@ -1,7 +1,7 @@
 .PageWrapper {
   display: flex;
   flex-direction: column;
-  padding: 9px 28px 11px 28px;
+  padding: 20px 28px;
   min-height: 100vh;
   max-width: 100%;
   /* align-items: center; */
@@ -14,8 +14,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 692px;
-  margin-top: 10px;
+  flex: 1;
 }
 .PageTitle {
   color: var(--Black, #1d2228);
@@ -33,6 +32,6 @@
 }
 .ButtonStyle {
   position: absolute;
-  bottom: 0;
+  bottom: 50px;
   width: 100%;
 }
