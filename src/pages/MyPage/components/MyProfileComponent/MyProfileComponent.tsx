@@ -72,6 +72,11 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
                       src={displayImage}
                       alt="프로필 사진"
                     />
+                    <img
+                      src={editIcon}
+                      alt="수정하기"
+                      className={styles.EditIcon}
+                    />
                   </button>
                 </>
               ) : (
@@ -79,14 +84,6 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
                   className={styles.ProfileImg}
                   src={displayImage}
                   alt="프로필 사진"
-                />
-              )}
-
-              {isChangeProfile && (
-                <img
-                  src={editIcon}
-                  alt="수정하기"
-                  className={styles.EditIcon}
                 />
               )}
             </div>
@@ -113,16 +110,21 @@ const MyProfileComponent: React.FC<MyProfileComponentProps> = ({
         sheetHeight={200}
       >
         <div className={styles.SheetContentWrapper}>
-          <div className={styles.SheetContent} onClick={handleClickImage}>
+          <button
+            type="button"
+            className={styles.SheetContent}
+            onClick={handleClickImage}
+          >
             앨범에서 사진/동영상 선택
-          </div>
+          </button>
           <div className={styles.Separator} />
-          <div
+          <button
+            type="button"
             className={styles.SheetContent}
             onClick={handleApplyDefaultImage}
           >
             기본 이미지 적용
-          </div>
+          </button>
         </div>
       </BottomSheet>
     </>
