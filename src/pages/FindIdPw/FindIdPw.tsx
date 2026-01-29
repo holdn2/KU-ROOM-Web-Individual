@@ -3,14 +3,13 @@ import { ChangeEvent, useEffect, useState, useReducer } from "react";
 import { findIdFromEmail, sendEmailApi, verifyCodeApi } from "@apis/mails";
 import { changePwBeforeLogin } from "@apis/changePw";
 import InformModal from "@components/InformModal/InformModal";
-import TopIcon from "@components/TopIcon";
+import Header from "@components/Header/Header";
 import { isValidPassword } from "@utils/validations";
 
 import FindStep0 from "./FindStep0";
 import FindStep1 from "./FindStep1";
 import FindStep2 from "./FindStep2";
 import styles from "./FindIdPw.module.css";
-import Header from "@/shared/components/Header/Header";
 
 // 상태 정의
 type State = {
