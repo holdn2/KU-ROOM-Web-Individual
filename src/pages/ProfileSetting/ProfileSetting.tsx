@@ -6,6 +6,7 @@ import { createSocialUserApi } from "@apis/auth";
 import { getAllColleges, getDepartments } from "@apis/department";
 import Button from "@components/Button/Button";
 import InputBar from "@components/InputBar/InputBar";
+import Header from "@components/Header/Header";
 import { isValidStudentId } from "@utils/validations";
 import { useUserStore } from "@stores/userStore";
 
@@ -13,7 +14,6 @@ import Select from "./components/Select/Select";
 import BottomSheet from "./components/BottomSheet/BottomSheet";
 import SelectItem from "./components/SelectItem/SelectItem";
 import "./ProfileSetting.css";
-import Header from "@/shared/components/Header/Header";
 
 const ProfileSetting: React.FC = () => {
   const navigate = useNavigate();
