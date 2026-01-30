@@ -31,6 +31,7 @@ const IdentityVerify = () => {
     setVerifiedEmail(e.target.value);
   };
   const handleVerifyCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsAttemptVerify(false);
     const newValue = e.target.value.replace(/\D/g, ""); // 숫자만 입력 가능하도록 제한
     if (newValue.length <= 6) {
       // 6자리까지만 입력 가능
@@ -71,16 +72,19 @@ const IdentityVerify = () => {
       code: verifyCode,
     };
     // 서버에 요청해서 같은지 확인
-    const response = await verifyCodeApi(verifyData);
-    if (response) {
-      navigate("/agreement", {
-        state: {
-          signupId: signupId,
-          signupPw: signupPw,
-          signupEmail: verifiedEmail,
-        },
-      });
-    } else {
+    try {
+      const response = await verifyCodeApi(verifyData);
+      if (response) {
+        console.log("여기");
+        navigate("/agreement", {
+          state: {
+            signupId: signupId,
+            signupPw: signupPw,
+            signupEmail: verifiedEmail,
+          },
+        });
+      }
+    } catch (_) {
       setIsAttemptVerify(true);
     }
   };

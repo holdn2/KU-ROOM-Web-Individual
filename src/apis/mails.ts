@@ -17,7 +17,7 @@ export const sendEmailApi = async (email: { email: string }) => {
   } catch (error: any) {
     console.error("이메일 전송 실패:", error.response?.data || error.message);
     throw new Error(
-      error.response?.data?.message || "이메일 전송 중 오류 발생"
+      error.response?.data?.message || "이메일 전송 중 오류 발생",
     );
   }
 };
@@ -43,14 +43,14 @@ export const verifyCodeApi = async (verifyData: {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     console.log(response.data);
     return response.data.data.verified; // 성공 응답 반환
   } catch (error: any) {
     console.error("인증코드 검증 실패:", error.response?.data || error.message);
     throw new Error(
-      error.response?.data?.message || "인증코드 검증 중 오류 발생"
+      error.response?.data?.message || "인증코드 검증 중 오류 발생",
     );
   }
 };
@@ -72,14 +72,14 @@ export const findIdFromEmail = async (email: string) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     console.log(response.data.data.loginId);
     return response.data.data.loginId;
   } catch (error: any) {
     console.error("아이디 조회 실패:", error.response?.data || error.message);
     throw new Error(
-      error.response?.data?.message || "아이디 조회 중 오류 발생"
+      error.response?.data?.message || "아이디 조회 중 오류 발생",
     );
   }
 };
