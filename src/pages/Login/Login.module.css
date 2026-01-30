@@ -1,7 +1,7 @@
 .PageWrapper {
   display: flex;
   flex-direction: column;
-  padding: 20px 28px;
+  padding: 0 28px;
   min-height: 100vh;
   max-width: 100%;
   align-items: center;
@@ -14,7 +14,9 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 36px;
+  flex: 1;
+  justify-content: center;
+  max-height: 780px;
 }
 .InputWrapper {
   margin-top: 29px;
@@ -28,6 +30,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: 140%; /* 42px */
+  z-index: 9999;
 }
 .KUROOMTITLE,
 .LinkText,

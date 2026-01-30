@@ -1,6 +1,6 @@
 .profile-setting {
   background-color: #f8f9fc;
-  padding: 20px 28px;
+  padding: 0 28px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -15,23 +15,11 @@
   margin-bottom: 30px;
 }
 
-.profile-setting-cloud {
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  top: 20;
-  right: 0;
-  z-index: 1;
-  background-image: url("../../assets/icon/cloud.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
 .profile-setting-title {
   font-size: 30px;
   font-weight: 700;
   line-height: 42px;
-  margin-top: 66px;
+  margin-top: 75px;
 }
 
 .text-primary {
@@ -48,7 +36,7 @@
 
 .profile-setting-button {
   margin-top: auto;
-  padding: 24px 0;
+  padding: 24px 0 50px 0;
   max-width: 100%;
 }
 
