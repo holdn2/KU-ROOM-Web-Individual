@@ -5,9 +5,9 @@ import checkedIcon from "@assets/icon/roundcheck.svg";
 import uncheckedIcon from "@assets/icon/roundUncheck.svg";
 import { checkValidationEmailApi } from "@apis/signup";
 import { sendEmailApi, verifyCodeApi } from "@apis/mails";
-import TopIcon from "@components/TopIcon";
 import InputBar from "@components/InputBar/InputBar";
 import Button from "@components/Button/Button";
+import Header from "@components/Header/Header";
 import InformModal from "@components/InformModal/InformModal";
 import { isValidEmail } from "@utils/validations";
 
@@ -31,6 +31,7 @@ const IdentityVerify = () => {
     setVerifiedEmail(e.target.value);
   };
   const handleVerifyCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsAttemptVerify(false);
     const newValue = e.target.value.replace(/\D/g, ""); // 숫자만 입력 가능하도록 제한
     if (newValue.length <= 6) {
       // 6자리까지만 입력 가능
@@ -71,90 +72,95 @@ const IdentityVerify = () => {
       code: verifyCode,
     };
     // 서버에 요청해서 같은지 확인
-    const response = await verifyCodeApi(verifyData);
-    if (response) {
-      navigate("/agreement", {
-        state: {
-          signupId: signupId,
-          signupPw: signupPw,
-          signupEmail: verifiedEmail,
-        },
-      });
-    } else {
+    try {
+      const response = await verifyCodeApi(verifyData);
+      if (response) {
+        console.log("여기");
+        navigate("/agreement", {
+          state: {
+            signupId: signupId,
+            signupPw: signupPw,
+            signupEmail: verifiedEmail,
+          },
+        });
+      }
+    } catch (_) {
       setIsAttemptVerify(true);
     }
   };
 
   return (
-    <div className={styles.PageWrapper}>
-      <TopIcon />
-      <div className={styles.MainArea}>
-        <h1 className={styles.PageTitle}>본인인증</h1>
-        <div style={{ position: "relative" }}>
-          <InputBar
-            label="이메일"
-            type="email"
-            value={verifiedEmail}
-            placeholder="가입한 이메일 주소를 입력해주세요"
-            onChange={handleVerifiedEmailChange}
-          />
-          <img
-            src={isValidEmail(verifiedEmail) ? checkedIcon : uncheckedIcon}
-            alt="올바른 형식인지 체크"
-            className={styles.CheckIcon}
-          />
-        </div>
-        {verifiedEmail && !isValidEmail(verifiedEmail) && (
-          <span className={styles.ErrorMsg}>잘못된 이메일 형식입니다.</span>
-        )}
-        {isDuplicatedEmail && (
-          <span className={styles.ErrorMsg}>이미 있는 계정입니다.</span>
-        )}
-        {isAttemptSend && (
+    <>
+      <Header />
+      <div className={styles.PageWrapper}>
+        <div className={styles.MainArea}>
+          <h1 className={styles.PageTitle}>본인인증</h1>
           <div style={{ position: "relative" }}>
-            <div style={{ position: "relative" }}>
-              <InputBar
-                label="인증코드"
-                type="text"
-                value={verifyCode}
-                placeholder="인증코드 6자리를 입력해주세요"
-                onChange={handleVerifyCodeChange}
-              />
-            </div>
-            <button className={styles.Retransmit} onClick={sendVerifyCode}>
-              이메일 재전송
-            </button>
+            <InputBar
+              label="이메일"
+              type="email"
+              value={verifiedEmail}
+              placeholder="가입한 이메일 주소를 입력해주세요"
+              onChange={handleVerifiedEmailChange}
+            />
+            <img
+              src={isValidEmail(verifiedEmail) ? checkedIcon : uncheckedIcon}
+              alt="올바른 형식인지 체크"
+              className={styles.CheckIcon}
+            />
           </div>
-        )}
-
-        {isAttemptVerify && (
-          <span className={styles.ErrorMsg}>잘못된 인증코드입니다.</span>
-        )}
-        <div className={styles.ButtonStyle}>
-          {isAttemptSend ? (
-            <Button
-              onClick={handleVerifyCode}
-              disabled={verifyCode.length !== 6}
-            >
-              인증하기
-            </Button>
-          ) : (
-            <Button
-              onClick={sendVerifyCode}
-              disabled={!verifiedEmail || !isValidEmail(verifiedEmail)}
-            >
-              인증코드 발송
-            </Button>
+          {verifiedEmail && !isValidEmail(verifiedEmail) && (
+            <span className={styles.ErrorMsg}>잘못된 이메일 형식입니다.</span>
           )}
+          {isDuplicatedEmail && (
+            <span className={styles.ErrorMsg}>이미 있는 계정입니다.</span>
+          )}
+          {isAttemptSend && (
+            <div style={{ position: "relative" }}>
+              <div style={{ position: "relative" }}>
+                <InputBar
+                  label="인증코드"
+                  type="text"
+                  value={verifyCode}
+                  placeholder="인증코드 6자리를 입력해주세요"
+                  onChange={handleVerifyCodeChange}
+                />
+              </div>
+              <button className={styles.Retransmit} onClick={sendVerifyCode}>
+                이메일 재전송
+              </button>
+            </div>
+          )}
+
+          {isAttemptVerify && (
+            <span className={styles.ErrorMsg}>잘못된 인증코드입니다.</span>
+          )}
+          <div className={styles.ButtonStyle}>
+            {isAttemptSend ? (
+              <Button
+                onClick={handleVerifyCode}
+                disabled={verifyCode.length !== 6}
+              >
+                인증하기
+              </Button>
+            ) : (
+              <Button
+                onClick={sendVerifyCode}
+                disabled={!verifiedEmail || !isValidEmail(verifiedEmail)}
+              >
+                인증코드 발송
+              </Button>
+            )}
+          </div>
         </div>
+        <InformModal
+          modalType={modalType}
+          modalState={modalState}
+          setModalState={setModalState}
+          setModalType={setModalType}
+        />
       </div>
-      <InformModal
-        modalType={modalType}
-        modalState={modalState}
-        setModalState={setModalState}
-        setModalType={setModalType}
-      />
-    </div>
+    </>
   );
 };
 

@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames"; // 조건부 스타일링을 위해서
 
-import TopIcon from "@components/TopIcon";
+import Header from "@components/Header/Header";
 import InputBar from "@components/InputBar/InputBar";
 import Button from "@components/Button/Button";
 import { checkAvailableId, handleSettingPassword } from "@utils/validations";
@@ -165,17 +165,19 @@ const SignupInfo = () => {
   };
 
   return (
-    <div className={styles.PageWrapper}>
-      <TopIcon />
-      <div className={styles.MainArea}>
-        <h1 className={styles.PageTitle}>
-          <span style={{ color: "#009733" }}>회원가입</span>을 위한
-          <br />
-          정보를 입력해주세요.
-        </h1>
-        {renderSignup()}
+    <>
+      <Header />
+      <div className={styles.PageWrapper}>
+        <div className={styles.MainArea}>
+          <h1 className={styles.PageTitle}>
+            <span style={{ color: "#009733" }}>회원가입</span>을 위한
+            <br />
+            정보를 입력해주세요.
+          </h1>
+          {renderSignup()}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

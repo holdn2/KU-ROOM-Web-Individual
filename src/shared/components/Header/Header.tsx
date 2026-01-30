@@ -18,6 +18,7 @@ interface HeaderProps {
   unreadCount?: number;
   onBookmarkClick?: () => void;
   isBookmarked?: boolean;
+  onlyIcon?: boolean;
 }
 
 const renderHeaderContent = (
@@ -27,6 +28,7 @@ const renderHeaderContent = (
   unreadCount?: number,
   onBookmarkClick?: () => void,
   isBookmarked?: boolean,
+  onlyIcon?: boolean,
 ) => {
   switch (children) {
     case "홈":
@@ -101,7 +103,15 @@ const renderHeaderContent = (
         </>
       );
     case "":
-      return (
+      return onlyIcon ? (
+        <>
+          <img
+            className="header-kuroom-icon"
+            src={kuroomIcon}
+            alt="쿠룸 아이콘"
+          />
+        </>
+      ) : (
         <>
           <img
             className="profilechange-header-content"
@@ -154,6 +164,7 @@ const Header: React.FC<HeaderProps> = ({
   unreadCount,
   onBookmarkClick,
   isBookmarked,
+  onlyIcon = false,
 }) => {
   const navigate = useNavigate();
   const hasUnreadAlarm = children === "홈" && hasUnread === true;
@@ -176,6 +187,7 @@ const Header: React.FC<HeaderProps> = ({
           unreadCount,
           onBookmarkClick,
           isBookmarked,
+          onlyIcon,
         )}
       </header>
     </>

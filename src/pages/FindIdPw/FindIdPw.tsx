@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState, useReducer } from "react";
 import { findIdFromEmail, sendEmailApi, verifyCodeApi } from "@apis/mails";
 import { changePwBeforeLogin } from "@apis/changePw";
 import InformModal from "@components/InformModal/InformModal";
-import TopIcon from "@components/TopIcon";
+import Header from "@components/Header/Header";
 import { isValidPassword } from "@utils/validations";
 
 import FindStep0 from "./FindStep0";
@@ -248,18 +248,18 @@ const FindIdPw = () => {
     }
   };
   return (
-    <div className={styles.PageWrapper}>
-      <div className={styles.MainArea}>
-        <TopIcon />
-        {renderFindIdPw()}
+    <>
+      <Header />
+      <div className={styles.PageWrapper}>
+        <div className={styles.MainArea}>{renderFindIdPw()}</div>
+        <InformModal
+          modalType={modalType}
+          modalState={modalState}
+          setModalState={setModalState}
+          setFindStep={setFindStep}
+        />
       </div>
-      <InformModal
-        modalType={modalType}
-        modalState={modalState}
-        setModalState={setModalState}
-        setFindStep={setFindStep}
-      />
-    </div>
+    </>
   );
 };
 

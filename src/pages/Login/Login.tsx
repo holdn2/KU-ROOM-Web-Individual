@@ -6,9 +6,9 @@ import GoogleIcon from "@assets/socialLoginIcon/googleLogin.svg?react";
 import KakaoIcon from "@assets/socialLoginIcon/kakaoLogin.svg?react";
 import AppleIcon from "@assets/socialLoginIcon/appleLogin.svg?react";
 import Button from "@components/Button/Button";
+import Header from "@components/Header/Header";
 import { EdgeGuard } from "@components/EdgeGuard";
 import InputBar from "@components/InputBar/InputBar";
-import TopIcon from "@components/TopIcon";
 import { useUserStore } from "@stores/userStore";
 
 import styles from "./Login.module.css";
@@ -122,8 +122,8 @@ const Login = () => {
   return (
     <>
       <EdgeGuard />
+      <Header onlyIcon={true} />
       <div className={styles.PageWrapper}>
-        <TopIcon />
         <div className={styles.MainArea}>
           <h1 className={styles.PageTitle}>
             반가워요
