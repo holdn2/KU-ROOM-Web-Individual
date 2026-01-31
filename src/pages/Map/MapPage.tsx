@@ -72,7 +72,6 @@ const MapPage = () => {
     selectedCategoryTitle,
     selectedCategoryEnum,
     modalState,
-    currentLocation,
     nearLocation,
     markers,
     markerFlag,
@@ -93,7 +92,7 @@ const MapPage = () => {
     setSelectedCategoryTitle,
     setSelectedCategoryEnum,
     setModalState,
-    setCurrentLocation,
+    // setCurrentLocation,
     // setNearLocation,
     setMarkers,
     setMarkerFlag,
@@ -110,22 +109,6 @@ const MapPage = () => {
       console.error("위치 공유 상태 확인 실패 : ", error);
     }
   };
-
-  // 현재 위치에 따른 가까운 건물 받아오기
-  // const getNearBuildingToShare = async () => {
-  //   try {
-  //     const response = await getUserShareLocation(
-  //       currentLocation!.latitude,
-  //       currentLocation!.longitude
-  //     );
-  //     // console.log(response);
-  //     setNearLocation(response);
-  //     setAbleToShare(true);
-  //   } catch (error) {
-  //     setAbleToShare(false);
-  //     console.error("가장 가까운 위치 조회 실패 : ", error);
-  //   }
-  // };
 
   // 친구 제외 카테고리 칩을 눌렀을 때 서버에 카테고리 ENUM 을 이용하여 요청
   const getCategoryLocations = async (selectedCategory: string) => {
@@ -246,7 +229,7 @@ const MapPage = () => {
     }
 
     // 현재 내 위치가 학교 내부인지 검증
-    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
+    return isMyLocationInSchool(setIsInSchool);
   }, []);
 
   // 사이드 이펙트 (useEffect) *********************************************
@@ -415,29 +398,25 @@ const MapPage = () => {
                   style={{ filter: isTracking ? "none" : "grayscale(100%)" }}
                 />
               </button>
-              {currentLocation !== null &&
-                (isSharedLocation ? (
+              {isSharedLocation ? (
+                <button
+                  className={styles.UnsharedLocationButton}
+                  onClick={handleShareLocation}
+                >
+                  <img src={unshareLocationIcon} alt="위치 공유 해제 아이콘" />
+                  <span>내 위치 공유 중</span>
+                </button>
+              ) : (
+                isInSchool && (
                   <button
-                    className={styles.UnsharedLocationButton}
+                    className={styles.SharedLocationButton}
                     onClick={handleShareLocation}
                   >
-                    <img
-                      src={unshareLocationIcon}
-                      alt="위치 공유 해제 아이콘"
-                    />
-                    <span>내 위치 공유 중</span>
+                    <img src={shareLocationIcon} alt="위치 공유 아이콘" />
+                    <span>내 위치 공유</span>
                   </button>
-                ) : (
-                  isInSchool && (
-                    <button
-                      className={styles.SharedLocationButton}
-                      onClick={handleShareLocation}
-                    >
-                      <img src={shareLocationIcon} alt="위치 공유 아이콘" />
-                      <span>내 위치 공유</span>
-                    </button>
-                  )
-                ))}
+                )
+              )}
             </>
           )}
         </>

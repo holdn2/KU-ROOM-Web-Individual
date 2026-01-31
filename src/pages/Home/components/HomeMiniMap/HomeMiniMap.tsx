@@ -1,19 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "@components/Button/Button";
 import KuroomMap from "@pages/Map/components/KuroomMap";
-import { Coordinate } from "@/shared/types";
 
 import styles from "./HomeMiniMap.module.css";
+import { isMyLocationInSchool } from "@/shared/utils/mapRangeUtils";
 
 interface HomeMiniMapProps {
   isSharedLocation: boolean;
   setModalState: (value: boolean) => void;
-  currentLocation: Coordinate;
   sharedLocationName: string | null;
-  setNearLocation: (value: string) => void;
-  setAbleToShare: (value: boolean) => void;
 }
 
 const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
@@ -22,6 +19,14 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
   sharedLocationName,
 }) => {
   const navigate = useNavigate();
+
+  // 학교 내부에 있는지 상태
+  const [isInSchool, setIsInSchool] = useState(false);
+
+  useEffect(() => {
+    // 현재 내 위치가 학교 내부인지 검증
+    return isMyLocationInSchool(setIsInSchool);
+  }, []);
 
   const handleSeeMap = () => {
     navigate("/map");
@@ -34,50 +39,49 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
     setModalState(true);
   };
 
-  return isSharedLocation ? (
-    sharedLocationName !== null && (
-      <div className={styles.HomeMiniMapBackground}>
-        <div className={styles.HomeMiniMapWrapper}>
-          <div className={styles.MiniMapTextContainer}>
-            <h1 className={styles.MiniMapBoldText}>
-              현재 {sharedLocationName}(으)로 공유 중입니다!
-            </h1>
-            <span className={styles.MiniMapNormalText}>
-              장소를 이동할 땐 위치 공유를 해제해주세요 :)
-            </span>
-          </div>
-          <div className={styles.HomeMiniMap} onClick={handleSeeMap}>
-            <KuroomMap
-              height="180px"
-              isTracking={true}
-              draggable={false}
-              zoomable={false}
-            />
-          </div>
-          <Button onClick={handleUnshareLocation}>위치 공유 해제하기</Button>
-        </div>
-      </div>
-    )
-  ) : (
+  if (isSharedLocation && sharedLocationName === null) return null;
+
+  const title = isSharedLocation
+    ? `현재 ${sharedLocationName}(으)로 공유 중입니다!`
+    : isInSchool
+      ? "현재 건국대학교에 계신가요?"
+      : "현재 건국대학교 밖에 있어요";
+
+  const subtitle = isSharedLocation
+    ? "장소를 이동할 땐 위치 공유를 해제해주세요 :)"
+    : isInSchool
+      ? "내 위치를 친구들에게 공유해보세요!"
+      : "학교 내부에서 위치를 공유할 수 있습니다!";
+
+  const buttonText = isSharedLocation
+    ? "위치 공유 해제하기"
+    : "내 위치 공유하기";
+  const handleButtonClick = isSharedLocation
+    ? handleUnshareLocation
+    : handleToShareLocationPage;
+
+  const disabled = !isInSchool && !isSharedLocation;
+
+  return (
     <div className={styles.HomeMiniMapBackground}>
       <div className={styles.HomeMiniMapWrapper}>
         <div className={styles.MiniMapTextContainer}>
-          <h1 className={styles.MiniMapBoldText}>
-            현재 건국대학교에 계신가요?
-          </h1>
-          <span className={styles.MiniMapNormalText}>
-            내 위치를 친구들에게 공유해보세요!
-          </span>
+          <h1 className={styles.MiniMapBoldText}>{title}</h1>
+          <span className={styles.MiniMapNormalText}>{subtitle}</span>
         </div>
-        <div className={styles.HomeMiniMap} onClick={handleSeeMap}>
+
+        <button className={styles.HomeMiniMap} onClick={handleSeeMap}>
           <KuroomMap
             height="180px"
             isTracking={true}
             draggable={false}
             zoomable={false}
           />
-        </div>
-        <Button onClick={handleToShareLocationPage}>내 위치 공유하기</Button>
+        </button>
+
+        <Button onClick={handleButtonClick} disabled={disabled}>
+          {buttonText}
+        </Button>
       </div>
     </div>
   );
