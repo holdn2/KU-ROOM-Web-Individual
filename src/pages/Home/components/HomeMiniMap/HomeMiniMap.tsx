@@ -39,55 +39,51 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
     setModalState(true);
   };
 
+  if (isSharedLocation && sharedLocationName === null) return null;
+
+  const title = isSharedLocation
+    ? `현재 ${sharedLocationName}(으)로 공유 중입니다!`
+    : isInSchool
+      ? "현재 건국대학교에 계신가요?"
+      : "건국대학교 안으로 들어오세요";
+
+  const subtitle = isSharedLocation
+    ? "장소를 이동할 땐 위치 공유를 해제해주세요 :)"
+    : isInSchool
+      ? "내 위치를 친구들에게 공유해보세요!"
+      : "학교 내부에서 위치를 공유할 수 있습니다!";
+
+  const buttonText = isSharedLocation
+    ? "위치 공유 해제하기"
+    : "내 위치 공유하기";
+  const handleButtonClick = isSharedLocation
+    ? handleUnshareLocation
+    : handleToShareLocationPage;
+
+  const disabled = !isInSchool && !isSharedLocation;
+
   return (
-    isInSchool &&
-    (isSharedLocation ? (
-      sharedLocationName !== null && (
-        <div className={styles.HomeMiniMapBackground}>
-          <div className={styles.HomeMiniMapWrapper}>
-            <div className={styles.MiniMapTextContainer}>
-              <h1 className={styles.MiniMapBoldText}>
-                현재 {sharedLocationName}(으)로 공유 중입니다!
-              </h1>
-              <span className={styles.MiniMapNormalText}>
-                장소를 이동할 땐 위치 공유를 해제해주세요 :)
-              </span>
-            </div>
-            <div className={styles.HomeMiniMap} onClick={handleSeeMap}>
-              <KuroomMap
-                height="180px"
-                isTracking={true}
-                draggable={false}
-                zoomable={false}
-              />
-            </div>
-            <Button onClick={handleUnshareLocation}>위치 공유 해제하기</Button>
-          </div>
+    <div className={styles.HomeMiniMapBackground}>
+      <div className={styles.HomeMiniMapWrapper}>
+        <div className={styles.MiniMapTextContainer}>
+          <h1 className={styles.MiniMapBoldText}>{title}</h1>
+          <span className={styles.MiniMapNormalText}>{subtitle}</span>
         </div>
-      )
-    ) : (
-      <div className={styles.HomeMiniMapBackground}>
-        <div className={styles.HomeMiniMapWrapper}>
-          <div className={styles.MiniMapTextContainer}>
-            <h1 className={styles.MiniMapBoldText}>
-              현재 건국대학교에 계신가요?
-            </h1>
-            <span className={styles.MiniMapNormalText}>
-              내 위치를 친구들에게 공유해보세요!
-            </span>
-          </div>
-          <div className={styles.HomeMiniMap} onClick={handleSeeMap}>
-            <KuroomMap
-              height="180px"
-              isTracking={true}
-              draggable={false}
-              zoomable={false}
-            />
-          </div>
-          <Button onClick={handleToShareLocationPage}>내 위치 공유하기</Button>
-        </div>
+
+        <button className={styles.HomeMiniMap} onClick={handleSeeMap}>
+          <KuroomMap
+            height="180px"
+            isTracking={true}
+            draggable={false}
+            zoomable={false}
+          />
+        </button>
+
+        <Button onClick={handleButtonClick} disabled={disabled}>
+          {buttonText}
+        </Button>
       </div>
-    ))
+    </div>
   );
 };
 

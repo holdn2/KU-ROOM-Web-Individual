@@ -46,9 +46,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log("위치공유 상태는?:", isSharedLocation);
-
-    // 현재 내 위치 공유 상태 확인
     getIsMySharedInfo();
   }, [locationSharedRefreshKey, isSharedLocation]);
 
