@@ -23,7 +23,9 @@ const MyLocationRanking = () => {
   } = useLocationRanking();
 
   const handleNavToFriendRanking = (nickname: string, friendId: number) => {
-    navigate("friendlocationranking", { state: { nickname, friendId } });
+    navigate("friendlocationranking", {
+      state: { nickname, friendId: String(friendId) },
+    });
   };
 
   const handleToAddFriendPage = () => {
@@ -56,12 +58,12 @@ const MyLocationRanking = () => {
   //   setTimeout(() => setIsSheetVisible(false), 300); // 0.3초 후 제거
   // };
 
-  if (userRankingData === undefined || friendListData === undefined) {
-    return;
-  }
-
   if (isPendingFriend || isPendingUserRanking) {
     return <div>불러오는 중...</div>;
+  }
+
+  if (userRankingData === undefined || friendListData === undefined) {
+    return;
   }
 
   return (

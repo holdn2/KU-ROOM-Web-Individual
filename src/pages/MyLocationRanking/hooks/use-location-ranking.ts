@@ -28,9 +28,9 @@ export default function useLocationRanking() {
     staleTime: 1000 * 60 * 3,
   });
 
-  if (isErrorUserRanking || isErrorFriend) {
+  const isError = isErrorUserRanking || isErrorFriend;
+  if (isError) {
     toast.error("페이지 조회에 실패했습니다. 다시 시도해주세요.");
-    throw Error();
   }
 
   return {

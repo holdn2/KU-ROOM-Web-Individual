@@ -41,7 +41,11 @@ const FriendLocationRanking = () => {
         <div className={styles.FriendRankingContainer}>
           {friendRankingData.length === 0 ? (
             <div className={styles.EmptyViewContainer}>
-              <img src={kuroomEmptyIcon} className={styles.EmptyIcon} />
+              <img
+                src={kuroomEmptyIcon}
+                className={styles.EmptyIcon}
+                alt="아이콘"
+              />
               <span className={styles.EmptyText}>
                 아직 위치를 공유하지 않았어요.
               </span>

@@ -20,9 +20,8 @@ export default function useFriendRanking(friendId: string) {
     enabled: !!friendId,
   });
 
-  if (isError || !friendId) {
+  if (isError) {
     toast.error("친구 랭킹 조회에 실패했습니다.");
-    throw Error();
   }
 
   return {
