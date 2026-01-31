@@ -7,8 +7,6 @@ import { checkIsSharedApi } from "@apis/map";
 import BottomBar from "@components/BottomBar/BottomBar";
 import Header from "@components/Header/Header";
 import ShareLocationModal from "@components/ShareLocationModal/ShareLocationModal";
-import { isMyLocationInSchool } from "@utils/mapRangeUtils";
-import { Coordinate } from "@/shared/types";
 
 import HomeMenu from "./components/HomeMenu/HomeMenu";
 import HomeMiniMap from "./components/HomeMiniMap/HomeMiniMap";
@@ -30,20 +28,8 @@ const Home = () => {
   // 공유 상태 확인 트리거 키
   const [locationSharedRefreshKey, setLocationSharedRefreshKey] = useState(0);
 
-  // 학교 내부에 있는지 상태
-  const [isInSchool, setIsInSchool] = useState(false);
-  // vercel 배포 시 에러 방지용
-  console.log("학교 내부인지?:", isInSchool);
-
-  // 유저의 위치와 가장 가까운 위치 저장할 상태
-  const [nearLocation, setNearLocation] = useState("");
-  const [ableToShare, setAbleToShare] = useState(false);
-
   // 내 위치 공유 버튼 모달 상태
   const [shareModalState, setShareModalState] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState<Coordinate | null>(
-    null,
-  ); // 현재 위치
 
   const [tryToRerender, setTryToRerender] = useState(false);
 
@@ -65,10 +51,6 @@ const Home = () => {
     // 현재 내 위치 공유 상태 확인
     getIsMySharedInfo();
   }, [locationSharedRefreshKey, isSharedLocation]);
-  useEffect(() => {
-    // 현재 내 위치가 학교 내부인지 검증
-    isMyLocationInSchool(setIsInSchool, setCurrentLocation);
-  }, []);
 
   // 로그인 여부 확인
   useEffect(() => {
@@ -109,16 +91,11 @@ const Home = () => {
       <div className={styles.HomeContentWrapper}>
         <HomeSildeBanner />
         <HomeMenu />
-        {isInSchool && currentLocation !== null && (
-          <HomeMiniMap
-            isSharedLocation={isSharedLocation}
-            setModalState={setShareModalState}
-            currentLocation={currentLocation}
-            sharedLocationName={sharedLocationName}
-            setNearLocation={setNearLocation}
-            setAbleToShare={setAbleToShare}
-          />
-        )}
+        <HomeMiniMap
+          isSharedLocation={isSharedLocation}
+          setModalState={setShareModalState}
+          sharedLocationName={sharedLocationName}
+        />
         <FriendLocation userSharedLocation={sharedLocationName} />
         <MyLocationRanking updateTrigger={tryToRerender} />
         <HomeNotice />
@@ -127,8 +104,6 @@ const Home = () => {
       <ShareLocationModal
         modalState={shareModalState}
         isSharedLocation={isSharedLocation}
-        ableToShare={ableToShare}
-        nearLocation={nearLocation}
         setModalState={setShareModalState}
         refreshSharedStatus={() =>
           setLocationSharedRefreshKey((prev) => prev + 1)

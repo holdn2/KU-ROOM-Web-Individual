@@ -10,8 +10,8 @@ import styles from "./ShareLocationModal.module.css";
 interface ShareLocationModalProps {
   modalState: boolean;
   isSharedLocation: boolean;
-  ableToShare: boolean;
-  nearLocation: string;
+  ableToShare?: boolean;
+  nearLocation?: string;
   setModalState: React.Dispatch<React.SetStateAction<boolean>>;
   refreshSharedStatus: () => void;
   tryRerendering?: () => void;
@@ -30,6 +30,7 @@ const ShareLocationModal: React.FC<ShareLocationModalProps> = ({
 
   // 서버에 각각 요청
   const handleSharingLocation = async () => {
+    if (!nearLocation) return;
     try {
       const response = await shareUserLocation(nearLocation);
       console.log(response);
