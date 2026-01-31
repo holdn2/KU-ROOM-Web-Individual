@@ -229,7 +229,7 @@ const MapPage = () => {
     }
 
     // 현재 내 위치가 학교 내부인지 검증
-    isMyLocationInSchool(setIsInSchool);
+    return isMyLocationInSchool(setIsInSchool);
   }, []);
 
   // 사이드 이펙트 (useEffect) *********************************************

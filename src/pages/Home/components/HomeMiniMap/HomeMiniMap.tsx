@@ -25,7 +25,7 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
 
   useEffect(() => {
     // 현재 내 위치가 학교 내부인지 검증
-    isMyLocationInSchool(setIsInSchool);
+    return isMyLocationInSchool(setIsInSchool);
   }, []);
 
   const handleSeeMap = () => {
