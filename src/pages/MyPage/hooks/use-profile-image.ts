@@ -19,9 +19,9 @@ export default function useProfileImage() {
 
   const { mutate: updateProfileImage } = useMutation({
     mutationFn: (imageUrl: string | null) => updateProfileImageApi(imageUrl),
-    onSuccess: (response) => {
+    onSuccess: () => {
       qc.invalidateQueries({ queryKey: MYPAGE_QUERY_KEY.USER_PROFILE });
-      toast.info(response.message);
+      toast.info("이미지가 성공적으로 변경되었습니다.");
     },
     onError: (error) => {
       const message = error instanceof Error ? error.message : "unknown error";
