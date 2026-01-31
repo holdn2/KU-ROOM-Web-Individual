@@ -1,4 +1,5 @@
 // 친구 관련 api
+import { ApiResponse, RankListType } from "@/shared/types";
 import axiosInstance from "./axiosInstance"; // axiosInstance import
 
 const GET_ALL_FRIENDS = "/friends/list";
@@ -11,6 +12,7 @@ const REJECT_REQUEST = "/friends/reject";
 const DELETE_FRIEND = "/friends/";
 const BLOCK_FRIEND = "/friends/block";
 const REPORT_FRIEND = "/friends/report";
+const FRIEND_RANKING = (friendId: string) => `/places/users/${friendId}/ranks`;
 
 interface DefaultResponse {
   code: number;
@@ -35,10 +37,10 @@ export const getAllFriends = async () => {
   } catch (error: any) {
     console.error(
       "친구 목록 조회 실패:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw new Error(
-      error.response?.data?.message || "친구 목록 조회 중 오류 발생"
+      error.response?.data?.message || "친구 목록 조회 중 오류 발생",
     );
   }
 };
@@ -59,17 +61,17 @@ interface NewFriendsSearchResponse {
 export const getSearchedNewFriends = async (nickname: string) => {
   try {
     const response = await axiosInstance.get<NewFriendsSearchResponse>(
-      SEARCH_NEW_FRIENDS + nickname
+      SEARCH_NEW_FRIENDS + nickname,
     );
     console.log(response.data.data);
     return response.data.data;
   } catch (error: any) {
     console.error(
       "추가할 친구 닉네임 검색 실패:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw new Error(
-      error.response?.data?.message || "추가할 친구 닉네임 검색 중 오류 발생"
+      error.response?.data?.message || "추가할 친구 닉네임 검색 중 오류 발생",
     );
   }
 };
@@ -86,7 +88,7 @@ export const requestFriend = async (receiverId: number) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     if (response.data.code === 304) {
       throw response.data;
@@ -120,10 +122,10 @@ export const getSentRequests = async () => {
     console.error(error);
     console.error(
       "보낸 요청 조회 실패:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw new Error(
-      error.response?.data?.message || "보낸 요청 조회 중 오류 발생"
+      error.response?.data?.message || "보낸 요청 조회 중 오류 발생",
     );
   }
 };
@@ -131,17 +133,17 @@ export const getSentRequests = async () => {
 export const getReceivedRequests = async () => {
   try {
     const response = await axiosInstance.get<GetRequests>(
-      GET_RECEIVED_REQUESTS
+      GET_RECEIVED_REQUESTS,
     );
     console.log("받은 요청: ", response.data);
     return response.data.data;
   } catch (error: any) {
     console.error(
       "받은 요청 조회 실패:",
-      error.response?.data || error.message
+      error.response?.data || error.message,
     );
     throw new Error(
-      error.response?.data?.message || "받은 요청 조회 중 오류 발생"
+      error.response?.data?.message || "받은 요청 조회 중 오류 발생",
     );
   }
 };
@@ -158,7 +160,7 @@ export const acceptRequest = async (receiverId: number) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     console.log("요청 수락 결과 : ", response.data);
     return response.data;
@@ -179,7 +181,7 @@ export const rejectRequest = async (receiverId: number) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     console.log("요청 거절 결과 : ", response.data);
     return response.data;
@@ -237,7 +239,7 @@ export const friendBlock = async (reportId: number) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     console.log("친구 차단 결과 : ", response.data);
     return response.data;
@@ -259,7 +261,7 @@ export const friendReport = async (reportId: number, reason: string) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     console.log("친구 신고 결과 : ", response.data);
     return response.data;
@@ -267,4 +269,17 @@ export const friendReport = async (reportId: number, reason: string) => {
     console.error("친구 신고 실패:", error.response?.data || error.message);
     throw new Error(error.response?.data?.message || "친구 신고 중 오류 발생");
   }
+};
+
+// 친구의 위치 랭킹 api
+interface FriendRankingResponse extends ApiResponse {
+  data: RankListType[];
+}
+
+export const getFriendRankingData = async (friendId: string) => {
+  const response = await axiosInstance.get<FriendRankingResponse>(
+    FRIEND_RANKING(friendId),
+  );
+
+  return response.data.data;
 };

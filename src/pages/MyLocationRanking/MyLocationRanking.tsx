@@ -22,12 +22,25 @@ const MyLocationRanking = () => {
     isPendingFriend,
   } = useLocationRanking();
 
-  const handleNavToFriendRanking = (nickname: string) => {
-    navigate("friendlocationranking", { state: { nickname: nickname } });
+  const handleNavToFriendRanking = (nickname: string, friendId: number) => {
+    navigate("friendlocationranking", { state: { nickname, friendId } });
   };
 
   const handleToAddFriendPage = () => {
     navigate("/friendadd");
+  };
+
+  const getRankIcon = (index: number) => {
+    switch (index) {
+      case 0:
+        return rank1Icon;
+      case 1:
+        return rank2Icon;
+      case 2:
+        return rank3Icon;
+      default:
+        return;
+    }
   };
 
   // TODO: 추후 기능 추가
@@ -44,7 +57,6 @@ const MyLocationRanking = () => {
   // };
 
   if (userRankingData === undefined || friendListData === undefined) {
-    navigate(-1);
     return;
   }
 
@@ -57,37 +69,37 @@ const MyLocationRanking = () => {
       <Header>내 장소 랭킹</Header>
       <div className={styles.PageContentWrapper}>
         <div className={styles.MyRankingContainer}>
-          {userRankingData.length === 0 && (
+          {userRankingData.length === 0 ? (
             <div className={styles.EmptyViewContainer}>
               <img src={kuroomEmptyIcon} className={styles.EmptyIcon} />
               <span className={styles.EmptyText}>
                 아직 위치를 공유하지 않았어요.
               </span>
             </div>
-          )}
-          {userRankingData.map((item, index) => (
-            <div key={index} className={styles.EachRankingContainer}>
-              <img
-                className={styles.RankIcon}
-                src={
-                  index === 0 ? rank1Icon : index === 1 ? rank2Icon : rank3Icon
-                }
-                alt="랭킹 아이콘"
-              />
-              <div className={styles.EachRankingContentWrapper}>
-                <div className={styles.EachRankLocationNameWrapper}>
-                  {item.name.map((location) => (
-                    <span key={location} className={styles.EachRankLocation}>
-                      {location}
-                    </span>
-                  ))}
+          ) : (
+            // TODO: 우선 3위까지만. 추후 변동 가능
+            userRankingData.slice(0, 3).map((item, index) => (
+              <div key={index} className={styles.EachRankingContainer}>
+                <img
+                  className={styles.RankIcon}
+                  src={getRankIcon(index)}
+                  alt="랭킹 아이콘"
+                />
+                <div className={styles.EachRankingContentWrapper}>
+                  <div className={styles.EachRankLocationNameWrapper}>
+                    {item.name.map((location) => (
+                      <span key={location} className={styles.EachRankLocation}>
+                        {location}
+                      </span>
+                    ))}
+                  </div>
+                  <span className={styles.EachRankCount}>
+                    {item.sharingCount}회
+                  </span>
                 </div>
-                <span className={styles.EachRankCount}>
-                  {item.sharingCount}회
-                </span>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
         <div className={styles.FriendRankingContainer}>
           <span className={styles.FriendRankingTitle}>친구 랭킹</span>
@@ -107,7 +119,9 @@ const MyLocationRanking = () => {
                 <button
                   key={friend.id}
                   className={styles.FriendNickname}
-                  onClick={() => handleNavToFriendRanking(friend.nickname)}
+                  onClick={() =>
+                    handleNavToFriendRanking(friend.nickname, friend.id)
+                  }
                 >
                   {friend.nickname}
                 </button>
