@@ -45,7 +45,7 @@ const HomeMiniMap: React.FC<HomeMiniMapProps> = ({
     ? `현재 ${sharedLocationName}(으)로 공유 중입니다!`
     : isInSchool
       ? "현재 건국대학교에 계신가요?"
-      : "건국대학교 안으로 들어오세요";
+      : "현재 건국대학교 밖에 있어요";
 
   const subtitle = isSharedLocation
     ? "장소를 이동할 땐 위치 공유를 해제해주세요 :)"
