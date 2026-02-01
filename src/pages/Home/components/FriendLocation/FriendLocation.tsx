@@ -103,7 +103,7 @@ const FriendLocation: React.FC<FriendLocationProps> = ({
               {visibleFriends.map((friend, index) => (
                 <div key={index} className={styles.EachFriendProfile}>
                   <img
-                    style={{ width: "49px", height: "49px" }}
+                    className={styles.ProfileImage}
                     src={friend.profileUrl || DefaultProfileImg}
                     alt="프로필 사진"
                   />
