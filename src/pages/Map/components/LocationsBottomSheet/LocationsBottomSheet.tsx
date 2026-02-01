@@ -13,7 +13,7 @@ interface LocationsBottomSheetProps {
   isExpandedSheet: boolean;
   hasFocusedMarker: boolean;
   setIsExpandedSheet: (value: boolean) => void;
-  clickToLocationMarker: (value: string) => void;
+  clickToLocationMarker: (value: PlaceData) => void;
 }
 
 const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
@@ -73,7 +73,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
             key={info.placeId}
             className={styles.LocationInfoWrapper}
             style={isExpandedSheet ? {} : { pointerEvents: "none" }}
-            onClick={() => clickToLocationMarker(info.name)}
+            onClick={() => clickToLocationMarker(info)}
           >
             <div className={styles.TitleWrapper}>
               <span className={styles.TitleText}>{info.name}</span>
@@ -91,7 +91,7 @@ const LocationsBottomSheet: React.FC<LocationsBottomSheetProps> = ({
                       >
                         <img
                           className={styles.FriendProfileImg}
-                          src={friend.profileURL ?? DefaultProfileImg}
+                          src={friend.profileUrl ?? DefaultProfileImg}
                           alt={friend.nickname}
                         />
                         <span className={styles.FriendNickname}>

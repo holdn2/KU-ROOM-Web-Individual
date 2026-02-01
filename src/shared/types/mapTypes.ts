@@ -7,7 +7,7 @@ export interface Coordinate {
 // 위치 공유한 친구 정보
 interface FriendData {
   nickname: string;
-  profileURL: string | null;
+  profileUrl: string | null;
 }
 
 //  검색결과에 대한 정보

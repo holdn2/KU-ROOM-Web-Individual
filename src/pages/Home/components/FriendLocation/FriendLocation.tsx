@@ -49,7 +49,7 @@ const FriendLocation: React.FC<FriendLocationProps> = ({
 
   const handleClickArrow = () => {
     console.log("지도로 이동");
-    navigate("/map");
+    navigate("/map", { state: { isFriendChip: true } });
   };
 
   return (
@@ -104,7 +104,7 @@ const FriendLocation: React.FC<FriendLocationProps> = ({
                 <div key={index} className={styles.EachFriendProfile}>
                   <img
                     style={{ width: "49px", height: "49px" }}
-                    src={friend.profileURL || DefaultProfileImg}
+                    src={friend.profileUrl || DefaultProfileImg}
                     alt="프로필 사진"
                   />
                   <span className={styles.Nickname}>{friend.nickname}</span>

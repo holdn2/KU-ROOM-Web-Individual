@@ -2,11 +2,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
-import {
-  checkIsSharedApi,
-  getCategoryLocationsApi,
-  // getUserShareLocation,
-} from "@apis/map";
+import { checkIsSharedApi, getCategoryLocationsApi } from "@apis/map";
 import DefaultProfileImg from "@assets/defaultProfileImg.svg";
 import BottomBar from "@components/BottomBar/BottomBar";
 import ShareLocationModal from "@components/ShareLocationModal/ShareLocationModal";
@@ -19,10 +15,13 @@ import MapSearch from "./components/MapSearch/MapSearch";
 import LocationsBottomSheet from "./components/LocationsBottomSheet/LocationsBottomSheet";
 import FocusedLocationBottomSheet from "./components/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
 import { isMyLocationInSchool } from "@utils/mapRangeUtils";
-import { MapSearchResult, MarkerData } from "@/shared/types/mapTypes";
+import {
+  MapSearchResult,
+  MarkerData,
+  PlaceData,
+} from "@/shared/types/mapTypes";
 import {
   clearAllMarkers,
-  focusDetailLocationMarker,
   makeFocusMarker,
   makeMarkerIcon,
   renderedMarkers,
@@ -131,6 +130,7 @@ const MapPage = () => {
     setVisibleBottomSheet(false);
     setIsExpandedFocusedSheet(false);
     clearAllMarkers();
+    navigate(location.pathname);
   };
 
   const onClickGoBackButton = () => {
@@ -155,15 +155,16 @@ const MapPage = () => {
     }
   };
   // 시트에서 위치 클릭 시 이동하는 로직
-  const clickToLocationMarker = (location: string) => {
+  const clickToLocationMarker = (location: PlaceData) => {
     if (!isExpandedSheet) return;
     // 다음 frame에 마커 포커스하기
     const target = renderedMarkers.find(
-      ({ marker }) => marker.getTitle() === location,
+      ({ marker }) => marker.getTitle() === location.name,
     );
     if (target && mapInstanceRef.current) {
       setHasFocusedMarker(true);
       makeFocusMarker(
+        location.placeId,
         mapInstanceRef.current,
         target.marker,
         setIsTracking,
@@ -183,12 +184,12 @@ const MapPage = () => {
       return console.error("잘못된 칩 클릭");
     }
     setSelectedCategoryEnum(name);
-    console.log(title);
     setIsTracking(false);
   };
 
   // 검색 결과를 클릭 시에 마커 찍기
   const clickSearchResultToMarker = (searchResult: MapSearchResult) => {
+    setSelectedCategoryLocations([]);
     setSelectedCategoryTitle(searchResult.name);
     const markerIcon = makeMarkerIcon("default");
     if (
@@ -257,14 +258,19 @@ const MapPage = () => {
       renderedMarkers.length > 0 &&
       mapInstanceRef.current
     ) {
-      focusDetailLocationMarker(
-        mapInstanceRef.current,
-        detailLocationData,
-        selectedCategoryLocations,
-        setIsTracking,
-        setHasFocusedMarker,
-        setDetailLocationData,
+      const target = renderedMarkers.find(
+        ({ marker }) => marker.getTitle() === detailLocationData.name,
       );
+      if (target) {
+        makeFocusMarker(
+          detailLocationData.placeId,
+          mapInstanceRef.current,
+          target.marker,
+          setIsTracking,
+          setHasFocusedMarker,
+          setDetailLocationData,
+        );
+      }
     }
   }, [renderedMarkers]);
 
@@ -287,7 +293,7 @@ const MapPage = () => {
       const placeMarkers: MarkerData[] = selectedCategoryLocations.map(
         (item) => ({
           placeId: item.placeId,
-          markerIcon: item.friends[0].profileURL || DefaultProfileImg,
+          markerIcon: item.friends[0]?.profileUrl || DefaultProfileImg,
           name: item.name,
           latitude: item.latitude,
           longitude: item.longitude,
