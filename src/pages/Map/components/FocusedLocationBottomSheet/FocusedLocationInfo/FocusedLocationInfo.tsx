@@ -94,7 +94,7 @@ const FocusedLocationInfo: React.FC<FocusedLocationInfo> = ({
                     >
                       <img
                         className={styles.FriendProfileImg}
-                        src={friend.profileURL ?? DefaultProfileImg}
+                        src={friend.profileUrl ?? DefaultProfileImg}
                         alt={friend.nickname}
                       />
                       <span className={styles.FriendNickname}>
