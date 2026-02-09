@@ -10,7 +10,7 @@ export default defineConfig({
     svgr(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.svg", "robots.txt", "apple-touch-icon.png"],
+      includeAssets: ["favicon.svg", "robots.txt", "kuroom-app-icon.png"],
       manifest: {
         name: "KU-ROOM-WEB",
         short_name: "KU-ROOM",
