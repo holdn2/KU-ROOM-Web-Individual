@@ -1,0 +1,146 @@
+.pwa-guide-page {
+  background: linear-gradient(
+    to bottom,
+    #ffffff 260px,
+    rgba(217, 217, 217, 0.3) 80%,
+    #ffffff 92%
+  );
+  padding: 0 21px 80px 21px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.pwa-guide-header {
+  margin-top: 39px;
+  margin-bottom: 28px;
+}
+
+.pwa-guide-logo {
+  width: 78px;
+  height: 78px;
+  margin-bottom: 11px;
+  margin-left: 14px;
+}
+
+.pwa-guide-title {
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 35px;
+  color: #000000;
+  margin: 0;
+  margin-left: 24px;
+}
+
+.pwa-guide-subtitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: #717a83;
+  margin-top: 7px;
+  margin-left: 24px;
+  line-height: 20px;
+}
+
+.pwa-guide-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  margin-bottom: 16px;
+}
+
+.pwa-guide-card-header {
+  color: #009733;
+  font-size: 18px;
+  line-height: 120%;
+  font-weight: 600;
+  padding: 26px 24px 15px 24px;
+}
+
+.pwa-guide-card-body {
+  padding: 0 24px;
+  padding-bottom: 17px;
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.pwa-guide-screenshots {
+  display: flex;
+  gap: 13.5px;
+  align-items: flex-start;
+}
+
+.pwa-guide-img-left {
+  flex: 1;
+  border-radius: 10px;
+  object-fit: contain;
+  max-width: 50%;
+}
+
+.pwa-guide-img-right {
+  flex: 1;
+  border-radius: 10px;
+  object-fit: contain;
+  max-width: 50%;
+}
+
+.pwa-guide-steps {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.pwa-guide-step-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.pwa-guide-step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  border-radius: 50px;
+  border: 1px solid #e3e7eb;
+  font-size: 14px;
+  font-weight: 500;
+  color: #9eaab5;
+  white-space: nowrap;
+}
+
+.pwa-guide-step-arrow {
+  color: #000000;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.pwa-guide-icon {
+  flex-shrink: 0;
+}
+
+.pwa-guide-step-badge.pwa-guide-step-dots {
+  width: 23px;
+  height: 23px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+}
+
+.pwa-guide-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--custom-max-width);
+  padding: 16px 24px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  background: linear-gradient(transparent, #ffffff 20%);
+  box-sizing: border-box;
+}
