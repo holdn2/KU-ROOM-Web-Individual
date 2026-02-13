@@ -5,7 +5,7 @@
     rgba(217, 217, 217, 0.3) 80%,
     #ffffff 92%
   );
-  padding: 0 21px 80px 21px;
+  padding: 0 21px 20px 21px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -133,14 +133,16 @@
 }
 
 .pwa-guide-bottom {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: var(--custom-max-width);
-  padding: 16px 24px;
-  padding-bottom: max(16px, env(safe-area-inset-bottom));
-  background: linear-gradient(transparent, #ffffff 20%);
-  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.pwa-guide-dismiss-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #9eaab5;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

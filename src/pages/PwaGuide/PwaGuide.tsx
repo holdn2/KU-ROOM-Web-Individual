@@ -1,5 +1,4 @@
 import cloudLogo from "@assets/pwa-guide/logo.svg";
-import Button from "@components/Button/Button";
 
 import GuideCard from "./components/GuideCard";
 import { GUIDE_DATA } from "./constant/guideData";
@@ -28,7 +27,9 @@ const PwaGuide = () => {
       ))}
 
       <div className="pwa-guide-bottom">
-        <Button onClick={handleDismiss} variant="tertiary">이미 설치했어요</Button>
+        <span className="pwa-guide-dismiss-text" onClick={handleDismiss}>
+          이미 설치했어요
+        </span>
       </div>
     </div>
   );
