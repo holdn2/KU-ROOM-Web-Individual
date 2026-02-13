@@ -49,7 +49,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             <button
               key={index}
               className={`${styles.SectionContentButton} ${
-                isToggle && styles.ToggleButtonStyle
+                isToggle ? styles.ToggleButtonStyle : ""
               }`}
               onClick={() => !isToggle && handleSectionClick(item)}
               disabled={
