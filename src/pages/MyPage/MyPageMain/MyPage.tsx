@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { clearAuthStorage } from "@utils/storageUtils";
 import BottomBar from "@components/BottomBar/BottomBar";
 import Header from "@components/Header/Header";
 import { MyPageSectionData } from "@constant/sectionDatas";
@@ -24,7 +25,7 @@ const MyPage = () => {
     const timeout = setTimeout(() => {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        localStorage.clear();
+        clearAuthStorage();
         navigate("/login");
         return;
       }
