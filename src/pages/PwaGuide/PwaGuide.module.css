@@ -1,4 +1,4 @@
-.pwa-guide-page {
+.Page {
   background: #ffffff;
   padding: 0 21px 20px;
   height: 100vh;
@@ -10,19 +10,19 @@
   overflow-y: auto;
 }
 
-.pwa-guide-header {
+.Header {
   margin-top: 39px;
   margin-bottom: 28px;
 }
 
-.pwa-guide-logo {
+.Logo {
   width: 78px;
   height: 78px;
   margin-bottom: 11px;
   margin-left: 14px;
 }
 
-.pwa-guide-title {
+.Title {
   font-size: 27px;
   font-weight: 500;
   line-height: 35px;
@@ -31,7 +31,7 @@
   margin-left: 24px;
 }
 
-.pwa-guide-subtitle {
+.Subtitle {
   font-size: 18px;
   font-weight: 500;
   color: #717a83;
@@ -40,20 +40,20 @@
   line-height: 20px;
 }
 
-.pwa-guide-section-img {
+.SectionImg {
   width: 100%;
   border-radius: 16px;
   margin-bottom: 16px;
   box-shadow: 0 2px 12px rgb(0 0 0 / 8%);
 }
 
-.pwa-guide-bottom {
+.Bottom {
   display: flex;
   justify-content: center;
   padding: 24px 0;
 }
 
-.pwa-guide-dismiss-text {
+.DismissText {
   font-size: 15px;
   font-weight: 500;
   color: #9eaab5;
