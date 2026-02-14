@@ -1,10 +1,5 @@
 .pwa-guide-page {
-  background: linear-gradient(
-    to bottom,
-    #ffffff 260px,
-    rgb(217 217 217 / 30%) 80%,
-    #ffffff 92%
-  );
+  background: #ffffff;
   padding: 0 21px 20px;
   height: 100vh;
   display: flex;
@@ -49,6 +44,7 @@
   background-color: #ffffff;
   border-radius: 16px;
   margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 8%);
 }
 
 .pwa-guide-card-header {
