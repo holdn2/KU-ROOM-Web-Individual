@@ -1,7 +1,7 @@
 import cloudLogo from "@assets/pwa-guide/logo.svg";
+import section1 from "@assets/pwa-guide/section1.png";
+import section2 from "@assets/pwa-guide/section2.png";
 
-import GuideCard from "./components/GuideCard";
-import { GUIDE_DATA } from "./constant/guideData";
 import { usePwaGuide } from "./hooks/usePwaGuide";
 import "./PwaGuide.css";
 
@@ -22,9 +22,8 @@ const PwaGuide = () => {
         </p>
       </div>
 
-      {GUIDE_DATA.map((guide) => (
-        <GuideCard key={guide.title} {...guide} />
-      ))}
+      <img src={section1} alt="Safari 설치 가이드" className="pwa-guide-section-img" />
+      <img src={section2} alt="Chrome 설치 가이드" className="pwa-guide-section-img" />
 
       <div className="pwa-guide-bottom">
         <span className="pwa-guide-dismiss-text" onClick={handleDismiss}>
