@@ -14,7 +14,7 @@ import { isMyLocationInSchool } from "@/shared/utils/mapRangeUtils";
 
 const ShareLocation = () => {
   const navigate = useNavigate();
-  const [isInSchool, setIsInSchool] = useState(true);
+  const [isInSchool, setIsInSchool] = useState(false);
 
   const [center, setCenter] = useState<Coordinate>();
   const [placeName, setPlaceName] = useState("");
