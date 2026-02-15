@@ -3,6 +3,7 @@ import buildingChip from "@assets/map/chips/buildingChip.svg";
 import kcubehubChip from "@assets/map/chips/kcubehubChip.svg";
 import storeChip from "@assets/map/chips/storeChip.svg";
 import cafeChip from "@assets/map/chips/cafeChip.svg";
+import copyRoomChip from "@assets/map/chips/copyRoomChip.svg";
 import restaurantChip from "@assets/map/chips/restaurantChip.svg";
 import collegeChip from "@assets/map/chips/collegeChip.svg";
 import dormitoryChip from "@assets/map/chips/dormitoryChip.svg";
@@ -38,10 +39,9 @@ const CATEGORY_CHIPS = [
     title: "카페",
     icon: cafeChip,
   },
-  // TODO: 복사실 칩 아이콘 변경
   {
     title: "복사실",
-    icon: cafeChip,
+    icon: copyRoomChip,
   },
   {
     title: "학생식당",
