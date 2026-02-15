@@ -9,7 +9,7 @@ import dormitoryChip from "@assets/map/chips/dormitoryChip.svg";
 import bankChip from "@assets/map/chips/bankChip.svg";
 import postChip from "@assets/map/chips/postChip.svg";
 // 카테고리 칩
-const CategoryChips = [
+const CATEGORY_CHIPS = [
   {
     title: "친구",
     icon: friendChip,
@@ -35,11 +35,12 @@ const CategoryChips = [
     icon: storeChip,
   },
   {
-    title: "레스티오",
+    title: "카페",
     icon: cafeChip,
   },
+  // TODO: 복사실 칩 아이콘 변경
   {
-    title: "1847",
+    title: "복사실",
     icon: cafeChip,
   },
   {
@@ -58,6 +59,6 @@ const CategoryChips = [
     title: "우체국",
     icon: postChip,
   },
-];
+] as const;
 
-export { CategoryChips };
+export { CATEGORY_CHIPS };

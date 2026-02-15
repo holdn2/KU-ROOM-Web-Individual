@@ -38,9 +38,10 @@ export const makeMarkerIcon = (category: string): string => {
       return kcubekhubMarker;
     case "편의점":
       return storeMarker;
-    case "레스티오":
+    case "카페":
       return cafeMarker;
-    case "1847":
+    // TODO: 복사실 마커로 수정
+    case "복사실":
       return cafeMarker;
     case "학생식당":
       return restaurantMarker;
