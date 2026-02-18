@@ -49,7 +49,7 @@ const PUBLIC_PATHS = [
   "/",
   "/login",
   "/signup",
-  "/identityverifictaion",
+  "/identityverification",
   "/agreement",
   "/profilesetting",
   "/welcome",
@@ -105,7 +105,7 @@ function App() {
           element: <SignupInfo />,
         },
         {
-          path: "identityverifictaion",
+          path: "identityverification",
           element: <IdentityVerify />,
         },
         {
