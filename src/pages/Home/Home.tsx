@@ -1,10 +1,7 @@
 // 홈 페이지
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { checkIsSharedApi } from "@apis/map";
-import { clearAuthStorage } from "@utils/storageUtils";
-// import Splash from "@components/Splash";
 import BottomBar from "@components/BottomBar/BottomBar";
 import Header from "@components/Header/Header";
 import ShareLocationModal from "@components/ShareLocationModal/ShareLocationModal";
@@ -19,9 +16,7 @@ import styles from "./Home.module.css";
 import { useUnreadAlarm } from "../Alarm/hooks/use-unread-alarm";
 
 const Home = () => {
-  const navigate = useNavigate();
   const { unreadAlarmData } = useUnreadAlarm();
-  // const [showSplash, setShowSplash] = useState(true);
   const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
   const [sharedLocationName, setSharedLocationName] = useState<string | null>(
     null,
@@ -49,34 +44,6 @@ const Home = () => {
   useEffect(() => {
     getIsMySharedInfo();
   }, [locationSharedRefreshKey, isSharedLocation]);
-
-  // 로그인 여부 확인
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      clearAuthStorage();
-      navigate("/login");
-      return;
-    }
-  }, [navigate]);
-
-  // 토큰이 없으면 로딩 화면 표시
-  const hasToken = localStorage.getItem("accessToken");
-
-  if (!hasToken) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <div>로그인 처리 중...</div>
-      </div>
-    );
-  }
 
   return (
     <div>
