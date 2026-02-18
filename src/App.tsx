@@ -44,6 +44,20 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import { AuthLayout } from "@components/AuthLayout/AuthLayout";
 
+// 인증이 불필요한 Public 경로 목록 (백그라운드 복귀 시 토큰 재발급 제외 대상)
+const PUBLIC_PATHS = [
+  "/",
+  "/login",
+  "/signup",
+  "/identityverifictaion",
+  "/agreement",
+  "/profilesetting",
+  "/welcome",
+  "/findidpw",
+  "/social/callback",
+  "/pwa-guide",
+];
+
 // PWA 가이드 → 인증 순서로 분기 (PWA 가이드는 비로그인 상태에서도 표시되어야 함)
 const RootIndex = () => {
   if (shouldShowPwaGuide()) {
@@ -61,23 +75,11 @@ const RootIndex = () => {
 function App() {
   // 백그라운드 복귀 시 인증된 페이지에서 Access Token 재발급
   useEffect(() => {
-    const publicPaths = [
-      "/login",
-      "/signup",
-      "/identityverifictaion",
-      "/agreement",
-      "/profilesetting",
-      "/welcome",
-      "/findidpw",
-      "/social/callback",
-      "/pwa-guide",
-    ];
-
     const handleVisibilityChange = async () => {
       const path = window.location.pathname;
       if (
         document.visibilityState === "visible" &&
-        !publicPaths.some((p) => path.startsWith(p))
+        !PUBLIC_PATHS.some((p) => path.startsWith(p))
       ) {
         await reissueTokenApi();
       }
