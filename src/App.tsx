@@ -4,6 +4,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { shouldShowPwaGuide } from "@utils/pwaUtils";
+
 import Home from "@pages/Home/Home";
 import Notice from "@pages/Notice/Notice/Notice";
 import NoticeDetail from "@pages/Notice/NoticeDetail/NoticeDetail";
@@ -40,6 +41,7 @@ import PwaGuide from "@pages/PwaGuide/PwaGuide";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import { AuthLayout } from "@/layout/AuthLayout";
+import { RootLayout } from "./shared/components/RootLayout";
 
 const RootIndex = () => {
   if (shouldShowPwaGuide()) {
@@ -52,6 +54,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <RootLayout />,
       children: [
         {
           index: true,
