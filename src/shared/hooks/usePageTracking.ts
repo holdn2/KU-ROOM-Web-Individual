@@ -6,6 +6,7 @@ export const usePageTracking = () => {
   const location = useLocation();
 
   useEffect(() => {
-    trackPageView(location.pathname + location.search);
+    const path = location.pathname + location.search;
+    trackPageView(path);
   }, [location]);
 };
