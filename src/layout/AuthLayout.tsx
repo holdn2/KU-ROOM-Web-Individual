@@ -3,7 +3,7 @@ import { clearAuthStorage } from "@utils/storageUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-const REISSUE_MIN_INTERVAL_MS = 5 * 1000;
+const REISSUE_MIN_INTERVAL_MS = 20 * 60 * 1000;
 const LAST_REISSUE_AT_KEY = "auth-last-reissue-at";
 
 export const AuthLayout = () => {
