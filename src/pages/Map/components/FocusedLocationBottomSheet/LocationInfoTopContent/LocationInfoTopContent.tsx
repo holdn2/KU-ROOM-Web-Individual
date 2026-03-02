@@ -37,6 +37,7 @@ const LocationInfoTopContent: React.FC<LocationInfoTopContentProps> = ({
             {locationImages.map((img, index) => (
               <img
                 key={index}
+                className={styles.TwoImgs}
                 src={img}
                 onClick={() => handleSelectImageIndex(index)}
               />
@@ -64,7 +65,7 @@ const LocationInfoTopContent: React.FC<LocationInfoTopContentProps> = ({
                   />
                 ) : (
                   <div key={index} onClick={handleSelectMainImage} />
-                )
+                ),
               )}
             </div>
           </div>
