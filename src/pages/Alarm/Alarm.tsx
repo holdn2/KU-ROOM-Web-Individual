@@ -1,4 +1,5 @@
 import Header from "@components/Header/Header";
+import Loading from "@components/Loading/Loading";
 
 import AlarmItem from "@pages/Alarm/components/alarm-item/AlarmItem";
 import MarkAsReadButton from "@pages/Alarm/components/mark-as-read-button/MarkAsReadButton";
@@ -10,11 +11,14 @@ const Alarm = () => {
   const { listBottomRef, alarmList, unreadAlarmList, isPending } =
     useAlarmListQuery();
 
+  if (isPending) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Header>알림</Header>
       <div className={styles.AlarmContentWrapper}>
-        {isPending && <div>로딩중...</div>}
         {alarmList.map((alarm) => (
           <AlarmItem key={alarm.id} alarm={alarm} />
         ))}
