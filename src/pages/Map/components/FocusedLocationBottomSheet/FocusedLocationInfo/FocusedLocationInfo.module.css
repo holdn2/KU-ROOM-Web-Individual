@@ -95,6 +95,7 @@
   font-weight: 700;
   line-height: normal;
 }
+
 .SubTitleText {
   color: var(--Gray-100, #9eaab5);
   font-size: 18px;
@@ -110,11 +111,19 @@
 .InfoContent {
   font-size: 16px;
   font-weight: 500;
-  line-height: 120%; /* 19.2px */
-}
-.InfoContent {
+  line-height: 24px;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+  min-width: 0;
 }
+
+.InfoContent a {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .InfoContentClamp {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -122,11 +131,6 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-
-  /* 페이드 아웃 마스크 효과 */
-  /* 추후 제거가 필요할 수도 */
-  /* mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%); */
 }
 .Ranker {
   font-size: 16px;

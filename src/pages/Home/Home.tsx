@@ -2,58 +2,39 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { checkIsSharedApi } from "@apis/map";
-// import Splash from "@components/Splash";
+import { clearAuthStorage } from "@utils/storageUtils";
+import { useCheckShareStatusQuery, useUnreadAlarmQuery } from "@/queries";
 import BottomBar from "@components/BottomBar/BottomBar";
 import Header from "@components/Header/Header";
 import ShareLocationModal from "@components/ShareLocationModal/ShareLocationModal";
+import Loading from "@components/Loading/Loading";
 
 import HomeMenu from "./components/HomeMenu/HomeMenu";
 import HomeMiniMap from "./components/HomeMiniMap/HomeMiniMap";
-import HomeSildeBanner from "./components/HomeSlideBanner/HomeSildeBanner";
+import HomeSlideBanner from "./components/HomeSlideBanner/HomeSlideBanner";
 import FriendLocation from "./components/FriendLocation/FriendLocation";
-import MyLocationRanking from "./components/MyLocationRanking/MyLocationRanking";
+import HomeRanking from "./components/HomeRanking/HomeRanking";
 import HomeNotice from "./components/HomeNotice/HomeNotice";
 import styles from "./Home.module.css";
-import { useUnreadAlarm } from "../Alarm/hooks/use-unread-alarm";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { unreadAlarmData } = useUnreadAlarm();
-  // const [showSplash, setShowSplash] = useState(true);
-  const [isSharedLocation, setIsSharedLocation] = useState(false); // 내 위치 공유상태인지 아닌지
-  const [sharedLocationName, setSharedLocationName] = useState<string | null>(
-    null,
-  );
-  // 공유 상태 확인 트리거 키
-  const [locationSharedRefreshKey, setLocationSharedRefreshKey] = useState(0);
+  const { unreadAlarmData } = useUnreadAlarmQuery();
+  const {
+    isSharedLocation,
+    sharedLocationName,
+    isPendingShareStatus,
+    isErrorShareStatus,
+  } = useCheckShareStatusQuery();
 
   // 내 위치 공유 버튼 모달 상태
   const [shareModalState, setShareModalState] = useState(false);
-
-  const [tryToRerender, setTryToRerender] = useState(false);
-
-  // 현재 내 위치 공유 상태 확인 함수
-  const getIsMySharedInfo = async () => {
-    try {
-      const response = await checkIsSharedApi();
-      console.log("현재 내 위치 공유 상태 : ", response);
-      setIsSharedLocation(response.isActive);
-      setSharedLocationName(response.placeName);
-    } catch (error) {
-      console.error("위치 공유 상태 확인 실패 : ", error);
-    }
-  };
-
-  useEffect(() => {
-    getIsMySharedInfo();
-  }, [locationSharedRefreshKey, isSharedLocation]);
 
   // 로그인 여부 확인
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
-      localStorage.clear();
+      clearAuthStorage();
       navigate("/login");
       return;
     }
@@ -63,18 +44,7 @@ const Home = () => {
   const hasToken = localStorage.getItem("accessToken");
 
   if (!hasToken) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <div>로그인 처리 중...</div>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
@@ -86,15 +56,17 @@ const Home = () => {
         홈
       </Header>
       <div className={styles.HomeContentWrapper}>
-        <HomeSildeBanner />
+        <HomeSlideBanner />
         <HomeMenu />
         <HomeMiniMap
           isSharedLocation={isSharedLocation}
-          setModalState={setShareModalState}
           sharedLocationName={sharedLocationName}
+          isLoading={isPendingShareStatus}
+          isError={isErrorShareStatus}
+          setModalState={setShareModalState}
         />
         <FriendLocation userSharedLocation={sharedLocationName} />
-        <MyLocationRanking updateTrigger={tryToRerender} />
+        <HomeRanking />
         <HomeNotice />
       </div>
       <BottomBar />
@@ -102,10 +74,6 @@ const Home = () => {
         modalState={shareModalState}
         isSharedLocation={isSharedLocation}
         setModalState={setShareModalState}
-        refreshSharedStatus={() =>
-          setLocationSharedRefreshKey((prev) => prev + 1)
-        }
-        tryRerendering={() => setTryToRerender(!tryToRerender)}
       />
     </div>
   );

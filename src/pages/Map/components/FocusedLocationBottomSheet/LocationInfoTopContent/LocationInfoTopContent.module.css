@@ -32,7 +32,7 @@
 }
 .MainImg {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1;
   object-fit: cover;
   grid-row: 1 / span 2;
 }
@@ -42,9 +42,10 @@
   grid-template-rows: 1fr 1fr;
   height: 100%;
 }
-.SubImg {
+.SubImg,
+.TwoImgs {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1;
   object-fit: cover;
 }
 

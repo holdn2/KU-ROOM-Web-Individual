@@ -2,10 +2,16 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
-import { checkIsSharedApi, getCategoryLocationsApi } from "@apis/map";
+import { MarkerData, MapSearchResult, PlaceData } from "@apis/types";
 import DefaultProfileImg from "@assets/defaultProfileImg.svg";
 import BottomBar from "@components/BottomBar/BottomBar";
 import ShareLocationModal from "@components/ShareLocationModal/ShareLocationModal";
+import { isMyLocationInSchool } from "@utils/mapRangeUtils";
+import {
+  useCategoryLocationsQuery,
+  useCheckShareStatusQuery,
+  useLocationDetailQuery,
+} from "@/queries";
 
 import styles from "./MapPage.module.css";
 import MapSearchBar from "./components/MapSearchBar/MapSearchBar";
@@ -14,12 +20,7 @@ import KuroomMap from "./components/KuroomMap";
 import MapSearch from "./components/MapSearch/MapSearch";
 import LocationsBottomSheet from "./components/LocationsBottomSheet/LocationsBottomSheet";
 import FocusedLocationBottomSheet from "./components/FocusedLocationBottomSheet/FocusedLocationBottomSheet";
-import { isMyLocationInSchool } from "@utils/mapRangeUtils";
-import {
-  MapSearchResult,
-  MarkerData,
-  PlaceData,
-} from "@/shared/types/mapTypes";
+
 import {
   clearAllMarkers,
   makeFocusMarker,
@@ -33,20 +34,12 @@ import { MapLayoutContext } from "./layout/MapLayout";
 import { getCategoryEnum } from "./utils/category-chip";
 import LocationTrackingButton from "./components/LocationTrackingButton/LocationTrackingButton";
 import LocationShareButton from "./components/LocationShareButton/LocationShareButton";
+import ToFriendAddButton from "./components/ToFriendAddButton/ToFriendAddButton";
+import { CATEGORY_CHIPS } from "./constant/MapData";
 
-const includeBottomSheetList = [
-  "건물",
-  "단과대",
-  "K-Cube",
-  "K-Hub",
-  "편의점",
-  "레스티오",
-  "1847",
-  "학생식당",
-  "기숙사",
-  "은행",
-  "우체국",
-];
+const INCLUDE_BOTTOM_SHEET_LIST: string[] = CATEGORY_CHIPS.filter(
+  (chip) => chip.title !== "친구",
+).map((chip) => chip.title);
 
 // TODO: 전체 랭킹 페이지에서 돌아왔을 때 마커 포커스 및 해당 마커를 가운데로 정렬하는 기능 추가 필요
 
@@ -54,7 +47,6 @@ const MapPage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const {
-    // ================== 상태 ==================
     isTracking,
     visibleBottomSheet,
     isExpandedSheet,
@@ -62,19 +54,16 @@ const MapPage = () => {
     isExpandedFocusedSheet,
     selectedCategoryLocations,
     detailLocationData,
+    detailLocationPlaceId,
     searchMode,
     isInSchool,
     ableToShare,
-    isSharedLocation,
-    locationSharedRefreshKey,
     selectedCategoryTitle,
     selectedCategoryEnum,
     modalState,
-    nearLocation,
     markers,
     markerFlag,
     mapInstanceRef,
-
     setIsTracking,
     setVisibleBottomSheet,
     setIsExpandedSheet,
@@ -82,10 +71,9 @@ const MapPage = () => {
     setIsExpandedFocusedSheet,
     setSelectedCategoryLocations,
     setDetailLocationData,
+    setDetailLocationPlaceId,
     setSearchMode,
     setIsInSchool,
-    setIsSharedLocation,
-    setLocationSharedRefreshKey,
     setSelectedCategoryTitle,
     setSelectedCategoryEnum,
     setModalState,
@@ -93,35 +81,28 @@ const MapPage = () => {
     setMarkerFlag,
   } = useOutletContext<MapLayoutContext>();
 
-  // 서버로부터 데이터 fetching ***********************************************
-  // 현재 내 위치 공유 상태 확인 함수
-  const getIsMySharedInfo = async () => {
-    try {
-      const response = await checkIsSharedApi();
-      setIsSharedLocation(response.isActive);
-    } catch (error) {
-      console.error("위치 공유 상태 확인 실패 : ", error);
-    }
-  };
+  const { isSharedLocation, isPendingShareStatus, isErrorShareStatus } =
+    useCheckShareStatusQuery();
 
-  // 친구 제외 카테고리 칩을 눌렀을 때 서버에 카테고리 ENUM 을 이용하여 요청
-  const getCategoryLocations = async (selectedCategory: string) => {
-    if (!selectedCategory) return;
-    try {
-      const locations = await getCategoryLocationsApi(selectedCategory);
-      setSelectedCategoryLocations(locations);
-    } catch (error) {
-      console.error(error);
-      alert("서버 상태 또는 네트워크에 문제가 있습니다.");
-    }
-  };
+  const { categoryLocations } = useCategoryLocationsQuery(selectedCategoryEnum);
+  const { locationDetailData } = useLocationDetailQuery(detailLocationPlaceId);
+
+  useEffect(() => {
+    if (categoryLocations) setSelectedCategoryLocations(categoryLocations);
+  }, [categoryLocations, setSelectedCategoryLocations]);
+
+  useEffect(() => {
+    if (locationDetailData) setDetailLocationData(locationDetailData);
+  }, [locationDetailData, setDetailLocationData]);
 
   // 이벤트 핸들러 함수 *******************************************************
   const resetSelectSearch = () => {
     setSearchMode(false);
     setDetailLocationData(null);
+    setDetailLocationPlaceId(undefined);
     setSelectedCategoryTitle("");
     setSelectedCategoryEnum("");
+    setSelectedCategoryLocations([]);
     setMarkerFlag(0);
     setMarkers([]);
     setIsExpandedSheet(false);
@@ -141,6 +122,7 @@ const MapPage = () => {
       setIsTracking(false);
       resetFocusedMarker(setHasFocusedMarker);
       setDetailLocationData(null);
+      setDetailLocationPlaceId(undefined);
     } else {
       resetSelectSearch();
     }
@@ -154,22 +136,22 @@ const MapPage = () => {
       navigate("/share-location");
     }
   };
+
   // 시트에서 위치 클릭 시 이동하는 로직
-  const clickToLocationMarker = (location: PlaceData) => {
+  const clickBottomSheetToLocationMarker = (location: PlaceData) => {
     if (!isExpandedSheet) return;
     // 다음 frame에 마커 포커스하기
     const target = renderedMarkers.find(
       ({ marker }) => marker.getTitle() === location.name,
     );
     if (target && mapInstanceRef.current) {
-      setHasFocusedMarker(true);
       makeFocusMarker(
         location.placeId,
         mapInstanceRef.current,
         target.marker,
         setIsTracking,
         setHasFocusedMarker,
-        setDetailLocationData,
+        setDetailLocationPlaceId,
       );
     }
 
@@ -181,7 +163,7 @@ const MapPage = () => {
     setSelectedCategoryTitle(title);
     const name = getCategoryEnum(title);
     if (!name) {
-      return console.error("잘못된 칩 클릭");
+      return null;
     }
     setSelectedCategoryEnum(name);
     setIsTracking(false);
@@ -192,12 +174,7 @@ const MapPage = () => {
     setSelectedCategoryLocations([]);
     setSelectedCategoryTitle(searchResult.name);
     const markerIcon = makeMarkerIcon("default");
-    if (
-      mapInstanceRef.current &&
-      setIsTracking &&
-      setHasFocusedMarker &&
-      setDetailLocationData
-    ) {
+    if (mapInstanceRef.current && setIsTracking && setHasFocusedMarker) {
       renderMarkers(
         mapInstanceRef.current,
         [
@@ -212,7 +189,7 @@ const MapPage = () => {
         searchResult.name,
         setIsTracking,
         setHasFocusedMarker,
-        setDetailLocationData,
+        setDetailLocationPlaceId,
       );
     }
   };
@@ -227,18 +204,11 @@ const MapPage = () => {
     return isMyLocationInSchool(setIsInSchool);
   }, []);
 
-  // 사이드 이펙트 (useEffect) *********************************************
-  useEffect(() => {
-    getIsMySharedInfo();
-  }, [locationSharedRefreshKey]);
-
   useEffect(() => {
     if (!detailLocationData) {
       setMarkers([]);
       return;
     }
-    setVisibleBottomSheet(true);
-    setHasFocusedMarker(true);
     // 마커 아이콘 반영
     const markerIcon = makeMarkerIcon("default");
     setMarkers([
@@ -268,7 +238,7 @@ const MapPage = () => {
           target.marker,
           setIsTracking,
           setHasFocusedMarker,
-          setDetailLocationData,
+          setDetailLocationPlaceId,
         );
       }
     }
@@ -281,7 +251,6 @@ const MapPage = () => {
       return;
     }
 
-    getCategoryLocations(selectedCategoryEnum);
     if (selectedCategoryTitle !== "친구") {
       setVisibleBottomSheet(true);
     }
@@ -323,7 +292,7 @@ const MapPage = () => {
     <div>
       <KuroomMap
         height={
-          includeBottomSheetList.includes(selectedCategoryTitle) ||
+          INCLUDE_BOTTOM_SHEET_LIST.includes(selectedCategoryTitle) ||
           selectedCategoryTitle === ""
             ? "calc(100vh - 92px)"
             : "100vh"
@@ -335,7 +304,7 @@ const MapPage = () => {
         selectedCategoryTitle={selectedCategoryTitle}
         setIsTracking={setIsTracking}
         setHasFocusedMarker={setHasFocusedMarker}
-        setDetailLocationData={setDetailLocationData}
+        setDetailLocationPlaceId={setDetailLocationPlaceId}
       />
 
       {/* 검색 모드일 때 MapSearch만 덮어씌우기 */}
@@ -387,6 +356,8 @@ const MapPage = () => {
               />
               <LocationShareButton
                 isSharedLocation={isSharedLocation}
+                isPendingShareStatus={isPendingShareStatus}
+                isErrorShareStatus={isErrorShareStatus}
                 isInSchool={isInSchool}
                 handleShareLocation={handleShareLocation}
               />
@@ -394,7 +365,7 @@ const MapPage = () => {
           )}
         </>
       )}
-      {(includeBottomSheetList.includes(selectedCategoryTitle) ||
+      {(INCLUDE_BOTTOM_SHEET_LIST.includes(selectedCategoryTitle) ||
         selectedCategoryTitle === "") && (
         <>
           <LocationsBottomSheet
@@ -403,11 +374,12 @@ const MapPage = () => {
             isExpandedSheet={isExpandedSheet}
             hasFocusedMarker={hasFocusedMarker}
             setIsExpandedSheet={setIsExpandedSheet}
-            clickToLocationMarker={clickToLocationMarker}
+            clickBottomSheetToLocationMarker={clickBottomSheetToLocationMarker}
           />
           <BottomBar />
         </>
       )}
+      {selectedCategoryTitle === "친구" && <ToFriendAddButton />}
       <FocusedLocationBottomSheet
         hasFocusedMarker={hasFocusedMarker}
         isExpandedFocusedSheet={isExpandedFocusedSheet}
@@ -419,11 +391,7 @@ const MapPage = () => {
         modalState={modalState}
         isSharedLocation={isSharedLocation}
         ableToShare={ableToShare}
-        nearLocation={nearLocation}
         setModalState={setModalState}
-        refreshSharedStatus={() =>
-          setLocationSharedRefreshKey((prev) => prev + 1)
-        }
       />
     </div>
   );

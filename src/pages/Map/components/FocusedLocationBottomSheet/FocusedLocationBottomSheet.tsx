@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-// import { BeatLoader } from "react-spinners";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import useBottomSheetDrag from "@pages/Map/hooks/useBottomSheetDrag";
-import { DetailPlaceData } from "@/shared/types";
+import { DetailPlaceData } from "@apis/types";
 
 import styles from "./FocusedLocationBottomSheet.module.css";
 import LocationInfoTopContent from "./LocationInfoTopContent/LocationInfoTopContent";
 import FocusedLocationInfo from "./FocusedLocationInfo/FocusedLocationInfo";
-import ImageDetails from "./ImageDetails.tsx/ImageDetails";
+import ImageDetails from "./ImageDetails/ImageDetails";
 
 interface FocusedLocationBottomSheetProps {
   hasFocusedMarker: boolean;
@@ -27,12 +26,14 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
   // 위치 상세 정보 저장할 상태
   const sheetRef = useRef<HTMLDivElement>(null);
 
-  // 아직 해당 장소 정보가 안 왔을 때 로딩처리
-  // const [isLoading, setIsLoading] = useState(true);
-
   // 사진 자세히 보기 상태
   const [isImageDetailMode, setIsImageDetailMode] = useState(false);
   const [clickedIndex, setClickedIndex] = useState(0);
+  const [loadedImageUrls, setLoadedImageUrls] = useState<Set<string>>(
+    new Set(),
+  );
+
+  const hasImages = !!detailLocationData?.imageUrls?.length;
 
   const handleCloseImageDetail = () => {
     setIsImageDetailMode(false);
@@ -44,21 +45,51 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
     setIsImageDetailMode(true);
   };
 
+  const handleImageLoad = useCallback((imageUrl: string) => {
+    setLoadedImageUrls((prev) => {
+      if (prev.has(imageUrl)) return prev;
+
+      const next = new Set(prev);
+      next.add(imageUrl);
+      return next;
+    });
+  }, []);
+
   // 서버에 해당 장소 정보 요청
   useEffect(() => {
-    // 여기에 실제 API 로딩 or 이미지 로딩 조건으로 변경해야함.
-    // setIsLoading(true);
-
-    // 새로운 데이터가 로드될 때 스크롤을 최상단으로 리셋
     if (sheetRef.current) {
       sheetRef.current.scrollTop = 0;
     }
-
-    // const timeout = setTimeout(() => {
-    //   setIsLoading(false);
-    // }, 500);
-    // return () => clearTimeout(timeout);
   }, [detailLocationData]);
+
+  useEffect(() => {
+    setLoadedImageUrls(new Set());
+  }, [detailLocationData?.placeId]);
+
+  useEffect(() => {
+    if (!detailLocationData?.imageUrls?.length) return;
+
+    const preloadImages = detailLocationData.imageUrls.map((placeImage) => {
+      const image = new Image();
+      image.src = placeImage;
+
+      if (image.complete && image.naturalWidth > 0) {
+        handleImageLoad(placeImage);
+      } else {
+        image.onload = () => handleImageLoad(placeImage);
+        image.onerror = () => handleImageLoad(placeImage);
+      }
+
+      return image;
+    });
+
+    return () => {
+      preloadImages.forEach((image) => {
+        image.onload = null;
+        image.onerror = null;
+      });
+    };
+  }, [detailLocationData?.imageUrls, handleImageLoad]);
 
   // 바텀 시트 올리고 내리는 로직.
   useBottomSheetDrag({
@@ -95,42 +126,50 @@ const FocusedLocationBottomSheet: React.FC<FocusedLocationBottomSheetProps> = ({
         ) : (
           <>
             <div className={styles.SheetIndicator} />
-            {/* {isLoading ? (
-              <div className={styles.MyPageLoadingWrapper}>
-                <BeatLoader color="#009733" size={18} margin={4} />
-              </div>
-            ) : ( */}
-            <>
-              {isExpandedFocusedSheet && (
-                <LocationInfoTopContent
-                  locationImages={detailLocationData?.imageUrls}
-                  setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
-                  handleSelectImageIndex={handleOpenSelectImageIndex}
-                />
-              )}
-              {detailLocationData && (
-                <FocusedLocationInfo
-                  detailInfo={detailLocationData}
-                  isExpandedFocusedSheet={isExpandedFocusedSheet}
-                  setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
-                />
-              )}
-              {!isExpandedFocusedSheet && (
-                <div className={styles.SheetImgContainer}>
+            {isExpandedFocusedSheet && (
+              <LocationInfoTopContent
+                locationImages={detailLocationData?.imageUrls}
+                setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+                handleSelectImageIndex={handleOpenSelectImageIndex}
+              />
+            )}
+            {detailLocationData && (
+              <FocusedLocationInfo
+                detailInfo={detailLocationData}
+                isExpandedFocusedSheet={isExpandedFocusedSheet}
+                setIsExpandedFocusedSheet={setIsExpandedFocusedSheet}
+              />
+            )}
+            {!isExpandedFocusedSheet && hasImages && (
+              <>
+                <div className={styles.SheetImgWrapper}>
                   {/* 최대 3개까지만 보이도록 */}
                   {detailLocationData?.imageUrls
                     .slice(0, 3)
-                    .map((item, index) => (
-                      <img
-                        className={styles.SheetImg}
-                        key={index}
-                        src={item}
-                        alt="위치 관련 이미지"
-                      />
-                    ))}
+                    .map((imageUrl, index) => {
+                      const isLoaded = loadedImageUrls.has(imageUrl);
+                      return (
+                        <div key={index} className={styles.SheetImgContainer}>
+                          {!isLoaded && (
+                            <div className={styles.ImageSkeleton} />
+                          )}
+                          <img
+                            className={`${styles.SheetImg} ${
+                              isLoaded
+                                ? styles.SheetImgVisible
+                                : styles.SheetImgHidden
+                            }`}
+                            src={imageUrl}
+                            alt={`위치 관련 이미지-${index}`}
+                            onLoad={() => handleImageLoad(imageUrl)}
+                            onError={() => handleImageLoad(imageUrl)}
+                          />
+                        </div>
+                      );
+                    })}
                 </div>
-              )}
-            </>
+              </>
+            )}
           </>
         )}
       </div>

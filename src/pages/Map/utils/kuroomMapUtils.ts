@@ -1,5 +1,3 @@
-import { getLocationDetailData } from "@apis/map";
-
 import myMarkerIcon from "@assets/map/mylocationMarker.svg";
 import focusedMarkerIcon from "@assets/map/focusedMarker.png";
 import collegeMarker from "@assets/map/markers/collegeMarker.svg";
@@ -7,12 +5,13 @@ import buildingMarker from "@assets/map/markers/buildingMarker.svg";
 import kcubekhubMarker from "@assets/map/markers/kcubekhubMarker.svg";
 import storeMarker from "@assets/map/markers/storeMarker.svg";
 import cafeMarker from "@assets/map/markers/cafeMarker.svg";
+import copyRoomMarker from "@assets/map/markers/copyRoomMarker.svg";
 import restaurantMarker from "@assets/map/markers/restaurantMarker.svg";
 import dormitoryMarker from "@assets/map/markers/dormitoryMarker.svg";
 import bankMarker from "@assets/map/markers/bankMarker.svg";
 import postMarker from "@assets/map/markers/postMarker.svg";
 import defaultMarker from "@assets/map/defaultMarkerIcon.svg";
-import { DetailPlaceData, MarkerData } from "@/shared/types";
+import { MarkerData } from "@apis/types";
 
 interface KuroomMarker {
   marker: naver.maps.Marker;
@@ -38,10 +37,10 @@ export const makeMarkerIcon = (category: string): string => {
       return kcubekhubMarker;
     case "편의점":
       return storeMarker;
-    case "레스티오":
+    case "카페":
       return cafeMarker;
-    case "1847":
-      return cafeMarker;
+    case "복사실":
+      return copyRoomMarker;
     case "학생식당":
       return restaurantMarker;
     case "기숙사":
@@ -60,7 +59,7 @@ export function renderMarkers(
   selectedCategoryTitle: string,
   setIsTracking: (value: boolean) => void,
   setHasFocusedMarker: (value: boolean) => void,
-  setDetailLocationData: (value: DetailPlaceData) => void,
+  setDetailLocationPlaceId: (value?: number) => void,
 ): void {
   // 기존 마커 제거
   renderedMarkers.forEach(({ marker }) => marker.setMap(null));
@@ -99,6 +98,7 @@ export function renderMarkers(
             border: 3px solid #fff;
             border-radius: 999px;
             box-shadow: 0 0 4px rgba(0,0,0,0.25);
+            transform: translate(-50%, -100%);
           ">
             <img src="${markerIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover; border-radius: 999px;" />
             <div style="
@@ -108,11 +108,35 @@ export function renderMarkers(
             ">${numOfFriends}</div>
           </div>
         `,
-          anchor: new naver.maps.Point(20, 20),
         };
       } else {
         markerOptions.icon = {
-          url: markerIcon,
+          content: `
+            <div style="display: flex; flex-direction: column; align-items: center; margin-top:-25px; z-index:10000;
+            transform: translate(-50%, 0);">
+              <img src="${markerIcon}" width="26" height="26" />
+              <span style="
+                color: #000;
+                text-align: center;
+                font-size: 12px;
+                font-weight: 700;
+                line-height: normal;
+                white-space: nowrap;
+                word-break: keep-all;         
+                overflow-wrap: normal;   
+                text-align: center;
+                max-width: 65px;           
+                overflow: hidden;       
+                text-overflow: ellipsis;  
+                text-shadow:
+                  -1px -1px 0 #fff,
+                  1px -1px 0 #fff,
+                  -1px  1px 0 #fff,
+                  1px  1px 0 #fff;
+              ">
+                ${title}
+              </span>
+            </div>`,
         };
       }
 
@@ -126,8 +150,7 @@ export function renderMarkers(
           marker,
           setIsTracking,
           setHasFocusedMarker,
-          setDetailLocationData,
-          isFriendMarker,
+          setDetailLocationPlaceId,
         );
       });
 
@@ -151,7 +174,7 @@ export function renderMarkers(
         renderedMarkers[0].marker,
         setIsTracking,
         setHasFocusedMarker,
-        setDetailLocationData,
+        setDetailLocationPlaceId,
       );
     }, 10);
   }
@@ -181,8 +204,7 @@ async function makeFocusMarker(
   marker: naver.maps.Marker,
   setIsTracking: (value: boolean) => void,
   setHasFocusedMarker: (value: boolean) => void,
-  setDetailLocationData: (value: DetailPlaceData) => void,
-  isFriendMarker?: boolean,
+  setDetailLocationPlaceId: (value?: number) => void,
 ) {
   const position = marker.getPosition() as naver.maps.LatLng;
   // 위치를 아래로 조금 내리기 위해 위도를 조정
@@ -195,12 +217,7 @@ async function makeFocusMarker(
   map.setZoom(17);
   setIsTracking(false);
 
-  try {
-    const response = await getLocationDetailData(placeId);
-    setDetailLocationData(response);
-  } catch (error) {
-    console.error("디테일 위치 정보 가져오기 mapUtils에서 오류 : ", error);
-  }
+  setDetailLocationPlaceId(placeId);
 
   focusedMarker = marker; // 현재 포커스 마커 기억
   setHasFocusedMarker(true); // 포커스 되었음을 알림
@@ -208,7 +225,7 @@ async function makeFocusMarker(
   // HTMLIcon으로 스타일링 + 라벨링. 텍스트 스트로크 넣기
   marker.setIcon({
     content: `
-    <div style="display: flex; flex-direction: column; align-items: center; margin-top:-25px; z-index:10000">
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top:-25px; z-index:10000; transform: translate(-50%, -50%);">
       <img src="${focusedMarkerIcon}" width="80" height="80" />
       <span style="
         padding: 5px 7px;
@@ -231,9 +248,6 @@ async function makeFocusMarker(
       </span>
     </div>
   `,
-    anchor: isFriendMarker
-      ? new naver.maps.Point(42, 45)
-      : new naver.maps.Point(15, 45),
   });
 
   marker.setZIndex(1000);
@@ -251,6 +265,7 @@ async function makeFocusMarker(
               border: 3px solid #fff;
               border-radius: 50px;
               box-shadow: 0 0 4px rgba(0,0,0,0.25);
+              transform: translate(-50%, -100%);
             ">
               <img src="${originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover; border-radius: 999px;" />
               <div style="
@@ -260,10 +275,35 @@ async function makeFocusMarker(
               ">${numOfFriends ?? ""}</div>
             </div>
            `,
-            anchor: new naver.maps.Point(20, 20),
           });
         } else {
-          m.setIcon({ url: originalIcon });
+          m.setIcon({
+            content: `
+              <div style="display: flex; flex-direction: column; align-items: center; margin-top:-25px; z-index:10000; transform: translate(-50%, 0);">
+                <img src="${originalIcon}" width="26" height="26" />
+                <span style="
+                  color: #000;
+                  text-align: center;
+                  font-size: 12px;
+                  font-weight: 700;
+                  line-height: normal;
+                  white-space: nowrap;
+                  word-break: keep-all;         
+                  overflow-wrap: normal;   
+                  text-align: center;
+                  max-width: 65px;           
+                  overflow: hidden;       
+                  text-overflow: ellipsis;  
+                  text-shadow:
+                    -1px -1px 0 #fff,
+                    1px -1px 0 #fff,
+                    -1px  1px 0 #fff,
+                    1px  1px 0 #fff;
+                ">
+                  ${m.getTitle()}
+                </span>
+              </div>`,
+          });
         }
       }
     },
@@ -290,6 +330,7 @@ export function resetFocusedMarker(
               border-radius: 50px;
               box-shadow: 0 0 4px rgba(0,0,0,0.25);
               z-index: 500;
+              transform: translate(-50%, -100%);
             ">
               <img src="${target.originalIcon}" alt="friend" style="width: 100%; height: 100%; object-fit: cover; border-radius: 999px;" />
               <div style="
@@ -299,10 +340,35 @@ export function resetFocusedMarker(
               ">${target.numOfFriends ?? ""}</div>
             </div>
           `,
-          anchor: new naver.maps.Point(20, 20),
         });
       } else {
-        focusedMarker.setIcon({ url: target.originalIcon });
+        focusedMarker.setIcon({
+          content: `
+              <div style="display: flex; flex-direction: column; align-items: center; margin-top:-25px; z-index:10000; transform: translate(-50%, 0);">
+                <img src="${target.originalIcon}" width="26" height="26" />
+                <span style="
+                  color: #000;
+                  text-align: center;
+                  font-size: 12px;
+                  font-weight: 700;
+                  line-height: normal;
+                  white-space: nowrap;
+                  word-break: keep-all;         
+                  overflow-wrap: normal;   
+                  text-align: center;
+                  max-width: 65px;           
+                  overflow: hidden;       
+                  text-overflow: ellipsis;  
+                  text-shadow:
+                    -1px -1px 0 #fff,
+                    1px -1px 0 #fff,
+                    -1px  1px 0 #fff,
+                    1px  1px 0 #fff;
+                ">
+                  ${target.marker.getTitle()}
+                </span>
+              </div>`,
+        });
       }
     }
 

@@ -1,8 +1,10 @@
-import { useEffect } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
+import { shouldShowPwaGuide } from "@utils/pwaUtils";
 
-import { reissueTokenApi } from "@apis/axiosInstance";
-import { RootLayout } from "@/shared/components/RootLayout";
 import Home from "@pages/Home/Home";
 import Notice from "@pages/Notice/Notice/Notice";
 import NoticeDetail from "@pages/Notice/NoticeDetail/NoticeDetail";
@@ -35,41 +37,20 @@ import ChatPage from "@pages/Chatbot/ChatPage/ChatPage";
 import LocationTotalRank from "@pages/Map/LocationTotalRank/LocationTotalRank";
 import MapLayout from "@pages/Map/layout/MapLayout";
 import ShareLocation from "@pages/ShareLocation/ShareLocation";
+import PwaGuide from "@pages/PwaGuide/PwaGuide";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
+import { AuthLayout } from "@/layout/AuthLayout";
+import { RootLayout } from "./shared/components/RootLayout";
+
+const RootIndex = () => {
+  if (shouldShowPwaGuide()) {
+    return <Navigate to="/pwa-guide" replace />;
+  }
+  return <Navigate to="/home" replace />;
+};
 
 function App() {
-  useEffect(() => {
-    const path = window.location.pathname;
-    // 아래에 해당하는 페이지들은 다른 앱을 사용하다가 돌아오면 Access Token을 재발급함
-    const includedPaths = [
-      "alarm",
-      "myinfo",
-      "profilechange",
-      "changepw",
-      "changenickname",
-      "alarmsetting",
-      "friendadd",
-      "friendlist",
-      "departmentsetting",
-      "bookmark",
-    ];
-
-    const handleVisibilityChange = async () => {
-      if (
-        document.visibilityState === "visible" &&
-        includedPaths.includes(path)
-      ) {
-        await reissueTokenApi();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
-
   const router = createBrowserRouter([
     {
       path: "/",
@@ -77,55 +58,23 @@ function App() {
       children: [
         {
           index: true,
-          element: <Home />,
-        },
-        {
-          path: "alarm",
-          element: <Alarm />,
-        },
-        {
-          path: "notice",
-          element: <Notice />,
-        },
-        {
-          path: "notice/:id",
-          element: <NoticeDetail />,
-        },
-        {
-          path: "notice/:category/:id",
-          element: <NoticeDetail />,
-        },
-        {
-          path: "chatbot-main",
-          element: <ChatbotMain />,
-        },
-        {
-          path: "chat",
-          element: <ChatPage />,
-        },
-        {
-          path: "signup",
-          element: <SignupInfo />,
-        },
-        {
-          path: "identityverifictaion",
-          element: <IdentityVerify />,
-        },
-        {
-          path: "agreement",
-          element: <Agreement />,
+          element: <RootIndex />,
         },
         {
           path: "login",
           element: <Login />,
         },
         {
-          path: "findidpw",
-          element: <FindIdPw />,
+          path: "signup",
+          element: <SignupInfo />,
         },
         {
-          path: "social/callback",
-          element: <SocialCallback />,
+          path: "identityverification",
+          element: <IdentityVerify />,
+        },
+        {
+          path: "agreement",
+          element: <Agreement />,
         },
         {
           path: "profilesetting",
@@ -136,76 +85,120 @@ function App() {
           element: <Welcome />,
         },
         {
-          path: "map",
-          element: <MapLayout />,
+          path: "findidpw",
+          element: <FindIdPw />,
+        },
+        {
+          path: "social/callback",
+          element: <SocialCallback />,
+        },
+        {
+          path: "pwa-guide",
+          element: <PwaGuide />,
+        },
+        {
+          element: <AuthLayout />,
           children: [
             {
-              index: true,
-              element: <MapPage />,
+              path: "home",
+              element: <Home />,
             },
             {
-              path: "location-total-rank/:placeName?",
-              element: <LocationTotalRank />,
+              path: "alarm",
+              element: <Alarm />,
+            },
+            {
+              path: "notice",
+              element: <Notice />,
+            },
+            {
+              path: "notice/:id",
+              element: <NoticeDetail />,
+            },
+            {
+              path: "notice/:category/:id",
+              element: <NoticeDetail />,
+            },
+            {
+              path: "chatbot-main",
+              element: <ChatbotMain />,
+            },
+            {
+              path: "chat",
+              element: <ChatPage />,
+            },
+            {
+              path: "map",
+              element: <MapLayout />,
+              children: [
+                {
+                  index: true,
+                  element: <MapPage />,
+                },
+                {
+                  path: "location-total-rank/:placeName?",
+                  element: <LocationTotalRank />,
+                },
+              ],
+            },
+            {
+              path: "share-location",
+              element: <ShareLocation />,
+            },
+            {
+              path: "myinfo",
+              element: <MyPage />,
+            },
+            {
+              path: "profilechange",
+              element: <ProfileChange />,
+            },
+            {
+              path: "changepw",
+              element: <ChangePw />,
+            },
+            {
+              path: "changenickname",
+              element: <ChangeNickname />,
+            },
+            {
+              path: "alarmsetting",
+              element: <AlarmSetting />,
+            },
+            {
+              path: "friendadd",
+              element: <FriendAdd />,
+            },
+            {
+              path: "friendlist",
+              element: <FriendList />,
+            },
+            {
+              path: "departmentsetting",
+              element: <DepartmentSetting />,
+            },
+            {
+              path: "mylocationranking",
+              children: [
+                {
+                  index: true,
+                  element: <MyLocationRanking />,
+                },
+                {
+                  path: "friendlocationranking",
+                  element: <FriendLocationRanking />,
+                },
+              ],
+            },
+            {
+              path: "bookmark",
+              element: <Bookmark />,
+            },
+            {
+              path: "search",
+              element: <Search />,
             },
           ],
-        },
-        {
-          path: "share-location",
-          element: <ShareLocation />,
-        },
-        {
-          path: "myinfo",
-          element: <MyPage />,
-        },
-        {
-          path: "profilechange",
-          element: <ProfileChange />,
-        },
-        {
-          path: "changepw",
-          element: <ChangePw />,
-        },
-        {
-          path: "changenickname",
-          element: <ChangeNickname />,
-        },
-        {
-          path: "alarmsetting",
-          element: <AlarmSetting />,
-        },
-        {
-          path: "friendadd",
-          element: <FriendAdd />,
-        },
-        {
-          path: "friendlist",
-          element: <FriendList />,
-        },
-        {
-          path: "departmentsetting",
-          element: <DepartmentSetting />,
-        },
-        {
-          path: "mylocationranking",
-          children: [
-            {
-              index: true,
-              element: <MyLocationRanking />,
-            },
-            {
-              path: "friendlocationranking",
-              element: <FriendLocationRanking />,
-            },
-          ],
-        },
-
-        {
-          path: "bookmark",
-          element: <Bookmark />,
-        },
-        {
-          path: "search",
-          element: <Search />,
         },
       ],
     },
