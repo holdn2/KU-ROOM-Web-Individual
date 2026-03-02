@@ -1,8 +1,9 @@
 import { reissueTokenApi } from "@apis/axiosInstance";
+import { clearAuthStorage } from "@utils/storageUtils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-const REISSUE_MIN_INTERVAL_MS = 20 * 60 * 1000;
+const REISSUE_MIN_INTERVAL_MS = 5 * 1000;
 const LAST_REISSUE_AT_KEY = "auth-last-reissue-at";
 
 export const AuthLayout = () => {
@@ -17,7 +18,7 @@ export const AuthLayout = () => {
     if (!refreshToken) return false;
     const hasAccessToken = Boolean(localStorage.getItem("accessToken"));
 
-    // access token이 남아있고 최근 재발급이 15분 이내라면 재발급 호출을 생략한다.
+    // access token이 남아있고 최근 재발급이 20분 이내라면 재발급 호출을 생략한다.
     if (hasAccessToken) {
       const lastReissueAt = Number(
         localStorage.getItem(LAST_REISSUE_AT_KEY) ?? 0,
@@ -40,7 +41,9 @@ export const AuthLayout = () => {
         setIsAuthenticated(true);
         return true;
       } catch {
-        return Boolean(localStorage.getItem("accessToken"));
+        clearAuthStorage();
+        setIsAuthenticated(false);
+        return false;
       }
     })();
     inFlightReissueRef.current = reissueTask;
@@ -69,7 +72,9 @@ export const AuthLayout = () => {
 
       const reissued = await tryReissue();
       if (mounted) {
-        setIsAuthenticated(reissued || hasAccessToken);
+        setIsAuthenticated(
+          reissued || Boolean(localStorage.getItem("accessToken")),
+        );
         setIsBootstrapping(false);
       }
     };
