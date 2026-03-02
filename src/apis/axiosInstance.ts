@@ -32,7 +32,8 @@ interface ReissueResponse {
 
 const REISSUE_PATH = "/auth/reissue";
 // 인증 실패 및 재발급 실패 에러 코드
-const AUTH_FAILURE_STATUS = new Set([401, 403]);
+// TODO: 서버 인증 관련 에러 코드 해결 후 500 제거
+const AUTH_FAILURE_STATUS = new Set([401, 403, 500]);
 const LAST_REISSUE_AT_KEY = "auth-last-reissue-at";
 
 const isUnauthorizedStatus = (status?: number) => status === 401;
