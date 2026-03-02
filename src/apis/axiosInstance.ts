@@ -31,34 +31,38 @@ interface ReissueResponse {
 }
 
 const REISSUE_PATH = "/auth/reissue";
-// 인증 실패 및 재발급 실패 에러 코드
-// TODO: 서버 인증 관련 에러 코드 해결 후 500 제거
-const AUTH_FAILURE_STATUS = new Set([401, 403, 500]);
+const AUTH_FAILURE_STATUS = new Set([401, 403]);
+const AUTH_FAILURE_CODE = new Set([401, 403, 1005]);
 const LAST_REISSUE_AT_KEY = "auth-last-reissue-at";
 
-const isUnauthorizedStatus = (status?: number) => status === 401;
+const isUnauthorizedStatus = (status?: number) =>
+  AUTH_FAILURE_STATUS.has(status ?? -1);
 const isUnauthorizedCode = (data: unknown) => {
   if (!data || typeof data !== "object") return false;
   const code = (data as { code?: number | string }).code;
-  return Number(code) === 401;
+  return AUTH_FAILURE_CODE.has(Number(code));
 };
 const isReissueRequest = (url?: string) => (url ?? "").includes(REISSUE_PATH);
+
+const isTimeoutError = (error: AxiosError | undefined) =>
+  error?.code === "ECONNABORTED";
+const isNetworkError = (error: AxiosError | undefined) =>
+  !error?.response && !isTimeoutError(error);
+const isServerErrorStatus = (status?: number) =>
+  typeof status === "number" && status >= 500;
 
 const getErrorStatus = (error: unknown) =>
   (error as AxiosError | undefined)?.response?.status ??
   (error as AxiosError | undefined)?.status;
 
-const getErrorCode = (error: unknown) => {
-  const data = (error as AxiosError | undefined)?.response?.data;
-  if (!data || typeof data !== "object") return undefined;
-  return Number((data as { code?: number | string }).code);
-};
-
-const shouldForceLogoutOnReissueError = (error: unknown) => {
+const shouldRetryReissueOnce = (error: unknown) => {
+  const axiosError = error as AxiosError | undefined;
   const status = getErrorStatus(error);
-  const code = getErrorCode(error);
+
   return (
-    AUTH_FAILURE_STATUS.has(status ?? -1) || AUTH_FAILURE_STATUS.has(code ?? -1)
+    isTimeoutError(axiosError) ||
+    isNetworkError(axiosError) ||
+    isServerErrorStatus(status)
   );
 };
 
@@ -115,9 +119,7 @@ const retryWithReissue = async (originalRequest: RetriableRequestConfig) => {
     };
     return axiosInstance(originalRequest);
   } catch (error) {
-    if (shouldForceLogoutOnReissueError(error)) {
-      moveToLogin();
-    }
+    moveToLogin();
     throw error;
   }
 };
@@ -158,7 +160,16 @@ axiosInstance.interceptors.response.use(
 
 export const reissueTokenApi = async (): Promise<string> => {
   if (!reissuePromise) {
-    reissuePromise = executeReissue().finally(() => {
+    reissuePromise = (async () => {
+      try {
+        return await executeReissue();
+      } catch (firstError) {
+        if (!shouldRetryReissueOnce(firstError)) {
+          throw firstError;
+        }
+        return executeReissue();
+      }
+    })().finally(() => {
       reissuePromise = null;
     });
   }
