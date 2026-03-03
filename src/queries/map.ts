@@ -40,8 +40,8 @@ export const useCheckShareStatusQuery = () => {
     gcTime: 1000 * 60 * 30,
   });
 
-  const isSharedLocation = data?.data.isActive;
-  const sharedLocationName = data?.data.placeName;
+  const isSharedLocation = data?.data?.isActive;
+  const sharedLocationName = data?.data?.placeName;
 
   return {
     isSharedLocation,
