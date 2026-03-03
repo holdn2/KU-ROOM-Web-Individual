@@ -26,6 +26,7 @@ import {
   ShareStatusResponse,
 } from "@apis/types";
 import { MAP_QUERY_KEY, RANKING_QUERY_KEY } from "@/queryKey";
+import { useNavigate } from "react-router-dom";
 
 export const useCheckShareStatusQuery = () => {
   const {
@@ -81,11 +82,13 @@ export const useGetLocationNameQuery = (coord?: Coordinate) => {
 export const useShareUserLocationMutation = () => {
   const toast = useToast();
   const qc = useQueryClient();
+  const navigate = useNavigate();
 
   const { mutate: shareUserLocation } = useMutation({
     mutationFn: (placeName: string) => shareUserLocationApi(placeName),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: MAP_QUERY_KEY.USER_SHARE_STATUS });
+      navigate("/home", { replace: true });
     },
     onError: (error) => {
       toast.error(`위치 공유 실패 : ${error.message}`);
